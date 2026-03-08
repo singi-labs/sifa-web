@@ -16,10 +16,9 @@ export async function fetchProfile(handleOrDid: string) {
 
 export async function searchProfiles(query: string): Promise<ProfileSearchResult[]> {
   if (!query.trim()) return [];
-  const res = await fetch(
-    `${API_URL}/api/search/profiles?q=${encodeURIComponent(query)}`,
-    { cache: 'no-store' },
-  );
+  const res = await fetch(`${API_URL}/api/search/profiles?q=${encodeURIComponent(query)}`, {
+    cache: 'no-store',
+  });
   if (!res.ok) return [];
   const data = await res.json();
   return data.profiles ?? [];

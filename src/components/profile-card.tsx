@@ -26,9 +26,7 @@ export function ProfileCard({ handle, headline, avatar }: ProfileCardProps) {
           </div>
           <div className="min-w-0">
             <p className="truncate font-medium">{handle}</p>
-            {headline && (
-              <p className="truncate text-sm text-muted-foreground">{headline}</p>
-            )}
+            {headline && <p className="truncate text-sm text-muted-foreground">{headline}</p>}
           </div>
         </CardContent>
       </Card>

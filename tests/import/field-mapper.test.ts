@@ -1,16 +1,21 @@
 import { describe, it, expect } from 'vitest';
-import { mapPositionsCsv, mapProfileCsv, mapEducationCsv, mapSkillsCsv } from '@/lib/import/field-mapper';
+import {
+  mapPositionsCsv,
+  mapProfileCsv,
+  mapEducationCsv,
+  mapSkillsCsv,
+} from '@/lib/import/field-mapper';
 
 describe('LinkedIn field mapper', () => {
   describe('mapPositionsCsv', () => {
     it('maps Positions.csv columns to id.sifa.profile.position', () => {
       const csvRow = {
         'Company Name': 'Acme Corp',
-        'Title': 'Senior Engineer',
-        'Description': 'Built things',
+        Title: 'Senior Engineer',
+        Description: 'Built things',
         'Started On': 'Jan 2020',
         'Finished On': 'Dec 2023',
-        'Location': 'Amsterdam, Netherlands',
+        Location: 'Amsterdam, Netherlands',
       };
 
       const result = mapPositionsCsv(csvRow);
@@ -24,7 +29,7 @@ describe('LinkedIn field mapper', () => {
     it('handles current position (no end date)', () => {
       const csvRow = {
         'Company Name': 'Current Co',
-        'Title': 'CTO',
+        Title: 'CTO',
         'Started On': 'Mar 2024',
         'Finished On': '',
       };
@@ -37,7 +42,7 @@ describe('LinkedIn field mapper', () => {
     it('handles missing optional fields', () => {
       const csvRow = {
         'Company Name': 'Minimal Co',
-        'Title': 'Worker',
+        Title: 'Worker',
         'Started On': 'Jun 2022',
       };
 
@@ -51,8 +56,8 @@ describe('LinkedIn field mapper', () => {
       const csvRow = {
         'First Name': 'Alice',
         'Last Name': 'Smith',
-        'Headline': 'Senior Engineer at Acme',
-        'Summary': 'Building great things',
+        Headline: 'Senior Engineer at Acme',
+        Summary: 'Building great things',
         'Geo Location': 'Amsterdam Area, Netherlands',
       };
 
@@ -67,7 +72,7 @@ describe('LinkedIn field mapper', () => {
       const csvRow = {
         'School Name': 'MIT',
         'Degree Name': 'BSc',
-        'Notes': 'Computer Science',
+        Notes: 'Computer Science',
         'Start Date': '2015',
         'End Date': '2019',
       };
@@ -82,7 +87,7 @@ describe('LinkedIn field mapper', () => {
   describe('mapSkillsCsv', () => {
     it('maps Skills.csv columns', () => {
       const csvRow = {
-        'Name': 'TypeScript',
+        Name: 'TypeScript',
       };
 
       const result = mapSkillsCsv(csvRow);

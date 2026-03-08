@@ -7,14 +7,15 @@ describe('JSON-LD generation', () => {
       handle: 'alice.bsky.social',
       headline: 'Senior Engineer',
       about: 'Building things',
-      positions: [{ companyName: 'Acme', title: 'Engineer', current: true }],
+      positions: [{ companyName: 'Acme', current: true }],
       education: [{ institution: 'MIT' }],
       skills: [{ skillName: 'TypeScript' }],
     });
 
     expect(ld['@type']).toBe('Person');
     expect(ld.jobTitle).toBe('Senior Engineer');
-    expect(ld.worksFor.name).toBe('Acme');
+    expect(ld.worksFor).toBeDefined();
+    expect(ld.worksFor!.name).toBe('Acme');
     expect(ld.knowsAbout).toContain('TypeScript');
   });
 
@@ -41,6 +42,6 @@ describe('JSON-LD generation', () => {
     });
 
     expect(ld.alumniOf).toHaveLength(2);
-    expect(ld.alumniOf[0]['@type']).toBe('EducationalOrganization');
+    expect(ld.alumniOf![0]!['@type']).toBe('EducationalOrganization');
   });
 });

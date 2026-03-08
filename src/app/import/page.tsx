@@ -54,9 +54,7 @@ export default function ImportPage() {
             {i > 0 && <div className="h-px w-8 bg-border" />}
             <div
               className={`flex size-8 items-center justify-center rounded-full text-sm font-medium ${
-                step === s
-                  ? 'bg-primary text-primary-foreground'
-                  : 'bg-muted text-muted-foreground'
+                step === s ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
               }`}
             >
               {i + 1}
@@ -75,11 +73,7 @@ export default function ImportPage() {
       )}
 
       {step === 'preview' && preview && (
-        <PreviewStep
-          preview={preview}
-          onConfirm={handleConfirm}
-          onBack={() => setStep('upload')}
-        />
+        <PreviewStep preview={preview} onConfirm={handleConfirm} onBack={() => setStep('upload')} />
       )}
 
       {step === 'confirm' && confirmedPreview && (

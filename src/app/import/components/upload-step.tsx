@@ -3,7 +3,7 @@
 import { useCallback, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Upload } from 'lucide-react';
+import { Upload } from '@phosphor-icons/react';
 
 interface UploadStepProps {
   onFileSelected: (file: File) => void;
@@ -56,8 +56,8 @@ export function UploadStep({ onFileSelected, isProcessing }: UploadStepProps) {
       <CardHeader>
         <CardTitle>Upload your LinkedIn data export</CardTitle>
         <CardDescription>
-          Go to LinkedIn &gt; Settings &gt; Data Privacy &gt; &quot;Download larger data archive&quot;.
-          Upload the ZIP file you receive (batch 1 arrives in ~10 minutes).
+          Go to LinkedIn &gt; Settings &gt; Data Privacy &gt; &quot;Download larger data
+          archive&quot;. Upload the ZIP file you receive (batch 1 arrives in ~10 minutes).
         </CardDescription>
       </CardHeader>
       <CardContent>

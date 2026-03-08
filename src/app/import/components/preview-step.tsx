@@ -72,13 +72,22 @@ export function PreviewStep({ preview, onConfirm, onBack }: PreviewStepProps) {
         <Tabs defaultValue="positions">
           <TabsList>
             <TabsTrigger value="positions">
-              Positions <Badge variant="secondary" className="ms-1.5">{data.positions.length}</Badge>
+              Positions{' '}
+              <Badge variant="secondary" className="ms-1.5">
+                {data.positions.length}
+              </Badge>
             </TabsTrigger>
             <TabsTrigger value="education">
-              Education <Badge variant="secondary" className="ms-1.5">{data.education.length}</Badge>
+              Education{' '}
+              <Badge variant="secondary" className="ms-1.5">
+                {data.education.length}
+              </Badge>
             </TabsTrigger>
             <TabsTrigger value="skills">
-              Skills <Badge variant="secondary" className="ms-1.5">{data.skills.length}</Badge>
+              Skills{' '}
+              <Badge variant="secondary" className="ms-1.5">
+                {data.skills.length}
+              </Badge>
             </TabsTrigger>
           </TabsList>
 
@@ -101,7 +110,8 @@ export function PreviewStep({ preview, onConfirm, onBack }: PreviewStepProps) {
                       <TableCell className="font-medium">{pos.title}</TableCell>
                       <TableCell>{pos.companyName}</TableCell>
                       <TableCell className="text-muted-foreground">
-                        {pos.startDate ?? '?'} &ndash; {pos.current ? 'Present' : (pos.endDate ?? '?')}
+                        {pos.startDate ?? '?'} &ndash;{' '}
+                        {pos.current ? 'Present' : (pos.endDate ?? '?')}
                       </TableCell>
                       <TableCell>
                         <Button variant="ghost" size="xs" onClick={() => removePosition(i)}>

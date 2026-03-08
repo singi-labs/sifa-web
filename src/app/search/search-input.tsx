@@ -30,12 +30,7 @@ export function SearchInput({ defaultValue }: SearchInputProps) {
 
   return (
     <form onSubmit={handleSubmit} role="search">
-      <Input
-        name="q"
-        type="search"
-        placeholder={t('placeholder')}
-        defaultValue={defaultValue}
-      />
+      <Input name="q" type="search" placeholder={t('placeholder')} defaultValue={defaultValue} />
     </form>
   );
 }

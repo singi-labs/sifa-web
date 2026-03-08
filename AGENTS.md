@@ -9,16 +9,16 @@ The frontend for Sifa -- a decentralized professional identity and career networ
 
 ## Tech Stack
 
-| Component | Technology |
-|-----------|-----------|
-| Framework | Next.js 15+ / React 19 / TypeScript (strict) |
-| Styling | TailwindCSS |
-| Components | shadcn/ui + Radix primitives |
-| Icons | Phosphor Icons |
-| Colors | Radix Colors (structural) + Flexoki accent hues |
-| Testing | Vitest + vitest-axe + @axe-core/playwright |
-| LinkedIn import | JSZip + Papa Parse (client-side only) |
-| SEO | next-sitemap, JSON-LD (Schema.org Person) |
+| Component       | Technology                                      |
+| --------------- | ----------------------------------------------- |
+| Framework       | Next.js 15+ / React 19 / TypeScript (strict)    |
+| Styling         | TailwindCSS                                     |
+| Components      | shadcn/ui + Radix primitives                    |
+| Icons           | Phosphor Icons                                  |
+| Colors          | Radix Colors (structural) + Flexoki accent hues |
+| Testing         | Vitest + vitest-axe + @axe-core/playwright      |
+| LinkedIn import | JSZip + Papa Parse (client-side only)           |
+| SEO             | next-sitemap, JSON-LD (Schema.org Person)       |
 
 ## What This Repo Does
 

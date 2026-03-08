@@ -22,7 +22,8 @@ export async function EducationSection({ education }: { education: Education[] }
             <h3 className="font-medium">{edu.institution}</h3>
             {edu.degree && (
               <p className="text-sm text-muted-foreground">
-                {edu.degree}{edu.fieldOfStudy ? `, ${edu.fieldOfStudy}` : ''}
+                {edu.degree}
+                {edu.fieldOfStudy ? `, ${edu.fieldOfStudy}` : ''}
               </p>
             )}
             {(edu.startDate || edu.endDate) && (

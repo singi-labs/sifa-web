@@ -20,9 +20,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
       <div className="mt-6 space-y-3">
         {query && results.length === 0 && (
-          <p className="py-8 text-center text-muted-foreground">
-            {t('noResults', { query })}
-          </p>
+          <p className="py-8 text-center text-muted-foreground">{t('noResults', { query })}</p>
         )}
         {results.map((profile) => (
           <ProfileCard
