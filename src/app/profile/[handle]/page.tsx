@@ -5,6 +5,7 @@ import { ProfileHeader } from './components/profile-header';
 import { ExperienceSection } from './components/experience-section';
 import { EducationSection } from './components/education-section';
 import { SkillsSection } from './components/skills-section';
+import { FollowButton } from '@/components/follow-button';
 
 export async function generateMetadata({ params }: { params: Promise<{ handle: string }> }) {
   const { handle } = await params;
@@ -35,6 +36,11 @@ export default async function ProfilePage({ params }: { params: Promise<{ handle
         dangerouslySetInnerHTML={{ __html: JSON.stringify(buildPersonJsonLd(profile)) }}
       />
       <ProfileHeader profile={profile} />
+      {profile.did && !profile.isOwnProfile && (
+        <div className="mt-4">
+          <FollowButton targetDid={profile.did} isFollowing={profile.isFollowing ?? false} />
+        </div>
+      )}
       {profile.about && (
         <section className="mt-6">
           <p className="text-muted-foreground">{profile.about}</p>
