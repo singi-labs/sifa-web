@@ -1,5 +1,6 @@
 import { fetchProfile } from '@/lib/api';
 import { notFound } from 'next/navigation';
+import { buildPersonJsonLd } from '@/lib/jsonld';
 import { ProfileHeader } from './components/profile-header';
 import { ExperienceSection } from './components/experience-section';
 import { EducationSection } from './components/education-section';
@@ -29,6 +30,10 @@ export default async function ProfilePage({ params }: { params: Promise<{ handle
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildPersonJsonLd(profile)) }}
+      />
       <ProfileHeader profile={profile} />
       {profile.about && (
         <section className="mt-6">
