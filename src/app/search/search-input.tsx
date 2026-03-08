@@ -35,7 +35,6 @@ export function SearchInput({ defaultValue }: SearchInputProps) {
         type="search"
         placeholder={t('placeholder')}
         defaultValue={defaultValue}
-        autoFocus
       />
     </form>
   );

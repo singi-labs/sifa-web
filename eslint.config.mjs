@@ -7,7 +7,6 @@ const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
   {
-    plugins: { "jsx-a11y": jsxA11y },
     rules: {
       ...jsxA11y.configs.strict.rules,
     },
