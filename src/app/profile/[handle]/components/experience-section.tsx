@@ -1,4 +1,5 @@
 import { getTranslations } from 'next-intl/server';
+import { sanitize } from '@/lib/sanitize';
 
 interface Position {
   companyName: string;
@@ -20,12 +21,12 @@ export async function ExperienceSection({ positions }: { positions: Position[] }
       <div className="mt-4 space-y-4">
         {positions.map((pos, i) => (
           <div key={i} className="border-l-2 border-border pl-4">
-            <h3 className="font-medium">{pos.title}</h3>
-            <p className="text-sm text-muted-foreground">{pos.companyName}</p>
+            <h3 className="font-medium">{sanitize(pos.title)}</h3>
+            <p className="text-sm text-muted-foreground">{sanitize(pos.companyName)}</p>
             <p className="text-xs text-muted-foreground">
               {pos.startDate} - {pos.current ? 'Present' : pos.endDate}
             </p>
-            {pos.description && <p className="mt-1 text-sm">{pos.description}</p>}
+            {pos.description && <p className="mt-1 text-sm">{sanitize(pos.description)}</p>}
           </div>
         ))}
       </div>

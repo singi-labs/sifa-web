@@ -21,30 +21,35 @@ interface ProfileData {
   skills?: ProfileSkill[];
 }
 
-export function buildPersonJsonLd(profile: ProfileData) {
+type Sanitizer = (input: string) => string;
+
+const identity: Sanitizer = (input: string) => input;
+
+export function buildPersonJsonLd(profile: ProfileData, sanitizer: Sanitizer = identity) {
+  const s = sanitizer;
   const currentPosition = profile.positions?.find((p) => p.current);
 
   return {
     '@context': 'https://schema.org',
     '@type': 'Person',
-    name: profile.displayName ?? profile.handle,
-    jobTitle: profile.headline,
-    description: profile.about,
+    name: s(profile.displayName ?? profile.handle),
+    jobTitle: profile.headline ? s(profile.headline) : undefined,
+    description: profile.about ? s(profile.about) : undefined,
     url: `https://sifa.id/profile/${profile.handle}`,
-    ...(currentPosition && {
+    ...(currentPosition?.companyName && {
       worksFor: {
         '@type': 'Organization',
-        name: currentPosition.companyName,
+        name: s(currentPosition.companyName),
       },
     }),
     ...(profile.education?.length && {
       alumniOf: profile.education.map((e) => ({
         '@type': 'EducationalOrganization',
-        name: e.institution,
+        name: e.institution ? s(e.institution) : undefined,
       })),
     }),
     ...(profile.skills?.length && {
-      knowsAbout: profile.skills.map((s) => s.skillName),
+      knowsAbout: profile.skills.map((sk) => (sk.skillName ? s(sk.skillName) : undefined)),
     }),
   };
 }

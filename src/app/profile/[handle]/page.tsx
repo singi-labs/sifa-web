@@ -2,6 +2,7 @@ import { fetchProfile } from '@/lib/api';
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { buildPersonJsonLd } from '@/lib/jsonld';
+import { sanitize } from '@/lib/sanitize';
 import { ProfileHeader } from './components/profile-header';
 import { ExperienceSection } from './components/experience-section';
 import { EducationSection } from './components/education-section';
@@ -36,7 +37,9 @@ export default async function ProfilePage({ params }: { params: Promise<{ handle
     <main className="mx-auto max-w-3xl px-4 py-8">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildPersonJsonLd(profile)) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(buildPersonJsonLd(profile, sanitize)),
+        }}
       />
       <ProfileHeader profile={profile} />
       {profile.did && !profile.isOwnProfile && (
@@ -47,7 +50,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ handle
       {profile.about && (
         <section className="mt-6">
           <h2 className="text-xl font-semibold">{t('about')}</h2>
-          <p className="mt-2 text-muted-foreground">{profile.about}</p>
+          <p className="mt-2 text-muted-foreground">{sanitize(profile.about)}</p>
         </section>
       )}
       <ExperienceSection positions={profile.positions} />

@@ -1,4 +1,5 @@
 import { getTranslations } from 'next-intl/server';
+import { sanitize } from '@/lib/sanitize';
 
 interface Skill {
   skillName: string;
@@ -16,7 +17,7 @@ export async function SkillsSection({ skills }: { skills: Skill[] }) {
       <div className="mt-4 flex flex-wrap gap-2">
         {skills.map((skill, i) => (
           <span key={i} className="rounded-full border border-border px-3 py-1 text-sm">
-            {skill.skillName}
+            {sanitize(skill.skillName)}
           </span>
         ))}
       </div>

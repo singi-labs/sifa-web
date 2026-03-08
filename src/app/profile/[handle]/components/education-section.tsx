@@ -1,4 +1,5 @@
 import { getTranslations } from 'next-intl/server';
+import { sanitize } from '@/lib/sanitize';
 
 interface Education {
   institution: string;
@@ -19,11 +20,11 @@ export async function EducationSection({ education }: { education: Education[] }
       <div className="mt-4 space-y-4">
         {education.map((edu, i) => (
           <div key={i} className="border-l-2 border-border pl-4">
-            <h3 className="font-medium">{edu.institution}</h3>
+            <h3 className="font-medium">{sanitize(edu.institution)}</h3>
             {edu.degree && (
               <p className="text-sm text-muted-foreground">
-                {edu.degree}
-                {edu.fieldOfStudy ? `, ${edu.fieldOfStudy}` : ''}
+                {sanitize(edu.degree)}
+                {edu.fieldOfStudy ? `, ${sanitize(edu.fieldOfStudy)}` : ''}
               </p>
             )}
             {(edu.startDate || edu.endDate) && (

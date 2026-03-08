@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
+import { sanitize } from '@/lib/sanitize';
 
 interface ProfileCardProps {
   handle: string;
@@ -25,8 +26,10 @@ export function ProfileCard({ handle, headline, avatar }: ProfileCardProps) {
             )}
           </div>
           <div className="min-w-0">
-            <p className="truncate font-medium">{handle}</p>
-            {headline && <p className="truncate text-sm text-muted-foreground">{headline}</p>}
+            <p className="truncate font-medium">{sanitize(handle)}</p>
+            {headline && (
+              <p className="truncate text-sm text-muted-foreground">{sanitize(headline)}</p>
+            )}
           </div>
         </CardContent>
       </Card>

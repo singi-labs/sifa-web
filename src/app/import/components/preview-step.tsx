@@ -4,16 +4,11 @@ import { useState } from 'react';
 import type { ImportPreview } from '@/lib/import/orchestrator';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { PositionsTable } from './positions-table';
+import { EducationTable } from './education-table';
+import { SkillsList } from './skills-list';
 
 interface PreviewStepProps {
   preview: ImportPreview;
@@ -92,92 +87,15 @@ export function PreviewStep({ preview, onConfirm, onBack }: PreviewStepProps) {
           </TabsList>
 
           <TabsContent value="positions">
-            {data.positions.length === 0 ? (
-              <p className="py-4 text-sm text-muted-foreground">No positions found in export.</p>
-            ) : (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Title</TableHead>
-                    <TableHead>Company</TableHead>
-                    <TableHead>Dates</TableHead>
-                    <TableHead className="w-16" />
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {data.positions.map((pos, i) => (
-                    <TableRow key={i}>
-                      <TableCell className="font-medium">{pos.title}</TableCell>
-                      <TableCell>{pos.companyName}</TableCell>
-                      <TableCell className="text-muted-foreground">
-                        {pos.startDate ?? '?'} &ndash;{' '}
-                        {pos.current ? 'Present' : (pos.endDate ?? '?')}
-                      </TableCell>
-                      <TableCell>
-                        <Button variant="ghost" size="xs" onClick={() => removePosition(i)}>
-                          Remove
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            )}
+            <PositionsTable positions={data.positions} onRemove={removePosition} />
           </TabsContent>
 
           <TabsContent value="education">
-            {data.education.length === 0 ? (
-              <p className="py-4 text-sm text-muted-foreground">No education found in export.</p>
-            ) : (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Institution</TableHead>
-                    <TableHead>Degree</TableHead>
-                    <TableHead>Dates</TableHead>
-                    <TableHead className="w-16" />
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {data.education.map((edu, i) => (
-                    <TableRow key={i}>
-                      <TableCell className="font-medium">{edu.institution}</TableCell>
-                      <TableCell>{edu.degree ?? ''}</TableCell>
-                      <TableCell className="text-muted-foreground">
-                        {edu.startDate ?? '?'} &ndash; {edu.endDate ?? '?'}
-                      </TableCell>
-                      <TableCell>
-                        <Button variant="ghost" size="xs" onClick={() => removeEducation(i)}>
-                          Remove
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            )}
+            <EducationTable education={data.education} onRemove={removeEducation} />
           </TabsContent>
 
           <TabsContent value="skills">
-            {data.skills.length === 0 ? (
-              <p className="py-4 text-sm text-muted-foreground">No skills found in export.</p>
-            ) : (
-              <div className="flex flex-wrap gap-2 py-4">
-                {data.skills.map((skill, i) => (
-                  <Badge key={i} variant="secondary" className="gap-1.5">
-                    {skill.skillName}
-                    <button
-                      type="button"
-                      className="ms-1 text-muted-foreground hover:text-foreground"
-                      onClick={() => removeSkill(i)}
-                      aria-label={`Remove ${skill.skillName}`}
-                    >
-                      &times;
-                    </button>
-                  </Badge>
-                ))}
-              </div>
-            )}
+            <SkillsList skills={data.skills} onRemove={removeSkill} />
           </TabsContent>
         </Tabs>
 
