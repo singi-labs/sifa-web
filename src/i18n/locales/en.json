@@ -1,0 +1,29 @@
+{
+  "common": {
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "follow": "Follow",
+    "unfollow": "Unfollow",
+    "connections": "{count, plural, one {# connection} other {# connections}}",
+    "followers": "{count, plural, one {# follower} other {# followers}}",
+    "following": "Following {count}"
+  },
+  "profile": {
+    "experience": "Experience",
+    "education": "Education",
+    "skills": "Skills",
+    "about": "About",
+    "editProfile": "Edit profile",
+    "noProfile": "This profile doesn't exist yet."
+  },
+  "import": {
+    "title": "Import from LinkedIn",
+    "uploadStep": "Upload your LinkedIn data export",
+    "previewStep": "Review imported data",
+    "confirmStep": "Confirm and save"
+  },
+  "search": {
+    "placeholder": "Search people by name, skills, or headline",
+    "noResults": "No results found for \"{query}\""
+  }
+}
