@@ -1,3 +1,5 @@
+import { getTranslations } from 'next-intl/server';
+
 interface Education {
   institution: string;
   degree?: string;
@@ -6,12 +8,14 @@ interface Education {
   endDate?: string;
 }
 
-export function EducationSection({ education }: { education: Education[] }) {
+export async function EducationSection({ education }: { education: Education[] }) {
   if (!education?.length) return null;
+
+  const t = await getTranslations('profile');
 
   return (
     <section className="mt-8">
-      <h2 className="text-xl font-semibold">Education</h2>
+      <h2 className="text-xl font-semibold">{t('education')}</h2>
       <div className="mt-4 space-y-4">
         {education.map((edu, i) => (
           <div key={i} className="border-l-2 border-border pl-4">

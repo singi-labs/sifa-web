@@ -2,6 +2,7 @@
 
 import { useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { Input } from '@/components/ui/input';
 
 interface SearchInputProps {
@@ -11,6 +12,7 @@ interface SearchInputProps {
 export function SearchInput({ defaultValue }: SearchInputProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const t = useTranslations('search');
 
   const handleSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
@@ -31,7 +33,7 @@ export function SearchInput({ defaultValue }: SearchInputProps) {
       <Input
         name="q"
         type="search"
-        placeholder="Search people by name, skills, or headline"
+        placeholder={t('placeholder')}
         defaultValue={defaultValue}
         autoFocus
       />

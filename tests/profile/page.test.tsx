@@ -38,63 +38,62 @@ describe('Profile page components', () => {
     expect(screen.getByText('0 followers')).toBeDefined();
   });
 
-  it('ExperienceSection renders positions', () => {
-    render(
-      <ExperienceSection
-        positions={[
-          {
-            companyName: 'Acme',
-            title: 'Engineer',
-            startDate: '2020-01',
-            current: true,
-          },
-        ]}
-      />,
-    );
+  it('ExperienceSection renders positions', async () => {
+    const jsx = await ExperienceSection({
+      positions: [
+        {
+          companyName: 'Acme',
+          title: 'Engineer',
+          startDate: '2020-01',
+          current: true,
+        },
+      ],
+    });
+    render(jsx);
     expect(screen.getByText('Experience')).toBeDefined();
     expect(screen.getByText('Engineer')).toBeDefined();
     expect(screen.getByText('Acme')).toBeDefined();
   });
 
-  it('ExperienceSection returns null when empty', () => {
-    const { container } = render(<ExperienceSection positions={[]} />);
-    expect(container.innerHTML).toBe('');
+  it('ExperienceSection returns null when empty', async () => {
+    const jsx = await ExperienceSection({ positions: [] });
+    expect(jsx).toBeNull();
   });
 
-  it('EducationSection renders education entries', () => {
-    render(
-      <EducationSection
-        education={[
-          {
-            institution: 'MIT',
-            degree: 'BSc',
-            fieldOfStudy: 'Computer Science',
-            startDate: '2016',
-            endDate: '2020',
-          },
-        ]}
-      />,
-    );
+  it('EducationSection renders education entries', async () => {
+    const jsx = await EducationSection({
+      education: [
+        {
+          institution: 'MIT',
+          degree: 'BSc',
+          fieldOfStudy: 'Computer Science',
+          startDate: '2016',
+          endDate: '2020',
+        },
+      ],
+    });
+    render(jsx);
     expect(screen.getByText('Education')).toBeDefined();
     expect(screen.getByText('MIT')).toBeDefined();
     expect(screen.getByText('BSc, Computer Science')).toBeDefined();
   });
 
-  it('EducationSection returns null when empty', () => {
-    const { container } = render(<EducationSection education={[]} />);
-    expect(container.innerHTML).toBe('');
+  it('EducationSection returns null when empty', async () => {
+    const jsx = await EducationSection({ education: [] });
+    expect(jsx).toBeNull();
   });
 
-  it('SkillsSection renders skills as badges', () => {
-    render(
-      <SkillsSection skills={[{ skillName: 'TypeScript' }, { skillName: 'React' }]} />,
-    );
+  it('SkillsSection renders skills as badges', async () => {
+    const jsx = await SkillsSection({
+      skills: [{ skillName: 'TypeScript' }, { skillName: 'React' }],
+    });
+    render(jsx);
     expect(screen.getByText('TypeScript')).toBeDefined();
     expect(screen.getByText('React')).toBeDefined();
   });
 
-  it('SkillsSection returns null when empty', () => {
-    const { container } = render(<SkillsSection skills={[]} />);
-    expect(container.innerHTML).toBe('');
+  it('SkillsSection returns null when empty', async () => {
+    const jsx = await SkillsSection({ skills: [] });
+    expect(jsx).toBeNull();
   });
 });

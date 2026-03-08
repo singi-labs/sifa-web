@@ -2,6 +2,7 @@
 
 import { useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { processLinkedInExport, type ImportPreview } from '@/lib/import/orchestrator';
 import { UploadStep } from './components/upload-step';
 import { PreviewStep } from './components/preview-step';
@@ -11,6 +12,7 @@ type Step = 'upload' | 'preview' | 'confirm';
 
 export default function ImportPage() {
   const router = useRouter();
+  const t = useTranslations('import');
   const [step, setStep] = useState<Step>('upload');
   const [isProcessing, setIsProcessing] = useState(false);
   const [preview, setPreview] = useState<ImportPreview | null>(null);
@@ -40,7 +42,7 @@ export default function ImportPage() {
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-8">
-      <h1 className="mb-2 text-2xl font-bold">Import from LinkedIn</h1>
+      <h1 className="mb-2 text-2xl font-bold">{t('title')}</h1>
       <p className="mb-8 text-muted-foreground">
         Bring your professional history to Sifa. Your data is processed entirely in your browser.
       </p>
@@ -60,9 +62,9 @@ export default function ImportPage() {
               {i + 1}
             </div>
             <span className="hidden text-sm sm:inline">
-              {s === 'upload' && 'Upload'}
-              {s === 'preview' && 'Review'}
-              {s === 'confirm' && 'Confirm'}
+              {s === 'upload' && t('uploadStep')}
+              {s === 'preview' && t('previewStep')}
+              {s === 'confirm' && t('confirmStep')}
             </span>
           </div>
         ))}

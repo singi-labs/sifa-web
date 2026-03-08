@@ -1,3 +1,5 @@
+import { getTranslations } from 'next-intl/server';
+
 interface Position {
   companyName: string;
   title: string;
@@ -7,12 +9,14 @@ interface Position {
   current: boolean;
 }
 
-export function ExperienceSection({ positions }: { positions: Position[] }) {
+export async function ExperienceSection({ positions }: { positions: Position[] }) {
   if (!positions?.length) return null;
+
+  const t = await getTranslations('profile');
 
   return (
     <section className="mt-8">
-      <h2 className="text-xl font-semibold">Experience</h2>
+      <h2 className="text-xl font-semibold">{t('experience')}</h2>
       <div className="mt-4 space-y-4">
         {positions.map((pos, i) => (
           <div key={i} className="border-l-2 border-border pl-4">

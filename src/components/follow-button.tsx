@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useState, useTransition } from 'react';
+import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3100';
@@ -11,6 +12,7 @@ interface FollowButtonProps {
 }
 
 export function FollowButton({ targetDid, isFollowing: initialFollowing }: FollowButtonProps) {
+  const t = useTranslations('common');
   const [following, setFollowing] = useState(initialFollowing);
   const [isPending, startTransition] = useTransition();
 
@@ -51,7 +53,7 @@ export function FollowButton({ targetDid, isFollowing: initialFollowing }: Follo
       disabled={isPending}
       aria-pressed={following}
     >
-      {following ? 'Unfollow' : 'Follow'}
+      {following ? t('unfollow') : t('follow')}
     </Button>
   );
 }

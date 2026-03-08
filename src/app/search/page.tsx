@@ -1,4 +1,5 @@
 import { searchProfiles } from '@/lib/api';
+import { getTranslations } from 'next-intl/server';
 import { ProfileCard } from '@/components/profile-card';
 import { SearchInput } from './search-input';
 
@@ -10,6 +11,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const { q } = await searchParams;
   const query = q?.trim() ?? '';
   const results = query ? await searchProfiles(query) : [];
+  const t = await getTranslations('search');
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-8">
@@ -19,7 +21,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
       <div className="mt-6 space-y-3">
         {query && results.length === 0 && (
           <p className="py-8 text-center text-muted-foreground">
-            No results found for &ldquo;{query}&rdquo;
+            {t('noResults', { query })}
           </p>
         )}
         {results.map((profile) => (

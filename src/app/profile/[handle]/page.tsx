@@ -1,5 +1,6 @@
 import { fetchProfile } from '@/lib/api';
 import { notFound } from 'next/navigation';
+import { getTranslations } from 'next-intl/server';
 import { buildPersonJsonLd } from '@/lib/jsonld';
 import { ProfileHeader } from './components/profile-header';
 import { ExperienceSection } from './components/experience-section';
@@ -29,6 +30,8 @@ export default async function ProfilePage({ params }: { params: Promise<{ handle
   const profile = await fetchProfile(handle);
   if (!profile) notFound();
 
+  const t = await getTranslations('profile');
+
   return (
     <main className="mx-auto max-w-3xl px-4 py-8">
       <script
@@ -43,7 +46,8 @@ export default async function ProfilePage({ params }: { params: Promise<{ handle
       )}
       {profile.about && (
         <section className="mt-6">
-          <p className="text-muted-foreground">{profile.about}</p>
+          <h2 className="text-xl font-semibold">{t('about')}</h2>
+          <p className="mt-2 text-muted-foreground">{profile.about}</p>
         </section>
       )}
       <ExperienceSection positions={profile.positions} />

@@ -22,5 +22,5 @@ export async function searchProfiles(query: string): Promise<ProfileSearchResult
   );
   if (!res.ok) return [];
   const data = await res.json();
-  return data.results ?? data ?? [];
+  return data.profiles ?? [];
 }
