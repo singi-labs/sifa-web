@@ -30,7 +30,7 @@ The frontend for the Sifa professional network. Renders professional profiles, e
 
 | Component     | Technology                                            |
 | ------------- | ----------------------------------------------------- |
-| Framework     | Next.js 16 / React 19 / TypeScript (strict)          |
+| Framework     | Next.js 16 / React 19 / TypeScript (strict)           |
 | Styling       | TailwindCSS                                           |
 | Components    | shadcn/ui (Radix primitives)                          |
 | Colors        | Radix Colors (12-step system) + Flexoki (accent hues) |
@@ -78,8 +78,8 @@ See [CONTRIBUTING.md](https://github.com/singi-labs/.github/blob/main/CONTRIBUTI
 
 ## Related Repositories
 
-| Repository                                                       | Description                              | License          |
-| ---------------------------------------------------------------- | ---------------------------------------- | ---------------- |
+| Repository                                                     | Description                              | License          |
+| -------------------------------------------------------------- | ---------------------------------------- | ---------------- |
 | [sifa-api](https://github.com/singi-labs/sifa-api)             | AppView backend (Fastify, AT Protocol)   | Source-available |
 | [sifa-lexicons](https://github.com/singi-labs/sifa-lexicons)   | AT Protocol professional profile schemas | MIT              |
 | [sifa-deploy](https://github.com/singi-labs/sifa-deploy)       | Docker Compose + Caddy deployment config | Source-available |
