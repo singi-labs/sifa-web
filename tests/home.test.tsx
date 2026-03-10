@@ -3,8 +3,17 @@ import { render, screen } from '@testing-library/react';
 import Home from '@/app/page';
 
 describe('Home', () => {
-  it('renders heading', () => {
-    render(<Home />);
+  it('renders heading and subtitle', async () => {
+    const Page = await Home();
+    render(Page);
     expect(screen.getByText('Sifa')).toBeDefined();
+    expect(screen.getByText(/Professional identity on the AT Protocol/)).toBeDefined();
+  });
+
+  it('renders CTA links', async () => {
+    const Page = await Home();
+    render(Page);
+    expect(screen.getByRole('link', { name: 'Search profiles' })).toBeDefined();
+    expect(screen.getByRole('link', { name: 'Import from LinkedIn' })).toBeDefined();
   });
 });

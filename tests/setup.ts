@@ -48,6 +48,48 @@ const translations: Record<string, Record<string, string>> = {
     placeholder: 'Search people by name, skills, or headline',
     noResults: 'No results found for "{query}"',
   },
+  home: {
+    title: 'Sifa',
+    subtitle: 'Professional identity on the AT Protocol. Own your career narrative.',
+    comingSoon: 'Timeline and feed are coming soon.',
+    searchProfiles: 'Search profiles',
+    importLinkedIn: 'Import from LinkedIn',
+  },
+  activity: {
+    title: 'Activity for {handle}',
+    comingSoon: 'Activity stream is coming soon.',
+  },
+  about: {
+    title: 'About Sifa',
+    mission: 'Sifa is a decentralized professional identity network built on the AT Protocol.',
+    atproto: 'Built on the AT Protocol.',
+    openSource: 'Professional profile lexicons and import tools are open source.',
+    builtBy: 'Built by',
+  },
+  privacy: {
+    title: 'Privacy Policy',
+    lastUpdated: 'Last updated: March 2026',
+    dataStorageTitle: 'Your data, your PDS',
+    dataStorageBody: 'Your professional profile data is stored in your PDS.',
+    importTitle: 'LinkedIn import',
+    importBody: 'ZIP is processed in your browser.',
+    cookiesTitle: 'Cookies and sessions',
+    cookiesBody: 'Session cookies only.',
+    contactTitle: 'Contact',
+    contactBody: 'Contact us at privacy@sifa.id.',
+  },
+  terms: {
+    title: 'Terms of Service',
+    lastUpdated: 'Last updated: March 2026',
+    serviceTitle: 'The service',
+    serviceBody: 'Sifa provides a web interface for professional profiles.',
+    accountsTitle: 'Accounts',
+    accountsBody: 'You sign in with your AT Protocol account.',
+    contentTitle: 'Content',
+    contentBody: 'You are responsible for your profile information.',
+    disclaimerTitle: 'Disclaimer',
+    disclaimerBody: 'Sifa is provided as-is during beta.',
+  },
 };
 
 function createTranslator(namespace?: string) {
