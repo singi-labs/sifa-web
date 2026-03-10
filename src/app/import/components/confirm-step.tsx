@@ -160,7 +160,7 @@ export function ConfirmStep({ preview, onDone }: ConfirmStepProps) {
                 Retry
               </Button>
               <Button variant="ghost" onClick={onDone}>
-                Skip for now
+                Go to profile
               </Button>
             </div>
           </div>
