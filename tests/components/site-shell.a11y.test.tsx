@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { render } from '@testing-library/react';
 import { axe } from 'vitest-axe';
+import { AuthProvider } from '@/components/auth-provider';
 import { SiteHeader } from '@/components/site-header';
 import { SiteFooter } from '@/components/site-footer';
 import { BetaBanner } from '@/components/beta-banner';
@@ -10,7 +11,7 @@ import { MobileNav } from '@/components/mobile-nav';
 
 describe('Site shell accessibility', () => {
   it('SiteHeader has no a11y violations', async () => {
-    const { container } = render(<SiteHeader />);
+    const { container } = render(<AuthProvider><SiteHeader /></AuthProvider>);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });

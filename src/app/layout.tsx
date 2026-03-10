@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
+import { AuthProvider } from '@/components/auth-provider';
 import { SkipLinks } from '@/components/skip-links';
 import { SiteHeader } from '@/components/site-header';
 import { BetaBanner } from '@/components/beta-banner';
@@ -34,13 +35,15 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <SkipLinks />
-          <SiteHeader />
-          <BetaBanner />
-          <main id="main-content" className="min-h-[calc(100vh-3.5rem)]">
-            {children}
-          </main>
-          <SiteFooter />
+          <AuthProvider>
+            <SkipLinks />
+            <SiteHeader />
+            <BetaBanner />
+            <main id="main-content" className="min-h-[calc(100vh-3.5rem)]">
+              {children}
+            </main>
+            <SiteFooter />
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

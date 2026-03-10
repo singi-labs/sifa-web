@@ -1,37 +1,48 @@
 import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import { AuthProvider } from '@/components/auth-provider';
 import { SiteHeader } from '@/components/site-header';
+
+function renderHeader() {
+  return render(
+    <AuthProvider>
+      <SiteHeader />
+    </AuthProvider>,
+  );
+}
 
 describe('SiteHeader', () => {
   it('renders the Sifa logo and name', () => {
-    render(<SiteHeader />);
+    renderHeader();
 
     expect(screen.getByText('Sifa')).toBeDefined();
     expect(screen.getByRole('link', { name: 'Sifa home' })).toBeDefined();
   });
 
   it('renders desktop navigation links', () => {
-    render(<SiteHeader />);
+    renderHeader();
 
     expect(screen.getByRole('navigation', { name: 'Main navigation' })).toBeDefined();
     expect(screen.getByRole('link', { name: 'Search' })).toBeDefined();
     expect(screen.getByRole('link', { name: 'Import' })).toBeDefined();
   });
 
-  it('renders sign in button', () => {
-    render(<SiteHeader />);
+  it('renders sign in when not authenticated', async () => {
+    renderHeader();
 
-    expect(screen.getByRole('link', { name: 'Sign in' })).toBeDefined();
+    await waitFor(() => {
+      expect(screen.getByText('Sign in')).toBeDefined();
+    });
   });
 
   it('renders mobile menu button', () => {
-    render(<SiteHeader />);
+    renderHeader();
 
     expect(screen.getByRole('button', { name: 'Open menu' })).toBeDefined();
   });
 
   it('renders theme toggle', () => {
-    render(<SiteHeader />);
+    renderHeader();
 
     expect(screen.getByRole('button', { name: 'Switch to dark mode' })).toBeDefined();
   });

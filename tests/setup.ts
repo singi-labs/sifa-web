@@ -163,6 +163,13 @@ vi.mock('next-intl/server', () => ({
   getTranslations: async (namespace?: string) => createTranslator(namespace),
 }));
 
+// Mock auth
+vi.mock('@/lib/auth', () => ({
+  getSession: vi.fn().mockResolvedValue(null),
+  getLoginUrl: () => '/api/auth/login',
+  getLogoutUrl: () => '/api/auth/logout',
+}));
+
 // Mock next-themes
 vi.mock('next-themes', () => ({
   useTheme: () => ({
