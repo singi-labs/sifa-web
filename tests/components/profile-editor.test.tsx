@@ -3,7 +3,11 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { SectionEditor, EditableEntry } from '@/components/profile-editor/section-editor';
 import { EditDialog } from '@/components/profile-editor/edit-dialog';
-import { POSITION_FIELDS, positionToValues, valuesToPosition } from '@/components/profile-editor/position-form';
+import {
+  POSITION_FIELDS,
+  positionToValues,
+  valuesToPosition,
+} from '@/components/profile-editor/position-form';
 import { ABOUT_FIELDS, profileToAboutValues } from '@/components/profile-editor/about-form';
 
 describe('SectionEditor', () => {

@@ -11,7 +11,11 @@ import { MobileNav } from '@/components/mobile-nav';
 
 describe('Site shell accessibility', () => {
   it('SiteHeader has no a11y violations', async () => {
-    const { container } = render(<AuthProvider><SiteHeader /></AuthProvider>);
+    const { container } = render(
+      <AuthProvider>
+        <SiteHeader />
+      </AuthProvider>,
+    );
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });

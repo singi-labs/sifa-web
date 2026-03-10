@@ -44,7 +44,20 @@ function formatDate(dateStr: string): string {
   if (dateStr.length === 4) return dateStr;
   const [year, month] = dateStr.split('-');
   if (!month) return year ?? dateStr;
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
   const idx = parseInt(month, 10) - 1;
   return `${months[idx]} ${year}`;
 }

@@ -19,7 +19,9 @@ export function UploadStep({ onFileSelected, isProcessing }: UploadStepProps) {
     (file: File) => {
       setFileError(null);
       if (!file.name.endsWith('.zip')) {
-        setFileError('Please select a ZIP file (.zip). LinkedIn exports are delivered as ZIP archives.');
+        setFileError(
+          'Please select a ZIP file (.zip). LinkedIn exports are delivered as ZIP archives.',
+        );
         return;
       }
       if (file.size > 500 * 1024 * 1024) {
@@ -107,7 +109,9 @@ export function UploadStep({ onFileSelected, isProcessing }: UploadStepProps) {
             <p className="mt-4 text-sm text-muted-foreground">Processing ZIP file...</p>
           )}
           {fileError && (
-            <p className="mt-4 text-sm text-destructive" role="alert">{fileError}</p>
+            <p className="mt-4 text-sm text-destructive" role="alert">
+              {fileError}
+            </p>
           )}
         </div>
         <p className="mt-4 text-xs text-muted-foreground">

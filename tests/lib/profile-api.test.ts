@@ -34,7 +34,9 @@ describe('profile-api', () => {
 
   it('updateRecord sends PUT with rkey', async () => {
     mockFetch.mockResolvedValue({ ok: true });
-    const result = await updateRecord('id.sifa.profile.position', 'abc123', { title: 'Senior Eng' });
+    const result = await updateRecord('id.sifa.profile.position', 'abc123', {
+      title: 'Senior Eng',
+    });
     expect(result.success).toBe(true);
     expect(mockFetch).toHaveBeenCalledWith(
       expect.stringContaining('/api/profile/records/id.sifa.profile.position/abc123'),

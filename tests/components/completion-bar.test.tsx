@@ -46,7 +46,14 @@ describe('CompletionBar', () => {
       about: 'Hi',
       positions: [
         { rkey: '1', companyName: 'Co', title: 'Eng', startDate: '2020', current: true },
-        { rkey: '2', companyName: 'Co2', title: 'Jr', startDate: '2018', endDate: '2020', current: false },
+        {
+          rkey: '2',
+          companyName: 'Co2',
+          title: 'Jr',
+          startDate: '2018',
+          endDate: '2020',
+          current: false,
+        },
       ],
       skills: [
         { rkey: '1', skillName: 'TS' },

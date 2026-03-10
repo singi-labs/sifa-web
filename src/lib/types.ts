@@ -73,7 +73,12 @@ export interface ProfileHonor {
 export interface ProfileLanguage {
   rkey: string;
   language: string;
-  proficiency?: 'elementary' | 'limited_working' | 'professional_working' | 'full_professional' | 'native';
+  proficiency?:
+    | 'elementary'
+    | 'limited_working'
+    | 'professional_working'
+    | 'full_professional'
+    | 'native';
 }
 
 export interface ProfileCourse {

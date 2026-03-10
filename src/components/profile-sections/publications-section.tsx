@@ -33,13 +33,9 @@ export function PublicationsSection({ publications }: PublicationsSectionProps) 
                   pub.title
                 )}
               </p>
-              {pub.publisher && (
-                <p className="text-sm text-muted-foreground">{pub.publisher}</p>
-              )}
+              {pub.publisher && <p className="text-sm text-muted-foreground">{pub.publisher}</p>}
             </div>
-            {pub.date && (
-              <span className="shrink-0 text-xs text-muted-foreground">{pub.date}</span>
-            )}
+            {pub.date && <span className="shrink-0 text-xs text-muted-foreground">{pub.date}</span>}
           </div>
         ))}
       </div>

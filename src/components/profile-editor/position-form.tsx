@@ -8,9 +8,19 @@ export const POSITION_FIELDS: FieldDef[] = [
   { name: 'companyName', label: 'Company', required: true, placeholder: 'Acme Corp' },
   { name: 'startDate', label: 'Start Date', type: 'date', required: true },
   { name: 'endDate', label: 'End Date', type: 'date' },
-  { name: 'current', label: 'Current Position', type: 'checkbox', placeholder: 'I currently work here' },
+  {
+    name: 'current',
+    label: 'Current Position',
+    type: 'checkbox',
+    placeholder: 'I currently work here',
+  },
   { name: 'location', label: 'Location', placeholder: 'Amsterdam, Netherlands' },
-  { name: 'description', label: 'Description', type: 'textarea', placeholder: 'Describe your role...' },
+  {
+    name: 'description',
+    label: 'Description',
+    type: 'textarea',
+    placeholder: 'Describe your role...',
+  },
 ];
 
 export function positionToValues(pos: ProfilePosition): Record<string, string | boolean> {
@@ -25,7 +35,9 @@ export function positionToValues(pos: ProfilePosition): Record<string, string | 
   };
 }
 
-export function valuesToPosition(values: Record<string, string | boolean>): Omit<ProfilePosition, 'rkey'> {
+export function valuesToPosition(
+  values: Record<string, string | boolean>,
+): Omit<ProfilePosition, 'rkey'> {
   return {
     title: values.title as string,
     companyName: values.companyName as string,

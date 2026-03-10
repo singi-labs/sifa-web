@@ -58,7 +58,7 @@ export function ConfirmStep({ preview, onDone }: ConfirmStepProps) {
         throw new Error((body as { message?: string })?.message ?? `Import failed (${res.status})`);
       }
 
-      const data = await res.json().catch(() => ({})) as {
+      const data = (await res.json().catch(() => ({}))) as {
         importedCount?: number;
         failedItems?: string[];
       };
@@ -152,7 +152,9 @@ export function ConfirmStep({ preview, onDone }: ConfirmStepProps) {
         {status === 'error' && (
           <div className="flex flex-col items-center gap-4 py-6">
             <XCircle className="size-12 text-destructive" weight="fill" aria-hidden="true" />
-            <p className="text-sm text-destructive" role="alert">{errorMessage}</p>
+            <p className="text-sm text-destructive" role="alert">
+              {errorMessage}
+            </p>
             <div className="flex gap-2">
               <Button variant="outline" onClick={() => runImport()}>
                 Retry

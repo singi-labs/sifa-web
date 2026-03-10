@@ -30,7 +30,9 @@ describe('TrackRecord', () => {
   it('renders all 6 cards when authenticated', () => {
     render(<TrackRecord isAuthenticated={true} />);
 
-    const cards = screen.getAllByText(/Endorsements|Verified Accounts|Reactions Received|Community Presence|Mutual Connections|Shared History/);
+    const cards = screen.getAllByText(
+      /Endorsements|Verified Accounts|Reactions Received|Community Presence|Mutual Connections|Shared History/,
+    );
     expect(cards).toHaveLength(6);
   });
 });

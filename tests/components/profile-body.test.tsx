@@ -60,9 +60,7 @@ describe('ProfileBody', () => {
       positions: [
         { rkey: '1', companyName: 'Acme', title: 'Engineer', startDate: '2020', current: true },
       ],
-      education: [
-        { rkey: '1', institution: 'MIT', startDate: '2016' },
-      ],
+      education: [{ rkey: '1', institution: 'MIT', startDate: '2016' }],
     };
     render(<ProfileBody profile={profile} />);
     const navs = screen.getAllByRole('navigation', { name: 'Profile sections' });

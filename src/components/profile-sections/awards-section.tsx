@@ -20,9 +20,7 @@ export function AwardsSection({ honors }: AwardsSectionProps) {
           <div key={honor.rkey} className="flex items-start justify-between gap-2">
             <div className="min-w-0">
               <p className="font-medium">{honor.title}</p>
-              {honor.issuer && (
-                <p className="text-sm text-muted-foreground">{honor.issuer}</p>
-              )}
+              {honor.issuer && <p className="text-sm text-muted-foreground">{honor.issuer}</p>}
             </div>
             {honor.date && (
               <span className="shrink-0 text-xs text-muted-foreground">{honor.date}</span>

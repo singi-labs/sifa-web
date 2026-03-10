@@ -17,7 +17,9 @@ interface EditDialogProps {
   title: string;
   fields: FieldDef[];
   initialValues?: Record<string, string | boolean>;
-  onSave: (values: Record<string, string | boolean>) => Promise<{ success: boolean; error?: string }>;
+  onSave: (
+    values: Record<string, string | boolean>,
+  ) => Promise<{ success: boolean; error?: string }>;
   onCancel: () => void;
   saving?: boolean;
 }
@@ -117,7 +119,9 @@ export function EditDialog({
           ))}
 
           {error && (
-            <p className="text-sm text-destructive" role="alert">{error}</p>
+            <p className="text-sm text-destructive" role="alert">
+              {error}
+            </p>
           )}
 
           <div className="flex justify-end gap-2">

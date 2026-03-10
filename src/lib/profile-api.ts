@@ -19,7 +19,10 @@ async function apiRequest(
     });
     if (!res.ok) {
       const data = await res.json().catch(() => ({}));
-      return { success: false, error: (data as { message?: string }).message ?? `Request failed (${res.status})` };
+      return {
+        success: false,
+        error: (data as { message?: string }).message ?? `Request failed (${res.status})`,
+      };
     }
     return { success: true };
   } catch {
@@ -55,10 +58,7 @@ export async function updateRecord(
   );
 }
 
-export async function deleteRecord(
-  collection: string,
-  rkey: string,
-): Promise<WriteResult> {
+export async function deleteRecord(collection: string, rkey: string): Promise<WriteResult> {
   return apiRequest(
     `/api/profile/records/${encodeURIComponent(collection)}/${encodeURIComponent(rkey)}`,
     'DELETE',

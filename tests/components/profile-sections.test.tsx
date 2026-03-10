@@ -23,7 +23,12 @@ describe('TimelineEntry', () => {
   it('expands description on click', async () => {
     const user = userEvent.setup();
     render(
-      <TimelineEntry title="Engineer" subtitle="Acme" dateRange="2020" description="Did great work" />,
+      <TimelineEntry
+        title="Engineer"
+        subtitle="Acme"
+        dateRange="2020"
+        description="Did great work"
+      />,
     );
 
     expect(screen.queryByText('Did great work')).toBeNull();
@@ -37,7 +42,14 @@ describe('CareerSection', () => {
     render(
       <CareerSection
         positions={[
-          { rkey: '1', companyName: 'Acme', title: 'Junior', startDate: '2018-01', endDate: '2020-01', current: false },
+          {
+            rkey: '1',
+            companyName: 'Acme',
+            title: 'Junior',
+            startDate: '2018-01',
+            endDate: '2020-01',
+            current: false,
+          },
           { rkey: '2', companyName: 'Acme', title: 'Senior', startDate: '2020-01', current: true },
         ]}
       />,
@@ -58,7 +70,14 @@ describe('EducationSection', () => {
     render(
       <EducationSection
         education={[
-          { rkey: '1', institution: 'MIT', degree: 'BSc', fieldOfStudy: 'CS', startDate: '2016', endDate: '2020' },
+          {
+            rkey: '1',
+            institution: 'MIT',
+            degree: 'BSc',
+            fieldOfStudy: 'CS',
+            startDate: '2016',
+            endDate: '2020',
+          },
         ]}
       />,
     );
@@ -96,9 +115,7 @@ describe('SkillsSection', () => {
 
   it('shows endorsement count', () => {
     render(
-      <SkillsSection
-        skills={[{ rkey: '1', skillName: 'TypeScript', endorsementCount: 5 }]}
-      />,
+      <SkillsSection skills={[{ rkey: '1', skillName: 'TypeScript', endorsementCount: 5 }]} />,
     );
     expect(screen.getByText('5')).toBeDefined();
   });
@@ -137,9 +154,7 @@ describe('PublicationsSection', () => {
   it('renders publications', () => {
     render(
       <PublicationsSection
-        publications={[
-          { rkey: '1', title: 'My Paper', publisher: 'Nature', date: '2023' },
-        ]}
+        publications={[{ rkey: '1', title: 'My Paper', publisher: 'Nature', date: '2023' }]}
       />,
     );
     expect(screen.getByText('Publications')).toBeDefined();

@@ -33,13 +33,16 @@ export function TimelineEntry({
         </div>
         <div className="flex shrink-0 items-center gap-1">
           <span className="text-xs text-muted-foreground">{dateRange}</span>
-          {hasExpandable && (
-            expanded ? (
+          {hasExpandable &&
+            (expanded ? (
               <CaretUp className="h-4 w-4 text-muted-foreground" weight="bold" aria-hidden="true" />
             ) : (
-              <CaretDown className="h-4 w-4 text-muted-foreground" weight="bold" aria-hidden="true" />
-            )
-          )}
+              <CaretDown
+                className="h-4 w-4 text-muted-foreground"
+                weight="bold"
+                aria-hidden="true"
+              />
+            ))}
         </div>
       </div>
     </>
@@ -65,9 +68,7 @@ export function TimelineEntry({
             {content}
           </button>
         ) : (
-          <div className="flex flex-col gap-0.5">
-            {content}
-          </div>
+          <div className="flex flex-col gap-0.5">{content}</div>
         )}
         {expanded && (description || children) && (
           <div className="mt-2 text-sm text-muted-foreground">

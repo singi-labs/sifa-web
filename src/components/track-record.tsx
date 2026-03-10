@@ -2,14 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-  Medal,
-  ShieldCheck,
-  ThumbsUp,
-  Users,
-  Handshake,
-  Buildings,
-} from '@phosphor-icons/react';
+import { Medal, ShieldCheck, ThumbsUp, Users, Handshake, Buildings } from '@phosphor-icons/react';
 import type { ComponentType } from 'react';
 import type { IconWeight } from '@phosphor-icons/react';
 
@@ -22,12 +15,48 @@ interface TrackRecordCardConfig {
 }
 
 const CARDS: TrackRecordCardConfig[] = [
-  { key: 'endorsements', titleKey: 'endorsementsTitle', descriptionKey: 'endorsementsDesc', icon: Medal, authOnly: false },
-  { key: 'verified', titleKey: 'verifiedTitle', descriptionKey: 'verifiedDesc', icon: ShieldCheck, authOnly: false },
-  { key: 'reactions', titleKey: 'reactionsTitle', descriptionKey: 'reactionsDesc', icon: ThumbsUp, authOnly: false },
-  { key: 'community', titleKey: 'communityTitle', descriptionKey: 'communityDesc', icon: Users, authOnly: false },
-  { key: 'mutual', titleKey: 'mutualTitle', descriptionKey: 'mutualDesc', icon: Handshake, authOnly: true },
-  { key: 'shared', titleKey: 'sharedTitle', descriptionKey: 'sharedDesc', icon: Buildings, authOnly: true },
+  {
+    key: 'endorsements',
+    titleKey: 'endorsementsTitle',
+    descriptionKey: 'endorsementsDesc',
+    icon: Medal,
+    authOnly: false,
+  },
+  {
+    key: 'verified',
+    titleKey: 'verifiedTitle',
+    descriptionKey: 'verifiedDesc',
+    icon: ShieldCheck,
+    authOnly: false,
+  },
+  {
+    key: 'reactions',
+    titleKey: 'reactionsTitle',
+    descriptionKey: 'reactionsDesc',
+    icon: ThumbsUp,
+    authOnly: false,
+  },
+  {
+    key: 'community',
+    titleKey: 'communityTitle',
+    descriptionKey: 'communityDesc',
+    icon: Users,
+    authOnly: false,
+  },
+  {
+    key: 'mutual',
+    titleKey: 'mutualTitle',
+    descriptionKey: 'mutualDesc',
+    icon: Handshake,
+    authOnly: true,
+  },
+  {
+    key: 'shared',
+    titleKey: 'sharedTitle',
+    descriptionKey: 'sharedDesc',
+    icon: Buildings,
+    authOnly: true,
+  },
 ];
 
 interface TrackRecordProps {
@@ -53,7 +82,11 @@ export function TrackRecord({ isAuthenticated, isOwnProfile }: TrackRecordProps)
             <Card key={card.key} className="border-dashed">
               <CardHeader className="pb-2">
                 <div className="flex items-center gap-2">
-                  <Icon className="h-5 w-5 text-muted-foreground" weight="duotone" aria-hidden={true} />
+                  <Icon
+                    className="h-5 w-5 text-muted-foreground"
+                    weight="duotone"
+                    aria-hidden={true}
+                  />
                   <CardTitle className="text-sm font-medium">{t(card.titleKey)}</CardTitle>
                 </div>
               </CardHeader>

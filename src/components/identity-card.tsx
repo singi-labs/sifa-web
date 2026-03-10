@@ -43,13 +43,14 @@ export function IdentityCard({
 }: IdentityCardProps) {
   const t = useTranslations('identityCard');
 
-  const displayTrustStats = trustStats.length > 0
-    ? trustStats.slice(0, 3)
-    : [
-        { key: 'connections', label: t('statConnections'), value: 0 },
-        { key: 'endorsements', label: t('statEndorsements'), value: 0 },
-        { key: 'reactions', label: t('statReactions'), value: 0 },
-      ];
+  const displayTrustStats =
+    trustStats.length > 0
+      ? trustStats.slice(0, 3)
+      : [
+          { key: 'connections', label: t('statConnections'), value: 0 },
+          { key: 'endorsements', label: t('statEndorsements'), value: 0 },
+          { key: 'reactions', label: t('statReactions'), value: 0 },
+        ];
 
   return (
     <section
@@ -68,9 +69,7 @@ export function IdentityCard({
               className="h-16 w-16 rounded-full object-cover"
             />
           ) : (
-            <span aria-hidden="true">
-              {(displayName ?? handle).charAt(0).toUpperCase()}
-            </span>
+            <span aria-hidden="true">{(displayName ?? handle).charAt(0).toUpperCase()}</span>
           )}
         </div>
         <div className="min-w-0">
@@ -90,9 +89,7 @@ export function IdentityCard({
       </div>
 
       {/* Row 3: Headline */}
-      {headline && (
-        <p className="mt-3 text-base text-foreground">{headline}</p>
-      )}
+      {headline && <p className="mt-3 text-base text-foreground">{headline}</p>}
 
       {/* Row 4: Location + Website */}
       {(location || website) && (

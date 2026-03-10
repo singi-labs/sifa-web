@@ -37,9 +37,12 @@ export function ProfileBody({ profile }: ProfileBodyProps) {
     if (profile.education.length > 0) sections.push({ id: 'education', label: t('education') });
     if (profile.skills.length > 0) sections.push({ id: 'skills', label: t('skills') });
     if (profile.projects?.length) sections.push({ id: 'projects', label: t('projects') });
-    if (profile.certifications?.length) sections.push({ id: 'credentials', label: t('credentials') });
-    if (profile.publications?.length) sections.push({ id: 'publications', label: t('publications') });
-    if (profile.volunteering?.length) sections.push({ id: 'volunteering', label: t('volunteering') });
+    if (profile.certifications?.length)
+      sections.push({ id: 'credentials', label: t('credentials') });
+    if (profile.publications?.length)
+      sections.push({ id: 'publications', label: t('publications') });
+    if (profile.volunteering?.length)
+      sections.push({ id: 'volunteering', label: t('volunteering') });
     if (profile.honors?.length) sections.push({ id: 'awards', label: t('awards') });
     if (profile.languages?.length) sections.push({ id: 'languages', label: t('languages') });
 

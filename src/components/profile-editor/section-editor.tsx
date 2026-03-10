@@ -19,12 +19,7 @@ export function SectionEditor({ isOwnProfile, sectionTitle, onAdd, children }: S
       {children}
       {onAdd && (
         <div className="mt-2">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onAdd}
-            aria-label={`Add ${sectionTitle}`}
-          >
+          <Button variant="ghost" size="sm" onClick={onAdd} aria-label={`Add ${sectionTitle}`}>
             <Plus className="mr-1 h-4 w-4" weight="bold" aria-hidden="true" />
             Add
           </Button>

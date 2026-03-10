@@ -33,18 +33,14 @@ describe('IdentityCard', () => {
   });
 
   it('renders location and website', () => {
-    render(
-      <IdentityCard {...baseProps} location="Amsterdam, NL" website="https://alice.dev" />,
-    );
+    render(<IdentityCard {...baseProps} location="Amsterdam, NL" website="https://alice.dev" />);
 
     expect(screen.getByText('Amsterdam, NL')).toBeDefined();
     expect(screen.getByText('alice.dev')).toBeDefined();
   });
 
   it('renders open to pills', () => {
-    render(
-      <IdentityCard {...baseProps} openTo={['Full-time roles', 'Mentoring']} />,
-    );
+    render(<IdentityCard {...baseProps} openTo={['Full-time roles', 'Mentoring']} />);
 
     expect(screen.getByText('Full-time roles')).toBeDefined();
     expect(screen.getByText('Mentoring')).toBeDefined();

@@ -27,13 +27,12 @@ export function AboutSection({ about, isOwnProfile }: AboutSectionProps) {
 
   const sanitized = sanitize(about);
   const isLong = sanitized.length > COLLAPSE_THRESHOLD;
-  const displayText = isLong && !expanded ? sanitized.slice(0, COLLAPSE_THRESHOLD) + '...' : sanitized;
+  const displayText =
+    isLong && !expanded ? sanitized.slice(0, COLLAPSE_THRESHOLD) + '...' : sanitized;
 
   return (
     <section className="mt-6" aria-label={t('about')}>
-      <p className="whitespace-pre-wrap text-base leading-relaxed text-foreground">
-        {displayText}
-      </p>
+      <p className="whitespace-pre-wrap text-base leading-relaxed text-foreground">{displayText}</p>
       {isLong && (
         <button
           type="button"

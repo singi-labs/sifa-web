@@ -42,12 +42,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
         setIsLoading(false);
       }
     });
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
-  return (
-    <AuthContext value={{ session, isLoading, refresh }}>
-      {children}
-    </AuthContext>
-  );
+  return <AuthContext value={{ session, isLoading, refresh }}>{children}</AuthContext>;
 }
