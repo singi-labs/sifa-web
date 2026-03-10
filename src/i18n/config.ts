@@ -10,7 +10,7 @@ export const localeLabels: Record<Locale, string> = {
   en: 'English',
   nl: 'Nederlands',
   de: 'Deutsch',
-  fr: 'Francais',
-  es: 'Espanol',
-  pt: 'Portugues',
+  fr: 'Français',
+  es: 'Español',
+  pt: 'Português',
 };
