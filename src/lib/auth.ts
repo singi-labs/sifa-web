@@ -14,7 +14,9 @@ export async function getSession(): Promise<AuthSession | null> {
       cache: 'no-store',
     });
     if (!res.ok) return null;
-    return res.json();
+    const data = await res.json();
+    if (!data.did || !data.handle) return null;
+    return data;
   } catch {
     return null;
   }

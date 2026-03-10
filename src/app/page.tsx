@@ -15,7 +15,6 @@ export default async function Home() {
         width={64}
         height={64}
         className="mb-6 h-16 w-16 dark:hidden"
-        priority
       />
       <Image
         src="/sifa-logo-dark.svg"
