@@ -11,12 +11,13 @@ import {
   Buildings,
 } from '@phosphor-icons/react';
 import type { ComponentType } from 'react';
+import type { IconWeight } from '@phosphor-icons/react';
 
 interface TrackRecordCardConfig {
   key: string;
   titleKey: string;
   descriptionKey: string;
-  icon: ComponentType<{ className?: string; weight?: string; 'aria-hidden'?: boolean }>;
+  icon: ComponentType<{ className?: string; weight?: IconWeight; 'aria-hidden'?: boolean }>;
   authOnly: boolean;
 }
 

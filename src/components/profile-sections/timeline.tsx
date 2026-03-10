@@ -1,0 +1,95 @@
+'use client';
+
+import { useState } from 'react';
+import { CaretDown, CaretUp } from '@phosphor-icons/react';
+import { cn } from '@/lib/utils';
+
+interface TimelineEntryProps {
+  title: string;
+  subtitle: string;
+  dateRange: string;
+  description?: string;
+  children?: React.ReactNode;
+  isLast?: boolean;
+}
+
+export function TimelineEntry({
+  title,
+  subtitle,
+  dateRange,
+  description,
+  children,
+  isLast,
+}: TimelineEntryProps) {
+  const [expanded, setExpanded] = useState(false);
+  const hasExpandable = Boolean(description || children);
+
+  const content = (
+    <>
+      <div className="flex items-start justify-between gap-2">
+        <div className="min-w-0">
+          <h3 className="font-medium">{title}</h3>
+          <p className="text-sm text-muted-foreground">{subtitle}</p>
+        </div>
+        <div className="flex shrink-0 items-center gap-1">
+          <span className="text-xs text-muted-foreground">{dateRange}</span>
+          {hasExpandable && (
+            expanded ? (
+              <CaretUp className="h-4 w-4 text-muted-foreground" weight="bold" aria-hidden="true" />
+            ) : (
+              <CaretDown className="h-4 w-4 text-muted-foreground" weight="bold" aria-hidden="true" />
+            )
+          )}
+        </div>
+      </div>
+    </>
+  );
+
+  return (
+    <div className="relative flex gap-4">
+      {/* Timeline connector */}
+      <div className="flex flex-col items-center">
+        <div className="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full border-2 border-primary bg-background" />
+        {!isLast && <div className="w-px grow bg-border" />}
+      </div>
+
+      {/* Content */}
+      <div className={cn('min-w-0 pb-6', isLast && 'pb-0')}>
+        {hasExpandable ? (
+          <button
+            type="button"
+            className="flex w-full cursor-pointer flex-col gap-0.5 text-left"
+            onClick={() => setExpanded(!expanded)}
+            aria-expanded={expanded}
+          >
+            {content}
+          </button>
+        ) : (
+          <div className="flex flex-col gap-0.5">
+            {content}
+          </div>
+        )}
+        {expanded && (description || children) && (
+          <div className="mt-2 text-sm text-muted-foreground">
+            {description && <p className="whitespace-pre-wrap">{description}</p>}
+            {children}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+interface TimelineSectionProps {
+  title: string;
+  children: React.ReactNode;
+}
+
+export function TimelineSection({ title, children }: TimelineSectionProps) {
+  return (
+    <section className="mt-8" aria-label={title}>
+      <h2 className="mb-4 text-xl font-semibold">{title}</h2>
+      <div>{children}</div>
+    </section>
+  );
+}

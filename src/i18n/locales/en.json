@@ -56,6 +56,19 @@
     "previewStep": "Review imported data",
     "confirmStep": "Confirm and save"
   },
+  "sections": {
+    "career": "Career",
+    "education": "Education",
+    "educationEntry": "Education",
+    "courses": "Courses",
+    "skills": "Skills",
+    "projects": "Projects",
+    "credentials": "Credentials",
+    "publications": "Publications",
+    "volunteering": "Volunteering",
+    "awards": "Awards",
+    "languages": "Languages"
+  },
   "trackRecord": {
     "title": "Track Record",
     "endorsementsTitle": "Endorsements",
