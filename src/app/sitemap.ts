@@ -27,7 +27,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       const profiles: SitemapProfile[] = await res.json();
       for (const profile of profiles) {
         entries.push({
-          url: `${SITE_URL}/profile/${profile.handle}`,
+          url: `${SITE_URL}/p/${profile.handle}`,
           lastModified: new Date(profile.updatedAt),
           changeFrequency: 'weekly',
           priority: 0.8,

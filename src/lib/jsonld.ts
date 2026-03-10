@@ -35,7 +35,7 @@ export function buildPersonJsonLd(profile: ProfileData, sanitizer: Sanitizer = i
     name: s(profile.displayName ?? profile.handle),
     jobTitle: profile.headline ? s(profile.headline) : undefined,
     description: profile.about ? s(profile.about) : undefined,
-    url: `https://sifa.id/profile/${profile.handle}`,
+    url: `https://sifa.id/p/${profile.handle}`,
     ...(currentPosition?.companyName && {
       worksFor: {
         '@type': 'Organization',

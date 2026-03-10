@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: { params: Promise<{ handle: s
     openGraph: {
       title: `${profile.handle} - Sifa`,
       description: profile.headline ?? '',
-      url: `https://sifa.id/profile/${profile.handle}`,
+      url: `https://sifa.id/p/${profile.handle}`,
       type: 'profile',
     },
   };

@@ -37,7 +37,7 @@ export default function ImportPage() {
   }, []);
 
   const handleDone = useCallback(() => {
-    router.push('/profile/me');
+    router.push('/p/me');
   }, [router]);
 
   return (

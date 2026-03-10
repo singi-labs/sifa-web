@@ -23,7 +23,7 @@ describe('ProfileCard', () => {
   it('links to the profile page', () => {
     render(<ProfileCard handle="alice.bsky.social" />);
     const link = screen.getByRole('link');
-    expect(link.getAttribute('href')).toBe('/profile/alice.bsky.social');
+    expect(link.getAttribute('href')).toBe('/p/alice.bsky.social');
   });
 
   it('shows first letter as avatar placeholder when no avatar', () => {

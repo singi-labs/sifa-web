@@ -10,7 +10,7 @@ interface ProfileCardProps {
 
 export function ProfileCard({ handle, headline, avatar }: ProfileCardProps) {
   return (
-    <Link href={`/profile/${encodeURIComponent(handle)}`} className="block">
+    <Link href={`/p/${encodeURIComponent(handle)}`} className="block">
       <Card className="transition-colors hover:bg-muted/50">
         <CardContent className="flex items-center gap-4 p-4">
           <div className="flex size-12 shrink-0 items-center justify-center rounded-full bg-muted text-lg font-semibold text-muted-foreground">
