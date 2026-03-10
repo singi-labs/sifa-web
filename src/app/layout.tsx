@@ -7,6 +7,7 @@ import { SkipLinks } from '@/components/skip-links';
 import { SiteHeader } from '@/components/site-header';
 import { BetaBanner } from '@/components/beta-banner';
 import { SiteFooter } from '@/components/site-footer';
+import { Toaster } from 'sonner';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -43,6 +44,7 @@ export default async function RootLayout({
                 {children}
               </main>
               <SiteFooter />
+              <Toaster position="bottom-left" closeButton />
             </AuthProvider>
           </ThemeProvider>
         </NextIntlClientProvider>
