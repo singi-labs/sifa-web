@@ -89,7 +89,7 @@ export function mapProfileCsv(row: Record<string, string>): SifaProfile {
 export interface SifaEducation {
   institution: string;
   degree?: string;
-  fieldOfStudy?: string;
+  description?: string;
   startDate?: string;
   endDate?: string;
 }
@@ -98,7 +98,7 @@ export function mapEducationCsv(row: Record<string, string>): SifaEducation {
   return {
     institution: row['School Name']?.trim() ?? '',
     degree: optional(row['Degree Name']),
-    fieldOfStudy: optional(row['Notes']),
+    description: optional(row['Notes']),
     startDate: parseLinkedInDate(row['Start Date']),
     endDate: parseLinkedInDate(row['End Date']),
   };

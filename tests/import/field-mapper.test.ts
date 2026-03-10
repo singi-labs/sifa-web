@@ -80,7 +80,7 @@ describe('LinkedIn field mapper', () => {
       const result = mapEducationCsv(csvRow);
       expect(result.institution).toBe('MIT');
       expect(result.degree).toBe('BSc');
-      expect(result.fieldOfStudy).toBe('Computer Science');
+      expect(result.description).toBe('Computer Science');
     });
   });
 
