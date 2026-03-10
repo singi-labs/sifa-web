@@ -7,9 +7,28 @@ import { FollowButton } from '@/components/follow-button';
 const mockFetch = vi.fn();
 global.fetch = mockFetch;
 
+// Mock auth provider -- default to authenticated
+const mockUseAuth = vi.fn();
+vi.mock('@/components/auth-provider', () => ({
+  useAuth: () => mockUseAuth(),
+}));
+
+// Mock sonner
+const mockToast = vi.fn();
+vi.mock('sonner', () => ({
+  toast: (...args: unknown[]) => mockToast(...args),
+}));
+
 describe('FollowButton', () => {
   beforeEach(() => {
     mockFetch.mockReset();
+    mockToast.mockReset();
+    // Default: authenticated
+    mockUseAuth.mockReturnValue({
+      session: { did: 'did:plc:viewer' },
+      isLoading: false,
+      refresh: vi.fn(),
+    });
   });
 
   it('renders "Follow" when not following', () => {
@@ -73,5 +92,20 @@ describe('FollowButton', () => {
     await vi.waitFor(() => {
       expect(screen.getByRole('button', { name: 'Follow' })).toBeDefined();
     });
+  });
+
+  it('shows a toast instead of calling the API when not authenticated', async () => {
+    mockUseAuth.mockReturnValue({
+      session: null,
+      isLoading: false,
+      refresh: vi.fn(),
+    });
+    const user = userEvent.setup();
+
+    render(<FollowButton targetDid="did:plc:abc123" isFollowing={false} />);
+    await user.click(screen.getByRole('button', { name: 'Follow' }));
+
+    expect(mockFetch).not.toHaveBeenCalled();
+    expect(mockToast).toHaveBeenCalled();
   });
 });

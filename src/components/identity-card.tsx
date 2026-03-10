@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
+import { toast } from 'sonner';
 import { ShareNetwork, PencilSimple, CheckCircle } from '@phosphor-icons/react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -146,7 +147,9 @@ export function IdentityCard({
           variant="ghost"
           size="sm"
           onClick={() => {
-            void navigator.clipboard.writeText(`https://sifa.id/p/${handle}`);
+            void navigator.clipboard.writeText(`https://sifa.id/p/${handle}`).then(() => {
+              toast(t('linkCopied'));
+            });
           }}
           aria-label={t('shareProfile')}
         >

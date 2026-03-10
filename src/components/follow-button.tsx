@@ -3,6 +3,7 @@
 import { useCallback, useState, useTransition } from 'react';
 import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
+import { useRequireAuth } from '@/hooks/use-require-auth';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3100';
 
@@ -15,35 +16,38 @@ export function FollowButton({ targetDid, isFollowing: initialFollowing }: Follo
   const t = useTranslations('common');
   const [following, setFollowing] = useState(initialFollowing);
   const [isPending, startTransition] = useTransition();
+  const { requireAuth } = useRequireAuth();
 
   const toggleFollow = useCallback(() => {
-    // Optimistic update
-    const wasFollowing = following;
-    setFollowing(!wasFollowing);
+    requireAuth(() => {
+      // Optimistic update
+      const wasFollowing = following;
+      setFollowing(!wasFollowing);
 
-    startTransition(async () => {
-      try {
-        if (wasFollowing) {
-          const res = await fetch(`${API_URL}/api/follow/${encodeURIComponent(targetDid)}`, {
-            method: 'DELETE',
-            credentials: 'include',
-          });
-          if (!res.ok) throw new Error('Unfollow failed');
-        } else {
-          const res = await fetch(`${API_URL}/api/follow`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include',
-            body: JSON.stringify({ subjectDid: targetDid }),
-          });
-          if (!res.ok) throw new Error('Follow failed');
+      startTransition(async () => {
+        try {
+          if (wasFollowing) {
+            const res = await fetch(`${API_URL}/api/follow/${encodeURIComponent(targetDid)}`, {
+              method: 'DELETE',
+              credentials: 'include',
+            });
+            if (!res.ok) throw new Error('Unfollow failed');
+          } else {
+            const res = await fetch(`${API_URL}/api/follow`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              credentials: 'include',
+              body: JSON.stringify({ subjectDid: targetDid }),
+            });
+            if (!res.ok) throw new Error('Follow failed');
+          }
+        } catch {
+          // Revert optimistic update on failure
+          setFollowing(wasFollowing);
         }
-      } catch {
-        // Revert optimistic update on failure
-        setFollowing(wasFollowing);
-      }
+      });
     });
-  }, [following, targetDid]);
+  }, [following, targetDid, requireAuth]);
 
   return (
     <Button

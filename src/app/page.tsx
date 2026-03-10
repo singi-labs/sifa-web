@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { getTranslations } from 'next-intl/server';
+import { AuthReturnHandler } from '@/components/auth-return-handler';
 
 export const dynamic = 'force-dynamic';
 
@@ -9,6 +10,7 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col items-center justify-center px-4 py-24 text-center">
+      <AuthReturnHandler />
       <Image
         src="/sifa-logo-light.svg"
         alt=""

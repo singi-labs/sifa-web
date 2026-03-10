@@ -93,6 +93,12 @@
     "viewAll": "View full activity",
     "comingSoon": "Activity overview coming soon. This section will show your ATproto activity across the open social web."
   },
+  "auth": {
+    "loginRequired": "Sign in required",
+    "loginRequiredDescription": "You need to sign in to perform this action.",
+    "loginRequiredImport": "Sign in to import your LinkedIn data.",
+    "signIn": "Sign in"
+  },
   "identityCard": {
     "label": "Professional identity",
     "avatarAlt": "{name}'s profile photo",
@@ -103,7 +109,8 @@
     "trustStatsLabel": "Trust stats",
     "editProfile": "Edit profile",
     "shareProfile": "Share profile",
-    "share": "Share"
+    "share": "Share",
+    "linkCopied": "Profile link copied to clipboard"
   },
   "search": {
     "placeholder": "Search people by name, skills, or headline",
