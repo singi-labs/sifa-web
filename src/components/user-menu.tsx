@@ -5,13 +5,19 @@ import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { SignOut, User, PencilSimple } from '@phosphor-icons/react';
 import { useAuth } from '@/components/auth-provider';
-import { getLoginUrl, getLogoutUrl } from '@/lib/auth';
+import { getLoginUrl, logout } from '@/lib/auth';
 import { useState, useRef, useEffect } from 'react';
 
 export function UserMenu() {
-  const { session, isLoading } = useAuth();
+  const { session, isLoading, refresh } = useAuth();
   const t = useTranslations('common');
   const [open, setOpen] = useState(false);
+
+  const handleLogout = async () => {
+    setOpen(false);
+    await logout();
+    await refresh();
+  };
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -91,14 +97,15 @@ export function UserMenu() {
             <PencilSimple className="h-4 w-4" weight="bold" aria-hidden="true" />
             Edit profile
           </Link>
-          <a
-            href={getLogoutUrl()}
+          <button
+            type="button"
+            onClick={handleLogout}
             className="flex w-full items-center gap-2 px-3 py-2 text-sm text-destructive hover:bg-accent"
             role="menuitem"
           >
             <SignOut className="h-4 w-4" weight="bold" aria-hidden="true" />
             {t('signOut')}
-          </a>
+          </button>
         </div>
       )}
     </div>

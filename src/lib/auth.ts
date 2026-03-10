@@ -23,9 +23,16 @@ export async function getSession(): Promise<AuthSession | null> {
 }
 
 export function getLoginUrl(): string {
-  return `${API_URL}/api/auth/login`;
+  return '/login';
 }
 
-export function getLogoutUrl(): string {
-  return `${API_URL}/api/auth/logout`;
+export function getOAuthLoginUrl(): string {
+  return `${API_URL}/oauth/login`;
+}
+
+export async function logout(): Promise<void> {
+  await fetch(`${API_URL}/oauth/logout`, {
+    method: 'POST',
+    credentials: 'include',
+  });
 }
