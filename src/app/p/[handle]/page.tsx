@@ -1,6 +1,6 @@
 import { fetchProfile } from '@/lib/api';
 import { notFound } from 'next/navigation';
-import { buildPersonJsonLd } from '@/lib/jsonld';
+import { buildPersonJsonLd, buildMetaDescription } from '@/lib/jsonld';
 import { sanitize } from '@/lib/sanitize';
 import { IdentityCard } from '@/components/identity-card';
 import { ProfileBody } from '@/components/profile-body';
@@ -10,14 +10,30 @@ export async function generateMetadata({ params }: { params: Promise<{ handle: s
   const profile = await fetchProfile(handle);
   if (!profile) return { title: 'Profile Not Found' };
 
+  const description = buildMetaDescription(profile);
+  const title = profile.displayName
+    ? `${profile.displayName} (@${profile.handle})`
+    : profile.handle;
+  const canonicalUrl = `https://sifa.id/p/${profile.handle}`;
+
   return {
-    title: `${profile.handle} - Sifa`,
-    description: profile.headline ?? `${profile.handle} on Sifa`,
+    title,
+    description,
+    alternates: { canonical: canonicalUrl },
     openGraph: {
-      title: `${profile.handle} - Sifa`,
-      description: profile.headline ?? '',
-      url: `https://sifa.id/p/${profile.handle}`,
+      title: `${title} | Sifa`,
+      description,
+      url: canonicalUrl,
       type: 'profile',
+      ...(profile.avatar && {
+        images: [{ url: profile.avatar, width: 400, height: 400, alt: `${title}'s profile photo` }],
+      }),
+    },
+    twitter: {
+      card: 'summary',
+      title: `${title} | Sifa`,
+      description,
+      ...(profile.avatar && { images: [profile.avatar] }),
     },
   };
 }
