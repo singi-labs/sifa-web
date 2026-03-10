@@ -4,6 +4,7 @@ import { useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { processLinkedInExport, type ImportPreview } from '@/lib/import/orchestrator';
+import { useAuth } from '@/components/auth-provider';
 import { UploadStep } from './components/upload-step';
 import { PreviewStep } from './components/preview-step';
 import { ConfirmStep } from './components/confirm-step';
@@ -13,6 +14,7 @@ type Step = 'upload' | 'preview' | 'confirm';
 export default function ImportPage() {
   const router = useRouter();
   const t = useTranslations('import');
+  const { session } = useAuth();
   const [step, setStep] = useState<Step>('upload');
   const [isProcessing, setIsProcessing] = useState(false);
   const [preview, setPreview] = useState<ImportPreview | null>(null);
@@ -37,8 +39,8 @@ export default function ImportPage() {
   }, []);
 
   const handleDone = useCallback(() => {
-    router.push('/p/me');
-  }, [router]);
+    router.push(session?.handle ? `/p/${session.handle}` : '/');
+  }, [router, session]);
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-8">
