@@ -28,6 +28,9 @@ jobs:
           tags: ghcr.io/singi-labs/sifa-web:latest,ghcr.io/singi-labs/sifa-web:${{ github.sha }}
 
       - name: Deploy to VPS
+        if: env.VPS_HOST != ''
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.VPS_HOST }}
