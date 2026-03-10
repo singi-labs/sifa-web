@@ -1,5 +1,7 @@
 FROM node:24-alpine AS builder
 WORKDIR /app
+ARG NEXT_PUBLIC_API_URL=https://sifa.id
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 COPY package*.json ./
 RUN npm ci
 COPY . .
