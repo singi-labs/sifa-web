@@ -12,11 +12,20 @@ interface UploadStepProps {
 export function UploadStep({ onFileSelected, isProcessing }: UploadStepProps) {
   const [dragActive, setDragActive] = useState(false);
   const [fileName, setFileName] = useState<string | null>(null);
+  const [fileError, setFileError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleFile = useCallback(
     (file: File) => {
-      if (!file.name.endsWith('.zip')) return;
+      setFileError(null);
+      if (!file.name.endsWith('.zip')) {
+        setFileError('Please select a ZIP file (.zip). LinkedIn exports are delivered as ZIP archives.');
+        return;
+      }
+      if (file.size > 500 * 1024 * 1024) {
+        setFileError('File is too large (max 500 MB). Try re-downloading your LinkedIn export.');
+        return;
+      }
       setFileName(file.name);
       onFileSelected(file);
     },
@@ -96,6 +105,9 @@ export function UploadStep({ onFileSelected, isProcessing }: UploadStepProps) {
           />
           {isProcessing && (
             <p className="mt-4 text-sm text-muted-foreground">Processing ZIP file...</p>
+          )}
+          {fileError && (
+            <p className="mt-4 text-sm text-destructive" role="alert">{fileError}</p>
           )}
         </div>
         <p className="mt-4 text-xs text-muted-foreground">
