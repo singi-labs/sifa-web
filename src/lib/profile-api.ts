@@ -64,3 +64,41 @@ export async function deleteRecord(collection: string, rkey: string): Promise<Wr
     'DELETE',
   );
 }
+
+export async function createExternalAccount(data: {
+  platform: string;
+  url: string;
+  label?: string;
+  feedUrl?: string;
+}): Promise<WriteResult & { rkey?: string; feedUrl?: string | null }> {
+  try {
+    const res = await fetch(`${API_URL}/api/profile/external-accounts`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}));
+      return {
+        success: false,
+        error: (errData as { message?: string }).message ?? `Request failed (${res.status})`,
+      };
+    }
+    const body = (await res.json()) as { rkey: string; feedUrl: string | null };
+    return { success: true, rkey: body.rkey, feedUrl: body.feedUrl };
+  } catch {
+    return { success: false, error: 'Network error' };
+  }
+}
+
+export async function updateExternalAccount(
+  rkey: string,
+  data: { platform: string; url: string; label?: string; feedUrl?: string },
+): Promise<WriteResult> {
+  return apiRequest(`/api/profile/external-accounts/${encodeURIComponent(rkey)}`, 'PUT', data);
+}
+
+export async function deleteExternalAccount(rkey: string): Promise<WriteResult> {
+  return apiRequest(`/api/profile/external-accounts/${encodeURIComponent(rkey)}`, 'DELETE');
+}

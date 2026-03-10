@@ -8,3 +8,4 @@ export { PublicationsSection } from './publications-section';
 export { VolunteeringSection } from './volunteering-section';
 export { AwardsSection } from './awards-section';
 export { LanguagesSection } from './languages-section';
+export { ExternalAccountsSection } from './external-accounts-section';
