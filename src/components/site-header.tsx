@@ -16,12 +16,19 @@ export function SiteHeader() {
         <div className="flex items-center gap-6">
           <Link href="/" className="flex items-center gap-2" aria-label={t('home')}>
             <Image
-              src="/sifa-logo.svg"
+              src="/sifa-logo-light.svg"
               alt=""
               width={28}
               height={28}
-              className="h-7 w-7"
+              className="h-7 w-7 dark:hidden"
               priority
+            />
+            <Image
+              src="/sifa-logo-dark.svg"
+              alt=""
+              width={28}
+              height={28}
+              className="hidden h-7 w-7 dark:block"
             />
             <span className="text-lg font-semibold">Sifa</span>
           </Link>

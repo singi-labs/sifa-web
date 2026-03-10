@@ -10,12 +10,19 @@ export default async function Home() {
   return (
     <div className="flex flex-col items-center justify-center px-4 py-24 text-center">
       <Image
-        src="/sifa-logo.svg"
+        src="/sifa-logo-light.svg"
         alt=""
         width={64}
         height={64}
-        className="mb-6 h-16 w-16"
+        className="mb-6 h-16 w-16 dark:hidden"
         priority
+      />
+      <Image
+        src="/sifa-logo-dark.svg"
+        alt=""
+        width={64}
+        height={64}
+        className="mb-6 hidden h-16 w-16 dark:block"
       />
       <h1 className="text-4xl font-bold tracking-tight">{t('title')}</h1>
       <p className="mt-4 max-w-md text-lg text-muted-foreground">{t('subtitle')}</p>
