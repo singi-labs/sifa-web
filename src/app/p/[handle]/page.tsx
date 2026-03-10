@@ -1,13 +1,9 @@
 import { fetchProfile } from '@/lib/api';
 import { notFound } from 'next/navigation';
-import { getTranslations } from 'next-intl/server';
 import { buildPersonJsonLd } from '@/lib/jsonld';
 import { sanitize } from '@/lib/sanitize';
-import { ProfileHeader } from './components/profile-header';
-import { ExperienceSection } from './components/experience-section';
-import { EducationSection } from './components/education-section';
-import { SkillsSection } from './components/skills-section';
-import { FollowButton } from '@/components/follow-button';
+import { IdentityCard } from '@/components/identity-card';
+import { ProfileBody } from '@/components/profile-body';
 
 export async function generateMetadata({ params }: { params: Promise<{ handle: string }> }) {
   const { handle } = await params;
@@ -31,31 +27,29 @@ export default async function ProfilePage({ params }: { params: Promise<{ handle
   const profile = await fetchProfile(handle);
   if (!profile) notFound();
 
-  const t = await getTranslations('profile');
-
   return (
-    <main className="mx-auto max-w-3xl px-4 py-8">
+    <main className="mx-auto max-w-4xl px-4 py-8">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(buildPersonJsonLd(profile, sanitize)),
         }}
       />
-      <ProfileHeader profile={profile} />
-      {profile.did && !profile.isOwnProfile && (
-        <div className="mt-4">
-          <FollowButton targetDid={profile.did} isFollowing={profile.isFollowing ?? false} />
-        </div>
-      )}
-      {profile.about && (
-        <section className="mt-6">
-          <h2 className="text-xl font-semibold">{t('about')}</h2>
-          <p className="mt-2 text-muted-foreground">{sanitize(profile.about)}</p>
-        </section>
-      )}
-      <ExperienceSection positions={profile.positions} />
-      <EducationSection education={profile.education} />
-      <SkillsSection skills={profile.skills} />
+      <IdentityCard
+        did={profile.did}
+        handle={profile.handle}
+        displayName={profile.displayName}
+        avatar={profile.avatar}
+        headline={profile.headline}
+        location={profile.location}
+        website={profile.website}
+        openTo={profile.openTo}
+        trustStats={profile.trustStats}
+        verifiedAccounts={profile.verifiedAccounts}
+        isOwnProfile={profile.isOwnProfile}
+        isFollowing={profile.isFollowing}
+      />
+      <ProfileBody profile={profile} />
     </main>
   );
 }
