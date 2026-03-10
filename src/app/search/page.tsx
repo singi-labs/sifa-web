@@ -1,5 +1,7 @@
 import { searchProfiles } from '@/lib/api';
 import { getTranslations } from 'next-intl/server';
+
+export const dynamic = 'force-dynamic';
 import { ProfileCard } from '@/components/profile-card';
 import { SearchInput } from './search-input';
 
