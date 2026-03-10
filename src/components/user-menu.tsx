@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
-import { SignOut, User } from '@phosphor-icons/react';
+import { PencilSimple, SignOut, User } from '@phosphor-icons/react';
 import { useAuth } from '@/components/auth-provider';
 import { getLoginUrl, logout } from '@/lib/auth';
 import { useState, useRef, useEffect } from 'react';
@@ -87,6 +87,15 @@ export function UserMenu() {
           >
             <User className="h-4 w-4" weight="bold" aria-hidden="true" />
             View profile
+          </Link>
+          <Link
+            href={`/p/${session.handle}/edit`}
+            className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-accent"
+            role="menuitem"
+            onClick={() => setOpen(false)}
+          >
+            <PencilSimple className="h-4 w-4" weight="bold" aria-hidden="true" />
+            {t('editProfile')}
           </Link>
           <button
             type="button"

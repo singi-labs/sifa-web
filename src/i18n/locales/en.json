@@ -26,7 +26,8 @@
     "closeMenu": "Close menu",
     "errorTitle": "Something went wrong",
     "errorDescription": "An unexpected error occurred. Please try again.",
-    "tryAgain": "Try again"
+    "tryAgain": "Try again",
+    "editProfile": "Edit profile"
   },
   "home": {
     "title": "Sifa",
