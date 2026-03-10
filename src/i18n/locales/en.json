@@ -53,6 +53,18 @@
     "previewStep": "Review imported data",
     "confirmStep": "Confirm and save"
   },
+  "identityCard": {
+    "label": "Professional identity",
+    "avatarAlt": "{name}'s profile photo",
+    "verified": "Verified",
+    "statConnections": "Connections",
+    "statEndorsements": "Endorsements",
+    "statReactions": "Reactions",
+    "trustStatsLabel": "Trust stats",
+    "editProfile": "Edit profile",
+    "shareProfile": "Share profile",
+    "share": "Share"
+  },
   "search": {
     "placeholder": "Search people by name, skills, or headline",
     "noResults": "No results found for \"{query}\""

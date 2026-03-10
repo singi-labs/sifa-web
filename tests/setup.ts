@@ -48,6 +48,18 @@ const translations: Record<string, Record<string, string>> = {
     placeholder: 'Search people by name, skills, or headline',
     noResults: 'No results found for "{query}"',
   },
+  identityCard: {
+    label: 'Professional identity',
+    avatarAlt: "{name}'s profile photo",
+    verified: 'Verified',
+    statConnections: 'Connections',
+    statEndorsements: 'Endorsements',
+    statReactions: 'Reactions',
+    trustStatsLabel: 'Trust stats',
+    editProfile: 'Edit profile',
+    shareProfile: 'Share profile',
+    share: 'Share',
+  },
   home: {
     title: 'Sifa',
     subtitle: 'Professional identity on the AT Protocol. Own your career narrative.',
