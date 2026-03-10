@@ -61,4 +61,26 @@ describe('Import orchestrator', () => {
     expect(preview.education).toHaveLength(0);
     expect(preview.skills).toHaveLength(0);
   });
+
+  it('filters out rows with missing required fields', () => {
+    const csvFiles = new Map<string, string>();
+    csvFiles.set(
+      'Positions.csv',
+      'Company Name,Title,Started On\nAcme,Engineer,Jan 2020\n,,Mar 2021\n,Designer,Jun 2022',
+    );
+    csvFiles.set(
+      'Education.csv',
+      'School Name,Degree Name,Start Date,End Date\nMIT,BSc,2015,2019\n,,2001,2002',
+    );
+    csvFiles.set('Skills.csv', 'Name\nTypeScript\n');
+
+    const preview = processLinkedInCsvFiles(csvFiles);
+
+    expect(preview.positions).toHaveLength(1);
+    expect(preview.positions[0]?.companyName).toBe('Acme');
+    expect(preview.education).toHaveLength(1);
+    expect(preview.education[0]?.institution).toBe('MIT');
+    expect(preview.skills).toHaveLength(1);
+    expect(preview.skills[0]?.skillName).toBe('TypeScript');
+  });
 });

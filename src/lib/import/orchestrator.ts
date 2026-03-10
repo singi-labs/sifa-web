@@ -40,17 +40,23 @@ export function processLinkedInCsvFiles(csvFiles: Map<string, string>): ImportPr
 
   const positionsCsv = csvFiles.get('Positions.csv');
   if (positionsCsv) {
-    preview.positions = parseCsv(positionsCsv).map(mapPositionsCsv);
+    preview.positions = parseCsv(positionsCsv)
+      .map(mapPositionsCsv)
+      .filter((p) => p.companyName && p.title);
   }
 
   const educationCsv = csvFiles.get('Education.csv');
   if (educationCsv) {
-    preview.education = parseCsv(educationCsv).map(mapEducationCsv);
+    preview.education = parseCsv(educationCsv)
+      .map(mapEducationCsv)
+      .filter((e) => e.institution);
   }
 
   const skillsCsv = csvFiles.get('Skills.csv');
   if (skillsCsv) {
-    preview.skills = parseCsv(skillsCsv).map(mapSkillsCsv);
+    preview.skills = parseCsv(skillsCsv)
+      .map(mapSkillsCsv)
+      .filter((s) => s.skillName);
   }
 
   return preview;
