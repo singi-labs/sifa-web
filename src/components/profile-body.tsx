@@ -3,9 +3,11 @@
 import { useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import { SectionNav } from '@/components/section-nav';
+import { CompletionBar } from '@/components/completion-bar';
 import { AboutSection } from '@/components/about-section';
 import { ActivityOverview } from '@/components/activity-overview';
 import { TrackRecord } from '@/components/track-record';
+import { TrustStatsHints } from '@/components/trust-stats-hints';
 import {
   CareerSection,
   EducationSection,
@@ -46,6 +48,9 @@ export function ProfileBody({ profile }: ProfileBodyProps) {
 
   const content = (
     <div className="min-w-0 flex-1">
+      <CompletionBar profile={profile} />
+      <TrustStatsHints trustStats={profile.trustStats} isOwnProfile={profile.isOwnProfile} />
+
       {profile.about ? (
         <div id="about" className="scroll-mt-20">
           <AboutSection about={profile.about} isOwnProfile={profile.isOwnProfile} />
