@@ -4,8 +4,8 @@ import { locales, defaultLocale } from '@/i18n/config';
 export default createMiddleware({
   locales,
   defaultLocale,
-  // Don't prefix the URL with the default locale (e.g., /profile instead of /en/profile)
-  localePrefix: 'as-needed',
+  // Pages live at app/ root (no [locale] segment), so never prefix URLs
+  localePrefix: 'never',
 });
 
 export const config = {
