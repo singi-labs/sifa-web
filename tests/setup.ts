@@ -37,6 +37,9 @@ const translations: Record<string, Record<string, string>> = {
     about: 'About',
     editProfile: 'Edit profile',
     noProfile: "This profile doesn't exist yet.",
+    addAbout: 'Add a professional summary',
+    readMore: 'Read more',
+    readLess: 'Read less',
   },
   import: {
     title: 'Import from LinkedIn',
@@ -47,6 +50,26 @@ const translations: Record<string, Record<string, string>> = {
   search: {
     placeholder: 'Search people by name, skills, or headline',
     noResults: 'No results found for "{query}"',
+  },
+  trackRecord: {
+    title: 'Track Record',
+    endorsementsTitle: 'Endorsements',
+    endorsementsDesc: 'Skills endorsed by other professionals.',
+    verifiedTitle: 'Verified Accounts',
+    verifiedDesc: 'Verified platform accounts.',
+    reactionsTitle: 'Reactions Received',
+    reactionsDesc: 'Reactions on your posts.',
+    communityTitle: 'Community Presence',
+    communityDesc: 'Activity in communities.',
+    mutualTitle: 'Mutual Connections',
+    mutualDesc: 'Connections you share.',
+    sharedTitle: 'Shared History',
+    sharedDesc: 'Common employers or education.',
+  },
+  activityOverview: {
+    title: 'Activity',
+    viewAll: 'View full activity',
+    comingSoon: 'Activity overview coming soon.',
   },
   identityCard: {
     label: 'Professional identity',

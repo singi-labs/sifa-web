@@ -41,7 +41,10 @@
     "skills": "Skills",
     "about": "About",
     "editProfile": "Edit profile",
-    "noProfile": "This profile doesn't exist yet."
+    "noProfile": "This profile doesn't exist yet.",
+    "addAbout": "Add a professional summary",
+    "readMore": "Read more",
+    "readLess": "Read less"
   },
   "activity": {
     "title": "Activity for {handle}",
@@ -52,6 +55,26 @@
     "uploadStep": "Upload your LinkedIn data export",
     "previewStep": "Review imported data",
     "confirmStep": "Confirm and save"
+  },
+  "trackRecord": {
+    "title": "Track Record",
+    "endorsementsTitle": "Endorsements",
+    "endorsementsDesc": "Skills endorsed by other professionals on Sifa.",
+    "verifiedTitle": "Verified Accounts",
+    "verifiedDesc": "Cryptographically verified platform accounts via Keytrace.",
+    "reactionsTitle": "Reactions Received",
+    "reactionsDesc": "Reactions on your posts across AT Protocol apps.",
+    "communityTitle": "Community Presence",
+    "communityDesc": "Activity and contributions in Barazo communities.",
+    "mutualTitle": "Mutual Connections",
+    "mutualDesc": "Connections you share with this person.",
+    "sharedTitle": "Shared History",
+    "sharedDesc": "Employers, education, or projects you have in common."
+  },
+  "activityOverview": {
+    "title": "Activity",
+    "viewAll": "View full activity",
+    "comingSoon": "Activity overview coming soon. This section will show your ATproto activity across the open social web."
   },
   "identityCard": {
     "label": "Professional identity",
