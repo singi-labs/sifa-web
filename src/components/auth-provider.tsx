@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from 'react';
 import { getSession, type AuthSession } from '@/lib/auth';
 
 interface AuthContextValue {
@@ -27,15 +27,22 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [session, setSession] = useState<AuthSession | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const refresh = async () => {
+  const refresh = useCallback(async () => {
     setIsLoading(true);
     const s = await getSession();
     setSession(s);
     setIsLoading(false);
-  };
+  }, []);
 
   useEffect(() => {
-    refresh();
+    let cancelled = false;
+    getSession().then((s) => {
+      if (!cancelled) {
+        setSession(s);
+        setIsLoading(false);
+      }
+    });
+    return () => { cancelled = true; };
   }, []);
 
   return (

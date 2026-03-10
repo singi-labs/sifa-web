@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { Info, X } from '@phosphor-icons/react';
-import { useTranslations } from 'next-intl';
 import type { TrustStat } from '@/lib/types';
 
 interface TrustStatsHintsProps {

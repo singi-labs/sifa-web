@@ -6,7 +6,6 @@ import { useTranslations } from 'next-intl';
 import { SignOut, User, PencilSimple } from '@phosphor-icons/react';
 import { useAuth } from '@/components/auth-provider';
 import { getLoginUrl, getLogoutUrl } from '@/lib/auth';
-import { Button } from '@/components/ui/button';
 import { useState, useRef, useEffect } from 'react';
 
 export function UserMenu() {
