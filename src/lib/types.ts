@@ -100,6 +100,25 @@ export interface VerifiedAccount {
   url?: string;
 }
 
+export interface ExternalAccount {
+  rkey: string;
+  platform: string;
+  url: string;
+  label?: string;
+  feedUrl?: string;
+  verifiable: boolean;
+  verified: boolean;
+  verifiedVia?: string | null;
+}
+
+export interface FeedItem {
+  title: string;
+  excerpt: string;
+  url: string;
+  timestamp: string;
+  source: string;
+}
+
 export interface Profile {
   did: string;
   handle: string;
@@ -135,4 +154,5 @@ export interface Profile {
   honors?: ProfileHonor[];
   languages?: ProfileLanguage[];
   courses?: ProfileCourse[];
+  externalAccounts?: ExternalAccount[];
 }

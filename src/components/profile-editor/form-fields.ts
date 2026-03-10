@@ -67,3 +67,15 @@ export const COURSE_FIELDS: FieldDef[] = [
   { name: 'institution', label: 'Institution' },
   { name: 'number', label: 'Course Number' },
 ];
+
+export const EXTERNAL_ACCOUNT_FIELDS: FieldDef[] = [
+  {
+    name: 'platform',
+    label: 'Platform',
+    required: true,
+    placeholder: 'github, website, fediverse, rss...',
+  },
+  { name: 'url', label: 'URL', type: 'url', required: true },
+  { name: 'label', label: 'Label', placeholder: 'My Blog, Photography...' },
+  { name: 'feedUrl', label: 'Feed URL (auto-detected)', type: 'url' },
+];

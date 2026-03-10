@@ -16,10 +16,17 @@ export async function generateMetadata({ params }: { params: Promise<{ handle: s
     : profile.handle;
   const canonicalUrl = `https://sifa.id/p/${profile.handle}`;
 
+  const oembedUrl = `https://sifa.id/api/oembed?url=${encodeURIComponent(canonicalUrl)}&format=json`;
+
   return {
     title,
     description,
-    alternates: { canonical: canonicalUrl },
+    alternates: {
+      canonical: canonicalUrl,
+      types: {
+        'application/json+oembed': oembedUrl,
+      },
+    },
     openGraph: {
       title: `${title} | Sifa`,
       description,

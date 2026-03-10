@@ -18,6 +18,7 @@ import {
   VolunteeringSection,
   AwardsSection,
   LanguagesSection,
+  ExternalAccountsSection,
 } from '@/components/profile-sections';
 import type { Profile } from '@/lib/types';
 
@@ -45,6 +46,8 @@ export function ProfileBody({ profile }: ProfileBodyProps) {
       sections.push({ id: 'volunteering', label: t('volunteering') });
     if (profile.honors?.length) sections.push({ id: 'awards', label: t('awards') });
     if (profile.languages?.length) sections.push({ id: 'languages', label: t('languages') });
+    if (profile.externalAccounts?.length)
+      sections.push({ id: 'other-profiles', label: t('otherProfiles') });
 
     return sections;
   }, [profile, t, tProfile]);
@@ -91,6 +94,9 @@ export function ProfileBody({ profile }: ProfileBodyProps) {
       </div>
       <div id="languages" className="scroll-mt-20">
         <LanguagesSection languages={profile.languages ?? []} />
+      </div>
+      <div id="other-profiles" className="scroll-mt-20">
+        <ExternalAccountsSection accounts={profile.externalAccounts ?? []} />
       </div>
     </div>
   );

@@ -67,7 +67,10 @@
     "publications": "Publications",
     "volunteering": "Volunteering",
     "awards": "Awards",
-    "languages": "Languages"
+    "languages": "Languages",
+    "otherProfiles": "Other Profiles",
+    "verified": "Verified",
+    "unverified": "Unverified"
   },
   "trackRecord": {
     "title": "Track Record",

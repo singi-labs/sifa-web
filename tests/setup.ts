@@ -63,6 +63,9 @@ const translations: Record<string, Record<string, string>> = {
     volunteering: 'Volunteering',
     awards: 'Awards',
     languages: 'Languages',
+    otherProfiles: 'Other Profiles',
+    verified: 'Verified',
+    unverified: 'Unverified',
   },
   trackRecord: {
     title: 'Track Record',
