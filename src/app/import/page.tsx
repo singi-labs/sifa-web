@@ -11,10 +11,10 @@ import { UploadStep } from './components/upload-step';
 import { PreviewStep } from './components/preview-step';
 import { ConfirmStep } from './components/confirm-step';
 
-export interface ExistingDataCounts {
-  positions: number;
-  education: number;
-  skills: number;
+export interface ExistingProfileData {
+  positions: Array<{ companyName: string; title: string; startDate?: string }>;
+  education: Array<{ institution: string; degree?: string | null }>;
+  skills: Array<{ skillName: string }>;
 }
 
 type Step = 'upload' | 'preview' | 'confirm';
@@ -37,19 +37,17 @@ export default function ImportPage() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [preview, setPreview] = useState<ImportPreview | null>(null);
   const [confirmedPreview, setConfirmedPreview] = useState<ImportPreview | null>(null);
-  const [existingData, setExistingData] = useState<ExistingDataCounts | null>(null);
+  const [existingData, setExistingData] = useState<ExistingProfileData | null>(null);
 
   useEffect(() => {
     if (!session?.did) return;
     fetchProfile(session.did).then((profile) => {
       if (!profile) return;
-      const counts: ExistingDataCounts = {
-        positions: profile.positions?.length ?? 0,
-        education: profile.education?.length ?? 0,
-        skills: profile.skills?.length ?? 0,
-      };
-      if (counts.positions > 0 || counts.education > 0 || counts.skills > 0) {
-        setExistingData(counts);
+      const pos = (profile.positions as ExistingProfileData['positions']) ?? [];
+      const edu = (profile.education as ExistingProfileData['education']) ?? [];
+      const sk = (profile.skills as ExistingProfileData['skills']) ?? [];
+      if (pos.length > 0 || edu.length > 0 || sk.length > 0) {
+        setExistingData({ positions: pos, education: edu, skills: sk });
       }
     });
   }, [session?.did]);
