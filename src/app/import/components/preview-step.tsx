@@ -89,8 +89,21 @@ export function PreviewStep({ preview, existingData, onConfirm, onBack }: Previe
     return dupes;
   }, [data.skills, existingData]);
 
+  const extendedCount =
+    data.certifications.length +
+    data.projects.length +
+    data.volunteering.length +
+    data.publications.length +
+    data.courses.length +
+    data.honors.length +
+    data.languages.length;
+
   const totalItems =
-    (data.profile ? 1 : 0) + data.positions.length + data.education.length + data.skills.length;
+    (data.profile ? 1 : 0) +
+    data.positions.length +
+    data.education.length +
+    data.skills.length +
+    extendedCount;
   const totalDuplicates = duplicatePositions.size + duplicateEducation.size + duplicateSkills.size;
   const newItems = totalItems - totalDuplicates - (data.profile ? 1 : 0);
 
@@ -211,6 +224,35 @@ export function PreviewStep({ preview, existingData, onConfirm, onBack }: Previe
             />
           </TabsContent>
         </Tabs>
+
+        {extendedCount > 0 && (
+          <div className="mt-4 rounded-lg border p-4">
+            <h3 className="text-sm font-semibold">Also importing</h3>
+            <div className="mt-2 flex flex-wrap gap-2">
+              {data.certifications.length > 0 && (
+                <Badge variant="outline">Certifications ({data.certifications.length})</Badge>
+              )}
+              {data.projects.length > 0 && (
+                <Badge variant="outline">Projects ({data.projects.length})</Badge>
+              )}
+              {data.volunteering.length > 0 && (
+                <Badge variant="outline">Volunteering ({data.volunteering.length})</Badge>
+              )}
+              {data.publications.length > 0 && (
+                <Badge variant="outline">Publications ({data.publications.length})</Badge>
+              )}
+              {data.courses.length > 0 && (
+                <Badge variant="outline">Courses ({data.courses.length})</Badge>
+              )}
+              {data.honors.length > 0 && (
+                <Badge variant="outline">Honors ({data.honors.length})</Badge>
+              )}
+              {data.languages.length > 0 && (
+                <Badge variant="outline">Languages ({data.languages.length})</Badge>
+              )}
+            </div>
+          </div>
+        )}
 
         <div className="mt-6 flex items-center justify-between">
           <Button variant="outline" onClick={onBack}>
