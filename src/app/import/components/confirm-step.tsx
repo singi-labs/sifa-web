@@ -35,25 +35,25 @@ interface ImportResult {
 }
 
 function ImportBreakdown({ counts }: { counts: ImportedCounts }) {
-  const sections = [
-    { label: 'profile', count: counts.profile },
-    { label: 'position', count: counts.positions },
-    { label: 'education', count: counts.education },
-    { label: 'skill', count: counts.skills },
-    { label: 'certification', count: counts.certifications },
-    { label: 'project', count: counts.projects },
-    { label: 'volunteering', count: counts.volunteering },
-    { label: 'publication', count: counts.publications },
-    { label: 'course', count: counts.courses },
-    { label: 'honor', count: counts.honors },
-    { label: 'language', count: counts.languages },
+  const sections: { label: string; plural: string; count: number }[] = [
+    { label: 'profile', plural: 'profiles', count: counts.profile },
+    { label: 'position', plural: 'positions', count: counts.positions },
+    { label: 'education entry', plural: 'education entries', count: counts.education },
+    { label: 'skill', plural: 'skills', count: counts.skills },
+    { label: 'certification', plural: 'certifications', count: counts.certifications },
+    { label: 'project', plural: 'projects', count: counts.projects },
+    { label: 'volunteering entry', plural: 'volunteering entries', count: counts.volunteering },
+    { label: 'publication', plural: 'publications', count: counts.publications },
+    { label: 'course', plural: 'courses', count: counts.courses },
+    { label: 'honor', plural: 'honors', count: counts.honors },
+    { label: 'language', plural: 'languages', count: counts.languages },
   ].filter((s) => s.count > 0);
 
   return (
     <ul className="text-sm text-muted-foreground">
       {sections.map((s) => (
         <li key={s.label}>
-          {s.count} {s.count === 1 ? s.label : `${s.label}s`}
+          {s.count} {s.count === 1 ? s.label : s.plural}
         </li>
       ))}
     </ul>

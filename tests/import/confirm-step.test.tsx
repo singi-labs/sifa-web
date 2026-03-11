@@ -91,7 +91,7 @@ describe('ConfirmStep', () => {
 
     expect(screen.getByText('1 profile')).toBeDefined();
     expect(screen.getByText('1 position')).toBeDefined();
-    expect(screen.getByText('1 education')).toBeDefined();
+    expect(screen.getByText('1 education entry')).toBeDefined();
     expect(screen.getByText('2 skills')).toBeDefined();
   });
 
