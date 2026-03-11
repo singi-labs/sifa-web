@@ -126,6 +126,13 @@ export interface Profile {
   avatar?: string;
   headline?: string;
   about?: string;
+  // Override system
+  hasHeadlineOverride?: boolean;
+  hasAboutOverride?: boolean;
+  source?: {
+    headline?: string;
+    about?: string;
+  };
   location?: string;
   website?: string;
   openTo?: string[];

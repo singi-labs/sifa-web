@@ -19,6 +19,7 @@ interface IdentityCardProps {
   displayName?: string;
   avatar?: string;
   headline?: string;
+  about?: string;
   location?: string;
   website?: string;
   openTo?: string[];
@@ -36,6 +37,7 @@ export function IdentityCard({
   displayName,
   avatar,
   headline,
+  about,
   location,
   website,
   openTo,
@@ -121,8 +123,12 @@ export function IdentityCard({
         </div>
       </div>
 
-      {/* Row 3: Headline */}
-      {headline && <p className="mt-3 text-base text-foreground">{headline}</p>}
+      {/* Row 3: Headline (falls back to truncated about when no headline) */}
+      {(headline || about) && (
+        <p className="mt-3 text-base text-foreground">
+          {headline ?? (about && about.length > 120 ? about.slice(0, 120) + '\u2026' : about)}
+        </p>
+      )}
 
       {/* Row 4: Location + Website */}
       {(location || website) && (
