@@ -5,10 +5,11 @@ import { Badge } from '@/components/ui/badge';
 
 interface SkillsListProps {
   skills: SifaSkill[];
+  duplicateIndices: Set<number>;
   onRemove: (index: number) => void;
 }
 
-export function SkillsList({ skills, onRemove }: SkillsListProps) {
+export function SkillsList({ skills, duplicateIndices, onRemove }: SkillsListProps) {
   if (skills.length === 0) {
     return <p className="py-4 text-sm text-muted-foreground">No skills found in export.</p>;
   }
@@ -16,7 +17,11 @@ export function SkillsList({ skills, onRemove }: SkillsListProps) {
   return (
     <div className="flex flex-wrap gap-2 py-4">
       {skills.map((skill, i) => (
-        <Badge key={i} variant="secondary" className="gap-1.5">
+        <Badge
+          key={i}
+          variant={duplicateIndices.has(i) ? 'outline' : 'secondary'}
+          className="gap-1.5"
+        >
           {skill.skillName}
           <button
             type="button"

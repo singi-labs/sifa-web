@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import type { ImportPreview } from '@/lib/import/orchestrator';
-import type { ExistingDataCounts } from '../page';
+import type { ExistingProfileData } from '../page';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -12,9 +12,13 @@ import { PositionsTable } from './positions-table';
 import { EducationTable } from './education-table';
 import { SkillsList } from './skills-list';
 
+function normalize(s: string | undefined | null): string {
+  return (s ?? '').trim().toLowerCase();
+}
+
 interface PreviewStepProps {
   preview: ImportPreview;
-  existingData: ExistingDataCounts | null;
+  existingData: ExistingProfileData | null;
   onConfirm: (preview: ImportPreview) => void;
   onBack: () => void;
 }
@@ -43,8 +47,52 @@ export function PreviewStep({ preview, existingData, onConfirm, onBack }: Previe
     }));
   };
 
+  const duplicatePositions = useMemo(() => {
+    if (!existingData) return new Set<number>();
+    const keys = new Set(
+      existingData.positions.map(
+        (p) => `${normalize(p.companyName)}|${normalize(p.title)}|${normalize(p.startDate)}`,
+      ),
+    );
+    const dupes = new Set<number>();
+    data.positions.forEach((p, i) => {
+      if (keys.has(`${normalize(p.companyName)}|${normalize(p.title)}|${normalize(p.startDate)}`)) {
+        dupes.add(i);
+      }
+    });
+    return dupes;
+  }, [data.positions, existingData]);
+
+  const duplicateEducation = useMemo(() => {
+    if (!existingData) return new Set<number>();
+    const keys = new Set(
+      existingData.education.map((e) => `${normalize(e.institution)}|${normalize(e.degree)}`),
+    );
+    const dupes = new Set<number>();
+    data.education.forEach((e, i) => {
+      if (keys.has(`${normalize(e.institution)}|${normalize(e.degree)}`)) {
+        dupes.add(i);
+      }
+    });
+    return dupes;
+  }, [data.education, existingData]);
+
+  const duplicateSkills = useMemo(() => {
+    if (!existingData) return new Set<number>();
+    const keys = new Set(existingData.skills.map((s) => normalize(s.skillName)));
+    const dupes = new Set<number>();
+    data.skills.forEach((s, i) => {
+      if (keys.has(normalize(s.skillName))) {
+        dupes.add(i);
+      }
+    });
+    return dupes;
+  }, [data.skills, existingData]);
+
   const totalItems =
     (data.profile ? 1 : 0) + data.positions.length + data.education.length + data.skills.length;
+  const totalDuplicates = duplicatePositions.size + duplicateEducation.size + duplicateSkills.size;
+  const newItems = totalItems - totalDuplicates - (data.profile ? 1 : 0);
 
   return (
     <Card>
@@ -52,7 +100,35 @@ export function PreviewStep({ preview, existingData, onConfirm, onBack }: Previe
         <CardTitle>Review imported data</CardTitle>
       </CardHeader>
       <CardContent>
-        {existingData && (
+        {existingData && totalDuplicates > 0 && (
+          <div
+            className="mb-6 flex gap-3 rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-900 dark:bg-blue-950"
+            role="status"
+          >
+            <Info
+              className="mt-0.5 size-5 shrink-0 text-blue-600 dark:text-blue-400"
+              weight="fill"
+              aria-hidden="true"
+            />
+            <div className="text-sm">
+              <p className="font-medium text-blue-900 dark:text-blue-100">
+                Some items already exist on your profile
+              </p>
+              <p className="mt-1 text-blue-700 dark:text-blue-300">
+                {totalDuplicates} {totalDuplicates === 1 ? 'item matches' : 'items match'} your
+                existing profile data and will be overwritten.{' '}
+                {newItems > 0 && (
+                  <>
+                    {newItems} {newItems === 1 ? 'item is' : 'items are'} new.{' '}
+                  </>
+                )}
+                You can remove items you don&apos;t want to import.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {existingData && totalDuplicates === 0 && (
           <div
             className="mb-6 flex gap-3 rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-900 dark:bg-blue-950"
             role="status"
@@ -67,18 +143,8 @@ export function PreviewStep({ preview, existingData, onConfirm, onBack }: Previe
                 Your profile already has data
               </p>
               <p className="mt-1 text-blue-700 dark:text-blue-300">
-                Importing will replace your existing{' '}
-                {[
-                  existingData.positions > 0 &&
-                    `${existingData.positions} position${existingData.positions !== 1 ? 's' : ''}`,
-                  existingData.education > 0 &&
-                    `${existingData.education} education entr${existingData.education !== 1 ? 'ies' : 'y'}`,
-                  existingData.skills > 0 &&
-                    `${existingData.skills} skill${existingData.skills !== 1 ? 's' : ''}`,
-                ]
-                  .filter(Boolean)
-                  .join(', ')}{' '}
-                with the data below. Your profile headline and summary will also be updated.
+                Importing will replace all existing positions, education, and skills with the data
+                below. Your profile headline and summary will also be updated.
               </p>
             </div>
           </div>
@@ -122,15 +188,27 @@ export function PreviewStep({ preview, existingData, onConfirm, onBack }: Previe
           </TabsList>
 
           <TabsContent value="positions">
-            <PositionsTable positions={data.positions} onRemove={removePosition} />
+            <PositionsTable
+              positions={data.positions}
+              duplicateIndices={duplicatePositions}
+              onRemove={removePosition}
+            />
           </TabsContent>
 
           <TabsContent value="education">
-            <EducationTable education={data.education} onRemove={removeEducation} />
+            <EducationTable
+              education={data.education}
+              duplicateIndices={duplicateEducation}
+              onRemove={removeEducation}
+            />
           </TabsContent>
 
           <TabsContent value="skills">
-            <SkillsList skills={data.skills} onRemove={removeSkill} />
+            <SkillsList
+              skills={data.skills}
+              duplicateIndices={duplicateSkills}
+              onRemove={removeSkill}
+            />
           </TabsContent>
         </Tabs>
 
