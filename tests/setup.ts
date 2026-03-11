@@ -21,10 +21,10 @@ const translations: Record<string, Record<string, string>> = {
     switchToLight: 'Switch to light mode',
     switchToDark: 'Switch to dark mode',
     skipToContent: 'Skip to main content',
-    betaBanner:
-      'Sifa is pre-alpha: basically our live dev server. Your profile data is safe in your AT Protocol account, but features and preferences may change before launch.',
-    betaBannerReportCta: 'Help build a better networking ecosystem.',
-    betaBannerReportLink: 'Report on GitHub',
+    betaBanner: 'Sifa is pre-alpha, and this is basically our live dev server.',
+    betaBannerSub:
+      'Your profile data is safe in your AT Protocol account, but features and preferences may change before launch. Help build a better networking ecosystem.',
+    betaBannerReportLink: 'Report any issues on GitHub',
     dismissBanner: 'Dismiss banner',
     openMenu: 'Open menu',
     closeMenu: 'Close menu',

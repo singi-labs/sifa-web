@@ -30,7 +30,7 @@ export function BetaBanner() {
           </button>
         </div>
         <p className="mt-1">
-          {t('betaBannerReportCta')}{' '}
+          {t('betaBannerSub')}{' '}
           <a
             href="https://github.com/singi-labs/sifa-workspace/issues"
             target="_blank"
