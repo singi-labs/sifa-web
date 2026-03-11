@@ -139,6 +139,7 @@ export interface Profile {
   claimed: boolean;
   isOwnProfile?: boolean;
   isFollowing?: boolean;
+  createdAt?: string;
 
   // Trust stats (externally validated, top 3 dynamic)
   trustStats?: TrustStat[];

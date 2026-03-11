@@ -7,6 +7,8 @@ import type { TrustStat } from '@/lib/types';
 interface TrustStatsHintsProps {
   trustStats?: TrustStat[];
   isOwnProfile?: boolean;
+  did?: string;
+  createdAt?: string;
 }
 
 const STAT_HINTS: Record<string, string> = {
@@ -15,10 +17,42 @@ const STAT_HINTS: Record<string, string> = {
   reactions: 'Share professional insights to earn reactions from others.',
 };
 
-export function TrustStatsHints({ trustStats = [], isOwnProfile }: TrustStatsHintsProps) {
-  const [dismissed, setDismissed] = useState(false);
+const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
+
+function getStorageKey(did: string): string {
+  return `sifa:hints-dismissed:${did}`;
+}
+
+function isPersistedDismissed(did?: string): boolean {
+  if (!did) return false;
+  try {
+    return localStorage.getItem(getStorageKey(did)) === 'true';
+  } catch {
+    return false;
+  }
+}
+
+function persistDismissal(did?: string): void {
+  if (!did) return;
+  try {
+    localStorage.setItem(getStorageKey(did), 'true');
+  } catch {
+    // localStorage unavailable (SSR, private browsing)
+  }
+}
+
+function isAccountOlderThan30Days(createdAt?: string): boolean {
+  if (!createdAt) return false;
+  const created = new Date(createdAt).getTime();
+  return Date.now() - created > THIRTY_DAYS_MS;
+}
+
+export function TrustStatsHints({ trustStats = [], isOwnProfile, did, createdAt }: TrustStatsHintsProps) {
+  const [dismissed, setDismissed] = useState(() => isPersistedDismissed(did));
 
   if (!isOwnProfile || dismissed) return null;
+
+  if (isAccountOlderThan30Days(createdAt)) return null;
 
   // Hide if all stats are above 0 (user has activity)
   const allAboveZero = trustStats.length > 0 && trustStats.every((s) => s.value > 0);
@@ -31,6 +65,11 @@ export function TrustStatsHints({ trustStats = [], isOwnProfile }: TrustStatsHin
 
   if (hintsToShow.length === 0) return null;
 
+  const handleDismiss = () => {
+    setDismissed(true);
+    persistDismissal(did);
+  };
+
   return (
     <div className="mt-4 rounded-lg border border-dashed border-primary/30 bg-primary/5 p-4">
       <div className="mb-2 flex items-center justify-between">
@@ -40,7 +79,7 @@ export function TrustStatsHints({ trustStats = [], isOwnProfile }: TrustStatsHin
         </div>
         <button
           type="button"
-          onClick={() => setDismissed(true)}
+          onClick={handleDismiss}
           className="rounded p-0.5 text-muted-foreground hover:text-foreground"
           aria-label="Dismiss hints"
         >
