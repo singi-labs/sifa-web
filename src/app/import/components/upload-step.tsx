@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Upload } from '@phosphor-icons/react';
@@ -18,57 +18,46 @@ export function UploadStep({ onFileSelected, isProcessing, extractionError }: Up
   const [fileError, setFileError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleFile = useCallback(
-    (file: File) => {
-      setFileError(null);
-      if (!file.name.endsWith('.zip')) {
-        setFileError(t('fileTypeError'));
-        return;
-      }
-      if (file.size > 500 * 1024 * 1024) {
-        setFileError(t('fileSizeError'));
-        return;
-      }
-      setFileName(file.name);
-      onFileSelected(file);
-    },
-    [onFileSelected],
-  );
+  const handleFile = (file: File) => {
+    setFileError(null);
+    if (!file.name.endsWith('.zip')) {
+      setFileError(t('fileTypeError'));
+      return;
+    }
+    if (file.size > 500 * 1024 * 1024) {
+      setFileError(t('fileSizeError'));
+      return;
+    }
+    setFileName(file.name);
+    onFileSelected(file);
+  };
 
-  const handleDrop = useCallback(
-    (e: React.DragEvent) => {
-      e.preventDefault();
-      setDragActive(false);
-      const file = e.dataTransfer.files[0];
-      if (file) handleFile(file);
-    },
-    [handleFile],
-  );
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragActive(false);
+    const file = e.dataTransfer.files[0];
+    if (file) handleFile(file);
+  };
 
-  const handleDragOver = useCallback((e: React.DragEvent) => {
+  const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
     setDragActive(true);
-  }, []);
+  };
 
-  const handleDragLeave = useCallback(() => {
+  const handleDragLeave = () => {
     setDragActive(false);
-  }, []);
+  };
 
-  const handleInputChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files?.[0];
-      if (file) handleFile(file);
-    },
-    [handleFile],
-  );
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) handleFile(file);
+  };
 
   return (
     <Card>
       <CardHeader>
         <CardTitle>{t('heading')}</CardTitle>
-        <CardDescription>
-          {t('description')}
-        </CardDescription>
+        <CardDescription>{t('description')}</CardDescription>
       </CardHeader>
       <CardContent>
         <div
@@ -93,9 +82,7 @@ export function UploadStep({ onFileSelected, isProcessing, extractionError }: Up
           {fileName ? (
             <p className="text-sm font-medium">{fileName}</p>
           ) : (
-            <p className="text-sm text-muted-foreground">
-              {t('dropZone')}
-            </p>
+            <p className="text-sm text-muted-foreground">{t('dropZone')}</p>
           )}
           <input
             ref={inputRef}
@@ -119,9 +106,7 @@ export function UploadStep({ onFileSelected, isProcessing, extractionError }: Up
             </p>
           )}
         </div>
-        <p className="mt-4 text-xs text-muted-foreground">
-          {t('privacyNote')}
-        </p>
+        <p className="mt-4 text-xs text-muted-foreground">{t('privacyNote')}</p>
       </CardContent>
     </Card>
   );
