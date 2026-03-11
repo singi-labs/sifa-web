@@ -44,6 +44,9 @@ vi.mock('@/lib/profile-api', () => ({
   createEducation: vi.fn(),
   updateEducation: vi.fn(),
   deleteEducation: vi.fn(),
+  createExternalAccount: vi.fn(),
+  updateExternalAccount: vi.fn(),
+  deleteExternalAccount: vi.fn(),
 }));
 
 interface TestSkill {
