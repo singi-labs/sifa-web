@@ -13,5 +13,6 @@ export {
   HONOR_FIELDS,
   LANGUAGE_FIELDS,
   COURSE_FIELDS,
+  EXTERNAL_ACCOUNT_FIELDS,
 } from './form-fields';
 export * from './section-converters';

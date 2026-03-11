@@ -46,6 +46,7 @@
     "editProfile": "Edit profile",
     "noProfile": "This profile doesn't exist yet.",
     "addAbout": "Add a professional summary",
+    "editAbout": "Edit profile summary",
     "readMore": "Read more",
     "readLess": "Read less",
     "resetToAtproto": "Reset to AT Protocol profile",

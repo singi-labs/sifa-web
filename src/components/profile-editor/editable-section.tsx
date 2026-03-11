@@ -9,6 +9,7 @@ import {
   createPosition, updatePosition, deletePosition,
   createEducation, updateEducation, deleteEducation,
   createSkill, updateSkill, deleteSkill,
+  createExternalAccount, updateExternalAccount, deleteExternalAccount,
   createRecord, updateRecord, deleteRecord,
   type CreateResult, type WriteResult,
 } from '@/lib/profile-api';
@@ -23,6 +24,11 @@ const NAMED_ROUTES: Record<string, NamedRoute> = {
   'id.sifa.profile.position': { create: createPosition, update: updatePosition, delete: deletePosition },
   'id.sifa.profile.education': { create: createEducation, update: updateEducation, delete: deleteEducation },
   'id.sifa.profile.skill': { create: createSkill, update: updateSkill, delete: deleteSkill },
+  'id.sifa.profile.externalAccount': {
+    create: createExternalAccount as (data: Record<string, unknown>) => Promise<CreateResult>,
+    update: updateExternalAccount as (rkey: string, data: Record<string, unknown>) => Promise<WriteResult>,
+    delete: deleteExternalAccount,
+  },
 };
 
 interface EditableSectionProps<T extends { rkey: string }> {
