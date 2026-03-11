@@ -47,7 +47,13 @@
     "noProfile": "This profile doesn't exist yet.",
     "addAbout": "Add a professional summary",
     "readMore": "Read more",
-    "readLess": "Read less"
+    "readLess": "Read less",
+    "resetToAtproto": "Reset to AT Protocol profile",
+    "resetToAtprotoConfirm": "This will remove your custom {field} and revert to your AT Protocol profile value.",
+    "usingCustomValue": "Using custom value",
+    "usingAtprotoValue": "Using AT Protocol profile value",
+    "customizeHeadline": "Customize headline",
+    "customizeAbout": "Customize about"
   },
   "activity": {
     "title": "Activity for {handle}",

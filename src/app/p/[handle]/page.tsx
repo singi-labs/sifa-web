@@ -67,6 +67,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ handle
           displayName={profile.displayName}
           avatar={profile.avatar}
           headline={profile.headline}
+          about={profile.about}
           location={profile.location}
           website={profile.website}
           openTo={profile.openTo}

@@ -20,6 +20,7 @@ export default async function EditProfilePage({ params }: { params: Promise<{ ha
         displayName={profile.displayName}
         avatar={profile.avatar}
         headline={profile.headline}
+        about={profile.about}
         location={profile.location}
         website={profile.website}
         openTo={profile.openTo}
