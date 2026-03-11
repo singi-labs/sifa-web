@@ -112,10 +112,7 @@ describe('ConfirmStep', () => {
   });
 
   it('shows error state with retry button when fetch rejects', async () => {
-    vi.stubGlobal(
-      'fetch',
-      vi.fn().mockRejectedValue(new Error('Network error')),
-    );
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('Network error')));
 
     render(<ConfirmStep preview={mockPreview} onDone={onDone} />);
 

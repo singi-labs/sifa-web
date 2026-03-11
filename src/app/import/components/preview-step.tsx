@@ -114,26 +114,17 @@ export function PreviewStep({ preview, existingData, onConfirm, onBack }: Previe
       </CardHeader>
       <CardContent>
         {existingData && totalDuplicates > 0 && (
-          <div
-            className="mb-6 flex gap-3 rounded-lg border bg-muted/50 p-4"
-            role="status"
-          >
+          <div className="mb-6 flex gap-3 rounded-lg border bg-muted/50 p-4" role="status">
             <Info
               className="mt-0.5 size-5 shrink-0 text-primary"
               weight="fill"
               aria-hidden="true"
             />
             <div className="text-sm">
-              <p className="font-medium">
-                {t('duplicatesTitle')}
-              </p>
+              <p className="font-medium">{t('duplicatesTitle')}</p>
               <p className="mt-1 text-muted-foreground">
                 {t('duplicatesBody', { count: totalDuplicates })}{' '}
-                {newItems > 0 && (
-                  <>
-                    {t('newItemsNote', { count: newItems })}{' '}
-                  </>
-                )}
+                {newItems > 0 && <>{t('newItemsNote', { count: newItems })} </>}
                 {t('removeNote')}
               </p>
             </div>
@@ -141,22 +132,15 @@ export function PreviewStep({ preview, existingData, onConfirm, onBack }: Previe
         )}
 
         {existingData && totalDuplicates === 0 && (
-          <div
-            className="mb-6 flex gap-3 rounded-lg border bg-muted/50 p-4"
-            role="status"
-          >
+          <div className="mb-6 flex gap-3 rounded-lg border bg-muted/50 p-4" role="status">
             <Info
               className="mt-0.5 size-5 shrink-0 text-primary"
               weight="fill"
               aria-hidden="true"
             />
             <div className="text-sm">
-              <p className="font-medium">
-                {t('existingTitle')}
-              </p>
-              <p className="mt-1 text-muted-foreground">
-                {t('existingBody')}
-              </p>
+              <p className="font-medium">{t('existingTitle')}</p>
+              <p className="mt-1 text-muted-foreground">{t('existingBody')}</p>
             </div>
           </div>
         )}

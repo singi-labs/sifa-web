@@ -30,8 +30,12 @@ function assertNoBannedClasses(container: HTMLElement) {
 
 // Mock @phosphor-icons/react to render simple spans
 vi.mock('@phosphor-icons/react', () => ({
-  Info: (props: Record<string, unknown>) => <span data-testid="info-icon" className={props.className as string} />,
-  X: (props: Record<string, unknown>) => <span data-testid="x-icon" className={props.className as string} />,
+  Info: (props: Record<string, unknown>) => (
+    <span data-testid="info-icon" className={props.className as string} />
+  ),
+  X: (props: Record<string, unknown>) => (
+    <span data-testid="x-icon" className={props.className as string} />
+  ),
   CheckCircle: (props: Record<string, unknown>) => (
     <span data-testid="check-circle-icon" className={props.className as string} />
   ),
@@ -56,9 +60,7 @@ vi.mock('@/components/auth-provider', () => ({
 describe('Design system color alignment', () => {
   describe('PreviewStep', () => {
     it('does not contain banned color classes when existingData has duplicates', async () => {
-      const { PreviewStep } = await import(
-        '@/app/import/components/preview-step'
-      );
+      const { PreviewStep } = await import('@/app/import/components/preview-step');
 
       const preview = {
         profile: { firstName: 'Test', lastName: 'User', headline: 'Dev', location: 'NL' },
@@ -96,9 +98,7 @@ describe('Design system color alignment', () => {
     });
 
     it('does not contain banned color classes when existingData has no duplicates', async () => {
-      const { PreviewStep } = await import(
-        '@/app/import/components/preview-step'
-      );
+      const { PreviewStep } = await import('@/app/import/components/preview-step');
 
       const preview = {
         profile: { firstName: 'Test', lastName: 'User', headline: 'Dev', location: 'NL' },
@@ -135,9 +135,7 @@ describe('Design system color alignment', () => {
 
   describe('PositionsTable', () => {
     it('does not contain banned color classes for New badge', async () => {
-      const { PositionsTable } = await import(
-        '@/app/import/components/positions-table'
-      );
+      const { PositionsTable } = await import('@/app/import/components/positions-table');
 
       const positions = [
         { companyName: 'Acme', title: 'Dev', startDate: '2020-01' },
@@ -161,9 +159,7 @@ describe('Design system color alignment', () => {
 
   describe('EducationTable', () => {
     it('does not contain banned color classes for New badge', async () => {
-      const { EducationTable } = await import(
-        '@/app/import/components/education-table'
-      );
+      const { EducationTable } = await import('@/app/import/components/education-table');
 
       const education = [
         { institution: 'MIT', degree: 'CS' },
@@ -196,9 +192,7 @@ describe('Design system color alignment', () => {
     });
 
     it('does not contain banned color classes on success', async () => {
-      const { ConfirmStep } = await import(
-        '@/app/import/components/confirm-step'
-      );
+      const { ConfirmStep } = await import('@/app/import/components/confirm-step');
 
       const preview = {
         profile: null,
@@ -214,9 +208,7 @@ describe('Design system color alignment', () => {
         languages: [],
       };
 
-      const { container } = render(
-        <ConfirmStep preview={preview} onDone={vi.fn()} />,
-      );
+      const { container } = render(<ConfirmStep preview={preview} onDone={vi.fn()} />);
 
       // Wait for the fetch to resolve and status to become 'success'
       await vi.waitFor(() => {
@@ -240,9 +232,7 @@ describe('Design system color alignment', () => {
         }),
       );
 
-      const { ConfirmStep } = await import(
-        '@/app/import/components/confirm-step'
-      );
+      const { ConfirmStep } = await import('@/app/import/components/confirm-step');
 
       const preview = {
         profile: null,
@@ -261,9 +251,7 @@ describe('Design system color alignment', () => {
         languages: [],
       };
 
-      const { container } = render(
-        <ConfirmStep preview={preview} onDone={vi.fn()} />,
-      );
+      const { container } = render(<ConfirmStep preview={preview} onDone={vi.fn()} />);
 
       await vi.waitFor(() => {
         expect(container.innerHTML).toContain('Import completed with warnings');

@@ -46,20 +46,24 @@ const translations: Record<string, Record<string, string>> = {
   },
   import: {
     title: 'Import from LinkedIn',
-    subtitle: 'Bring your professional history to Sifa. Your data is processed entirely in your browser.',
+    subtitle:
+      'Bring your professional history to Sifa. Your data is processed entirely in your browser.',
     uploadStep: 'Upload',
     previewStep: 'Review',
     confirmStep: 'Import',
   },
   'import.upload': {
     heading: 'Upload your LinkedIn data export',
-    description: 'Go to LinkedIn > Settings > Data Privacy > "Download larger data archive". Upload the ZIP file you receive (batch 1 arrives in ~10 minutes).',
+    description:
+      'Go to LinkedIn > Settings > Data Privacy > "Download larger data archive". Upload the ZIP file you receive (batch 1 arrives in ~10 minutes).',
     dropZone: 'Drag and drop your LinkedIn ZIP file here, or click to browse',
     dropZoneLabel: 'Drop zone for LinkedIn ZIP file',
     processing: 'Processing ZIP file...',
-    fileTypeError: 'Please select a ZIP file (.zip). LinkedIn exports are delivered as ZIP archives.',
+    fileTypeError:
+      'Please select a ZIP file (.zip). LinkedIn exports are delivered as ZIP archives.',
     fileSizeError: 'File is too large (max 500 MB). Try re-downloading your LinkedIn export.',
-    privacyNote: 'Your data is processed entirely in your browser. No raw CSV data is sent to our servers.',
+    privacyNote:
+      'Your data is processed entirely in your browser. No raw CSV data is sent to our servers.',
   },
   'import.preview': {
     heading: 'Review imported data',
@@ -68,7 +72,8 @@ const translations: Record<string, Record<string, string>> = {
     newItemsNote: '{count} items are new.',
     removeNote: "You can remove items you don't want to import.",
     existingTitle: 'Your profile already has data',
-    existingBody: 'Importing will replace all existing profile data with the data below. Your profile headline and summary will also be updated.',
+    existingBody:
+      'Importing will replace all existing profile data with the data below. Your profile headline and summary will also be updated.',
     alreadyOnProfile: 'Already on profile',
     new: 'New',
     itemCount: '{count} items to import',

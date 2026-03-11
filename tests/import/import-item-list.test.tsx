@@ -3,13 +3,13 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ImportItemList } from '@/app/import/components/import-item-list';
 
-interface TestItem { name: string; detail?: string }
+interface TestItem {
+  name: string;
+  detail?: string;
+}
 
 describe('ImportItemList', () => {
-  const items: TestItem[] = [
-    { name: 'Item A', detail: 'Detail A' },
-    { name: 'Item B' },
-  ];
+  const items: TestItem[] = [{ name: 'Item A', detail: 'Detail A' }, { name: 'Item B' }];
 
   it('renders items with labels and details', () => {
     render(

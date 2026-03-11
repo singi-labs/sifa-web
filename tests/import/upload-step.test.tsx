@@ -35,9 +35,7 @@ describe('UploadStep', () => {
   });
 
   it('does not display extraction error when null', () => {
-    const { rerender } = render(
-      <UploadStep {...defaultProps} extractionError="Some error" />,
-    );
+    const { rerender } = render(<UploadStep {...defaultProps} extractionError="Some error" />);
 
     expect(screen.getByRole('alert')).toBeDefined();
 

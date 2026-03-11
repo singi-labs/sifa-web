@@ -164,9 +164,7 @@ export function ConfirmStep({ preview, onDone }: ConfirmStepProps) {
         {status === 'success' && (
           <div className="flex flex-col items-center gap-4 py-6">
             <CheckCircle className="size-12 text-primary" weight="fill" aria-hidden="true" />
-            <p className="text-sm text-muted-foreground">
-              {t('successMessage')}
-            </p>
+            <p className="text-sm text-muted-foreground">{t('successMessage')}</p>
             {result?.importedCounts && <ImportBreakdown counts={result.importedCounts} />}
             <Button onClick={onDone}>
               {t('viewProfile')}
@@ -177,7 +175,11 @@ export function ConfirmStep({ preview, onDone }: ConfirmStepProps) {
 
         {status === 'partial' && result && (
           <div className="flex flex-col items-center gap-4 py-6">
-            <CheckCircle className="size-12 text-muted-foreground" weight="fill" aria-hidden="true" />
+            <CheckCircle
+              className="size-12 text-muted-foreground"
+              weight="fill"
+              aria-hidden="true"
+            />
             <p className="text-sm text-muted-foreground">
               {t('warningPrefix')}
               {result.failedItems.length > 0 && (

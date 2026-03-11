@@ -92,9 +92,7 @@ export function UploadStep({ onFileSelected, isProcessing, extractionError }: Up
             onChange={handleInputChange}
             data-testid="file-input"
           />
-          {isProcessing && (
-            <p className="mt-4 text-sm text-muted-foreground">{t('processing')}</p>
-          )}
+          {isProcessing && <p className="mt-4 text-sm text-muted-foreground">{t('processing')}</p>}
           {fileError && (
             <p className="mt-4 text-sm text-destructive" role="alert">
               {fileError}

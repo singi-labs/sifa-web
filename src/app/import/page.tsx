@@ -80,9 +80,7 @@ export default function ImportPage() {
   return (
     <main className="mx-auto max-w-3xl px-4 py-8">
       <h1 className="mb-2 text-2xl font-bold">{t('title')}</h1>
-      <p className="mb-8 text-muted-foreground">
-        {t('subtitle')}
-      </p>
+      <p className="mb-8 text-muted-foreground">{t('subtitle')}</p>
 
       {/* Step indicator */}
       <div className="mb-8 flex items-center gap-2" aria-label="Import steps">
@@ -106,7 +104,11 @@ export default function ImportPage() {
       </div>
 
       {step === 'upload' && (
-        <UploadStep onFileSelected={handleFileSelected} isProcessing={isProcessing} extractionError={extractionError} />
+        <UploadStep
+          onFileSelected={handleFileSelected}
+          isProcessing={isProcessing}
+          extractionError={extractionError}
+        />
       )}
 
       {step === 'preview' && preview && (
