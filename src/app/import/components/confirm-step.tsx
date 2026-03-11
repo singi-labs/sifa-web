@@ -41,8 +41,13 @@ export function ConfirmStep({ preview, onDone }: ConfirmStepProps) {
 
     try {
       const progressInterval = setInterval(() => {
-        setProgress((prev) => Math.min(prev + 3, 90));
-      }, 200);
+        setProgress((prev) => {
+          // Slow down as we approach 90%: fast start, decelerating finish
+          const remaining = 90 - prev;
+          const step = Math.max(remaining * 0.08, 0.5);
+          return Math.min(prev + step, 90);
+        });
+      }, 100);
 
       const res = await fetch(`${API_URL}/api/import/linkedin/confirm`, {
         method: 'POST',
