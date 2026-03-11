@@ -1,80 +1,69 @@
 'use client';
 
-import { useCallback, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Upload } from '@phosphor-icons/react';
 
 interface UploadStepProps {
   onFileSelected: (file: File) => void;
   isProcessing: boolean;
+  extractionError?: string | null;
 }
 
-export function UploadStep({ onFileSelected, isProcessing }: UploadStepProps) {
+export function UploadStep({ onFileSelected, isProcessing, extractionError }: UploadStepProps) {
+  const t = useTranslations('import.upload');
   const [dragActive, setDragActive] = useState(false);
   const [fileName, setFileName] = useState<string | null>(null);
   const [fileError, setFileError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleFile = useCallback(
-    (file: File) => {
-      setFileError(null);
-      if (!file.name.endsWith('.zip')) {
-        setFileError(
-          'Please select a ZIP file (.zip). LinkedIn exports are delivered as ZIP archives.',
-        );
-        return;
-      }
-      if (file.size > 500 * 1024 * 1024) {
-        setFileError('File is too large (max 500 MB). Try re-downloading your LinkedIn export.');
-        return;
-      }
-      setFileName(file.name);
-      onFileSelected(file);
-    },
-    [onFileSelected],
-  );
+  const handleFile = (file: File) => {
+    setFileError(null);
+    if (!file.name.endsWith('.zip')) {
+      setFileError(t('fileTypeError'));
+      return;
+    }
+    if (file.size > 500 * 1024 * 1024) {
+      setFileError(t('fileSizeError'));
+      return;
+    }
+    setFileName(file.name);
+    onFileSelected(file);
+  };
 
-  const handleDrop = useCallback(
-    (e: React.DragEvent) => {
-      e.preventDefault();
-      setDragActive(false);
-      const file = e.dataTransfer.files[0];
-      if (file) handleFile(file);
-    },
-    [handleFile],
-  );
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragActive(false);
+    const file = e.dataTransfer.files[0];
+    if (file) handleFile(file);
+  };
 
-  const handleDragOver = useCallback((e: React.DragEvent) => {
+  const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
     setDragActive(true);
-  }, []);
+  };
 
-  const handleDragLeave = useCallback(() => {
+  const handleDragLeave = () => {
     setDragActive(false);
-  }, []);
+  };
 
-  const handleInputChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files?.[0];
-      if (file) handleFile(file);
-    },
-    [handleFile],
-  );
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) handleFile(file);
+  };
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Upload your LinkedIn data export</CardTitle>
-        <CardDescription>
-          Go to LinkedIn &gt; Settings &gt; Data Privacy &gt; &quot;Download larger data
-          archive&quot;. Upload the ZIP file you receive (batch 1 arrives in ~10 minutes).
-        </CardDescription>
+        <CardTitle>{t('heading')}</CardTitle>
+        <CardDescription>{t('description')}</CardDescription>
       </CardHeader>
       <CardContent>
         <div
           role="button"
           tabIndex={0}
-          aria-label="Drop zone for LinkedIn ZIP file"
+          aria-label={t('dropZoneLabel')}
           className={`flex flex-col items-center justify-center rounded-lg border-2 border-dashed p-12 transition-colors ${
             dragActive ? 'border-primary bg-primary/5' : 'border-border'
           }`}
@@ -93,9 +82,7 @@ export function UploadStep({ onFileSelected, isProcessing }: UploadStepProps) {
           {fileName ? (
             <p className="text-sm font-medium">{fileName}</p>
           ) : (
-            <p className="text-sm text-muted-foreground">
-              Drag and drop your LinkedIn ZIP file here, or click to browse
-            </p>
+            <p className="text-sm text-muted-foreground">{t('dropZone')}</p>
           )}
           <input
             ref={inputRef}
@@ -105,18 +92,19 @@ export function UploadStep({ onFileSelected, isProcessing }: UploadStepProps) {
             onChange={handleInputChange}
             data-testid="file-input"
           />
-          {isProcessing && (
-            <p className="mt-4 text-sm text-muted-foreground">Processing ZIP file...</p>
-          )}
+          {isProcessing && <p className="mt-4 text-sm text-muted-foreground">{t('processing')}</p>}
           {fileError && (
             <p className="mt-4 text-sm text-destructive" role="alert">
               {fileError}
             </p>
           )}
+          {extractionError && (
+            <p className="mt-4 text-sm text-destructive" role="alert">
+              {extractionError}
+            </p>
+          )}
         </div>
-        <p className="mt-4 text-xs text-muted-foreground">
-          Your data is processed entirely in your browser. No raw CSV data is sent to our servers.
-        </p>
+        <p className="mt-4 text-xs text-muted-foreground">{t('privacyNote')}</p>
       </CardContent>
     </Card>
   );
