@@ -76,9 +76,7 @@ describe('TrustStatsHints', () => {
       <TrustStatsHints isOwnProfile did="did:plc:test123" trustStats={[]} />,
     );
     expect(container.innerHTML).toBe('');
-    expect(mockLocalStorage.getItem).toHaveBeenCalledWith(
-      'sifa:hints-dismissed:did:plc:test123',
-    );
+    expect(mockLocalStorage.getItem).toHaveBeenCalledWith('sifa:hints-dismissed:did:plc:test123');
   });
 
   it('hides when account age exceeds 30 days', () => {
@@ -97,12 +95,7 @@ describe('TrustStatsHints', () => {
   it('shows hints when account age is under 30 days', () => {
     const tenDaysAgo = new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString();
     render(
-      <TrustStatsHints
-        isOwnProfile
-        did="did:plc:test"
-        createdAt={tenDaysAgo}
-        trustStats={[]}
-      />,
+      <TrustStatsHints isOwnProfile did="did:plc:test" createdAt={tenDaysAgo} trustStats={[]} />,
     );
     expect(screen.getByText('Grow your track record')).toBeDefined();
   });

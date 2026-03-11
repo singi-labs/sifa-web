@@ -47,7 +47,12 @@ function isAccountOlderThan30Days(createdAt?: string): boolean {
   return Date.now() - created > THIRTY_DAYS_MS;
 }
 
-export function TrustStatsHints({ trustStats = [], isOwnProfile, did, createdAt }: TrustStatsHintsProps) {
+export function TrustStatsHints({
+  trustStats = [],
+  isOwnProfile,
+  did,
+  createdAt,
+}: TrustStatsHintsProps) {
   const [dismissed, setDismissed] = useState(() => isPersistedDismissed(did));
 
   if (!isOwnProfile || dismissed) return null;
