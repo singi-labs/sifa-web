@@ -98,7 +98,12 @@ function ProfileBodyContent() {
   const content = (
     <div className="min-w-0 flex-1">
       <CompletionBar profile={profile} />
-      <TrustStatsHints trustStats={profile.trustStats} isOwnProfile={isOwn} />
+      <TrustStatsHints
+        trustStats={profile.trustStats}
+        isOwnProfile={isOwn}
+        did={profile.did}
+        createdAt={profile.createdAt}
+      />
 
       {profile.about ? (
         <div id="about" className="scroll-mt-20">
