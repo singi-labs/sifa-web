@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { ProfileEditProvider } from '@/components/profile-edit-provider';
 import { TimelineEntry } from '@/components/profile-sections/timeline';
 import { CareerSection } from '@/components/profile-sections/career-section';
 import { EducationSection } from '@/components/profile-sections/education-section';
@@ -11,6 +12,25 @@ import { PublicationsSection } from '@/components/profile-sections/publications-
 import { VolunteeringSection } from '@/components/profile-sections/volunteering-section';
 import { AwardsSection } from '@/components/profile-sections/awards-section';
 import { LanguagesSection } from '@/components/profile-sections/languages-section';
+import type { Profile } from '@/lib/types';
+
+const baseProfile: Profile = {
+  did: 'did:plc:test',
+  handle: 'test.bsky.social',
+  claimed: true,
+  followersCount: 0,
+  followingCount: 0,
+  connectionsCount: 0,
+  positions: [],
+  education: [],
+  skills: [],
+};
+
+function withProvider(ui: React.ReactElement, profile: Partial<Profile> = {}) {
+  return render(
+    <ProfileEditProvider initialProfile={{ ...baseProfile, ...profile }}>{ui}</ProfileEditProvider>,
+  );
+}
 
 describe('TimelineEntry', () => {
   it('renders title and subtitle', () => {
@@ -39,59 +59,55 @@ describe('TimelineEntry', () => {
 
 describe('CareerSection', () => {
   it('renders positions sorted by date', () => {
-    render(
-      <CareerSection
-        positions={[
-          {
-            rkey: '1',
-            companyName: 'Acme',
-            title: 'Junior',
-            startDate: '2018-01',
-            endDate: '2020-01',
-            current: false,
-          },
-          { rkey: '2', companyName: 'Acme', title: 'Senior', startDate: '2020-01', current: true },
-        ]}
-      />,
-    );
+    const positions = [
+      {
+        rkey: '1',
+        companyName: 'Acme',
+        title: 'Junior',
+        startDate: '2018-01',
+        endDate: '2020-01',
+        current: false,
+      },
+      { rkey: '2', companyName: 'Acme', title: 'Senior', startDate: '2020-01', current: true },
+    ];
+    withProvider(<CareerSection positions={positions} />, { positions });
     expect(screen.getByText('Career')).toBeDefined();
     expect(screen.getByText('Senior')).toBeDefined();
     expect(screen.getByText('Junior')).toBeDefined();
   });
 
   it('returns null when empty', () => {
-    const { container } = render(<CareerSection positions={[]} />);
+    const { container } = withProvider(<CareerSection positions={[]} />);
     expect(container.innerHTML).toBe('');
   });
 });
 
 describe('EducationSection', () => {
   it('renders education entries', () => {
-    render(
-      <EducationSection
-        education={[
-          {
-            rkey: '1',
-            institution: 'MIT',
-            degree: 'BSc',
-            fieldOfStudy: 'CS',
-            startDate: '2016',
-            endDate: '2020',
-          },
-        ]}
-      />,
-    );
+    const education = [
+      {
+        rkey: '1',
+        institution: 'MIT',
+        degree: 'BSc',
+        fieldOfStudy: 'CS',
+        startDate: '2016',
+        endDate: '2020',
+      },
+    ];
+    withProvider(<EducationSection education={education} />, { education });
     expect(screen.getByText('Education')).toBeDefined();
     expect(screen.getByText('MIT')).toBeDefined();
     expect(screen.getByText('BSc, CS')).toBeDefined();
   });
 
   it('folds in related courses', () => {
-    render(
+    const education = [{ rkey: '1', institution: 'MIT', startDate: '2016' }];
+    withProvider(
       <EducationSection
-        education={[{ rkey: '1', institution: 'MIT', startDate: '2016' }]}
+        education={education}
         courses={[{ rkey: 'c1', name: 'Algorithms', institution: 'MIT', number: 'CS101' }]}
       />,
+      { education },
     );
     // Courses are inside the expandable area, need to expand first
     // But the courses text should exist in DOM after expand
@@ -100,36 +116,29 @@ describe('EducationSection', () => {
 
 describe('SkillsSection', () => {
   it('renders skills as badges', () => {
-    render(
-      <SkillsSection
-        skills={[
-          { rkey: '1', skillName: 'TypeScript' },
-          { rkey: '2', skillName: 'React', category: 'Frontend' },
-        ]}
-      />,
-    );
+    const skills = [
+      { rkey: '1', skillName: 'TypeScript' },
+      { rkey: '2', skillName: 'React', category: 'Frontend' },
+    ];
+    withProvider(<SkillsSection skills={skills} />, { skills });
     expect(screen.getByText('TypeScript')).toBeDefined();
     expect(screen.getByText('React')).toBeDefined();
     expect(screen.getByText('Frontend')).toBeDefined();
   });
 
   it('shows endorsement count', () => {
-    render(
-      <SkillsSection skills={[{ rkey: '1', skillName: 'TypeScript', endorsementCount: 5 }]} />,
-    );
+    const skills = [{ rkey: '1', skillName: 'TypeScript', endorsementCount: 5 }];
+    withProvider(<SkillsSection skills={skills} />, { skills });
     expect(screen.getByText('5')).toBeDefined();
   });
 });
 
 describe('ProjectsSection', () => {
   it('renders projects', () => {
-    render(
-      <ProjectsSection
-        projects={[
-          { rkey: '1', name: 'My Project', url: 'https://example.com', startDate: '2023' },
-        ]}
-      />,
-    );
+    const projects = [
+      { rkey: '1', name: 'My Project', url: 'https://example.com', startDate: '2023' },
+    ];
+    withProvider(<ProjectsSection projects={projects} />, { projects });
     expect(screen.getByText('Projects')).toBeDefined();
     expect(screen.getByText('My Project')).toBeDefined();
   });
@@ -137,13 +146,10 @@ describe('ProjectsSection', () => {
 
 describe('CredentialsSection', () => {
   it('renders certifications', () => {
-    render(
-      <CredentialsSection
-        certifications={[
-          { rkey: '1', name: 'AWS Solutions Architect', issuingOrg: 'Amazon', issueDate: '2023' },
-        ]}
-      />,
-    );
+    const certifications = [
+      { rkey: '1', name: 'AWS Solutions Architect', issuingOrg: 'Amazon', issueDate: '2023' },
+    ];
+    withProvider(<CredentialsSection certifications={certifications} />, { certifications });
     expect(screen.getByText('Credentials')).toBeDefined();
     expect(screen.getByText('AWS Solutions Architect')).toBeDefined();
     expect(screen.getByText('Amazon')).toBeDefined();
@@ -152,11 +158,8 @@ describe('CredentialsSection', () => {
 
 describe('PublicationsSection', () => {
   it('renders publications', () => {
-    render(
-      <PublicationsSection
-        publications={[{ rkey: '1', title: 'My Paper', publisher: 'Nature', date: '2023' }]}
-      />,
-    );
+    const publications = [{ rkey: '1', title: 'My Paper', publisher: 'Nature', date: '2023' }];
+    withProvider(<PublicationsSection publications={publications} />, { publications });
     expect(screen.getByText('Publications')).toBeDefined();
     expect(screen.getByText('My Paper')).toBeDefined();
     expect(screen.getByText('Nature')).toBeDefined();
@@ -165,13 +168,10 @@ describe('PublicationsSection', () => {
 
 describe('VolunteeringSection', () => {
   it('renders volunteering entries', () => {
-    render(
-      <VolunteeringSection
-        volunteering={[
-          { rkey: '1', organization: 'Red Cross', role: 'Coordinator', startDate: '2022' },
-        ]}
-      />,
-    );
+    const volunteering = [
+      { rkey: '1', organization: 'Red Cross', role: 'Coordinator', startDate: '2022' },
+    ];
+    withProvider(<VolunteeringSection volunteering={volunteering} />, { volunteering });
     expect(screen.getByText('Volunteering')).toBeDefined();
     expect(screen.getByText('Coordinator')).toBeDefined();
   });
@@ -179,11 +179,8 @@ describe('VolunteeringSection', () => {
 
 describe('AwardsSection', () => {
   it('renders honors', () => {
-    render(
-      <AwardsSection
-        honors={[{ rkey: '1', title: 'Best Paper Award', issuer: 'ACM', date: '2023' }]}
-      />,
-    );
+    const honors = [{ rkey: '1', title: 'Best Paper Award', issuer: 'ACM', date: '2023' }];
+    withProvider(<AwardsSection honors={honors} />, { honors });
     expect(screen.getByText('Awards')).toBeDefined();
     expect(screen.getByText('Best Paper Award')).toBeDefined();
   });
@@ -191,14 +188,11 @@ describe('AwardsSection', () => {
 
 describe('LanguagesSection', () => {
   it('renders languages with proficiency', () => {
-    render(
-      <LanguagesSection
-        languages={[
-          { rkey: '1', language: 'English', proficiency: 'native' },
-          { rkey: '2', language: 'Dutch', proficiency: 'full_professional' },
-        ]}
-      />,
-    );
+    const languages = [
+      { rkey: '1', language: 'English', proficiency: 'native' as const },
+      { rkey: '2', language: 'Dutch', proficiency: 'full_professional' as const },
+    ];
+    withProvider(<LanguagesSection languages={languages} />, { languages });
     expect(screen.getByText('Languages')).toBeDefined();
     expect(screen.getByText('English')).toBeDefined();
     expect(screen.getByText('(Native or bilingual)')).toBeDefined();

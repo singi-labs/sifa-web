@@ -2,35 +2,55 @@
 
 import { useTranslations } from 'next-intl';
 import { TimelineSection, TimelineEntry } from './timeline';
+import { EditableSection, EditableEntry, VOLUNTEERING_FIELDS } from '@/components/profile-editor';
+import {
+  volunteeringToValues,
+  valuesToVolunteering,
+} from '@/components/profile-editor/section-converters';
 import type { ProfileVolunteering } from '@/lib/types';
 
 interface VolunteeringSectionProps {
   volunteering: ProfileVolunteering[];
+  isOwnProfile?: boolean;
 }
 
-export function VolunteeringSection({ volunteering }: VolunteeringSectionProps) {
+export function VolunteeringSection({ volunteering, isOwnProfile }: VolunteeringSectionProps) {
   const t = useTranslations('sections');
 
-  if (!volunteering.length) return null;
-
-  const sorted = [...volunteering].sort((a, b) => {
-    const aDate = a.startDate ?? '0000';
-    const bDate = b.startDate ?? '0000';
-    return bDate.localeCompare(aDate);
-  });
+  if (!volunteering.length && !isOwnProfile) return null;
 
   return (
     <TimelineSection title={t('volunteering')}>
-      {sorted.map((vol, i) => (
-        <TimelineEntry
-          key={vol.rkey}
-          title={vol.role ?? vol.organization}
-          subtitle={vol.role ? vol.organization : (vol.cause ?? '')}
-          dateRange={formatVolDateRange(vol.startDate, vol.endDate)}
-          description={vol.description}
-          isLast={i === sorted.length - 1}
-        />
-      ))}
+      <EditableSection<ProfileVolunteering>
+        sectionTitle={t('volunteering')}
+        profileKey="volunteering"
+        isOwnProfile={isOwnProfile}
+        fields={VOLUNTEERING_FIELDS}
+        toValues={volunteeringToValues}
+        fromValues={
+          valuesToVolunteering as (
+            v: Record<string, string | boolean>,
+          ) => Omit<ProfileVolunteering, 'rkey'>
+        }
+        collection="id.sifa.profile.volunteering"
+        renderEntry={(vol, controls) => (
+          <EditableEntry
+            key={vol.rkey}
+            isOwnProfile={isOwnProfile}
+            onEdit={controls?.onEdit ?? (() => {})}
+            onDelete={controls?.onDelete ?? (() => {})}
+            entryLabel={vol.role ?? vol.organization}
+          >
+            <TimelineEntry
+              title={vol.role ?? vol.organization}
+              subtitle={vol.role ? vol.organization : (vol.cause ?? '')}
+              dateRange={formatVolDateRange(vol.startDate, vol.endDate)}
+              description={vol.description}
+              isLast={false}
+            />
+          </EditableEntry>
+        )}
+      />
     </TimelineSection>
   );
 }

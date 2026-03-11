@@ -1,8 +1,12 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3100';
 
-interface WriteResult {
+export interface WriteResult {
   success: boolean;
   error?: string;
+}
+
+export interface CreateResult extends WriteResult {
+  rkey?: string;
 }
 
 async function apiRequest(
@@ -30,6 +34,28 @@ async function apiRequest(
   }
 }
 
+async function apiCreateRequest(path: string, body: unknown): Promise<CreateResult> {
+  try {
+    const res = await fetch(`${API_URL}${path}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify(body),
+    });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      return {
+        success: false,
+        error: (data as { message?: string }).message ?? `Request failed (${res.status})`,
+      };
+    }
+    const data = (await res.json()) as { rkey: string };
+    return { success: true, rkey: data.rkey };
+  } catch {
+    return { success: false, error: 'Network error' };
+  }
+}
+
 export async function updateProfileSelf(data: {
   headline?: string;
   about?: string;
@@ -42,8 +68,8 @@ export async function updateProfileSelf(data: {
 export async function createRecord(
   collection: string,
   data: Record<string, unknown>,
-): Promise<WriteResult> {
-  return apiRequest(`/api/profile/records/${encodeURIComponent(collection)}`, 'POST', data);
+): Promise<CreateResult> {
+  return apiCreateRequest(`/api/profile/records/${encodeURIComponent(collection)}`, data);
 }
 
 export async function updateRecord(
@@ -63,6 +89,51 @@ export async function deleteRecord(collection: string, rkey: string): Promise<Wr
     `/api/profile/records/${encodeURIComponent(collection)}/${encodeURIComponent(rkey)}`,
     'DELETE',
   );
+}
+
+export async function createPosition(data: Record<string, unknown>): Promise<CreateResult> {
+  return apiCreateRequest('/api/profile/position', data);
+}
+
+export async function updatePosition(
+  rkey: string,
+  data: Record<string, unknown>,
+): Promise<WriteResult> {
+  return apiRequest(`/api/profile/position/${encodeURIComponent(rkey)}`, 'PUT', data);
+}
+
+export async function deletePosition(rkey: string): Promise<WriteResult> {
+  return apiRequest(`/api/profile/position/${encodeURIComponent(rkey)}`, 'DELETE');
+}
+
+export async function createEducation(data: Record<string, unknown>): Promise<CreateResult> {
+  return apiCreateRequest('/api/profile/education', data);
+}
+
+export async function updateEducation(
+  rkey: string,
+  data: Record<string, unknown>,
+): Promise<WriteResult> {
+  return apiRequest(`/api/profile/education/${encodeURIComponent(rkey)}`, 'PUT', data);
+}
+
+export async function deleteEducation(rkey: string): Promise<WriteResult> {
+  return apiRequest(`/api/profile/education/${encodeURIComponent(rkey)}`, 'DELETE');
+}
+
+export async function createSkill(data: Record<string, unknown>): Promise<CreateResult> {
+  return apiCreateRequest('/api/profile/skill', data);
+}
+
+export async function updateSkill(
+  rkey: string,
+  data: Record<string, unknown>,
+): Promise<WriteResult> {
+  return apiRequest(`/api/profile/skill/${encodeURIComponent(rkey)}`, 'PUT', data);
+}
+
+export async function deleteSkill(rkey: string): Promise<WriteResult> {
+  return apiRequest(`/api/profile/skill/${encodeURIComponent(rkey)}`, 'DELETE');
 }
 
 export async function createExternalAccount(data: {

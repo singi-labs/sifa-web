@@ -1,5 +1,6 @@
 export { SectionEditor, EditableEntry } from './section-editor';
 export { EditDialog, type FieldDef } from './edit-dialog';
+export { EditableSection } from './editable-section';
 export { ABOUT_FIELDS, profileToAboutValues } from './about-form';
 export { POSITION_FIELDS, positionToValues, valuesToPosition } from './position-form';
 export {
@@ -12,4 +13,6 @@ export {
   HONOR_FIELDS,
   LANGUAGE_FIELDS,
   COURSE_FIELDS,
+  EXTERNAL_ACCOUNT_FIELDS,
 } from './form-fields';
+export * from './section-converters';

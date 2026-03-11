@@ -46,6 +46,7 @@
     "editProfile": "Edit profile",
     "noProfile": "This profile doesn't exist yet.",
     "addAbout": "Add a professional summary",
+    "editAbout": "Edit profile summary",
     "readMore": "Read more",
     "readLess": "Read less",
     "resetToAtproto": "Reset to AT Protocol profile",
@@ -100,6 +101,18 @@
     "title": "Activity",
     "viewAll": "View full activity",
     "comingSoon": "Activity overview coming soon. This section will show your ATproto activity across the open social web."
+  },
+  "editor": {
+    "save": "Save",
+    "saving": "Saving...",
+    "cancel": "Cancel",
+    "close": "Close",
+    "add": "Add",
+    "failedToSave": "Failed to save",
+    "added": "{section} added",
+    "updated": "{section} updated",
+    "removed": "{section} removed",
+    "failedToDelete": "Failed to delete"
   },
   "auth": {
     "loginRequired": "Sign in required",
