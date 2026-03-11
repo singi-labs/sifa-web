@@ -129,6 +129,7 @@ export interface Profile {
   location?: string;
   website?: string;
   openTo?: string[];
+  claimed: boolean;
   isOwnProfile?: boolean;
   isFollowing?: boolean;
 

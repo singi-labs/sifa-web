@@ -9,6 +9,7 @@ const baseProps = {
   did: 'did:plc:abc123',
   handle: 'alice.bsky.social',
   displayName: 'Alice Smith',
+  claimed: true,
 };
 
 describe('IdentityCard', () => {
@@ -20,7 +21,7 @@ describe('IdentityCard', () => {
   });
 
   it('falls back to handle when no display name', () => {
-    render(<IdentityCard did="did:plc:abc" handle="bob.bsky.social" />);
+    render(<IdentityCard did="did:plc:abc" handle="bob.bsky.social" claimed={true} />);
 
     expect(screen.getByRole('heading', { level: 1 })).toBeDefined();
     expect(screen.getByText('bob.bsky.social')).toBeDefined();

@@ -110,7 +110,15 @@
     "editProfile": "Edit profile",
     "shareProfile": "Share profile",
     "share": "Share",
-    "linkCopied": "Profile link copied to clipboard"
+    "linkCopied": "Profile link copied to clipboard",
+    "unclaimed": "Unclaimed",
+    "unclaimedPopupText": "This profile shows public AT Protocol data. {name} hasn't set up their Sifa profile yet.",
+    "claimYourProfile": "Claim your profile"
+  },
+  "unclaimedBanner": {
+    "text": "This profile shows public AT Protocol data and hasn't been claimed yet.",
+    "claimYourProfile": "Claim your profile",
+    "dismiss": "Dismiss"
   },
   "search": {
     "placeholder": "Search people by name, skills, or headline",

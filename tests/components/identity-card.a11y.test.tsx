@@ -14,6 +14,7 @@ describe('IdentityCard accessibility', () => {
         displayName="Alice Smith"
         headline="Senior Engineer"
         location="Amsterdam"
+        claimed={true}
         trustStats={[
           { key: 'connections', label: 'Connections', value: 10 },
           { key: 'endorsements', label: 'Endorsements', value: 5 },
@@ -31,6 +32,7 @@ describe('IdentityCard accessibility', () => {
         did="did:plc:abc123"
         handle="alice.bsky.social"
         displayName="Alice Smith"
+        claimed={true}
         isOwnProfile={true}
       />,
     );
