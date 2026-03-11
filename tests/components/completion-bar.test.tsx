@@ -6,6 +6,7 @@ import type { Profile } from '@/lib/types';
 const baseProfile: Profile = {
   did: 'did:plc:test',
   handle: 'test.bsky.social',
+  claimed: true,
   isOwnProfile: true,
   followersCount: 0,
   followingCount: 0,

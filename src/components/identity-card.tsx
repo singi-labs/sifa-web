@@ -4,10 +4,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
+import { Popover } from '@base-ui/react/popover';
 import { ShareNetwork, PencilSimple, CheckCircle } from '@phosphor-icons/react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { FollowButton } from '@/components/follow-button';
+import { useAuth } from '@/components/auth-provider';
 import type { TrustStat, VerifiedAccount } from '@/lib/types';
 import { cn } from '@/lib/utils';
 
@@ -22,6 +24,7 @@ interface IdentityCardProps {
   openTo?: string[];
   trustStats?: TrustStat[];
   verifiedAccounts?: VerifiedAccount[];
+  claimed: boolean;
   isOwnProfile?: boolean;
   isFollowing?: boolean;
   className?: string;
@@ -38,11 +41,13 @@ export function IdentityCard({
   openTo,
   trustStats = [],
   verifiedAccounts = [],
+  claimed,
   isOwnProfile,
   isFollowing,
   className,
 }: IdentityCardProps) {
   const t = useTranslations('identityCard');
+  const { session } = useAuth();
 
   const displayTrustStats =
     trustStats.length > 0
@@ -84,8 +89,37 @@ export function IdentityCard({
               />
             )}
           </div>
-          {/* Row 2: Handle */}
-          <p className="truncate text-sm text-muted-foreground">@{handle}</p>
+          {/* Row 2: Handle + unclaimed badge */}
+          <div className="flex items-center gap-2">
+            <p className="truncate text-sm text-muted-foreground">@{handle}</p>
+            {!claimed && (
+              <Popover.Root>
+                <Popover.Trigger
+                  className="inline-flex h-5 shrink-0 cursor-pointer items-center rounded-full border border-amber-300 bg-amber-50 px-2 text-xs font-medium text-amber-800 transition-colors hover:bg-amber-100 dark:border-amber-700 dark:bg-amber-950/50 dark:text-amber-300 dark:hover:bg-amber-900/50"
+                >
+                  {t('unclaimed')}
+                </Popover.Trigger>
+                <Popover.Portal>
+                  <Popover.Positioner sideOffset={8}>
+                    <Popover.Popup className="z-50 w-64 rounded-lg border border-border bg-popover p-3 text-sm text-popover-foreground shadow-md">
+                      <Popover.Arrow className="fill-popover stroke-border" />
+                      <p className="text-muted-foreground">
+                        {t('unclaimedPopupText', { name: displayName ?? handle })}
+                      </p>
+                      {!session && (
+                        <Link
+                          href={`/login?returnTo=${typeof window !== 'undefined' ? encodeURIComponent(window.location.pathname) : ''}`}
+                          className="mt-2 inline-block text-sm font-medium text-amber-700 underline underline-offset-4 hover:text-amber-900 dark:text-amber-400 dark:hover:text-amber-200"
+                        >
+                          {t('claimYourProfile')}
+                        </Link>
+                      )}
+                    </Popover.Popup>
+                  </Popover.Positioner>
+                </Popover.Portal>
+              </Popover.Root>
+            )}
+          </div>
         </div>
       </div>
 

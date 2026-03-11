@@ -17,6 +17,7 @@ beforeEach(() => {
 const baseProfile: Profile = {
   did: 'did:plc:test',
   handle: 'test.bsky.social',
+  claimed: true,
   followersCount: 0,
   followingCount: 0,
   connectionsCount: 0,

@@ -25,6 +25,7 @@ export default async function EditProfilePage({ params }: { params: Promise<{ ha
         openTo={profile.openTo}
         trustStats={profile.trustStats}
         verifiedAccounts={profile.verifiedAccounts}
+        claimed={profile.claimed}
         isOwnProfile={profile.isOwnProfile}
         isFollowing={profile.isFollowing}
       />
