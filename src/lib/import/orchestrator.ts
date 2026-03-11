@@ -4,10 +4,24 @@ import {
   mapPositionsCsv,
   mapEducationCsv,
   mapSkillsCsv,
+  mapCertificationsCsv,
+  mapProjectsCsv,
+  mapVolunteeringCsv,
+  mapPublicationsCsv,
+  mapCoursesCsv,
+  mapHonorsCsv,
+  mapLanguagesCsv,
   type SifaProfile,
   type SifaPosition,
   type SifaEducation,
   type SifaSkill,
+  type SifaCertification,
+  type SifaProject,
+  type SifaVolunteering,
+  type SifaPublication,
+  type SifaCourse,
+  type SifaHonor,
+  type SifaLanguage,
 } from './field-mapper';
 import { extractLinkedInZip } from './zip-extractor';
 
@@ -16,6 +30,13 @@ export interface ImportPreview {
   positions: SifaPosition[];
   education: SifaEducation[];
   skills: SifaSkill[];
+  certifications: SifaCertification[];
+  projects: SifaProject[];
+  volunteering: SifaVolunteering[];
+  publications: SifaPublication[];
+  courses: SifaCourse[];
+  honors: SifaHonor[];
+  languages: SifaLanguage[];
 }
 
 /**
@@ -28,6 +49,13 @@ export function processLinkedInCsvFiles(csvFiles: Map<string, string>): ImportPr
     positions: [],
     education: [],
     skills: [],
+    certifications: [],
+    projects: [],
+    volunteering: [],
+    publications: [],
+    courses: [],
+    honors: [],
+    languages: [],
   };
 
   const profileCsv = csvFiles.get('Profile.csv');
@@ -57,6 +85,55 @@ export function processLinkedInCsvFiles(csvFiles: Map<string, string>): ImportPr
     preview.skills = parseCsv(skillsCsv)
       .map(mapSkillsCsv)
       .filter((s) => s.skillName);
+  }
+
+  const certificationsCsv = csvFiles.get('Certifications.csv');
+  if (certificationsCsv) {
+    preview.certifications = parseCsv(certificationsCsv)
+      .map(mapCertificationsCsv)
+      .filter((c) => c.name);
+  }
+
+  const projectsCsv = csvFiles.get('Projects.csv');
+  if (projectsCsv) {
+    preview.projects = parseCsv(projectsCsv)
+      .map(mapProjectsCsv)
+      .filter((p) => p.name);
+  }
+
+  const volunteeringCsv = csvFiles.get('Volunteering.csv');
+  if (volunteeringCsv) {
+    preview.volunteering = parseCsv(volunteeringCsv)
+      .map(mapVolunteeringCsv)
+      .filter((v) => v.organization);
+  }
+
+  const publicationsCsv = csvFiles.get('Publications.csv');
+  if (publicationsCsv) {
+    preview.publications = parseCsv(publicationsCsv)
+      .map(mapPublicationsCsv)
+      .filter((p) => p.title);
+  }
+
+  const coursesCsv = csvFiles.get('Courses.csv');
+  if (coursesCsv) {
+    preview.courses = parseCsv(coursesCsv)
+      .map(mapCoursesCsv)
+      .filter((c) => c.name);
+  }
+
+  const honorsCsv = csvFiles.get('Honors.csv');
+  if (honorsCsv) {
+    preview.honors = parseCsv(honorsCsv)
+      .map(mapHonorsCsv)
+      .filter((h) => h.title);
+  }
+
+  const languagesCsv = csvFiles.get('Languages.csv');
+  if (languagesCsv) {
+    preview.languages = parseCsv(languagesCsv)
+      .map(mapLanguagesCsv)
+      .filter((l) => l.name);
   }
 
   return preview;

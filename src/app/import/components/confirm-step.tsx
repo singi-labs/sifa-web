@@ -32,7 +32,14 @@ export function ConfirmStep({ preview, onDone }: ConfirmStepProps) {
     (preview.profile ? 1 : 0) +
     preview.positions.length +
     preview.education.length +
-    preview.skills.length;
+    preview.skills.length +
+    preview.certifications.length +
+    preview.projects.length +
+    preview.volunteering.length +
+    preview.publications.length +
+    preview.courses.length +
+    preview.honors.length +
+    preview.languages.length;
 
   const runImport = useCallback(async () => {
     setStatus('importing');

@@ -11,6 +11,7 @@ import { Info } from '@phosphor-icons/react';
 import { PositionsTable } from './positions-table';
 import { EducationTable } from './education-table';
 import { SkillsList } from './skills-list';
+import { ImportItemList } from './import-item-list';
 
 function normalize(s: string | undefined | null): string {
   return (s ?? '').trim().toLowerCase();
@@ -26,24 +27,10 @@ interface PreviewStepProps {
 export function PreviewStep({ preview, existingData, onConfirm, onBack }: PreviewStepProps) {
   const [data, setData] = useState<ImportPreview>(preview);
 
-  const removePosition = (index: number) => {
+  const removeFrom = (key: keyof ImportPreview, index: number) => {
     setData((prev) => ({
       ...prev,
-      positions: prev.positions.filter((_, i) => i !== index),
-    }));
-  };
-
-  const removeEducation = (index: number) => {
-    setData((prev) => ({
-      ...prev,
-      education: prev.education.filter((_, i) => i !== index),
-    }));
-  };
-
-  const removeSkill = (index: number) => {
-    setData((prev) => ({
-      ...prev,
-      skills: prev.skills.filter((_, i) => i !== index),
+      [key]: (prev[key] as unknown[]).filter((_, i) => i !== index),
     }));
   };
 
@@ -90,9 +77,33 @@ export function PreviewStep({ preview, existingData, onConfirm, onBack }: Previe
   }, [data.skills, existingData]);
 
   const totalItems =
-    (data.profile ? 1 : 0) + data.positions.length + data.education.length + data.skills.length;
+    (data.profile ? 1 : 0) +
+    data.positions.length +
+    data.education.length +
+    data.skills.length +
+    data.certifications.length +
+    data.projects.length +
+    data.volunteering.length +
+    data.publications.length +
+    data.courses.length +
+    data.honors.length +
+    data.languages.length;
   const totalDuplicates = duplicatePositions.size + duplicateEducation.size + duplicateSkills.size;
   const newItems = totalItems - totalDuplicates - (data.profile ? 1 : 0);
+
+  // Only show tabs that have data
+  const tabs: { key: string; label: string; count: number }[] = [
+    { key: 'positions', label: 'Positions', count: data.positions.length },
+    { key: 'education', label: 'Education', count: data.education.length },
+    { key: 'skills', label: 'Skills', count: data.skills.length },
+    { key: 'certifications', label: 'Certifications', count: data.certifications.length },
+    { key: 'projects', label: 'Projects', count: data.projects.length },
+    { key: 'volunteering', label: 'Volunteering', count: data.volunteering.length },
+    { key: 'publications', label: 'Publications', count: data.publications.length },
+    { key: 'courses', label: 'Courses', count: data.courses.length },
+    { key: 'honors', label: 'Honors', count: data.honors.length },
+    { key: 'languages', label: 'Languages', count: data.languages.length },
+  ].filter((t) => t.count > 0);
 
   return (
     <Card>
@@ -143,8 +154,8 @@ export function PreviewStep({ preview, existingData, onConfirm, onBack }: Previe
                 Your profile already has data
               </p>
               <p className="mt-1 text-blue-700 dark:text-blue-300">
-                Importing will replace all existing positions, education, and skills with the data
-                below. Your profile headline and summary will also be updated.
+                Importing will replace all existing profile data with the data below. Your profile
+                headline and summary will also be updated.
               </p>
             </div>
           </div>
@@ -165,33 +176,23 @@ export function PreviewStep({ preview, existingData, onConfirm, onBack }: Previe
           </div>
         )}
 
-        <Tabs defaultValue="positions">
-          <TabsList>
-            <TabsTrigger value="positions">
-              Positions{' '}
-              <Badge variant="secondary" className="ms-1.5">
-                {data.positions.length}
-              </Badge>
-            </TabsTrigger>
-            <TabsTrigger value="education">
-              Education{' '}
-              <Badge variant="secondary" className="ms-1.5">
-                {data.education.length}
-              </Badge>
-            </TabsTrigger>
-            <TabsTrigger value="skills">
-              Skills{' '}
-              <Badge variant="secondary" className="ms-1.5">
-                {data.skills.length}
-              </Badge>
-            </TabsTrigger>
+        <Tabs defaultValue={tabs[0]?.key ?? 'positions'}>
+          <TabsList className="flex flex-wrap h-auto gap-1">
+            {tabs.map((tab) => (
+              <TabsTrigger key={tab.key} value={tab.key}>
+                {tab.label}{' '}
+                <Badge variant="secondary" className="ms-1.5">
+                  {tab.count}
+                </Badge>
+              </TabsTrigger>
+            ))}
           </TabsList>
 
           <TabsContent value="positions">
             <PositionsTable
               positions={data.positions}
               duplicateIndices={duplicatePositions}
-              onRemove={removePosition}
+              onRemove={(i) => removeFrom('positions', i)}
             />
           </TabsContent>
 
@@ -199,7 +200,7 @@ export function PreviewStep({ preview, existingData, onConfirm, onBack }: Previe
             <EducationTable
               education={data.education}
               duplicateIndices={duplicateEducation}
-              onRemove={removeEducation}
+              onRemove={(i) => removeFrom('education', i)}
             />
           </TabsContent>
 
@@ -207,7 +208,77 @@ export function PreviewStep({ preview, existingData, onConfirm, onBack }: Previe
             <SkillsList
               skills={data.skills}
               duplicateIndices={duplicateSkills}
-              onRemove={removeSkill}
+              onRemove={(i) => removeFrom('skills', i)}
+            />
+          </TabsContent>
+
+          <TabsContent value="certifications">
+            <ImportItemList
+              items={data.certifications as unknown as Record<string, unknown>[]}
+              labelFn={(c) => c.name as string}
+              detailFn={(c) => c.authority as string | undefined}
+              emptyMessage="No certifications found."
+              onRemove={(i) => removeFrom('certifications', i)}
+            />
+          </TabsContent>
+
+          <TabsContent value="projects">
+            <ImportItemList
+              items={data.projects as unknown as Record<string, unknown>[]}
+              labelFn={(p) => p.name as string}
+              detailFn={(p) => p.description as string | undefined}
+              emptyMessage="No projects found."
+              onRemove={(i) => removeFrom('projects', i)}
+            />
+          </TabsContent>
+
+          <TabsContent value="volunteering">
+            <ImportItemList
+              items={data.volunteering as unknown as Record<string, unknown>[]}
+              labelFn={(v) => `${v.role ?? 'Volunteer'} at ${v.organization}`}
+              detailFn={(v) => v.cause as string | undefined}
+              emptyMessage="No volunteering found."
+              onRemove={(i) => removeFrom('volunteering', i)}
+            />
+          </TabsContent>
+
+          <TabsContent value="publications">
+            <ImportItemList
+              items={data.publications as unknown as Record<string, unknown>[]}
+              labelFn={(p) => p.title as string}
+              detailFn={(p) => p.publisher as string | undefined}
+              emptyMessage="No publications found."
+              onRemove={(i) => removeFrom('publications', i)}
+            />
+          </TabsContent>
+
+          <TabsContent value="courses">
+            <ImportItemList
+              items={data.courses as unknown as Record<string, unknown>[]}
+              labelFn={(c) => c.name as string}
+              detailFn={(c) => c.institution as string | undefined}
+              emptyMessage="No courses found."
+              onRemove={(i) => removeFrom('courses', i)}
+            />
+          </TabsContent>
+
+          <TabsContent value="honors">
+            <ImportItemList
+              items={data.honors as unknown as Record<string, unknown>[]}
+              labelFn={(h) => h.title as string}
+              detailFn={(h) => h.issuer as string | undefined}
+              emptyMessage="No honors found."
+              onRemove={(i) => removeFrom('honors', i)}
+            />
+          </TabsContent>
+
+          <TabsContent value="languages">
+            <ImportItemList
+              items={data.languages as unknown as Record<string, unknown>[]}
+              labelFn={(l) => l.name as string}
+              detailFn={(l) => l.proficiency as string | undefined}
+              emptyMessage="No languages found."
+              onRemove={(i) => removeFrom('languages', i)}
             />
           </TabsContent>
         </Tabs>
