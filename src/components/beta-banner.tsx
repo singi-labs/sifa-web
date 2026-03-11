@@ -18,7 +18,17 @@ export function BetaBanner() {
       className="border-b border-border bg-muted px-4 py-2 text-center text-sm text-muted-foreground"
     >
       <div className="mx-auto flex max-w-5xl items-center justify-center gap-2">
-        <p>{t('betaBanner')}</p>
+        <p>
+          {t('betaBanner')}{' '}
+          <a
+            href="https://github.com/singi-labs/sifa-workspace/issues"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-foreground"
+          >
+            {t('betaBannerReport')}
+          </a>
+        </p>
         <button
           type="button"
           onClick={() => setDismissed(true)}
