@@ -214,9 +214,9 @@ export function PreviewStep({ preview, existingData, onConfirm, onBack }: Previe
 
           <TabsContent value="certifications">
             <ImportItemList
-              items={data.certifications as unknown as Record<string, unknown>[]}
-              labelFn={(c) => c.name as string}
-              detailFn={(c) => c.authority as string | undefined}
+              items={data.certifications}
+              labelFn={(c) => c.name}
+              detailFn={(c) => c.authority}
               emptyMessage="No certifications found."
               onRemove={(i) => removeFrom('certifications', i)}
             />
@@ -224,9 +224,9 @@ export function PreviewStep({ preview, existingData, onConfirm, onBack }: Previe
 
           <TabsContent value="projects">
             <ImportItemList
-              items={data.projects as unknown as Record<string, unknown>[]}
-              labelFn={(p) => p.name as string}
-              detailFn={(p) => p.description as string | undefined}
+              items={data.projects}
+              labelFn={(p) => p.name}
+              detailFn={(p) => p.description}
               emptyMessage="No projects found."
               onRemove={(i) => removeFrom('projects', i)}
             />
@@ -234,9 +234,9 @@ export function PreviewStep({ preview, existingData, onConfirm, onBack }: Previe
 
           <TabsContent value="volunteering">
             <ImportItemList
-              items={data.volunteering as unknown as Record<string, unknown>[]}
+              items={data.volunteering}
               labelFn={(v) => `${v.role ?? 'Volunteer'} at ${v.organization}`}
-              detailFn={(v) => v.cause as string | undefined}
+              detailFn={(v) => v.cause}
               emptyMessage="No volunteering found."
               onRemove={(i) => removeFrom('volunteering', i)}
             />
@@ -244,9 +244,9 @@ export function PreviewStep({ preview, existingData, onConfirm, onBack }: Previe
 
           <TabsContent value="publications">
             <ImportItemList
-              items={data.publications as unknown as Record<string, unknown>[]}
-              labelFn={(p) => p.title as string}
-              detailFn={(p) => p.publisher as string | undefined}
+              items={data.publications}
+              labelFn={(p) => p.title}
+              detailFn={(p) => p.publisher}
               emptyMessage="No publications found."
               onRemove={(i) => removeFrom('publications', i)}
             />
@@ -254,9 +254,9 @@ export function PreviewStep({ preview, existingData, onConfirm, onBack }: Previe
 
           <TabsContent value="courses">
             <ImportItemList
-              items={data.courses as unknown as Record<string, unknown>[]}
-              labelFn={(c) => c.name as string}
-              detailFn={(c) => c.institution as string | undefined}
+              items={data.courses}
+              labelFn={(c) => c.name}
+              detailFn={(c) => c.number}
               emptyMessage="No courses found."
               onRemove={(i) => removeFrom('courses', i)}
             />
@@ -264,9 +264,9 @@ export function PreviewStep({ preview, existingData, onConfirm, onBack }: Previe
 
           <TabsContent value="honors">
             <ImportItemList
-              items={data.honors as unknown as Record<string, unknown>[]}
-              labelFn={(h) => h.title as string}
-              detailFn={(h) => h.issuer as string | undefined}
+              items={data.honors}
+              labelFn={(h) => h.title}
+              detailFn={(h) => h.description}
               emptyMessage="No honors found."
               onRemove={(i) => removeFrom('honors', i)}
             />
@@ -274,9 +274,9 @@ export function PreviewStep({ preview, existingData, onConfirm, onBack }: Previe
 
           <TabsContent value="languages">
             <ImportItemList
-              items={data.languages as unknown as Record<string, unknown>[]}
-              labelFn={(l) => l.name as string}
-              detailFn={(l) => l.proficiency as string | undefined}
+              items={data.languages}
+              labelFn={(l) => l.name}
+              detailFn={(l) => l.proficiency}
               emptyMessage="No languages found."
               onRemove={(i) => removeFrom('languages', i)}
             />

@@ -1,20 +1,20 @@
 'use client';
 
-interface ImportItemListProps {
-  items: Record<string, unknown>[];
-  labelFn: (item: Record<string, unknown>) => string;
-  detailFn?: (item: Record<string, unknown>) => string | undefined;
+interface ImportItemListProps<T> {
+  items: T[];
+  labelFn: (item: T) => string;
+  detailFn?: (item: T) => string | undefined;
   emptyMessage: string;
   onRemove: (index: number) => void;
 }
 
-export function ImportItemList({
+export function ImportItemList<T>({
   items,
   labelFn,
   detailFn,
   emptyMessage,
   onRemove,
-}: ImportItemListProps) {
+}: ImportItemListProps<T>) {
   if (items.length === 0) {
     return <p className="py-4 text-sm text-muted-foreground">{emptyMessage}</p>;
   }
