@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import type { ImportPreview } from '@/lib/import/orchestrator';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -63,6 +64,7 @@ function ImportBreakdown({ counts }: { counts: ImportedCounts }) {
 type ImportStatus = 'importing' | 'success' | 'partial' | 'error';
 
 export function ConfirmStep({ preview, onDone }: ConfirmStepProps) {
+  const t = useTranslations('import.confirm');
   const [status, setStatus] = useState<ImportStatus>('importing');
   const [progress, setProgress] = useState(0);
   const [result, setResult] = useState<ImportResult | null>(null);
@@ -143,10 +145,10 @@ export function ConfirmStep({ preview, onDone }: ConfirmStepProps) {
     <Card>
       <CardHeader>
         <CardTitle>
-          {status === 'importing' && 'Importing your data...'}
-          {status === 'success' && 'Import complete'}
-          {status === 'partial' && 'Import partially complete'}
-          {status === 'error' && 'Import failed'}
+          {status === 'importing' && t('importing')}
+          {status === 'success' && t('success')}
+          {status === 'partial' && t('partial')}
+          {status === 'error' && t('error')}
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -154,7 +156,7 @@ export function ConfirmStep({ preview, onDone }: ConfirmStepProps) {
           <div className="space-y-4">
             <Progress value={progress} aria-label={`Import progress: ${progress}%`} />
             <p className="text-sm text-muted-foreground">
-              Writing {totalItems} records to your Personal Data Server...
+              {t('writingRecords', { count: totalItems })}
             </p>
           </div>
         )}
@@ -163,11 +165,11 @@ export function ConfirmStep({ preview, onDone }: ConfirmStepProps) {
           <div className="flex flex-col items-center gap-4 py-6">
             <CheckCircle className="size-12 text-primary" weight="fill" aria-hidden="true" />
             <p className="text-sm text-muted-foreground">
-              Successfully imported to your profile:
+              {t('successMessage')}
             </p>
             {result?.importedCounts && <ImportBreakdown counts={result.importedCounts} />}
             <Button onClick={onDone}>
-              View your profile
+              {t('viewProfile')}
               <ArrowRight className="ml-1 h-4 w-4" weight="bold" aria-hidden="true" />
             </Button>
           </div>
@@ -177,7 +179,7 @@ export function ConfirmStep({ preview, onDone }: ConfirmStepProps) {
           <div className="flex flex-col items-center gap-4 py-6">
             <CheckCircle className="size-12 text-muted-foreground" weight="fill" aria-hidden="true" />
             <p className="text-sm text-muted-foreground">
-              Import completed with warnings.
+              {t('warningPrefix')}
               {result.failedItems.length > 0 && (
                 <> {result.failedItems.length} items could not be imported.</>
               )}
@@ -186,7 +188,7 @@ export function ConfirmStep({ preview, onDone }: ConfirmStepProps) {
             {result.failedItems.length > 0 && (
               <details className="w-full max-w-sm">
                 <summary className="cursor-pointer text-xs text-muted-foreground">
-                  View failed items
+                  {t('viewFailed')}
                 </summary>
                 <ul className="mt-2 space-y-1 text-xs text-destructive">
                   {result.failedItems.map((item, i) => (
@@ -197,10 +199,10 @@ export function ConfirmStep({ preview, onDone }: ConfirmStepProps) {
             )}
             <div className="flex gap-2">
               <Button variant="outline" onClick={() => runImport()}>
-                Retry failed items
+                {t('retryFailed')}
               </Button>
               <Button onClick={onDone}>
-                View your profile
+                {t('viewProfile')}
                 <ArrowRight className="ml-1 h-4 w-4" weight="bold" aria-hidden="true" />
               </Button>
             </div>
@@ -215,10 +217,10 @@ export function ConfirmStep({ preview, onDone }: ConfirmStepProps) {
             </p>
             <div className="flex gap-2">
               <Button variant="outline" onClick={() => runImport()}>
-                Retry
+                {t('retry')}
               </Button>
               <Button variant="ghost" onClick={onDone}>
-                Go to profile
+                {t('goToProfile')}
               </Button>
             </div>
           </div>

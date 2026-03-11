@@ -81,7 +81,7 @@ export default function ImportPage() {
     <main className="mx-auto max-w-3xl px-4 py-8">
       <h1 className="mb-2 text-2xl font-bold">{t('title')}</h1>
       <p className="mb-8 text-muted-foreground">
-        Bring your professional history to Sifa. Your data is processed entirely in your browser.
+        {t('subtitle')}
       </p>
 
       {/* Step indicator */}

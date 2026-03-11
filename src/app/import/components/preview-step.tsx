@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import type { ImportPreview } from '@/lib/import/orchestrator';
 import type { ExistingProfileData } from '../page';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -25,6 +26,7 @@ interface PreviewStepProps {
 }
 
 export function PreviewStep({ preview, existingData, onConfirm, onBack }: PreviewStepProps) {
+  const t = useTranslations('import.preview');
   const [data, setData] = useState<ImportPreview>(preview);
 
   const removeFrom = (key: keyof ImportPreview, index: number) => {
@@ -108,7 +110,7 @@ export function PreviewStep({ preview, existingData, onConfirm, onBack }: Previe
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Review imported data</CardTitle>
+        <CardTitle>{t('heading')}</CardTitle>
       </CardHeader>
       <CardContent>
         {existingData && totalDuplicates > 0 && (
@@ -123,17 +125,16 @@ export function PreviewStep({ preview, existingData, onConfirm, onBack }: Previe
             />
             <div className="text-sm">
               <p className="font-medium">
-                Some items already exist on your profile
+                {t('duplicatesTitle')}
               </p>
               <p className="mt-1 text-muted-foreground">
-                {totalDuplicates} {totalDuplicates === 1 ? 'item matches' : 'items match'} your
-                existing profile data and will be overwritten.{' '}
+                {t('duplicatesBody', { count: totalDuplicates })}{' '}
                 {newItems > 0 && (
                   <>
-                    {newItems} {newItems === 1 ? 'item is' : 'items are'} new.{' '}
+                    {t('newItemsNote', { count: newItems })}{' '}
                   </>
                 )}
-                You can remove items you don&apos;t want to import.
+                {t('removeNote')}
               </p>
             </div>
           </div>
@@ -151,11 +152,10 @@ export function PreviewStep({ preview, existingData, onConfirm, onBack }: Previe
             />
             <div className="text-sm">
               <p className="font-medium">
-                Your profile already has data
+                {t('existingTitle')}
               </p>
               <p className="mt-1 text-muted-foreground">
-                Importing will replace all existing profile data with the data below. Your profile
-                headline and summary will also be updated.
+                {t('existingBody')}
               </p>
             </div>
           </div>
@@ -163,7 +163,7 @@ export function PreviewStep({ preview, existingData, onConfirm, onBack }: Previe
 
         {data.profile && (
           <div className="mb-6 rounded-lg border p-4">
-            <h3 className="text-sm font-semibold">Profile</h3>
+            <h3 className="text-sm font-semibold">{t('profile')}</h3>
             <p className="mt-1 text-sm">
               {data.profile.firstName} {data.profile.lastName}
             </p>
@@ -285,14 +285,14 @@ export function PreviewStep({ preview, existingData, onConfirm, onBack }: Previe
 
         <div className="mt-6 flex items-center justify-between">
           <Button variant="outline" onClick={onBack}>
-            Back
+            {t('back')}
           </Button>
           <div className="flex items-center gap-4">
             <span className="text-sm text-muted-foreground">
-              {totalItems} {totalItems === 1 ? 'item' : 'items'} to import
+              {t('itemCount', { count: totalItems })}
             </span>
             <Button onClick={() => onConfirm(data)} disabled={totalItems === 0}>
-              Confirm &amp; Import
+              {t('confirmButton')}
             </Button>
           </div>
         </div>
