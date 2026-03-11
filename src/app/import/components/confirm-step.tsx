@@ -66,6 +66,7 @@ export function ConfirmStep({ preview, onDone }: ConfirmStepProps) {
       const data = (await res.json().catch(() => ({}))) as {
         importedCount?: number;
         failedItems?: string[];
+        warning?: string;
       };
       const importedCount = data.importedCount ?? totalItems;
       const failedItems = data.failedItems ?? [];
@@ -73,7 +74,10 @@ export function ConfirmStep({ preview, onDone }: ConfirmStepProps) {
       setProgress(100);
       setResult({ totalItems, importedCount, failedItems });
 
-      if (failedItems.length > 0) {
+      if (data.warning) {
+        setStatus('partial');
+        setResult({ totalItems, importedCount, failedItems: [data.warning] });
+      } else if (failedItems.length > 0) {
         setStatus('partial');
       } else {
         setStatus('success');
