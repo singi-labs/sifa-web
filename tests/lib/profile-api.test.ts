@@ -22,10 +22,14 @@ describe('profile-api', () => {
     );
   });
 
-  it('createRecord sends POST', async () => {
-    mockFetch.mockResolvedValue({ ok: true });
+  it('createRecord sends POST and returns rkey', async () => {
+    mockFetch.mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve({ rkey: 'tid123' }),
+    });
     const result = await createRecord('id.sifa.profile.position', { title: 'Eng' });
     expect(result.success).toBe(true);
+    expect(result.rkey).toBe('tid123');
     expect(mockFetch).toHaveBeenCalledWith(
       expect.stringContaining('/api/profile/records/id.sifa.profile.position'),
       expect.objectContaining({ method: 'POST' }),
