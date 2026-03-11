@@ -19,7 +19,7 @@ interface SkillsSectionProps {
   isOwnProfile?: boolean;
 }
 
-export function SkillsSection({ skills: _propSkills, isOwnProfile }: SkillsSectionProps) {
+export function SkillsSection({ isOwnProfile }: SkillsSectionProps) {
   const t = useTranslations('sections');
   const { profile, addItem, updateItem, removeItem } = useProfileEdit();
   const [dialog, setDialog] = useState<DialogState | null>(null);

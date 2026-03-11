@@ -16,10 +16,6 @@ export function CareerSection({ positions, isOwnProfile }: CareerSectionProps) {
 
   if (!positions.length && !isOwnProfile) return null;
 
-  const sorted = [...positions].sort(
-    (a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime(),
-  );
-
   return (
     <TimelineSection title={t('career')}>
       <EditableSection<ProfilePosition>

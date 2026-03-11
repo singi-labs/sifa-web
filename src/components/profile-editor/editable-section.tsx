@@ -3,7 +3,7 @@
 import { useState, useCallback } from 'react';
 import { toast } from 'sonner';
 import { useProfileEdit } from '@/components/profile-edit-provider';
-import { SectionEditor, EditableEntry } from './section-editor';
+import { SectionEditor } from './section-editor';
 import { EditDialog, type FieldDef } from './edit-dialog';
 import {
   createPosition, updatePosition, deletePosition,
