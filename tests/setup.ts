@@ -23,6 +23,7 @@ const translations: Record<string, Record<string, string>> = {
     skipToContent: 'Skip to main content',
     betaBanner:
       'Sifa is in the pre-alpha "move fast and break things" stage, and this is basically our live development server. Your profile data is safely stored in your AT Protocol account, but other things might change a lot and some app preferences may reset before we launch.',
+    betaBannerReport: 'Help build a better networking ecosystem — report issues on GitHub.',
     dismissBanner: 'Dismiss banner',
     openMenu: 'Open menu',
     closeMenu: 'Close menu',
