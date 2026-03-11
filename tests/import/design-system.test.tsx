@@ -266,7 +266,7 @@ describe('Design system color alignment', () => {
       );
 
       await vi.waitFor(() => {
-        expect(container.innerHTML).toContain('Imported');
+        expect(container.innerHTML).toContain('Import completed with warnings');
       });
 
       assertNoBannedClasses(container);

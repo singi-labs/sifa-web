@@ -14,10 +14,50 @@ interface ConfirmStepProps {
   onDone: () => void;
 }
 
+interface ImportedCounts {
+  profile: number;
+  positions: number;
+  education: number;
+  skills: number;
+  certifications: number;
+  projects: number;
+  volunteering: number;
+  publications: number;
+  courses: number;
+  honors: number;
+  languages: number;
+}
+
 interface ImportResult {
   totalItems: number;
-  importedCount: number;
+  importedCounts: ImportedCounts | null;
   failedItems: string[];
+}
+
+function ImportBreakdown({ counts }: { counts: ImportedCounts }) {
+  const sections = [
+    { label: 'profile', count: counts.profile },
+    { label: 'position', count: counts.positions },
+    { label: 'education', count: counts.education },
+    { label: 'skill', count: counts.skills },
+    { label: 'certification', count: counts.certifications },
+    { label: 'project', count: counts.projects },
+    { label: 'volunteering', count: counts.volunteering },
+    { label: 'publication', count: counts.publications },
+    { label: 'course', count: counts.courses },
+    { label: 'honor', count: counts.honors },
+    { label: 'language', count: counts.languages },
+  ].filter((s) => s.count > 0);
+
+  return (
+    <ul className="text-sm text-muted-foreground">
+      {sections.map((s) => (
+        <li key={s.label}>
+          {s.count} {s.count === 1 ? s.label : `${s.label}s`}
+        </li>
+      ))}
+    </ul>
+  );
 }
 
 type ImportStatus = 'importing' | 'success' | 'partial' | 'error';
@@ -71,19 +111,19 @@ export function ConfirmStep({ preview, onDone }: ConfirmStepProps) {
       }
 
       const data = (await res.json().catch(() => ({}))) as {
-        importedCount?: number;
+        imported?: ImportedCounts;
         failedItems?: string[];
         warning?: string;
       };
-      const importedCount = data.importedCount ?? totalItems;
+      const importedCounts = data.imported ?? null;
       const failedItems = data.failedItems ?? [];
 
       setProgress(100);
-      setResult({ totalItems, importedCount, failedItems });
+      setResult({ totalItems, importedCounts, failedItems });
 
       if (data.warning) {
         setStatus('partial');
-        setResult({ totalItems, importedCount, failedItems: [data.warning] });
+        setResult({ totalItems, importedCounts, failedItems: [data.warning] });
       } else if (failedItems.length > 0) {
         setStatus('partial');
       } else {
@@ -123,8 +163,9 @@ export function ConfirmStep({ preview, onDone }: ConfirmStepProps) {
           <div className="flex flex-col items-center gap-4 py-6">
             <CheckCircle className="size-12 text-primary" weight="fill" aria-hidden="true" />
             <p className="text-sm text-muted-foreground">
-              Successfully imported {result?.importedCount ?? totalItems} items to your profile.
+              Successfully imported to your profile:
             </p>
+            {result?.importedCounts && <ImportBreakdown counts={result.importedCounts} />}
             <Button onClick={onDone}>
               View your profile
               <ArrowRight className="ml-1 h-4 w-4" weight="bold" aria-hidden="true" />
@@ -136,11 +177,12 @@ export function ConfirmStep({ preview, onDone }: ConfirmStepProps) {
           <div className="flex flex-col items-center gap-4 py-6">
             <CheckCircle className="size-12 text-muted-foreground" weight="fill" aria-hidden="true" />
             <p className="text-sm text-muted-foreground">
-              Imported {result.importedCount} of {result.totalItems} items.
+              Import completed with warnings.
               {result.failedItems.length > 0 && (
                 <> {result.failedItems.length} items could not be imported.</>
               )}
             </p>
+            {result.importedCounts && <ImportBreakdown counts={result.importedCounts} />}
             {result.failedItems.length > 0 && (
               <details className="w-full max-w-sm">
                 <summary className="cursor-pointer text-xs text-muted-foreground">
