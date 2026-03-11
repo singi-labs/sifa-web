@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { buildPersonJsonLd, buildMetaDescription } from '@/lib/jsonld';
 import { sanitize } from '@/lib/sanitize';
 import { IdentityCard } from '@/components/identity-card';
+import { DataTransparencyCard } from '@/components/data-transparency-card';
 import { ProfileBody } from '@/components/profile-body';
 import { UnclaimedBanner } from '@/components/unclaimed-banner';
 
@@ -77,6 +78,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ handle
           isOwnProfile={profile.isOwnProfile}
           isFollowing={profile.isFollowing}
         />
+        {profile.isOwnProfile && <DataTransparencyCard did={profile.did} />}
         <ProfileBody profile={profile} />
       </div>
     </>

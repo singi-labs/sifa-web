@@ -215,6 +215,11 @@
     "contactTitle": "Contact",
     "contactBody": "For privacy questions, contact us at privacy@sifa.id."
   },
+  "dataTransparency": {
+    "title": "Your data on the AT Protocol",
+    "body": "Your professional profile is stored in your Personal Data Server (PDS). This data is public and portable -- you can inspect exactly what is stored and take it to any compatible provider.",
+    "viewRawData": "View your raw data"
+  },
   "terms": {
     "title": "Terms of Service",
     "lastUpdated": "Last updated: March 2026",

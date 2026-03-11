@@ -150,6 +150,11 @@ const translations: Record<string, Record<string, string>> = {
     viewAll: 'View full activity',
     comingSoon: 'Activity overview coming soon.',
   },
+  dataTransparency: {
+    title: 'Your data on the AT Protocol',
+    body: 'Your professional profile is stored in your Personal Data Server (PDS). This data is public and portable -- you can inspect exactly what is stored and take it to any compatible provider.',
+    viewRawData: 'View your raw data',
+  },
   identityCard: {
     label: 'Professional identity',
     avatarAlt: "{name}'s profile photo",
