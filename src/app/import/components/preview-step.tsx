@@ -2,21 +2,24 @@
 
 import { useState } from 'react';
 import type { ImportPreview } from '@/lib/import/orchestrator';
+import type { ExistingDataCounts } from '../page';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Info } from '@phosphor-icons/react';
 import { PositionsTable } from './positions-table';
 import { EducationTable } from './education-table';
 import { SkillsList } from './skills-list';
 
 interface PreviewStepProps {
   preview: ImportPreview;
+  existingData: ExistingDataCounts | null;
   onConfirm: (preview: ImportPreview) => void;
   onBack: () => void;
 }
 
-export function PreviewStep({ preview, onConfirm, onBack }: PreviewStepProps) {
+export function PreviewStep({ preview, existingData, onConfirm, onBack }: PreviewStepProps) {
   const [data, setData] = useState<ImportPreview>(preview);
 
   const removePosition = (index: number) => {
@@ -49,6 +52,38 @@ export function PreviewStep({ preview, onConfirm, onBack }: PreviewStepProps) {
         <CardTitle>Review imported data</CardTitle>
       </CardHeader>
       <CardContent>
+        {existingData && (
+          <div
+            className="mb-6 flex gap-3 rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-900 dark:bg-blue-950"
+            role="status"
+          >
+            <Info
+              className="mt-0.5 size-5 shrink-0 text-blue-600 dark:text-blue-400"
+              weight="fill"
+              aria-hidden="true"
+            />
+            <div className="text-sm">
+              <p className="font-medium text-blue-900 dark:text-blue-100">
+                Your profile already has data
+              </p>
+              <p className="mt-1 text-blue-700 dark:text-blue-300">
+                Importing will replace your existing{' '}
+                {[
+                  existingData.positions > 0 &&
+                    `${existingData.positions} position${existingData.positions !== 1 ? 's' : ''}`,
+                  existingData.education > 0 &&
+                    `${existingData.education} education entr${existingData.education !== 1 ? 'ies' : 'y'}`,
+                  existingData.skills > 0 &&
+                    `${existingData.skills} skill${existingData.skills !== 1 ? 's' : ''}`,
+                ]
+                  .filter(Boolean)
+                  .join(', ')}{' '}
+                with the data below. Your profile headline and summary will also be updated.
+              </p>
+            </div>
+          </div>
+        )}
+
         {data.profile && (
           <div className="mb-6 rounded-lg border p-4">
             <h3 className="text-sm font-semibold">Profile</h3>
