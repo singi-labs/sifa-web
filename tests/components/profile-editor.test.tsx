@@ -9,6 +9,26 @@ import {
   valuesToPosition,
 } from '@/components/profile-editor/position-form';
 import { ABOUT_FIELDS, profileToAboutValues } from '@/components/profile-editor/about-form';
+import {
+  educationToValues,
+  valuesToEducation,
+  skillToValues,
+  valuesToSkill,
+  certificationToValues,
+  valuesToCertification,
+  projectToValues,
+  valuesToProject,
+  publicationToValues,
+  valuesToPublication,
+  volunteeringToValues,
+  valuesToVolunteering,
+  honorToValues,
+  valuesToHonor,
+  languageToValues,
+  valuesToLanguage,
+  courseToValues,
+  valuesToCourse,
+} from '@/components/profile-editor/section-converters';
 
 describe('SectionEditor', () => {
   it('renders children without edit controls for non-owner', () => {
@@ -203,5 +223,192 @@ describe('About form helpers', () => {
 
   it('has correct number of fields', () => {
     expect(ABOUT_FIELDS.length).toBe(4);
+  });
+});
+
+describe('Section converters', () => {
+  describe('education round-trip', () => {
+    it('converts education to values and back', () => {
+      const original = {
+        rkey: 'e1',
+        institution: 'MIT',
+        degree: 'BSc',
+        fieldOfStudy: 'CS',
+        startDate: '2018-09',
+        endDate: '2022-06',
+      };
+      const values = educationToValues(original);
+      expect(values.institution).toBe('MIT');
+      expect(values.degree).toBe('BSc');
+
+      const result = valuesToEducation(values);
+      expect(result.institution).toBe('MIT');
+      expect(result.degree).toBe('BSc');
+      expect(result.fieldOfStudy).toBe('CS');
+      expect(result.startDate).toBe('2018-09');
+      expect(result.endDate).toBe('2022-06');
+    });
+
+    it('converts empty optional strings to undefined', () => {
+      const values = educationToValues({ rkey: 'e2', institution: 'Stanford' });
+      expect(values.degree).toBe('');
+
+      const result = valuesToEducation(values);
+      expect(result.degree).toBeUndefined();
+      expect(result.fieldOfStudy).toBeUndefined();
+      expect(result.startDate).toBeUndefined();
+      expect(result.endDate).toBeUndefined();
+    });
+  });
+
+  describe('skill round-trip', () => {
+    it('converts skill to values and back', () => {
+      const original = { rkey: 's1', skillName: 'TypeScript', category: 'Frontend' };
+      const values = skillToValues(original);
+      expect(values.skillName).toBe('TypeScript');
+
+      const result = valuesToSkill(values);
+      expect(result.skillName).toBe('TypeScript');
+      expect(result.category).toBe('Frontend');
+    });
+
+    it('converts empty category to undefined', () => {
+      const result = valuesToSkill({ skillName: 'Rust', category: '' });
+      expect(result.category).toBeUndefined();
+    });
+  });
+
+  describe('certification round-trip', () => {
+    it('converts certification to values and back', () => {
+      const original = {
+        rkey: 'c1',
+        name: 'AWS Solutions Architect',
+        issuingOrg: 'Amazon',
+        issueDate: '2023-01',
+        expiryDate: '2026-01',
+        credentialUrl: 'https://aws.amazon.com/cert/123',
+      };
+      const values = certificationToValues(original);
+      expect(values.name).toBe('AWS Solutions Architect');
+      expect(values.issuingOrg).toBe('Amazon');
+
+      const result = valuesToCertification(values);
+      expect(result.name).toBe('AWS Solutions Architect');
+      expect(result.issuingOrg).toBe('Amazon');
+      expect(result.issueDate).toBe('2023-01');
+      expect(result.expiryDate).toBe('2026-01');
+      expect(result.credentialUrl).toBe('https://aws.amazon.com/cert/123');
+    });
+
+    it('converts empty optional strings to undefined', () => {
+      const result = valuesToCertification({
+        name: 'Cert',
+        issuingOrg: 'Org',
+        issueDate: '',
+        expiryDate: '',
+        credentialUrl: '',
+      });
+      expect(result.issueDate).toBeUndefined();
+      expect(result.expiryDate).toBeUndefined();
+      expect(result.credentialUrl).toBeUndefined();
+    });
+  });
+
+  describe('project round-trip', () => {
+    it('converts project to values and back', () => {
+      const values = projectToValues({
+        rkey: 'p1',
+        name: 'Sifa',
+        description: 'Professional network',
+        url: 'https://sifa.id',
+      });
+      const result = valuesToProject(values);
+      expect(result.name).toBe('Sifa');
+      expect(result.description).toBe('Professional network');
+      expect(result.url).toBe('https://sifa.id');
+      expect(result.startDate).toBeUndefined();
+    });
+  });
+
+  describe('publication round-trip', () => {
+    it('converts publication to values and back', () => {
+      const values = publicationToValues({
+        rkey: 'pub1',
+        title: 'My Paper',
+        publisher: 'ACM',
+        date: '2024-06',
+      });
+      const result = valuesToPublication(values);
+      expect(result.title).toBe('My Paper');
+      expect(result.publisher).toBe('ACM');
+      expect(result.url).toBeUndefined();
+    });
+  });
+
+  describe('volunteering round-trip', () => {
+    it('converts volunteering to values and back', () => {
+      const values = volunteeringToValues({
+        rkey: 'v1',
+        organization: 'Red Cross',
+        role: 'Volunteer',
+        cause: 'Humanitarian',
+      });
+      const result = valuesToVolunteering(values);
+      expect(result.organization).toBe('Red Cross');
+      expect(result.role).toBe('Volunteer');
+      expect(result.cause).toBe('Humanitarian');
+      expect(result.description).toBeUndefined();
+    });
+  });
+
+  describe('honor round-trip', () => {
+    it('converts honor to values and back', () => {
+      const values = honorToValues({
+        rkey: 'h1',
+        title: 'Best Paper Award',
+        issuer: 'IEEE',
+        date: '2023-11',
+      });
+      const result = valuesToHonor(values);
+      expect(result.title).toBe('Best Paper Award');
+      expect(result.issuer).toBe('IEEE');
+      expect(result.description).toBeUndefined();
+    });
+  });
+
+  describe('language with proficiency', () => {
+    it('converts language to values and back', () => {
+      const values = languageToValues({
+        rkey: 'l1',
+        language: 'Dutch',
+        proficiency: 'native',
+      });
+      expect(values.language).toBe('Dutch');
+      expect(values.proficiency).toBe('native');
+
+      const result = valuesToLanguage(values);
+      expect(result.language).toBe('Dutch');
+      expect(result.proficiency).toBe('native');
+    });
+
+    it('converts empty proficiency to undefined', () => {
+      const result = valuesToLanguage({ language: 'English', proficiency: '' });
+      expect(result.proficiency).toBeUndefined();
+    });
+  });
+
+  describe('course round-trip', () => {
+    it('converts course to values and back', () => {
+      const values = courseToValues({
+        rkey: 'co1',
+        name: 'Distributed Systems',
+        institution: 'MIT',
+        number: 'CS-601',
+      });
+      const result = valuesToCourse(values);
+      expect(result.name).toBe('Distributed Systems');
+      expect(result.institution).toBe('MIT');
+      expect(result.number).toBe('CS-601');
+    });
   });
 });
