@@ -98,14 +98,17 @@ export function ConfirmStep({ preview, onDone }: ConfirmStepProps) {
         });
       }, 100);
 
-      const res = await fetch(`${API_URL}/api/import/linkedin/confirm`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify(preview),
-      });
-
-      clearInterval(progressInterval);
+      let res: Response;
+      try {
+        res = await fetch(`${API_URL}/api/import/linkedin/confirm`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify(preview),
+        });
+      } finally {
+        clearInterval(progressInterval);
+      }
 
       if (!res.ok) {
         const body = await res.json().catch(() => null);
