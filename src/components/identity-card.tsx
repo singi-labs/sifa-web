@@ -94,9 +94,7 @@ export function IdentityCard({
             <p className="truncate text-sm text-muted-foreground">@{handle}</p>
             {!claimed && (
               <Popover.Root>
-                <Popover.Trigger
-                  className="inline-flex h-5 shrink-0 cursor-pointer items-center rounded-full border border-amber-300 bg-amber-50 px-2 text-xs font-medium text-amber-800 transition-colors hover:bg-amber-100 dark:border-amber-700 dark:bg-amber-950/50 dark:text-amber-300 dark:hover:bg-amber-900/50"
-                >
+                <Popover.Trigger className="inline-flex h-5 shrink-0 cursor-pointer items-center rounded-full border border-amber-300 bg-amber-50 px-2 text-xs font-medium text-amber-800 transition-colors hover:bg-amber-100 dark:border-amber-700 dark:bg-amber-950/50 dark:text-amber-300 dark:hover:bg-amber-900/50">
                   {t('unclaimed')}
                 </Popover.Trigger>
                 <Popover.Portal>

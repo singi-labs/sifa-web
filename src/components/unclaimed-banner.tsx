@@ -9,8 +9,7 @@ import { useAuth } from '@/components/auth-provider';
 const SESSION_STORAGE_KEY = 'sifa-unclaimed-banner-dismissed';
 
 function getWasDismissed() {
-  return typeof window !== 'undefined'
-    && sessionStorage.getItem(SESSION_STORAGE_KEY) === 'true';
+  return typeof window !== 'undefined' && sessionStorage.getItem(SESSION_STORAGE_KEY) === 'true';
 }
 
 export function UnclaimedBanner() {
