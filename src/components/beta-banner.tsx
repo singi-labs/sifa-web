@@ -17,26 +17,29 @@ export function BetaBanner() {
       role="status"
       className="border-b border-border bg-muted px-4 py-2 text-center text-sm text-muted-foreground"
     >
-      <div className="mx-auto flex max-w-5xl items-center justify-center gap-2">
-        <p>
-          {t('betaBanner')}{' '}
+      <div className="mx-auto max-w-5xl">
+        <div className="flex items-center justify-center gap-2">
+          <p>{t('betaBanner')}</p>
+          <button
+            type="button"
+            onClick={() => setDismissed(true)}
+            className="ml-2 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            aria-label={t('dismissBanner')}
+          >
+            <X className="h-4 w-4" weight="bold" aria-hidden="true" />
+          </button>
+        </div>
+        <p className="mt-1">
+          {t('betaBannerReportCta')}{' '}
           <a
             href="https://github.com/singi-labs/sifa-workspace/issues"
             target="_blank"
             rel="noopener noreferrer"
-            className="underline hover:text-foreground"
+            className="inline-flex items-center rounded-md border border-border bg-background px-2 py-0.5 text-xs font-medium text-foreground transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
-            {t('betaBannerReport')}
+            {t('betaBannerReportLink')}
           </a>
         </p>
-        <button
-          type="button"
-          onClick={() => setDismissed(true)}
-          className="ml-2 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          aria-label={t('dismissBanner')}
-        >
-          <X className="h-4 w-4" weight="bold" aria-hidden="true" />
-        </button>
       </div>
     </div>
   );
