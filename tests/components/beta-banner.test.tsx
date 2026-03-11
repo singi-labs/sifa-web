@@ -8,7 +8,7 @@ describe('BetaBanner', () => {
     render(<BetaBanner />);
 
     expect(screen.getByRole('status')).toBeDefined();
-    expect(screen.getByText(/Sifa is in beta/)).toBeDefined();
+    expect(screen.getByText(/Sifa is in the pre-alpha/)).toBeDefined();
   });
 
   it('has a dismiss button', () => {
