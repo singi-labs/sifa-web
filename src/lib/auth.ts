@@ -15,7 +15,7 @@ export async function getSession(): Promise<AuthSession | null> {
     });
     if (!res.ok) return null;
     const data = await res.json();
-    if (!data.did || !data.handle) return null;
+    if (!data.authenticated || !data.did || !data.handle) return null;
     return data;
   } catch {
     return null;
