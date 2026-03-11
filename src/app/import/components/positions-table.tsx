@@ -29,7 +29,7 @@ export function PositionsTable({ positions, duplicateIndices, onRemove }: Positi
                 </Badge>
               ) : (
                 duplicateIndices.size > 0 && (
-                  <Badge className="bg-green-100 text-xs text-green-800 dark:bg-green-900 dark:text-green-200">
+                  <Badge variant="secondary" className="text-xs">
                     New
                   </Badge>
                 )

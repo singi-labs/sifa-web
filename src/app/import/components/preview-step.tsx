@@ -113,19 +113,19 @@ export function PreviewStep({ preview, existingData, onConfirm, onBack }: Previe
       <CardContent>
         {existingData && totalDuplicates > 0 && (
           <div
-            className="mb-6 flex gap-3 rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-900 dark:bg-blue-950"
+            className="mb-6 flex gap-3 rounded-lg border bg-muted/50 p-4"
             role="status"
           >
             <Info
-              className="mt-0.5 size-5 shrink-0 text-blue-600 dark:text-blue-400"
+              className="mt-0.5 size-5 shrink-0 text-primary"
               weight="fill"
               aria-hidden="true"
             />
             <div className="text-sm">
-              <p className="font-medium text-blue-900 dark:text-blue-100">
+              <p className="font-medium">
                 Some items already exist on your profile
               </p>
-              <p className="mt-1 text-blue-700 dark:text-blue-300">
+              <p className="mt-1 text-muted-foreground">
                 {totalDuplicates} {totalDuplicates === 1 ? 'item matches' : 'items match'} your
                 existing profile data and will be overwritten.{' '}
                 {newItems > 0 && (
@@ -141,19 +141,19 @@ export function PreviewStep({ preview, existingData, onConfirm, onBack }: Previe
 
         {existingData && totalDuplicates === 0 && (
           <div
-            className="mb-6 flex gap-3 rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-900 dark:bg-blue-950"
+            className="mb-6 flex gap-3 rounded-lg border bg-muted/50 p-4"
             role="status"
           >
             <Info
-              className="mt-0.5 size-5 shrink-0 text-blue-600 dark:text-blue-400"
+              className="mt-0.5 size-5 shrink-0 text-primary"
               weight="fill"
               aria-hidden="true"
             />
             <div className="text-sm">
-              <p className="font-medium text-blue-900 dark:text-blue-100">
+              <p className="font-medium">
                 Your profile already has data
               </p>
-              <p className="mt-1 text-blue-700 dark:text-blue-300">
+              <p className="mt-1 text-muted-foreground">
                 Importing will replace all existing profile data with the data below. Your profile
                 headline and summary will also be updated.
               </p>

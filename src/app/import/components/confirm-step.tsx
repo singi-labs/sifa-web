@@ -121,7 +121,7 @@ export function ConfirmStep({ preview, onDone }: ConfirmStepProps) {
 
         {status === 'success' && (
           <div className="flex flex-col items-center gap-4 py-6">
-            <CheckCircle className="size-12 text-green-600" weight="fill" aria-hidden="true" />
+            <CheckCircle className="size-12 text-primary" weight="fill" aria-hidden="true" />
             <p className="text-sm text-muted-foreground">
               Successfully imported {result?.importedCount ?? totalItems} items to your profile.
             </p>
@@ -134,7 +134,7 @@ export function ConfirmStep({ preview, onDone }: ConfirmStepProps) {
 
         {status === 'partial' && result && (
           <div className="flex flex-col items-center gap-4 py-6">
-            <CheckCircle className="size-12 text-yellow-500" weight="fill" aria-hidden="true" />
+            <CheckCircle className="size-12 text-muted-foreground" weight="fill" aria-hidden="true" />
             <p className="text-sm text-muted-foreground">
               Imported {result.importedCount} of {result.totalItems} items.
               {result.failedItems.length > 0 && (
