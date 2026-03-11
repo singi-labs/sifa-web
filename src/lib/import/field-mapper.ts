@@ -115,3 +115,158 @@ export function mapSkillsCsv(row: Record<string, string>): SifaSkill {
     skillName: row['Name']?.trim() ?? '',
   };
 }
+
+// ── Certifications.csv → id.sifa.profile.certification ──────────────
+
+export interface SifaCertification {
+  name: string;
+  authority?: string;
+  credentialUrl?: string;
+  credentialId?: string;
+  issuedAt?: string;
+}
+
+export function mapCertificationsCsv(row: Record<string, string>): SifaCertification {
+  return {
+    name: row['Name']?.trim() ?? '',
+    authority: optional(row['Authority']),
+    credentialUrl: optional(row['Url']),
+    credentialId: optional(row['License Number']),
+    issuedAt: parseLinkedInDate(row['Started On']),
+  };
+}
+
+// ── Projects.csv → id.sifa.profile.project ──────────────────────────
+
+export interface SifaProject {
+  name: string;
+  description?: string;
+  url?: string;
+  startDate?: string;
+  endDate?: string;
+}
+
+export function mapProjectsCsv(row: Record<string, string>): SifaProject {
+  return {
+    name: row['Title']?.trim() ?? '',
+    description: optional(row['Description']),
+    url: optional(row['Url']),
+    startDate: parseLinkedInDate(row['Started On']),
+    endDate: parseLinkedInDate(row['Finished On']),
+  };
+}
+
+// ── Volunteering.csv → id.sifa.profile.volunteering ─────────────────
+
+export interface SifaVolunteering {
+  organization: string;
+  role?: string;
+  cause?: string;
+  description?: string;
+  startDate?: string;
+  endDate?: string;
+}
+
+export function mapVolunteeringCsv(row: Record<string, string>): SifaVolunteering {
+  return {
+    organization: row['Company Name']?.trim() ?? '',
+    role: optional(row['Role']),
+    cause: optional(row['Cause']),
+    description: optional(row['Description']),
+    startDate: parseLinkedInDate(row['Started On']),
+    endDate: parseLinkedInDate(row['Finished On']),
+  };
+}
+
+// ── Publications.csv → id.sifa.profile.publication ──────────────────
+
+export interface SifaPublication {
+  title: string;
+  publisher?: string;
+  url?: string;
+  description?: string;
+  publishedAt?: string;
+}
+
+/**
+ * Parse LinkedIn publication date format ("Mon D, YYYY" or "Mon YYYY") to ISO partial date.
+ * Falls back to parseLinkedInDate for "Mon YYYY" / "YYYY" formats.
+ * Returns undefined for empty/unrecognised input.
+ */
+function parsePublicationDate(dateStr: string | undefined): string | undefined {
+  if (!dateStr?.trim()) return undefined;
+  const trimmed = dateStr.trim();
+
+  // "Mon D, YYYY" format (e.g. "Aug 1, 2011")
+  const longMatch = trimmed.match(/^(\w{3})\s+\d{1,2},\s+(\d{4})$/);
+  if (longMatch) {
+    const month = MONTHS[longMatch[1]!];
+    if (month) return `${longMatch[2]}-${month}`;
+  }
+
+  // Fall back to standard LinkedIn date parsing ("Mon YYYY" or "YYYY")
+  return parseLinkedInDate(trimmed);
+}
+
+export function mapPublicationsCsv(row: Record<string, string>): SifaPublication {
+  return {
+    title: row['Name']?.trim() ?? '',
+    publisher: optional(row['Publisher']),
+    url: optional(row['Url']),
+    description: optional(row['Description']),
+    publishedAt: parsePublicationDate(row['Published On']),
+  };
+}
+
+// ── Courses.csv → id.sifa.profile.course ────────────────────────────
+
+export interface SifaCourse {
+  name: string;
+  number?: string;
+}
+
+export function mapCoursesCsv(row: Record<string, string>): SifaCourse {
+  return {
+    name: row['Name']?.trim() ?? '',
+    number: optional(row['Number']),
+  };
+}
+
+// ── Honors.csv → id.sifa.profile.honor ──────────────────────────────
+
+export interface SifaHonor {
+  title: string;
+  description?: string;
+  awardedAt?: string;
+}
+
+export function mapHonorsCsv(row: Record<string, string>): SifaHonor {
+  return {
+    title: row['Title']?.trim() ?? '',
+    description: optional(row['Description']),
+    awardedAt: parseLinkedInDate(row['Issued On']),
+  };
+}
+
+// ── Languages.csv → id.sifa.profile.language ────────────────────────
+
+export interface SifaLanguage {
+  name: string;
+  proficiency?: string;
+}
+
+const PROFICIENCY_MAP: Record<string, string> = {
+  'Native or bilingual proficiency': 'native',
+  'Full professional proficiency': 'full_professional',
+  'Professional working proficiency': 'professional_working',
+  'Limited working proficiency': 'limited_working',
+  'Elementary proficiency': 'elementary',
+};
+
+export function mapLanguagesCsv(row: Record<string, string>): SifaLanguage {
+  const rawProficiency = row['Proficiency']?.trim();
+  return {
+    name: row['Name']?.trim() ?? '',
+    proficiency: rawProficiency ? PROFICIENCY_MAP[rawProficiency] : undefined,
+  };
+}
