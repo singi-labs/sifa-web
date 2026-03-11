@@ -6,9 +6,16 @@ import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 import { processLinkedInExport, type ImportPreview } from '@/lib/import/orchestrator';
 import { useAuth } from '@/components/auth-provider';
+import { fetchProfile } from '@/lib/api';
 import { UploadStep } from './components/upload-step';
 import { PreviewStep } from './components/preview-step';
 import { ConfirmStep } from './components/confirm-step';
+
+export interface ExistingDataCounts {
+  positions: number;
+  education: number;
+  skills: number;
+}
 
 type Step = 'upload' | 'preview' | 'confirm';
 
@@ -30,6 +37,22 @@ export default function ImportPage() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [preview, setPreview] = useState<ImportPreview | null>(null);
   const [confirmedPreview, setConfirmedPreview] = useState<ImportPreview | null>(null);
+  const [existingData, setExistingData] = useState<ExistingDataCounts | null>(null);
+
+  useEffect(() => {
+    if (!session?.did) return;
+    fetchProfile(session.did).then((profile) => {
+      if (!profile) return;
+      const counts: ExistingDataCounts = {
+        positions: profile.positions?.length ?? 0,
+        education: profile.education?.length ?? 0,
+        skills: profile.skills?.length ?? 0,
+      };
+      if (counts.positions > 0 || counts.education > 0 || counts.skills > 0) {
+        setExistingData(counts);
+      }
+    });
+  }, [session?.did]);
 
   const handleFileSelected = useCallback(async (file: File) => {
     setIsProcessing(true);
@@ -86,7 +109,12 @@ export default function ImportPage() {
       )}
 
       {step === 'preview' && preview && (
-        <PreviewStep preview={preview} onConfirm={handleConfirm} onBack={() => setStep('upload')} />
+        <PreviewStep
+          preview={preview}
+          existingData={existingData}
+          onConfirm={handleConfirm}
+          onBack={() => setStep('upload')}
+        />
       )}
 
       {step === 'confirm' && confirmedPreview && (
