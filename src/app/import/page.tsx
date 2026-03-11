@@ -35,6 +35,7 @@ export default function ImportPage() {
   }, [isLoading, session, router, tAuth]);
   const [step, setStep] = useState<Step>('upload');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [extractionError, setExtractionError] = useState<string | null>(null);
   const [preview, setPreview] = useState<ImportPreview | null>(null);
   const [confirmedPreview, setConfirmedPreview] = useState<ImportPreview | null>(null);
   const [existingData, setExistingData] = useState<ExistingProfileData | null>(null);
@@ -54,12 +55,14 @@ export default function ImportPage() {
 
   const handleFileSelected = useCallback(async (file: File) => {
     setIsProcessing(true);
+    setExtractionError(null);
     try {
       const result = await processLinkedInExport(file);
       setPreview(result);
       setStep('preview');
-    } catch {
-      // If parsing fails, stay on upload step -- user can try another file
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Could not read ZIP file';
+      setExtractionError(message);
     } finally {
       setIsProcessing(false);
     }
@@ -103,7 +106,7 @@ export default function ImportPage() {
       </div>
 
       {step === 'upload' && (
-        <UploadStep onFileSelected={handleFileSelected} isProcessing={isProcessing} />
+        <UploadStep onFileSelected={handleFileSelected} isProcessing={isProcessing} extractionError={extractionError} />
       )}
 
       {step === 'preview' && preview && (

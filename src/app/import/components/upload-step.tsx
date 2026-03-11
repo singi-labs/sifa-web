@@ -7,9 +7,10 @@ import { Upload } from '@phosphor-icons/react';
 interface UploadStepProps {
   onFileSelected: (file: File) => void;
   isProcessing: boolean;
+  extractionError?: string | null;
 }
 
-export function UploadStep({ onFileSelected, isProcessing }: UploadStepProps) {
+export function UploadStep({ onFileSelected, isProcessing, extractionError }: UploadStepProps) {
   const [dragActive, setDragActive] = useState(false);
   const [fileName, setFileName] = useState<string | null>(null);
   const [fileError, setFileError] = useState<string | null>(null);
@@ -111,6 +112,11 @@ export function UploadStep({ onFileSelected, isProcessing }: UploadStepProps) {
           {fileError && (
             <p className="mt-4 text-sm text-destructive" role="alert">
               {fileError}
+            </p>
+          )}
+          {extractionError && (
+            <p className="mt-4 text-sm text-destructive" role="alert">
+              {extractionError}
             </p>
           )}
         </div>
