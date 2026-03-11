@@ -80,7 +80,9 @@ export function AboutSection({ about, isOwnProfile }: AboutSectionProps) {
   return (
     <section className="mt-6" aria-label={t('about')}>
       <div className="group/about relative">
-        <p className="whitespace-pre-wrap text-base leading-relaxed text-foreground">{displayText}</p>
+        <p className="whitespace-pre-wrap text-base leading-relaxed text-foreground">
+          {displayText}
+        </p>
         {isOwnProfile && (
           <Button
             variant="ghost"

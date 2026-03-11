@@ -21,9 +21,7 @@ function makeProfile(overrides: Partial<Profile> = {}): Profile {
 
 function wrapper(profile: Profile) {
   return function Wrapper({ children }: { children: React.ReactNode }) {
-    return (
-      <ProfileEditProvider initialProfile={profile}>{children}</ProfileEditProvider>
-    );
+    return <ProfileEditProvider initialProfile={profile}>{children}</ProfileEditProvider>;
   };
 }
 

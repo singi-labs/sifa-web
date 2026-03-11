@@ -51,18 +51,30 @@ const ALL_SECTIONS = [
 
 function isSectionPopulated(profile: Profile, id: string): boolean {
   switch (id) {
-    case 'about': return Boolean(profile.about);
-    case 'career': return profile.positions.length > 0;
-    case 'education': return profile.education.length > 0;
-    case 'skills': return profile.skills.length > 0;
-    case 'projects': return Boolean(profile.projects?.length);
-    case 'credentials': return Boolean(profile.certifications?.length);
-    case 'publications': return Boolean(profile.publications?.length);
-    case 'volunteering': return Boolean(profile.volunteering?.length);
-    case 'awards': return Boolean(profile.honors?.length);
-    case 'languages': return Boolean(profile.languages?.length);
-    case 'other-profiles': return Boolean(profile.externalAccounts?.length);
-    default: return false;
+    case 'about':
+      return Boolean(profile.about);
+    case 'career':
+      return profile.positions.length > 0;
+    case 'education':
+      return profile.education.length > 0;
+    case 'skills':
+      return profile.skills.length > 0;
+    case 'projects':
+      return Boolean(profile.projects?.length);
+    case 'credentials':
+      return Boolean(profile.certifications?.length);
+    case 'publications':
+      return Boolean(profile.publications?.length);
+    case 'volunteering':
+      return Boolean(profile.volunteering?.length);
+    case 'awards':
+      return Boolean(profile.honors?.length);
+    case 'languages':
+      return Boolean(profile.languages?.length);
+    case 'other-profiles':
+      return Boolean(profile.externalAccounts?.length);
+    default:
+      return false;
   }
 }
 
@@ -103,7 +115,11 @@ function ProfileBodyContent() {
         <CareerSection positions={profile.positions} isOwnProfile={isOwn} />
       </div>
       <div id="education" className="scroll-mt-20">
-        <EducationSection education={profile.education} courses={profile.courses} isOwnProfile={isOwn} />
+        <EducationSection
+          education={profile.education}
+          courses={profile.courses}
+          isOwnProfile={isOwn}
+        />
       </div>
       <div id="skills" className="scroll-mt-20">
         <SkillsSection skills={profile.skills} isOwnProfile={isOwn} />

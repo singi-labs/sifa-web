@@ -2,8 +2,15 @@
 
 import { useTranslations } from 'next-intl';
 import { CheckCircle, WarningCircle } from '@phosphor-icons/react';
-import { EditableSection, EditableEntry, EXTERNAL_ACCOUNT_FIELDS } from '@/components/profile-editor';
-import { externalAccountToValues, valuesToExternalAccount } from '@/components/profile-editor/section-converters';
+import {
+  EditableSection,
+  EditableEntry,
+  EXTERNAL_ACCOUNT_FIELDS,
+} from '@/components/profile-editor';
+import {
+  externalAccountToValues,
+  valuesToExternalAccount,
+} from '@/components/profile-editor/section-converters';
 import type { ExternalAccount } from '@/lib/types';
 import { getPlatformInfo } from '@/lib/platforms';
 
@@ -26,7 +33,11 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
         isOwnProfile={isOwnProfile}
         fields={EXTERNAL_ACCOUNT_FIELDS}
         toValues={externalAccountToValues}
-        fromValues={valuesToExternalAccount as (v: Record<string, string | boolean>) => Omit<ExternalAccount, 'rkey'>}
+        fromValues={
+          valuesToExternalAccount as (
+            v: Record<string, string | boolean>,
+          ) => Omit<ExternalAccount, 'rkey'>
+        }
         collection="id.sifa.profile.externalAccount"
         renderEntry={(acc, controls) => {
           const platform = getPlatformInfo(acc.platform);

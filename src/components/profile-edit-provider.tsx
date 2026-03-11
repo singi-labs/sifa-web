@@ -1,12 +1,6 @@
 'use client';
 
-import {
-  createContext,
-  useContext,
-  useState,
-  useCallback,
-  type ReactNode,
-} from 'react';
+import { createContext, useContext, useState, useCallback, type ReactNode } from 'react';
 import type { Profile } from '@/lib/types';
 
 interface ProfileEditContextValue {
@@ -38,20 +32,15 @@ export function ProfileEditProvider({ initialProfile, children }: ProfileEditPro
     });
   }, []);
 
-  const updateItem = useCallback(
-    (key: string, rkey: string, fields: Record<string, unknown>) => {
-      setProfile((prev) => {
-        const existing = (prev[key as keyof Profile] as Array<{ rkey: string }>) ?? [];
-        return {
-          ...prev,
-          [key]: existing.map((item) =>
-            item.rkey === rkey ? { ...item, ...fields } : item,
-          ),
-        };
-      });
-    },
-    [],
-  );
+  const updateItem = useCallback((key: string, rkey: string, fields: Record<string, unknown>) => {
+    setProfile((prev) => {
+      const existing = (prev[key as keyof Profile] as Array<{ rkey: string }>) ?? [];
+      return {
+        ...prev,
+        [key]: existing.map((item) => (item.rkey === rkey ? { ...item, ...fields } : item)),
+      };
+    });
+  }, []);
 
   const removeItem = useCallback((key: string, rkey: string) => {
     setProfile((prev) => {

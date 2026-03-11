@@ -18,9 +18,7 @@ const baseProfile: Profile = {
 
 function withProvider(ui: React.ReactElement, profile: Partial<Profile> = {}) {
   return render(
-    <ProfileEditProvider initialProfile={{ ...baseProfile, ...profile }}>
-      {ui}
-    </ProfileEditProvider>,
+    <ProfileEditProvider initialProfile={{ ...baseProfile, ...profile }}>{ui}</ProfileEditProvider>,
   );
 }
 
@@ -39,7 +37,9 @@ describe('ExternalAccountsSection', () => {
   });
 
   it('renders section with accounts', () => {
-    withProvider(<ExternalAccountsSection accounts={[baseAccount]} />, { externalAccounts: [baseAccount] });
+    withProvider(<ExternalAccountsSection accounts={[baseAccount]} />, {
+      externalAccounts: [baseAccount],
+    });
     expect(screen.getByText('Other Profiles')).toBeDefined();
     expect(screen.getByRole('link', { name: 'GitHub' })).toBeDefined();
   });
@@ -70,7 +70,9 @@ describe('ExternalAccountsSection', () => {
   });
 
   it('renders correct link targets', () => {
-    withProvider(<ExternalAccountsSection accounts={[baseAccount]} />, { externalAccounts: [baseAccount] });
+    withProvider(<ExternalAccountsSection accounts={[baseAccount]} />, {
+      externalAccounts: [baseAccount],
+    });
     const link = screen.getByRole('link', { name: 'GitHub' });
     expect(link.getAttribute('href')).toBe('https://github.com/testuser');
     expect(link.getAttribute('target')).toBe('_blank');

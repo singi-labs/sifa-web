@@ -3,7 +3,10 @@
 import { useTranslations } from 'next-intl';
 import { TimelineSection, TimelineEntry } from './timeline';
 import { EditableSection, EditableEntry, VOLUNTEERING_FIELDS } from '@/components/profile-editor';
-import { volunteeringToValues, valuesToVolunteering } from '@/components/profile-editor/section-converters';
+import {
+  volunteeringToValues,
+  valuesToVolunteering,
+} from '@/components/profile-editor/section-converters';
 import type { ProfileVolunteering } from '@/lib/types';
 
 interface VolunteeringSectionProps {
@@ -24,7 +27,11 @@ export function VolunteeringSection({ volunteering, isOwnProfile }: Volunteering
         isOwnProfile={isOwnProfile}
         fields={VOLUNTEERING_FIELDS}
         toValues={volunteeringToValues}
-        fromValues={valuesToVolunteering as (v: Record<string, string | boolean>) => Omit<ProfileVolunteering, 'rkey'>}
+        fromValues={
+          valuesToVolunteering as (
+            v: Record<string, string | boolean>,
+          ) => Omit<ProfileVolunteering, 'rkey'>
+        }
         collection="id.sifa.profile.volunteering"
         renderEntry={(vol, controls) => (
           <EditableEntry

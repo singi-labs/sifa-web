@@ -6,12 +6,23 @@ import { useProfileEdit } from '@/components/profile-edit-provider';
 import { SectionEditor } from './section-editor';
 import { EditDialog, type FieldDef } from './edit-dialog';
 import {
-  createPosition, updatePosition, deletePosition,
-  createEducation, updateEducation, deleteEducation,
-  createSkill, updateSkill, deleteSkill,
-  createExternalAccount, updateExternalAccount, deleteExternalAccount,
-  createRecord, updateRecord, deleteRecord,
-  type CreateResult, type WriteResult,
+  createPosition,
+  updatePosition,
+  deletePosition,
+  createEducation,
+  updateEducation,
+  deleteEducation,
+  createSkill,
+  updateSkill,
+  deleteSkill,
+  createExternalAccount,
+  updateExternalAccount,
+  deleteExternalAccount,
+  createRecord,
+  updateRecord,
+  deleteRecord,
+  type CreateResult,
+  type WriteResult,
 } from '@/lib/profile-api';
 
 interface NamedRoute {
@@ -21,12 +32,23 @@ interface NamedRoute {
 }
 
 const NAMED_ROUTES: Record<string, NamedRoute> = {
-  'id.sifa.profile.position': { create: createPosition, update: updatePosition, delete: deletePosition },
-  'id.sifa.profile.education': { create: createEducation, update: updateEducation, delete: deleteEducation },
+  'id.sifa.profile.position': {
+    create: createPosition,
+    update: updatePosition,
+    delete: deletePosition,
+  },
+  'id.sifa.profile.education': {
+    create: createEducation,
+    update: updateEducation,
+    delete: deleteEducation,
+  },
   'id.sifa.profile.skill': { create: createSkill, update: updateSkill, delete: deleteSkill },
   'id.sifa.profile.externalAccount': {
     create: createExternalAccount as (data: Record<string, unknown>) => Promise<CreateResult>,
-    update: updateExternalAccount as (rkey: string, data: Record<string, unknown>) => Promise<WriteResult>,
+    update: updateExternalAccount as (
+      rkey: string,
+      data: Record<string, unknown>,
+    ) => Promise<WriteResult>,
     delete: deleteExternalAccount,
   },
 };
@@ -39,7 +61,10 @@ interface EditableSectionProps<T extends { rkey: string }> {
   toValues: (item: T) => Record<string, string | boolean>;
   fromValues: (values: Record<string, string | boolean>) => Omit<T, 'rkey'>;
   collection: string;
-  renderEntry: (item: T, editControls?: { onEdit: () => void; onDelete: () => void }) => React.ReactNode;
+  renderEntry: (
+    item: T,
+    editControls?: { onEdit: () => void; onDelete: () => void },
+  ) => React.ReactNode;
 }
 
 type DialogState<T> = { mode: 'add' } | { mode: 'edit'; item: T };
@@ -61,7 +86,9 @@ export function EditableSection<T extends { rkey: string }>({
   const routes = NAMED_ROUTES[collection];
 
   const handleSave = useCallback(
-    async (values: Record<string, string | boolean>): Promise<{ success: boolean; error?: string }> => {
+    async (
+      values: Record<string, string | boolean>,
+    ): Promise<{ success: boolean; error?: string }> => {
       const data = fromValues(values) as Record<string, unknown>;
 
       if (dialog?.mode === 'edit') {
@@ -77,11 +104,11 @@ export function EditableSection<T extends { rkey: string }>({
       }
 
       // Add mode
-      const result = routes
-        ? await routes.create(data)
-        : await createRecord(collection, data);
+      const result = routes ? await routes.create(data) : await createRecord(collection, data);
       if (result.success && result.rkey) {
-        addItem(profileKey, { ...data, rkey: result.rkey } as Record<string, unknown> & { rkey: string });
+        addItem(profileKey, { ...data, rkey: result.rkey } as Record<string, unknown> & {
+          rkey: string;
+        });
         setDialog(null);
         toast.success(`${sectionTitle} added`);
       }
@@ -92,9 +119,7 @@ export function EditableSection<T extends { rkey: string }>({
 
   const handleDelete = useCallback(
     async (rkey: string) => {
-      const result = routes
-        ? await routes.delete(rkey)
-        : await deleteRecord(collection, rkey);
+      const result = routes ? await routes.delete(rkey) : await deleteRecord(collection, rkey);
       if (result.success) {
         removeItem(profileKey, rkey);
         toast.success(`${sectionTitle} removed`);

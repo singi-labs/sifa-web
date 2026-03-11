@@ -3,7 +3,11 @@
 import { useTranslations } from 'next-intl';
 import { TimelineSection, TimelineEntry } from './timeline';
 import { EditableSection, EditableEntry } from '@/components/profile-editor';
-import { POSITION_FIELDS, positionToValues, valuesToPosition } from '@/components/profile-editor/position-form';
+import {
+  POSITION_FIELDS,
+  positionToValues,
+  valuesToPosition,
+} from '@/components/profile-editor/position-form';
 import type { ProfilePosition } from '@/lib/types';
 
 interface CareerSectionProps {
@@ -24,7 +28,9 @@ export function CareerSection({ positions, isOwnProfile }: CareerSectionProps) {
         isOwnProfile={isOwnProfile}
         fields={POSITION_FIELDS}
         toValues={positionToValues}
-        fromValues={valuesToPosition as (v: Record<string, string | boolean>) => Omit<ProfilePosition, 'rkey'>}
+        fromValues={
+          valuesToPosition as (v: Record<string, string | boolean>) => Omit<ProfilePosition, 'rkey'>
+        }
         collection="id.sifa.profile.position"
         renderEntry={(pos, controls) => (
           <EditableEntry

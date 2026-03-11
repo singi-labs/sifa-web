@@ -34,10 +34,7 @@ async function apiRequest(
   }
 }
 
-async function apiCreateRequest(
-  path: string,
-  body: unknown,
-): Promise<CreateResult> {
+async function apiCreateRequest(path: string, body: unknown): Promise<CreateResult> {
   try {
     const res = await fetch(`${API_URL}${path}`, {
       method: 'POST',
@@ -98,7 +95,10 @@ export async function createPosition(data: Record<string, unknown>): Promise<Cre
   return apiCreateRequest('/api/profile/position', data);
 }
 
-export async function updatePosition(rkey: string, data: Record<string, unknown>): Promise<WriteResult> {
+export async function updatePosition(
+  rkey: string,
+  data: Record<string, unknown>,
+): Promise<WriteResult> {
   return apiRequest(`/api/profile/position/${encodeURIComponent(rkey)}`, 'PUT', data);
 }
 
@@ -110,7 +110,10 @@ export async function createEducation(data: Record<string, unknown>): Promise<Cr
   return apiCreateRequest('/api/profile/education', data);
 }
 
-export async function updateEducation(rkey: string, data: Record<string, unknown>): Promise<WriteResult> {
+export async function updateEducation(
+  rkey: string,
+  data: Record<string, unknown>,
+): Promise<WriteResult> {
   return apiRequest(`/api/profile/education/${encodeURIComponent(rkey)}`, 'PUT', data);
 }
 
@@ -122,7 +125,10 @@ export async function createSkill(data: Record<string, unknown>): Promise<Create
   return apiCreateRequest('/api/profile/skill', data);
 }
 
-export async function updateSkill(rkey: string, data: Record<string, unknown>): Promise<WriteResult> {
+export async function updateSkill(
+  rkey: string,
+  data: Record<string, unknown>,
+): Promise<WriteResult> {
   return apiRequest(`/api/profile/skill/${encodeURIComponent(rkey)}`, 'PUT', data);
 }
 

@@ -24,7 +24,9 @@ export function ProjectsSection({ projects, isOwnProfile }: ProjectsSectionProps
         isOwnProfile={isOwnProfile}
         fields={PROJECT_FIELDS}
         toValues={projectToValues}
-        fromValues={valuesToProject as (v: Record<string, string | boolean>) => Omit<ProfileProject, 'rkey'>}
+        fromValues={
+          valuesToProject as (v: Record<string, string | boolean>) => Omit<ProfileProject, 'rkey'>
+        }
         collection="id.sifa.profile.project"
         renderEntry={(proj, controls) => (
           <EditableEntry

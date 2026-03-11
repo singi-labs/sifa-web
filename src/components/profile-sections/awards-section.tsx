@@ -24,7 +24,9 @@ export function AwardsSection({ honors, isOwnProfile }: AwardsSectionProps) {
         isOwnProfile={isOwnProfile}
         fields={HONOR_FIELDS}
         toValues={honorToValues}
-        fromValues={valuesToHonor as (v: Record<string, string | boolean>) => Omit<ProfileHonor, 'rkey'>}
+        fromValues={
+          valuesToHonor as (v: Record<string, string | boolean>) => Omit<ProfileHonor, 'rkey'>
+        }
         collection="id.sifa.profile.honor"
         renderEntry={(honor, controls) => (
           <EditableEntry

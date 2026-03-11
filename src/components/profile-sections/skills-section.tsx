@@ -27,7 +27,9 @@ export function SkillsSection({ isOwnProfile }: SkillsSectionProps) {
   const skills = profile.skills;
 
   const handleSave = useCallback(
-    async (values: Record<string, string | boolean>): Promise<{ success: boolean; error?: string }> => {
+    async (
+      values: Record<string, string | boolean>,
+    ): Promise<{ success: boolean; error?: string }> => {
       const data = valuesToSkill(values) as Record<string, unknown>;
 
       if (dialog?.mode === 'edit') {
@@ -42,7 +44,9 @@ export function SkillsSection({ isOwnProfile }: SkillsSectionProps) {
 
       const result = await createSkill(data);
       if (result.success && result.rkey) {
-        addItem('skills', { ...data, rkey: result.rkey } as Record<string, unknown> & { rkey: string });
+        addItem('skills', { ...data, rkey: result.rkey } as Record<string, unknown> & {
+          rkey: string;
+        });
         setDialog(null);
         toast.success(`${t('skills')} added`);
       }

@@ -32,7 +32,9 @@ export function LanguagesSection({ languages, isOwnProfile }: LanguagesSectionPr
         isOwnProfile={isOwnProfile}
         fields={LANGUAGE_FIELDS}
         toValues={languageToValues}
-        fromValues={valuesToLanguage as (v: Record<string, string | boolean>) => Omit<ProfileLanguage, 'rkey'>}
+        fromValues={
+          valuesToLanguage as (v: Record<string, string | boolean>) => Omit<ProfileLanguage, 'rkey'>
+        }
         collection="id.sifa.profile.language"
         renderEntry={(lang, controls) => (
           <EditableEntry

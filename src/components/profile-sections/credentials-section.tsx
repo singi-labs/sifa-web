@@ -2,7 +2,10 @@
 
 import { useTranslations } from 'next-intl';
 import { EditableSection, EditableEntry, CERTIFICATION_FIELDS } from '@/components/profile-editor';
-import { certificationToValues, valuesToCertification } from '@/components/profile-editor/section-converters';
+import {
+  certificationToValues,
+  valuesToCertification,
+} from '@/components/profile-editor/section-converters';
 import type { ProfileCertification } from '@/lib/types';
 
 interface CredentialsSectionProps {
@@ -24,7 +27,11 @@ export function CredentialsSection({ certifications, isOwnProfile }: Credentials
         isOwnProfile={isOwnProfile}
         fields={CERTIFICATION_FIELDS}
         toValues={certificationToValues}
-        fromValues={valuesToCertification as (v: Record<string, string | boolean>) => Omit<ProfileCertification, 'rkey'>}
+        fromValues={
+          valuesToCertification as (
+            v: Record<string, string | boolean>,
+          ) => Omit<ProfileCertification, 'rkey'>
+        }
         collection="id.sifa.profile.certification"
         renderEntry={(cert, controls) => (
           <EditableEntry

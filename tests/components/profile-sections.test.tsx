@@ -28,9 +28,7 @@ const baseProfile: Profile = {
 
 function withProvider(ui: React.ReactElement, profile: Partial<Profile> = {}) {
   return render(
-    <ProfileEditProvider initialProfile={{ ...baseProfile, ...profile }}>
-      {ui}
-    </ProfileEditProvider>,
+    <ProfileEditProvider initialProfile={{ ...baseProfile, ...profile }}>{ui}</ProfileEditProvider>,
   );
 }
 

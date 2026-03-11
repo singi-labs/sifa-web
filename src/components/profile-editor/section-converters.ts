@@ -131,9 +131,7 @@ export function valuesToPublication(
 
 // --- Volunteering ---
 
-export function volunteeringToValues(
-  item: ProfileVolunteering,
-): Record<string, string | boolean> {
+export function volunteeringToValues(item: ProfileVolunteering): Record<string, string | boolean> {
   return {
     organization: item.organization,
     role: item.role ?? '',
@@ -219,9 +217,7 @@ export function valuesToCourse(
 
 // --- External Account ---
 
-export function externalAccountToValues(
-  item: ExternalAccount,
-): Record<string, string | boolean> {
+export function externalAccountToValues(item: ExternalAccount): Record<string, string | boolean> {
   return {
     platform: item.platform,
     url: item.url,

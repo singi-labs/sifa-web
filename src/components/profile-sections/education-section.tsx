@@ -3,7 +3,10 @@
 import { useTranslations } from 'next-intl';
 import { TimelineSection, TimelineEntry } from './timeline';
 import { EditableSection, EditableEntry, EDUCATION_FIELDS } from '@/components/profile-editor';
-import { educationToValues, valuesToEducation } from '@/components/profile-editor/section-converters';
+import {
+  educationToValues,
+  valuesToEducation,
+} from '@/components/profile-editor/section-converters';
 import type { ProfileEducation, ProfileCourse } from '@/lib/types';
 
 interface EducationSectionProps {
@@ -25,7 +28,11 @@ export function EducationSection({ education, courses = [], isOwnProfile }: Educ
         isOwnProfile={isOwnProfile}
         fields={EDUCATION_FIELDS}
         toValues={educationToValues}
-        fromValues={valuesToEducation as (v: Record<string, string | boolean>) => Omit<ProfileEducation, 'rkey'>}
+        fromValues={
+          valuesToEducation as (
+            v: Record<string, string | boolean>,
+          ) => Omit<ProfileEducation, 'rkey'>
+        }
         collection="id.sifa.profile.education"
         renderEntry={(edu, controls) => {
           const subtitle = [edu.degree, edu.fieldOfStudy].filter(Boolean).join(', ');

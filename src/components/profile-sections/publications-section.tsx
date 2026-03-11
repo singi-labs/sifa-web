@@ -2,7 +2,10 @@
 
 import { useTranslations } from 'next-intl';
 import { EditableSection, EditableEntry, PUBLICATION_FIELDS } from '@/components/profile-editor';
-import { publicationToValues, valuesToPublication } from '@/components/profile-editor/section-converters';
+import {
+  publicationToValues,
+  valuesToPublication,
+} from '@/components/profile-editor/section-converters';
 import type { ProfilePublication } from '@/lib/types';
 
 interface PublicationsSectionProps {
@@ -24,7 +27,11 @@ export function PublicationsSection({ publications, isOwnProfile }: Publications
         isOwnProfile={isOwnProfile}
         fields={PUBLICATION_FIELDS}
         toValues={publicationToValues}
-        fromValues={valuesToPublication as (v: Record<string, string | boolean>) => Omit<ProfilePublication, 'rkey'>}
+        fromValues={
+          valuesToPublication as (
+            v: Record<string, string | boolean>,
+          ) => Omit<ProfilePublication, 'rkey'>
+        }
         collection="id.sifa.profile.publication"
         renderEntry={(pub, controls) => (
           <EditableEntry
@@ -52,7 +59,9 @@ export function PublicationsSection({ publications, isOwnProfile }: Publications
                 </p>
                 {pub.publisher && <p className="text-sm text-muted-foreground">{pub.publisher}</p>}
               </div>
-              {pub.date && <span className="shrink-0 text-xs text-muted-foreground">{pub.date}</span>}
+              {pub.date && (
+                <span className="shrink-0 text-xs text-muted-foreground">{pub.date}</span>
+              )}
             </div>
           </EditableEntry>
         )}
