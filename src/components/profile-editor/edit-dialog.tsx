@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, type FormEvent } from 'react';
+import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { X } from '@phosphor-icons/react';
@@ -31,6 +32,7 @@ export function EditDialog({
   onSave,
   onCancel,
 }: EditDialogProps) {
+  const t = useTranslations('editor');
   const [values, setValues] = useState<Record<string, string | boolean>>(() => {
     const init: Record<string, string | boolean> = {};
     for (const f of fields) {
@@ -48,7 +50,7 @@ export function EditDialog({
     const result = await onSave(values);
     setSaving(false);
     if (!result.success) {
-      setError(result.error ?? 'Failed to save');
+      setError(result.error ?? t('failedToSave'));
     }
   };
 
@@ -71,7 +73,7 @@ export function EditDialog({
             size="sm"
             className="h-7 w-7 p-0"
             onClick={onCancel}
-            aria-label="Close"
+            aria-label={t('close')}
           >
             <X className="h-4 w-4" weight="bold" aria-hidden="true" />
           </Button>
@@ -126,10 +128,10 @@ export function EditDialog({
 
           <div className="flex justify-end gap-2">
             <Button type="button" variant="ghost" onClick={onCancel} disabled={saving}>
-              Cancel
+              {t('cancel')}
             </Button>
             <Button type="submit" disabled={saving}>
-              {saving ? 'Saving...' : 'Save'}
+              {saving ? t('saving') : t('save')}
             </Button>
           </div>
         </form>

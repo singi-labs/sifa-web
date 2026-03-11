@@ -102,6 +102,18 @@
     "viewAll": "View full activity",
     "comingSoon": "Activity overview coming soon. This section will show your ATproto activity across the open social web."
   },
+  "editor": {
+    "save": "Save",
+    "saving": "Saving...",
+    "cancel": "Cancel",
+    "close": "Close",
+    "add": "Add",
+    "failedToSave": "Failed to save",
+    "added": "{section} added",
+    "updated": "{section} updated",
+    "removed": "{section} removed",
+    "failedToDelete": "Failed to delete"
+  },
   "auth": {
     "loginRequired": "Sign in required",
     "loginRequiredDescription": "You need to sign in to perform this action.",
