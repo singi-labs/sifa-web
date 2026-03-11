@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, afterEach } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import { ConfirmStep } from '@/app/import/components/confirm-step';
 import type { ImportPreview } from '@/lib/import/orchestrator';
@@ -57,10 +57,6 @@ const mockImportedCounts = {
 
 describe('ConfirmStep', () => {
   const onDone = vi.fn();
-
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
 
   it('shows importing state with total item count on mount', () => {
     vi.stubGlobal(
