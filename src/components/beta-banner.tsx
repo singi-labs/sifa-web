@@ -1,14 +1,25 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useSyncExternalStore } from 'react';
 import { X } from '@phosphor-icons/react';
 import { useTranslations } from 'next-intl';
 
+const STORAGE_KEY = 'sifa-beta-banner-dismissed';
+
+function getWasDismissed() {
+  return typeof window !== 'undefined' && sessionStorage.getItem(STORAGE_KEY) === 'true';
+}
+
 export function BetaBanner() {
   const t = useTranslations('common');
+  const wasDismissedOnLoad = useSyncExternalStore(
+    () => () => {},
+    getWasDismissed,
+    () => true,
+  );
   const [dismissed, setDismissed] = useState(false);
 
-  if (dismissed) {
+  if (wasDismissedOnLoad || dismissed) {
     return null;
   }
 
@@ -22,7 +33,10 @@ export function BetaBanner() {
           <p>{t('betaBanner')}</p>
           <button
             type="button"
-            onClick={() => setDismissed(true)}
+            onClick={() => {
+              sessionStorage.setItem(STORAGE_KEY, 'true');
+              setDismissed(true);
+            }}
             className="ml-2 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             aria-label={t('dismissBanner')}
           >
