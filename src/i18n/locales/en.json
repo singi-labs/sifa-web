@@ -191,8 +191,8 @@
   "login": {
     "title": "Sign in",
     "description": "Sign in with your AT Protocol account.",
-    "handleLabel": "Handle or DID",
-    "handlePlaceholder": "you.bsky.social",
+    "handleLabel": "Handle",
+    "handlePlaceholder": "alice.bsky.social",
     "submit": "Continue",
     "submitting": "Signing in..."
   },
