@@ -29,7 +29,8 @@
     "errorTitle": "Something went wrong",
     "errorDescription": "An unexpected error occurred. Please try again.",
     "tryAgain": "Try again",
-    "editProfile": "Edit profile"
+    "editProfile": "Edit profile",
+    "viewProfile": "View profile"
   },
   "home": {
     "title": "Sifa",
