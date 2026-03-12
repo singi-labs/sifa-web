@@ -5,11 +5,11 @@ const mockFetchProfile = vi.fn();
 const mockSanitize = vi.fn((input: string) => input);
 
 vi.mock('@/lib/api', () => ({
-  fetchProfile: (...args: unknown[]) => mockFetchProfile(...args),
+  fetchProfile: (id: string) => mockFetchProfile(id),
 }));
 
 vi.mock('@/lib/sanitize', () => ({
-  sanitize: (...args: unknown[]) => mockSanitize(...args),
+  sanitize: (input: string) => mockSanitize(input),
 }));
 
 import { GET } from '@/app/api/embed/[handleOrDid]/data/route';

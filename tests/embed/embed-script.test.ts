@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 describe('embed.js', function () {
-  var initSifaEmbeds: () => Promise<void[]>;
+  let initSifaEmbeds: () => Promise<void[]>;
 
   beforeEach(async function () {
     document.body.innerHTML = '';
@@ -13,7 +13,7 @@ describe('embed.js', function () {
   });
 
   it('replaces script tag with shadow DOM container containing profile card', async function () {
-    var script = document.createElement('script');
+    const script = document.createElement('script');
     script.setAttribute('src', 'https://sifa.id/embed.js');
     script.setAttribute('data-did', 'did:plc:test123');
     document.body.appendChild(script);
@@ -39,17 +39,17 @@ describe('embed.js', function () {
 
     await initSifaEmbeds();
 
-    var container = document.querySelector('.sifa-embed');
+    const container = document.querySelector('.sifa-embed');
     expect(container).not.toBeNull();
     expect(container?.shadowRoot).not.toBeNull();
-    var html = container?.shadowRoot?.innerHTML ?? '';
+    const html = container?.shadowRoot?.innerHTML ?? '';
     expect(html).toContain('Alice');
     expect(html).toContain('alice.bsky.social');
     expect(html).toContain('sifa.id/p/alice.bsky.social');
   });
 
   it('uses data-handle when data-did is absent', async function () {
-    var script = document.createElement('script');
+    const script = document.createElement('script');
     script.setAttribute('src', 'https://sifa.id/embed.js');
     script.setAttribute('data-handle', 'bob.bsky.social');
     document.body.appendChild(script);
@@ -78,7 +78,7 @@ describe('embed.js', function () {
   });
 
   it('shows error state when profile not found', async function () {
-    var script = document.createElement('script');
+    const script = document.createElement('script');
     script.setAttribute('src', 'https://sifa.id/embed.js');
     script.setAttribute('data-did', 'did:plc:invalid');
     document.body.appendChild(script);
@@ -87,13 +87,13 @@ describe('embed.js', function () {
 
     await initSifaEmbeds();
 
-    var container = document.querySelector('.sifa-embed');
-    var html = container?.shadowRoot?.innerHTML ?? '';
+    const container = document.querySelector('.sifa-embed');
+    const html = container?.shadowRoot?.innerHTML ?? '';
     expect(html).toContain('Profile not found');
   });
 
   it('renders trust stats', async function () {
-    var script = document.createElement('script');
+    const script = document.createElement('script');
     script.setAttribute('src', 'https://sifa.id/embed.js');
     script.setAttribute('data-did', 'did:plc:test');
     document.body.appendChild(script);
@@ -119,14 +119,14 @@ describe('embed.js', function () {
 
     await initSifaEmbeds();
 
-    var html =
+    const html =
       document.querySelector('.sifa-embed')?.shadowRoot?.innerHTML ?? '';
     expect(html).toContain('42');
     expect(html).toContain('Connections');
   });
 
   it('renders open-to pills', async function () {
-    var script = document.createElement('script');
+    const script = document.createElement('script');
     script.setAttribute('src', 'https://sifa.id/embed.js');
     script.setAttribute('data-did', 'did:plc:test');
     document.body.appendChild(script);
@@ -149,14 +149,14 @@ describe('embed.js', function () {
 
     await initSifaEmbeds();
 
-    var html =
+    const html =
       document.querySelector('.sifa-embed')?.shadowRoot?.innerHTML ?? '';
     expect(html).toContain('Mentoring');
     expect(html).toContain('Speaking');
   });
 
   it('applies dark theme styles', async function () {
-    var script = document.createElement('script');
+    const script = document.createElement('script');
     script.setAttribute('src', 'https://sifa.id/embed.js');
     script.setAttribute('data-did', 'did:plc:test');
     script.setAttribute('data-theme', 'dark');
@@ -180,14 +180,14 @@ describe('embed.js', function () {
 
     await initSifaEmbeds();
 
-    var style =
+    const style =
       document.querySelector('.sifa-embed')?.shadowRoot?.querySelector('style')
         ?.textContent ?? '';
     expect(style).toContain('#1a1a2e');
   });
 
   it('renders avatar image when avatar URL is provided', async function () {
-    var script = document.createElement('script');
+    const script = document.createElement('script');
     script.setAttribute('src', 'https://sifa.id/embed.js');
     script.setAttribute('data-did', 'did:plc:test');
     document.body.appendChild(script);
@@ -211,14 +211,14 @@ describe('embed.js', function () {
 
     await initSifaEmbeds();
 
-    var html =
+    const html =
       document.querySelector('.sifa-embed')?.shadowRoot?.innerHTML ?? '';
     expect(html).toContain('avatar.jpg');
     expect(html).toContain('<img');
   });
 
   it('renders letter placeholder when no avatar', async function () {
-    var script = document.createElement('script');
+    const script = document.createElement('script');
     script.setAttribute('src', 'https://sifa.id/embed.js');
     script.setAttribute('data-did', 'did:plc:test');
     document.body.appendChild(script);
@@ -242,7 +242,7 @@ describe('embed.js', function () {
 
     await initSifaEmbeds();
 
-    var html =
+    const html =
       document.querySelector('.sifa-embed')?.shadowRoot?.innerHTML ?? '';
     expect(html).toContain('avatar-placeholder');
     expect(html).toContain('A');

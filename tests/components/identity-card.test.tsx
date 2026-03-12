@@ -140,7 +140,7 @@ describe('IdentityCard (default / page variant)', () => {
     render(
       <IdentityCard
         {...baseProps}
-        verifiedAccounts={[{ platform: 'github', handle: 'alice', url: 'https://github.com/alice' }]}
+        verifiedAccounts={[{ platform: 'github', identifier: 'alice', url: 'https://github.com/alice' }]}
       />,
     );
     expect(screen.getByLabelText('Verified')).toBeDefined();
