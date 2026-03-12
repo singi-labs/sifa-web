@@ -47,7 +47,7 @@ export async function GET(request: NextRequest) {
     author_url: `https://sifa.id/p/${profile.handle}`,
     width,
     height,
-    html: `<iframe src="https://sifa.id/api/embed/${encodeURIComponent(profile.handle)}" width="${width}" height="${height}" frameborder="0" style="border:none;border-radius:12px;overflow:hidden" allowtransparency="true"></iframe>`,
+    html: `<iframe src="https://sifa.id/embed/${encodeURIComponent(profile.handle)}" width="${width}" height="${height}" frameborder="0" style="border:none;border-radius:12px;overflow:hidden" allowtransparency="true"></iframe>`,
     thumbnail_url: profile.avatar ?? undefined,
     thumbnail_width: profile.avatar ? 64 : undefined,
     thumbnail_height: profile.avatar ? 64 : undefined,
