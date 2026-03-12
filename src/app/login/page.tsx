@@ -170,6 +170,17 @@ function LoginContent() {
               &middot;
             </span>
             <a
+              href="https://blacksky.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-primary underline decoration-primary/50 hover:text-primary/80"
+            >
+              Blacksky
+            </a>
+            <span className="text-muted-foreground/50" aria-hidden="true">
+              &middot;
+            </span>
+            <a
               href="https://www.eurosky.tech/register"
               target="_blank"
               rel="noopener noreferrer"
