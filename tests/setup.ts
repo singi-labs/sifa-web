@@ -11,6 +11,7 @@ const translations: Record<string, Record<string, string>> = {
     home: 'Sifa home',
     search: 'Search',
     import: 'Import',
+    findPeople: 'Find People',
     mainNav: 'Main navigation',
     footerNav: 'Footer navigation',
     about: 'About',
