@@ -17,15 +17,10 @@ export function DataTransparencyCard({ did }: DataTransparencyCardProps) {
       className="mt-4 rounded-xl border border-border bg-card p-4"
       aria-labelledby="data-transparency-title"
     >
-      <h2
-        id="data-transparency-title"
-        className="text-sm font-semibold"
-      >
+      <h2 id="data-transparency-title" className="text-sm font-semibold">
         {t('title')}
       </h2>
-      <p className="mt-1 text-sm text-muted-foreground">
-        {t('body')}
-      </p>
+      <p className="mt-1 text-sm text-muted-foreground">{t('body')}</p>
       <a
         href={viewerUrl}
         target="_blank"
