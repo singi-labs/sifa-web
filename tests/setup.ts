@@ -26,6 +26,8 @@ const translations: Record<string, Record<string, string>> = {
       'Your profile data is safe in your AT Protocol account, but features and preferences may change before launch. Help build a better networking ecosystem.',
     betaBannerReportLink: 'Report any issues on GitHub',
     dismissBanner: 'Dismiss banner',
+    editProfile: 'Edit profile',
+    viewProfile: 'View profile',
     openMenu: 'Open menu',
     closeMenu: 'Close menu',
     errorTitle: 'Something went wrong',
