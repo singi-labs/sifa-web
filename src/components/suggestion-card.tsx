@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { X } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
@@ -42,7 +43,13 @@ export function SuggestionCard({
       {/* Avatar */}
       <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-muted text-sm font-semibold text-muted-foreground">
         {avatarUrl ? (
-          <img src={avatarUrl} alt="" className="size-10 rounded-full object-cover" />
+          <Image
+            src={avatarUrl}
+            alt=""
+            width={40}
+            height={40}
+            className="size-10 rounded-full object-cover"
+          />
         ) : (
           initial
         )}

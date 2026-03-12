@@ -26,37 +26,40 @@ export default function FindPeoplePage() {
   const [loading, setLoading] = useState(true);
   const [cursor, setCursor] = useState<string | undefined>();
 
-  const loadSuggestions = useCallback(
-    async (reset = true) => {
-      if (!session) return;
-      setLoading(true);
-      const data = await fetchSuggestions({
-        source: source === 'all' ? undefined : source,
-        includeDismissed: showHidden,
-        cursor: reset ? undefined : cursor,
-      });
-      if (reset) {
-        setOnSifa(data.onSifa);
-        setNotOnSifa(data.notOnSifa);
-      } else {
-        setOnSifa((prev) => [...prev, ...data.onSifa]);
-        setNotOnSifa((prev) => [...prev, ...data.notOnSifa]);
-      }
+  const loadMore = useCallback(() => {
+    if (!session || !cursor) return;
+    setLoading(true);
+    void fetchSuggestions({
+      source: source === 'all' ? undefined : source,
+      includeDismissed: showHidden,
+      cursor,
+    }).then((data) => {
+      setOnSifa((prev) => [...prev, ...data.onSifa]);
+      setNotOnSifa((prev) => [...prev, ...data.notOnSifa]);
       setCursor(data.cursor);
       setLoading(false);
-    },
-    [session, source, showHidden, cursor],
-  );
+    });
+  }, [session, source, showHidden, cursor]);
 
   useEffect(() => {
-    if (session) {
-      void loadSuggestions(true);
-      // Record last visit for badge calculation
-      if (typeof window !== 'undefined' && window.localStorage) {
-        window.localStorage.setItem('sifa:suggestions-last-visited', new Date().toISOString());
-      }
+    if (!session) return;
+    let cancelled = false;
+    const src = source === 'all' ? undefined : source;
+    fetchSuggestions({ source: src, includeDismissed: showHidden }).then((data) => {
+      if (cancelled) return;
+      setOnSifa(data.onSifa);
+      setNotOnSifa(data.notOnSifa);
+      setCursor(data.cursor);
+      setLoading(false);
+    });
+    return () => {
+      cancelled = true;
+    };
+    // Record last visit for badge calculation
+    if (typeof window !== 'undefined' && window.localStorage) {
+      window.localStorage.setItem('sifa:suggestions-last-visited', new Date().toISOString());
     }
-  }, [session, source, showHidden]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [session, source, showHidden]);
 
   const handleDismiss = useCallback(async (did: string) => {
     setOnSifa((prev) => prev.filter((s) => s.did !== did));
@@ -129,13 +132,23 @@ export default function FindPeoplePage() {
               key={s}
               variant={source === s ? 'default' : 'outline'}
               size="sm"
-              onClick={() => setSource(s)}
+              onClick={() => {
+                setSource(s);
+                setLoading(true);
+              }}
             >
               {s === 'all' ? 'All' : s.charAt(0).toUpperCase() + s.slice(1)}
             </Button>
           ))}
         </div>
-        <Button variant="ghost" size="sm" onClick={() => setShowHidden(!showHidden)}>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => {
+            setShowHidden(!showHidden);
+            setLoading(true);
+          }}
+        >
           {showHidden ? 'Hide dismissed' : 'Show hidden'}
         </Button>
       </div>
@@ -208,7 +221,7 @@ export default function FindPeoplePage() {
           {/* Load more */}
           {cursor && (
             <div className="mt-6 text-center">
-              <Button variant="outline" onClick={() => loadSuggestions(false)}>
+              <Button variant="outline" onClick={loadMore}>
                 Load more
               </Button>
             </div>
