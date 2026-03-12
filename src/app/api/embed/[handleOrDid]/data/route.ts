@@ -1,0 +1,46 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { fetchProfile } from '@/lib/api';
+import { sanitize } from '@/lib/sanitize';
+
+export async function GET(
+  _request: NextRequest,
+  { params }: { params: Promise<{ handleOrDid: string }> },
+) {
+  const { handleOrDid } = await params;
+  const profile = await fetchProfile(handleOrDid);
+
+  if (!profile) {
+    return NextResponse.json({ error: 'Profile not found' }, { status: 404 });
+  }
+
+  const location = [profile.locationCity, profile.locationRegion, profile.locationCountry]
+    .filter(Boolean)
+    .join(', ');
+
+  const data = {
+    did: profile.did,
+    handle: sanitize(profile.handle),
+    displayName: profile.displayName ? sanitize(profile.displayName) : null,
+    avatar: profile.avatar ?? null,
+    headline: profile.headline ? sanitize(profile.headline) : null,
+    location: location || null,
+    website: profile.website ?? null,
+    openTo: profile.openTo ?? [],
+    trustStats: profile.trustStats ?? [],
+    verifiedAccounts: (profile.verifiedAccounts ?? []).map(
+      (v: { platform: string; identifier: string }) => ({
+        platform: v.platform,
+        identifier: v.identifier,
+      }),
+    ),
+    claimed: profile.claimed,
+    profileUrl: `https://sifa.id/p/${profile.handle}`,
+  };
+
+  return NextResponse.json(data, {
+    headers: {
+      'Cache-Control': 'public, max-age=3600, s-maxage=3600',
+      'Access-Control-Allow-Origin': '*',
+    },
+  });
+}
