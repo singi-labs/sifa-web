@@ -192,7 +192,7 @@
     "title": "Sign in",
     "description": "Sign in with your AT Protocol account.",
     "handleLabel": "Handle",
-    "handlePlaceholder": "alice.bsky.social",
+    "handlePlaceholder": "jay.bsky.social",
     "submit": "Continue",
     "submitting": "Signing in..."
   },
