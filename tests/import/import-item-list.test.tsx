@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ImportItemList } from '@/app/import/components/import-item-list';
+import { ImportItemList } from '@/app/(main)/import/components/import-item-list';
 
 interface TestItem {
   name: string;

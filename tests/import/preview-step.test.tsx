@@ -2,8 +2,8 @@ import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type { ImportPreview } from '@/lib/import/orchestrator';
-import type { ExistingProfileData } from '@/app/import/page';
-import { PreviewStep } from '@/app/import/components/preview-step';
+import type { ExistingProfileData } from '@/app/(main)/import/page';
+import { PreviewStep } from '@/app/(main)/import/components/preview-step';
 
 // Mock Phosphor icons
 vi.mock('@phosphor-icons/react', () => ({

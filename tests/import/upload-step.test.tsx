@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { UploadStep } from '@/app/import/components/upload-step';
+import { UploadStep } from '@/app/(main)/import/components/upload-step';
 
 vi.mock('@phosphor-icons/react', () => ({
   Upload: (props: Record<string, unknown>) => <span data-testid="icon-upload" {...props} />,

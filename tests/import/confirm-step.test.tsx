@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
-import { ConfirmStep } from '@/app/import/components/confirm-step';
+import { ConfirmStep } from '@/app/(main)/import/components/confirm-step';
 import type { ImportPreview } from '@/lib/import/orchestrator';
 
 // Mock Phosphor icons

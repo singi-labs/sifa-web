@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { ProfileHeader } from '@/app/p/[handle]/components/profile-header';
-import { ExperienceSection } from '@/app/p/[handle]/components/experience-section';
-import { EducationSection } from '@/app/p/[handle]/components/education-section';
-import { SkillsSection } from '@/app/p/[handle]/components/skills-section';
+import { ProfileHeader } from '@/app/(main)/p/[handle]/components/profile-header';
+import { ExperienceSection } from '@/app/(main)/p/[handle]/components/experience-section';
+import { EducationSection } from '@/app/(main)/p/[handle]/components/education-section';
+import { SkillsSection } from '@/app/(main)/p/[handle]/components/skills-section';
 
 describe('Profile page components', () => {
   it('ProfileHeader renders handle and headline', () => {
