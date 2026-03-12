@@ -83,11 +83,17 @@ export function MobileNav() {
                         className="h-8 w-8 rounded-full object-cover"
                       />
                     ) : (
-                      <User className="h-4 w-4 text-muted-foreground" weight="bold" aria-hidden="true" />
+                      <User
+                        className="h-4 w-4 text-muted-foreground"
+                        weight="bold"
+                        aria-hidden="true"
+                      />
                     )}
                   </div>
                   <div className="min-w-0">
-                    <p className="truncate text-sm font-medium">{session.displayName ?? session.handle}</p>
+                    <p className="truncate text-sm font-medium">
+                      {session.displayName ?? session.handle}
+                    </p>
                     <p className="truncate text-xs text-muted-foreground">@{session.handle}</p>
                   </div>
                 </div>
