@@ -42,11 +42,7 @@ export function SuggestionCard({
       {/* Avatar */}
       <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-muted text-sm font-semibold text-muted-foreground">
         {avatarUrl ? (
-          <img
-            src={avatarUrl}
-            alt=""
-            className="size-10 rounded-full object-cover"
-          />
+          <img src={avatarUrl} alt="" className="size-10 rounded-full object-cover" />
         ) : (
           initial
         )}
@@ -63,28 +59,20 @@ export function SuggestionCard({
               {sanitize(displayName ?? handle)}
             </Link>
           ) : (
-            <span className="truncate font-medium">
-              {sanitize(displayName ?? handle)}
-            </span>
+            <span className="truncate font-medium">{sanitize(displayName ?? handle)}</span>
           )}
           <Badge variant="secondary" className="shrink-0 text-xs">
             {source}
           </Badge>
         </div>
-        {headline && (
-          <p className="truncate text-sm text-muted-foreground">{sanitize(headline)}</p>
-        )}
+        {headline && <p className="truncate text-sm text-muted-foreground">{sanitize(headline)}</p>}
         <p className="truncate text-xs text-muted-foreground">{sanitize(handle)}</p>
       </div>
 
       {/* Actions */}
       <div className="flex shrink-0 items-center gap-2">
         {dismissed && onUndismiss ? (
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => onUndismiss(did)}
-          >
+          <Button variant="outline" size="sm" onClick={() => onUndismiss(did)}>
             Unhide
           </Button>
         ) : claimed ? (

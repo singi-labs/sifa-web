@@ -11,9 +11,10 @@ export function SuggestionBadge() {
   useEffect(() => {
     if (!session) return;
 
-    const since = typeof window !== 'undefined' && window.localStorage
-      ? window.localStorage.getItem('sifa:suggestions-last-visited')
-      : null;
+    const since =
+      typeof window !== 'undefined' && window.localStorage
+        ? window.localStorage.getItem('sifa:suggestions-last-visited')
+        : null;
     void fetchSuggestionCount(since ?? undefined).then(setCount);
   }, [session]);
 

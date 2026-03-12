@@ -7,10 +7,22 @@ vi.mock('@/lib/api', () => ({
   searchProfiles: vi.fn().mockResolvedValue([]),
   fetchSuggestions: vi.fn().mockResolvedValue({
     onSifa: [
-      { did: 'did:plc:1', handle: 'alice.bsky.social', displayName: 'Alice', source: 'bluesky', dismissed: false },
+      {
+        did: 'did:plc:1',
+        handle: 'alice.bsky.social',
+        displayName: 'Alice',
+        source: 'bluesky',
+        dismissed: false,
+      },
     ],
     notOnSifa: [
-      { did: 'did:plc:2', handle: 'bob.bsky.social', displayName: 'Bob', source: 'bluesky', dismissed: false },
+      {
+        did: 'did:plc:2',
+        handle: 'bob.bsky.social',
+        displayName: 'Bob',
+        source: 'bluesky',
+        dismissed: false,
+      },
     ],
   }),
   fetchSuggestionCount: vi.fn().mockResolvedValue(3),
@@ -21,7 +33,10 @@ vi.mock('@/lib/api', () => ({
 
 // Mock auth
 vi.mock('@/components/auth-provider', () => ({
-  useAuth: () => ({ session: { did: 'did:plc:viewer', handle: 'viewer.bsky.social' }, isLoading: false }),
+  useAuth: () => ({
+    session: { did: 'did:plc:viewer', handle: 'viewer.bsky.social' },
+    isLoading: false,
+  }),
 }));
 
 // Mock useRequireAuth

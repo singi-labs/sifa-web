@@ -26,24 +26,27 @@ export default function FindPeoplePage() {
   const [loading, setLoading] = useState(true);
   const [cursor, setCursor] = useState<string | undefined>();
 
-  const loadSuggestions = useCallback(async (reset = true) => {
-    if (!session) return;
-    setLoading(true);
-    const data = await fetchSuggestions({
-      source: source === 'all' ? undefined : source,
-      includeDismissed: showHidden,
-      cursor: reset ? undefined : cursor,
-    });
-    if (reset) {
-      setOnSifa(data.onSifa);
-      setNotOnSifa(data.notOnSifa);
-    } else {
-      setOnSifa((prev) => [...prev, ...data.onSifa]);
-      setNotOnSifa((prev) => [...prev, ...data.notOnSifa]);
-    }
-    setCursor(data.cursor);
-    setLoading(false);
-  }, [session, source, showHidden, cursor]);
+  const loadSuggestions = useCallback(
+    async (reset = true) => {
+      if (!session) return;
+      setLoading(true);
+      const data = await fetchSuggestions({
+        source: source === 'all' ? undefined : source,
+        includeDismissed: showHidden,
+        cursor: reset ? undefined : cursor,
+      });
+      if (reset) {
+        setOnSifa(data.onSifa);
+        setNotOnSifa(data.notOnSifa);
+      } else {
+        setOnSifa((prev) => [...prev, ...data.onSifa]);
+        setNotOnSifa((prev) => [...prev, ...data.notOnSifa]);
+      }
+      setCursor(data.cursor);
+      setLoading(false);
+    },
+    [session, source, showHidden, cursor],
+  );
 
   useEffect(() => {
     if (session) {
@@ -67,20 +70,26 @@ export default function FindPeoplePage() {
     await undismissSuggestion(did);
   }, []);
 
-  const handleFollow = useCallback((did: string) => {
-    requireAuth(async () => {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3100'}/api/follow`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ subjectDid: did }),
+  const handleFollow = useCallback(
+    (did: string) => {
+      requireAuth(async () => {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3100'}/api/follow`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ subjectDid: did }),
+          },
+        );
+        if (res.ok) {
+          setOnSifa((prev) => prev.filter((s) => s.did !== did));
+          toast.success('Followed successfully');
+        }
       });
-      if (res.ok) {
-        setOnSifa((prev) => prev.filter((s) => s.did !== did));
-        toast.success('Followed successfully');
-      }
-    });
-  }, [requireAuth]);
+    },
+    [requireAuth],
+  );
 
   const handleInvite = useCallback(async (did: string) => {
     try {
@@ -98,7 +107,9 @@ export default function FindPeoplePage() {
     return (
       <main className="mx-auto max-w-3xl px-4 py-8">
         <h1 className="text-2xl font-bold">Find People</h1>
-        <p className="mt-2 text-muted-foreground">Sign in to discover people you know from other AT Protocol services.</p>
+        <p className="mt-2 text-muted-foreground">
+          Sign in to discover people you know from other AT Protocol services.
+        </p>
       </main>
     );
   }
@@ -124,24 +135,19 @@ export default function FindPeoplePage() {
             </Button>
           ))}
         </div>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => setShowHidden(!showHidden)}
-        >
+        <Button variant="ghost" size="sm" onClick={() => setShowHidden(!showHidden)}>
           {showHidden ? 'Hide dismissed' : 'Show hidden'}
         </Button>
       </div>
 
-      <p className="mt-2 text-xs text-muted-foreground">
-        More services coming soon
-      </p>
+      <p className="mt-2 text-xs text-muted-foreground">More services coming soon</p>
 
       {loading && onSifa.length === 0 && notOnSifa.length === 0 ? (
         <p className="mt-8 text-center text-muted-foreground">Loading suggestions...</p>
       ) : onSifa.length === 0 && notOnSifa.length === 0 ? (
         <p className="mt-8 text-center text-muted-foreground">
-          No suggestions found. Follow people on Bluesky or Tangled, and they will appear here when they join Sifa.
+          No suggestions found. Follow people on Bluesky or Tangled, and they will appear here when
+          they join Sifa.
         </p>
       ) : (
         <>
