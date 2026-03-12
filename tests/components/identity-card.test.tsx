@@ -25,14 +25,25 @@ vi.mock('@/components/auth-provider', () => ({
 
 // Mock @base-ui/react/popover
 vi.mock('@base-ui/react/popover', () => {
-  const Trigger = ({ children, ...props }: { children: React.ReactNode } & Record<string, unknown>) => (
-    <button data-testid="popover-trigger" {...props}>{children}</button>
+  const Trigger = ({
+    children,
+    ...props
+  }: { children: React.ReactNode } & Record<string, unknown>) => (
+    <button data-testid="popover-trigger" {...props}>
+      {children}
+    </button>
   );
-  const Portal = ({ children }: { children: React.ReactNode }) => <div data-testid="popover-portal">{children}</div>;
+  const Portal = ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="popover-portal">{children}</div>
+  );
   const Positioner = ({ children }: { children: React.ReactNode }) => <div>{children}</div>;
-  const Popup = ({ children }: { children: React.ReactNode }) => <div data-testid="popover-popup">{children}</div>;
+  const Popup = ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="popover-popup">{children}</div>
+  );
   const Arrow = () => <div />;
-  const Root = ({ children }: { children: React.ReactNode }) => <div data-testid="popover-root">{children}</div>;
+  const Root = ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="popover-root">{children}</div>
+  );
   return {
     Popover: { Root, Trigger, Portal, Positioner, Popup, Arrow },
   };
@@ -98,9 +109,7 @@ describe('IdentityCard (default / page variant)', () => {
   });
 
   it('renders location and website', () => {
-    render(
-      <IdentityCard {...baseProps} location="Amsterdam, NL" website="https://example.com" />,
-    );
+    render(<IdentityCard {...baseProps} location="Amsterdam, NL" website="https://example.com" />);
     expect(screen.getByText('Amsterdam, NL')).toBeDefined();
     expect(screen.getByText('example.com')).toBeDefined();
   });
@@ -140,7 +149,9 @@ describe('IdentityCard (default / page variant)', () => {
     render(
       <IdentityCard
         {...baseProps}
-        verifiedAccounts={[{ platform: 'github', identifier: 'alice', url: 'https://github.com/alice' }]}
+        verifiedAccounts={[
+          { platform: 'github', identifier: 'alice', url: 'https://github.com/alice' },
+        ]}
       />,
     );
     expect(screen.getByLabelText('Verified')).toBeDefined();

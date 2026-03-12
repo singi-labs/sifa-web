@@ -17,20 +17,13 @@ export function EmbedBuilder() {
     if (!identifier.trim()) return '';
 
     const isDid = identifier.startsWith('did:');
-    const dataAttr = isDid
-      ? `data-did="${identifier}"`
-      : `data-handle="${identifier}"`;
+    const dataAttr = isDid ? `data-did="${identifier}"` : `data-handle="${identifier}"`;
     const themeAttr = theme !== 'auto' ? ` data-theme="${theme}"` : '';
 
     return `<script src="https://sifa.id/embed.js" ${dataAttr}${themeAttr}></script>`;
   }, [identifier, theme]);
 
-  const previewBg =
-    theme === 'dark'
-      ? '#1a1a2e'
-      : theme === 'light'
-        ? '#fff'
-        : undefined;
+  const previewBg = theme === 'dark' ? '#1a1a2e' : theme === 'light' ? '#fff' : undefined;
 
   function handleCopy() {
     void navigator.clipboard.writeText(embedCode).then(() => {

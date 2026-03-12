@@ -14,7 +14,9 @@ vi.mock('@/lib/sanitize', () => ({
 
 import { GET } from '@/app/api/embed/[handleOrDid]/data/route';
 
-function buildRequest(handleOrDid: string): [NextRequest, { params: Promise<{ handleOrDid: string }> }] {
+function buildRequest(
+  handleOrDid: string,
+): [NextRequest, { params: Promise<{ handleOrDid: string }> }] {
   const request = new NextRequest(`https://sifa.id/api/embed/${handleOrDid}/data`);
   const params = Promise.resolve({ handleOrDid });
   return [request, { params }];
@@ -32,9 +34,7 @@ const fullProfile = {
   website: 'https://alice.dev',
   openTo: ['opportunities', 'mentoring'],
   trustStats: [{ label: 'endorsements', value: 5 }],
-  verifiedAccounts: [
-    { platform: 'github', identifier: 'alice', url: 'https://github.com/alice' },
-  ],
+  verifiedAccounts: [{ platform: 'github', identifier: 'alice', url: 'https://github.com/alice' }],
   claimed: true,
 };
 

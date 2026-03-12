@@ -120,8 +120,6 @@ describe('EmbedPage', () => {
     });
     render(page as React.ReactElement);
 
-    expect(identityCardProps[0]?.location).toBe(
-      'Amsterdam, North Holland, Netherlands',
-    );
+    expect(identityCardProps[0]?.location).toBe('Amsterdam, North Holland, Netherlands');
   });
 });

@@ -119,8 +119,7 @@ describe('embed.js', function () {
 
     await initSifaEmbeds();
 
-    const html =
-      document.querySelector('.sifa-embed')?.shadowRoot?.innerHTML ?? '';
+    const html = document.querySelector('.sifa-embed')?.shadowRoot?.innerHTML ?? '';
     expect(html).toContain('42');
     expect(html).toContain('Connections');
   });
@@ -149,8 +148,7 @@ describe('embed.js', function () {
 
     await initSifaEmbeds();
 
-    const html =
-      document.querySelector('.sifa-embed')?.shadowRoot?.innerHTML ?? '';
+    const html = document.querySelector('.sifa-embed')?.shadowRoot?.innerHTML ?? '';
     expect(html).toContain('Mentoring');
     expect(html).toContain('Speaking');
   });
@@ -181,8 +179,7 @@ describe('embed.js', function () {
     await initSifaEmbeds();
 
     const style =
-      document.querySelector('.sifa-embed')?.shadowRoot?.querySelector('style')
-        ?.textContent ?? '';
+      document.querySelector('.sifa-embed')?.shadowRoot?.querySelector('style')?.textContent ?? '';
     expect(style).toContain('#1a1a2e');
   });
 
@@ -211,8 +208,7 @@ describe('embed.js', function () {
 
     await initSifaEmbeds();
 
-    const html =
-      document.querySelector('.sifa-embed')?.shadowRoot?.innerHTML ?? '';
+    const html = document.querySelector('.sifa-embed')?.shadowRoot?.innerHTML ?? '';
     expect(html).toContain('avatar.jpg');
     expect(html).toContain('<img');
   });
@@ -242,8 +238,7 @@ describe('embed.js', function () {
 
     await initSifaEmbeds();
 
-    const html =
-      document.querySelector('.sifa-embed')?.shadowRoot?.innerHTML ?? '';
+    const html = document.querySelector('.sifa-embed')?.shadowRoot?.innerHTML ?? '';
     expect(html).toContain('avatar-placeholder');
     expect(html).toContain('A');
   });

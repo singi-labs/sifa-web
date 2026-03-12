@@ -74,9 +74,7 @@ describe('EmbedBuilder', () => {
 
   it('shows placeholder when no identifier', () => {
     render(<EmbedBuilder />);
-    expect(
-      screen.getByText('Enter a handle or DID to see a preview'),
-    ).toBeDefined();
+    expect(screen.getByText('Enter a handle or DID to see a preview')).toBeDefined();
   });
 
   it('copies code to clipboard on button click', () => {

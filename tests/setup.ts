@@ -203,8 +203,7 @@ const translations: Record<string, Record<string, string>> = {
     pageTitle: 'Embed a Sifa Profile Card',
     pageDescription:
       'Add a live professional profile card to any website with a single line of code.',
-    pageSubtitle:
-      'Add a live professional profile card to any website with a single line of code.',
+    pageSubtitle: 'Add a live professional profile card to any website with a single line of code.',
     identifierLabel: 'Handle or DID',
     themeLabel: 'Theme',
     codeLabel: 'Embed code',
