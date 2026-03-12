@@ -2,11 +2,6 @@ import type { Metadata } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getMessages } from 'next-intl/server';
 import { ThemeProvider } from '@/components/theme-provider';
-import { AuthProvider } from '@/components/auth-provider';
-import { SkipLinks } from '@/components/skip-links';
-import { SiteHeader } from '@/components/site-header';
-import { BetaBanner } from '@/components/beta-banner';
-import { SiteFooter } from '@/components/site-footer';
 import { Toaster } from 'sonner';
 import './globals.css';
 
@@ -36,16 +31,8 @@ export default async function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <AuthProvider>
-              <SkipLinks />
-              <SiteHeader />
-              <BetaBanner />
-              <main id="main-content" className="min-h-[calc(100vh-3.5rem)]">
-                {children}
-              </main>
-              <SiteFooter />
-              <Toaster position="bottom-left" closeButton />
-            </AuthProvider>
+            {children}
+            <Toaster position="bottom-left" closeButton />
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>

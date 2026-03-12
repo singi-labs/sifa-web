@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import AboutPage from '@/app/about/page';
-import PrivacyPage from '@/app/privacy/page';
-import TermsPage from '@/app/terms/page';
+import AboutPage from '@/app/(main)/about/page';
+import PrivacyPage from '@/app/(main)/privacy/page';
+import TermsPage from '@/app/(main)/terms/page';
 
 describe('About page', () => {
   it('renders title', async () => {

@@ -166,6 +166,8 @@ const translations: Record<string, Record<string, string>> = {
     editProfile: 'Edit profile',
     shareProfile: 'Share profile',
     share: 'Share',
+    linkCopied: 'Link copied',
+    viewOnSifa: 'View on Sifa',
   },
   home: {
     title: 'Sifa',
@@ -196,6 +198,20 @@ const translations: Record<string, Record<string, string>> = {
     cookiesBody: 'Session cookies only.',
     contactTitle: 'Contact',
     contactBody: 'Contact us at privacy@sifa.id.',
+  },
+  embedBuilder: {
+    pageTitle: 'Embed a Sifa Profile Card',
+    pageDescription:
+      'Add a live professional profile card to any website with a single line of code.',
+    pageSubtitle: 'Add a live professional profile card to any website with a single line of code.',
+    identifierLabel: 'Handle or DID',
+    themeLabel: 'Theme',
+    codeLabel: 'Embed code',
+    previewLabel: 'Preview',
+    previewTitle: 'Embed preview',
+    copy: 'Copy',
+    copied: 'Copied to clipboard',
+    enterHandle: 'Enter a handle or DID to see a preview',
   },
   terms: {
     title: 'Terms of Service',
