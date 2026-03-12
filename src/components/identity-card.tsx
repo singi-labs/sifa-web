@@ -28,6 +28,7 @@ interface IdentityCardProps {
   claimed: boolean;
   isOwnProfile?: boolean;
   isFollowing?: boolean;
+  variant?: 'page' | 'embed';
   className?: string;
 }
 
@@ -46,10 +47,12 @@ export function IdentityCard({
   claimed,
   isOwnProfile,
   isFollowing,
+  variant = 'page',
   className,
 }: IdentityCardProps) {
   const t = useTranslations('identityCard');
   const { session } = useAuth();
+  const isEmbed = variant === 'embed';
 
   const displayTrustStats =
     trustStats.length > 0
@@ -94,7 +97,7 @@ export function IdentityCard({
           {/* Row 2: Handle + unclaimed badge */}
           <div className="flex items-center gap-2">
             <p className="truncate text-sm text-muted-foreground">@{handle}</p>
-            {!claimed && (
+            {!claimed && !isEmbed && (
               <Popover.Root>
                 <Popover.Trigger className="inline-flex h-5 shrink-0 cursor-pointer items-center rounded-full border border-amber-300 bg-amber-50 px-2 text-xs font-medium text-amber-800 transition-colors hover:bg-amber-100 dark:border-amber-700 dark:bg-amber-950/50 dark:text-amber-300 dark:hover:bg-amber-900/50">
                   {t('unclaimed')}
@@ -168,33 +171,46 @@ export function IdentityCard({
         ))}
       </div>
 
-      {/* Row 7: Action buttons */}
-      <div className="mt-4 flex gap-2">
-        {isOwnProfile ? (
-          <Link
-            href={`/p/${handle}/edit`}
-            className="inline-flex h-8 items-center justify-center gap-1.5 rounded-md border border-border bg-background px-3 text-sm font-medium transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+      {/* Row 7: Action buttons (page) or "View on Sifa" CTA (embed) */}
+      {isEmbed ? (
+        <div className="mt-4 border-t border-border pt-3">
+          <a
+            href={`https://sifa.id/p/${handle}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs font-medium text-primary hover:underline"
           >
-            <PencilSimple className="h-4 w-4" weight="bold" aria-hidden="true" />
-            {t('editProfile')}
-          </Link>
-        ) : (
-          <FollowButton targetDid={did} isFollowing={isFollowing ?? false} />
-        )}
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => {
-            void navigator.clipboard.writeText(`https://sifa.id/p/${handle}`).then(() => {
-              toast(t('linkCopied'));
-            });
-          }}
-          aria-label={t('shareProfile')}
-        >
-          <ShareNetwork className="mr-1.5 h-4 w-4" weight="bold" aria-hidden="true" />
-          {t('share')}
-        </Button>
-      </div>
+            {t('viewOnSifa')}
+          </a>
+        </div>
+      ) : (
+        <div className="mt-4 flex gap-2">
+          {isOwnProfile ? (
+            <Link
+              href={`/p/${handle}/edit`}
+              className="inline-flex h-8 items-center justify-center gap-1.5 rounded-md border border-border bg-background px-3 text-sm font-medium transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            >
+              <PencilSimple className="h-4 w-4" weight="bold" aria-hidden="true" />
+              {t('editProfile')}
+            </Link>
+          ) : (
+            <FollowButton targetDid={did} isFollowing={isFollowing ?? false} />
+          )}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => {
+              void navigator.clipboard.writeText(`https://sifa.id/p/${handle}`).then(() => {
+                toast(t('linkCopied'));
+              });
+            }}
+            aria-label={t('shareProfile')}
+          >
+            <ShareNetwork className="mr-1.5 h-4 w-4" weight="bold" aria-hidden="true" />
+            {t('share')}
+          </Button>
+        </div>
+      )}
     </section>
   );
 }

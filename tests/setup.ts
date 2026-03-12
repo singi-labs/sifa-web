@@ -166,6 +166,8 @@ const translations: Record<string, Record<string, string>> = {
     editProfile: 'Edit profile',
     shareProfile: 'Share profile',
     share: 'Share',
+    linkCopied: 'Link copied',
+    viewOnSifa: 'View on Sifa',
   },
   home: {
     title: 'Sifa',

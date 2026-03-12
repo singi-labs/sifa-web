@@ -177,7 +177,8 @@
     "linkCopied": "Profile link copied to clipboard",
     "unclaimed": "Unclaimed",
     "unclaimedPopupText": "This profile shows public AT Protocol data. {name} hasn't set up their Sifa profile yet.",
-    "claimYourProfile": "Claim your profile"
+    "claimYourProfile": "Claim your profile",
+    "viewOnSifa": "View on Sifa"
   },
   "unclaimedBanner": {
     "text": "This profile shows public AT Protocol data and hasn't been claimed yet.",
