@@ -46,7 +46,7 @@ describe('Suggestions API client', () => {
     });
 
     await fetchSuggestions({ source: 'bluesky' });
-    const calledUrl = mockFetch.mock.calls[0][0] as string;
+    const calledUrl = mockFetch.mock.calls[0]![0] as string;
     expect(calledUrl).toContain('source=bluesky');
   });
 
