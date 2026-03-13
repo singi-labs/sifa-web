@@ -2,7 +2,11 @@
 
 import { useCallback } from 'react';
 import { useTranslations } from 'next-intl';
-import { CheckCircle, WarningCircle } from '@phosphor-icons/react';
+import { CheckCircle, WarningCircle, Star, Info } from '@phosphor-icons/react';
+import { Popover } from '@base-ui/react/popover';
+import { toast } from 'sonner';
+import { setExternalAccountPrimary, unsetExternalAccountPrimary } from '@/lib/profile-api';
+import { useProfileEdit } from '@/components/profile-edit-provider';
 import {
   EditableSection,
   EditableEntry,
@@ -23,6 +27,28 @@ interface ExternalAccountsSectionProps {
 
 export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAccountsSectionProps) {
   const t = useTranslations('sections');
+  const tEdit = useTranslations('profileEdit');
+  const { updateItem } = useProfileEdit();
+
+  const handleTogglePrimary = useCallback(async (acc: ExternalAccount) => {
+    const newPrimary = !acc.primary;
+    const result = newPrimary
+      ? await setExternalAccountPrimary(acc.rkey)
+      : await unsetExternalAccountPrimary(acc.rkey);
+
+    if (result.success) {
+      // If setting as primary, unset all others first
+      if (newPrimary) {
+        for (const other of accounts) {
+          if (other.rkey !== acc.rkey && other.primary) {
+            updateItem('externalAccounts', other.rkey, { primary: false });
+          }
+        }
+      }
+      updateItem('externalAccounts', acc.rkey, { primary: newPrimary });
+      toast.success(newPrimary ? tEdit('setPrimary') : tEdit('removePrimary'));
+    }
+  }, [accounts, updateItem, tEdit]);
 
   const handleFieldChange = useCallback(
     (
@@ -45,7 +71,27 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
 
   return (
     <section className="mt-8" aria-label={t('otherProfiles')}>
-      <h2 className="mb-4 text-xl font-semibold">{t('otherProfiles')}</h2>
+      <div className="mb-4 flex items-center gap-2">
+        <h2 className="text-xl font-semibold">{t('otherProfiles')}</h2>
+        {isOwnProfile && (
+          <Popover.Root>
+            <Popover.Trigger
+              className="inline-flex h-4 w-4 cursor-pointer items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-foreground"
+              aria-label={tEdit('primaryLink')}
+            >
+              <Info className="h-3.5 w-3.5" weight="bold" />
+            </Popover.Trigger>
+            <Popover.Portal>
+              <Popover.Positioner sideOffset={8}>
+                <Popover.Popup className="z-[60] w-72 rounded-lg border border-border bg-popover p-3 text-sm text-popover-foreground shadow-md">
+                  <Popover.Arrow className="fill-popover stroke-border" />
+                  <p className="text-muted-foreground">{tEdit('primaryLinkInfo')}</p>
+                </Popover.Popup>
+              </Popover.Positioner>
+            </Popover.Portal>
+          </Popover.Root>
+        )}
+      </div>
       <EditableSection<ExternalAccount>
         sectionTitle={t('otherProfiles')}
         profileKey="externalAccounts"
@@ -100,6 +146,29 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
                     <WarningCircle size={12} weight="fill" />
                     {t('unverified')}
                   </span>
+                )}
+                {acc.primary && (
+                  <Star
+                    size={16}
+                    weight="fill"
+                    className="shrink-0 text-amber-500 dark:text-amber-400"
+                    aria-label={tEdit('primaryLink')}
+                  />
+                )}
+                {isOwnProfile && (
+                  <button
+                    type="button"
+                    onClick={() => void handleTogglePrimary(acc)}
+                    className={`ml-auto shrink-0 rounded-full p-1 transition-colors ${
+                      acc.primary
+                        ? 'text-amber-500 hover:text-amber-600 dark:text-amber-400 dark:hover:text-amber-300'
+                        : 'text-muted-foreground hover:text-foreground'
+                    }`}
+                    aria-label={acc.primary ? tEdit('removePrimary') : tEdit('setPrimary')}
+                    title={acc.primary ? tEdit('removePrimary') : tEdit('setPrimary')}
+                  >
+                    <Star size={16} weight={acc.primary ? 'fill' : 'regular'} />
+                  </button>
                 )}
               </li>
             </EditableEntry>

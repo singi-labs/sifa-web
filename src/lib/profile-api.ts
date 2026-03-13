@@ -60,7 +60,7 @@ async function apiCreateRequest(path: string, body: unknown): Promise<CreateResu
 export async function updateProfileSelf(data: {
   headline?: string;
   about?: string;
-  location?: string;
+  location?: string | { country: string; region?: string; city?: string };
   website?: string;
   openTo?: string[];
 }): Promise<WriteResult> {
@@ -174,4 +174,12 @@ export async function updateExternalAccount(
 
 export async function deleteExternalAccount(rkey: string): Promise<WriteResult> {
   return apiRequest(`/api/profile/external-accounts/${encodeURIComponent(rkey)}`, 'DELETE');
+}
+
+export async function setExternalAccountPrimary(rkey: string): Promise<WriteResult> {
+  return apiRequest(`/api/profile/external-accounts/${encodeURIComponent(rkey)}/primary`, 'PUT');
+}
+
+export async function unsetExternalAccountPrimary(rkey: string): Promise<WriteResult> {
+  return apiRequest(`/api/profile/external-accounts/${encodeURIComponent(rkey)}/primary`, 'DELETE');
 }

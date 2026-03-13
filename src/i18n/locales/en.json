@@ -155,6 +155,7 @@
     "pdsExplanation": "Your display name and avatar are managed by your AT Protocol identity provider (e.g. Bluesky). To change them, update your profile there and the changes will sync automatically.",
     "headline": "Headline",
     "headlinePlaceholder": "What do you do?",
+    "avatar": "Avatar",
     "about": "About",
     "aboutPlaceholder": "Tell your professional story...",
     "location": "Location",
@@ -167,7 +168,19 @@
     "contractRoles": "Contract roles",
     "boardPositions": "Board positions",
     "mentoring": "Mentoring",
-    "collaborations": "Collaborations"
+    "collaborations": "Collaborations",
+    "primaryLink": "Primary link",
+    "primaryLinkInfo": "Your primary link appears on your profile card. In the future, only verified links can be set as primary.",
+    "setPrimary": "Set as primary",
+    "removePrimary": "Remove as primary",
+    "locationMode_city": "City",
+    "locationMode_postal": "Postal code",
+    "locationMode_country": "Country",
+    "locationCityPlaceholder": "Search for a city...",
+    "locationPostalPlaceholder": "Enter postal code...",
+    "locationCountryPlaceholder": "Search for a country...",
+    "locationClear": "Clear location",
+    "locationApiFailed": "Location search is temporarily unavailable. Enter your location manually."
   },
   "editor": {
     "save": "Save",

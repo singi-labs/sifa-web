@@ -15,6 +15,15 @@ import { useAuth } from '@/components/auth-provider';
 import type { TrustStat, VerifiedAccount } from '@/lib/types';
 import { cn } from '@/lib/utils';
 
+const OPEN_TO_LABEL_KEYS: Record<string, string> = {
+  'id.sifa.defs#fullTimeRoles': 'fullTimeRoles',
+  'id.sifa.defs#partTimeRoles': 'partTimeRoles',
+  'id.sifa.defs#contractRoles': 'contractRoles',
+  'id.sifa.defs#boardPositions': 'boardPositions',
+  'id.sifa.defs#mentoring': 'mentoring',
+  'id.sifa.defs#collaborations': 'collaborations',
+};
+
 interface IdentityCardProps {
   did: string;
   handle: string;
@@ -53,6 +62,7 @@ export function IdentityCard({
   className,
 }: IdentityCardProps) {
   const t = useTranslations('identityCard');
+  const tEdit = useTranslations('profileEdit');
   const { session } = useAuth();
   const isEmbed = variant === 'embed';
   const isOwn = isOwnProfile || Boolean(session?.did && session.did === did);
@@ -69,7 +79,7 @@ export function IdentityCard({
 
   return (
     <section
-      className={cn('rounded-xl border border-border bg-card p-6', className)}
+      className={cn('relative rounded-xl border border-border bg-card p-6', className)}
       aria-label={t('label')}
     >
       {/* Row 1: Avatar, name, badges */}
@@ -159,7 +169,7 @@ export function IdentityCard({
         <div className="mt-3 flex flex-wrap gap-2">
           {openTo.map((item) => (
             <Badge key={item} variant="outline" className="border-primary/30 text-primary">
-              {item}
+              {OPEN_TO_LABEL_KEYS[item] ? tEdit(OPEN_TO_LABEL_KEYS[item]!) : item}
             </Badge>
           ))}
         </div>
@@ -175,6 +185,18 @@ export function IdentityCard({
         ))}
       </div>
 
+      {/* Floating edit button — top-right, own profile only, not in embeds */}
+      {isOwn && !isEmbed && (
+        <button
+          type="button"
+          onClick={() => setEditing(true)}
+          className="absolute right-4 top-4 inline-flex h-8 items-center justify-center gap-1.5 rounded-md border border-border bg-background px-3 text-sm font-medium transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+        >
+          <PencilSimple className="h-4 w-4" weight="bold" aria-hidden="true" />
+          {t('editProfile')}
+        </button>
+      )}
+
       {/* Row 7: Action buttons (page) or "View on Sifa" CTA (embed) */}
       {isEmbed ? (
         <div className="mt-4 border-t border-border pt-3">
@@ -189,18 +211,7 @@ export function IdentityCard({
         </div>
       ) : (
         <div className="mt-4 flex gap-2">
-          {isOwn ? (
-            <button
-              type="button"
-              onClick={() => setEditing(true)}
-              className="inline-flex h-8 items-center justify-center gap-1.5 rounded-md border border-border bg-background px-3 text-sm font-medium transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-            >
-              <PencilSimple className="h-4 w-4" weight="bold" aria-hidden="true" />
-              {t('editProfile')}
-            </button>
-          ) : (
-            <FollowButton targetDid={did} isFollowing={isFollowing ?? false} />
-          )}
+          {!isOwn && <FollowButton targetDid={did} isFollowing={isFollowing ?? false} />}
           <Button
             variant="ghost"
             size="sm"
@@ -219,10 +230,10 @@ export function IdentityCard({
       {editing && (
         <ProfileEditDialog
           displayName={displayName}
+          avatar={avatar}
           headline={headline}
           about={about}
           location={location}
-          website={website}
           openTo={openTo}
           onClose={() => setEditing(false)}
         />

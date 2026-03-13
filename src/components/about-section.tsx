@@ -3,12 +3,9 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { PencilSimple } from '@phosphor-icons/react';
-import { toast } from 'sonner';
 import { sanitize } from '@/lib/sanitize';
 import { Button } from '@/components/ui/button';
-import { EditDialog } from '@/components/profile-editor/edit-dialog';
-import { ABOUT_FIELDS, profileToAboutValues } from '@/components/profile-editor/about-form';
-import { updateProfileSelf } from '@/lib/profile-api';
+import { ProfileEditDialog } from '@/components/profile-edit-dialog';
 import { useProfileEdit } from '@/components/profile-edit-provider';
 
 const COLLAPSE_THRESHOLD = 300;
@@ -22,27 +19,9 @@ export function AboutSection({ about, isOwnProfile }: AboutSectionProps) {
   const t = useTranslations('profile');
   const [expanded, setExpanded] = useState(false);
   const [editing, setEditing] = useState(false);
-  const { profile, updateProfile } = useProfileEdit();
+  const { profile } = useProfileEdit();
 
   if (!about && !isOwnProfile) return null;
-
-  const handleSave = async (
-    values: Record<string, string | boolean>,
-  ): Promise<{ success: boolean; error?: string }> => {
-    const data = {
-      headline: (values.headline as string) || undefined,
-      about: (values.about as string) || undefined,
-      location: (values.location as string) || undefined,
-      website: (values.website as string) || undefined,
-    };
-    const result = await updateProfileSelf(data);
-    if (result.success) {
-      updateProfile(data);
-      setEditing(false);
-      toast.success('Profile updated');
-    }
-    return result;
-  };
 
   if (!about && isOwnProfile) {
     return (
@@ -60,12 +39,14 @@ export function AboutSection({ about, isOwnProfile }: AboutSectionProps) {
           </Button>
         </div>
         {editing && (
-          <EditDialog
-            title="Edit Profile"
-            fields={ABOUT_FIELDS}
-            initialValues={profileToAboutValues(profile)}
-            onSave={handleSave}
-            onCancel={() => setEditing(false)}
+          <ProfileEditDialog
+            displayName={profile.displayName}
+            avatar={profile.avatar}
+            headline={profile.headline}
+            about={profile.about}
+            location={profile.location}
+            openTo={profile.openTo}
+            onClose={() => setEditing(false)}
           />
         )}
       </section>
@@ -105,12 +86,14 @@ export function AboutSection({ about, isOwnProfile }: AboutSectionProps) {
         </button>
       )}
       {editing && (
-        <EditDialog
-          title="Edit Profile"
-          fields={ABOUT_FIELDS}
-          initialValues={profileToAboutValues(profile)}
-          onSave={handleSave}
-          onCancel={() => setEditing(false)}
+        <ProfileEditDialog
+          displayName={profile.displayName}
+          avatar={profile.avatar}
+          headline={profile.headline}
+          about={profile.about}
+          location={profile.location}
+          openTo={profile.openTo}
+          onClose={() => setEditing(false)}
         />
       )}
     </section>

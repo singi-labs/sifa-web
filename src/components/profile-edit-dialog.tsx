@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, type FormEvent } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { X, Info } from '@phosphor-icons/react';
@@ -9,6 +10,11 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { updateProfileSelf } from '@/lib/profile-api';
+import {
+  LocationSearch,
+  parseLocationString,
+  type LocationValue,
+} from '@/components/location-search';
 
 const OPEN_TO_OPTIONS = [
   { value: 'id.sifa.defs#fullTimeRoles', labelKey: 'fullTimeRoles' },
@@ -21,20 +27,20 @@ const OPEN_TO_OPTIONS = [
 
 interface ProfileEditDialogProps {
   displayName?: string;
+  avatar?: string;
   headline?: string;
   about?: string;
   location?: string;
-  website?: string;
   openTo?: string[];
   onClose: () => void;
 }
 
 export function ProfileEditDialog({
   displayName,
+  avatar,
   headline: initialHeadline,
   about: initialAbout,
   location: initialLocation,
-  website: initialWebsite,
   openTo: initialOpenTo,
   onClose,
 }: ProfileEditDialogProps) {
@@ -44,8 +50,9 @@ export function ProfileEditDialog({
 
   const [headline, setHeadline] = useState(initialHeadline ?? '');
   const [about, setAbout] = useState(initialAbout ?? '');
-  const [location, setLocation] = useState(initialLocation ?? '');
-  const [website, setWebsite] = useState(initialWebsite ?? '');
+  const [locationValue, setLocationValue] = useState<LocationValue | null>(
+    initialLocation ? parseLocationString(initialLocation) : null,
+  );
   const [openTo, setOpenTo] = useState<Set<string>>(new Set(initialOpenTo ?? []));
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -70,8 +77,13 @@ export function ProfileEditDialog({
     const result = await updateProfileSelf({
       headline: headline || undefined,
       about: about || undefined,
-      location: location || undefined,
-      website: website || undefined,
+      location: locationValue
+        ? {
+            country: locationValue.country,
+            ...(locationValue.region ? { region: locationValue.region } : {}),
+            ...(locationValue.city ? { city: locationValue.city } : {}),
+          }
+        : undefined,
       openTo: [...openTo],
     });
 
@@ -107,6 +119,44 @@ export function ProfileEditDialog({
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Avatar — read-only with PDS explanation */}
+          <div>
+            <div className="mb-1 flex items-center gap-1.5">
+              <span className="block text-sm font-medium">
+                {t('avatar')}
+              </span>
+              <Popover.Root>
+                <Popover.Trigger
+                  className="inline-flex h-4 w-4 cursor-pointer items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-foreground"
+                  aria-label={t('pdsFieldInfo')}
+                >
+                  <Info className="h-3.5 w-3.5" weight="bold" />
+                </Popover.Trigger>
+                <Popover.Portal>
+                  <Popover.Positioner sideOffset={8}>
+                    <Popover.Popup className="z-[100] w-72 rounded-lg border border-border bg-popover p-3 text-sm text-popover-foreground shadow-md">
+                      <Popover.Arrow className="fill-popover stroke-border" />
+                      <p className="text-muted-foreground">{t('pdsExplanation')}</p>
+                    </Popover.Popup>
+                  </Popover.Positioner>
+                </Popover.Portal>
+              </Popover.Root>
+            </div>
+            <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full bg-muted text-xl font-semibold text-muted-foreground">
+              {avatar ? (
+                <Image
+                  src={avatar}
+                  alt=""
+                  width={64}
+                  height={64}
+                  className="h-16 w-16 rounded-full object-cover"
+                />
+              ) : (
+                <span aria-hidden="true">{(displayName ?? '?').charAt(0).toUpperCase()}</span>
+              )}
+            </div>
+          </div>
+
           {/* Display Name — read-only with PDS explanation */}
           <div>
             <div className="mb-1 flex items-center gap-1.5">
@@ -122,7 +172,7 @@ export function ProfileEditDialog({
                 </Popover.Trigger>
                 <Popover.Portal>
                   <Popover.Positioner sideOffset={8}>
-                    <Popover.Popup className="z-[60] w-72 rounded-lg border border-border bg-popover p-3 text-sm text-popover-foreground shadow-md">
+                    <Popover.Popup className="z-[100] w-72 rounded-lg border border-border bg-popover p-3 text-sm text-popover-foreground shadow-md">
                       <Popover.Arrow className="fill-popover stroke-border" />
                       <p className="text-muted-foreground">{t('pdsExplanation')}</p>
                     </Popover.Popup>
@@ -162,7 +212,7 @@ export function ProfileEditDialog({
             <textarea
               id="edit-about"
               className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              rows={4}
+              rows={8}
               value={about}
               onChange={(e) => setAbout(e.target.value)}
               placeholder={t('aboutPlaceholder')}
@@ -171,29 +221,13 @@ export function ProfileEditDialog({
 
           {/* Location */}
           <div>
-            <label htmlFor="edit-location" className="mb-1 block text-sm font-medium">
+            <span className="mb-1 block text-sm font-medium">
               {t('location')}
-            </label>
-            <Input
+            </span>
+            <LocationSearch
               id="edit-location"
-              type="text"
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-              placeholder={t('locationPlaceholder')}
-            />
-          </div>
-
-          {/* Website */}
-          <div>
-            <label htmlFor="edit-website" className="mb-1 block text-sm font-medium">
-              {t('website')}
-            </label>
-            <Input
-              id="edit-website"
-              type="url"
-              value={website}
-              onChange={(e) => setWebsite(e.target.value)}
-              placeholder={t('websitePlaceholder')}
+              value={locationValue}
+              onChange={setLocationValue}
             />
           </div>
 
