@@ -10,9 +10,11 @@ import { ShareNetwork, PencilSimple, CheckCircle } from '@phosphor-icons/react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { FollowButton } from '@/components/follow-button';
+import { PdsIcon } from '@/components/pds-icon';
 import { ProfileEditDialog } from '@/components/profile-edit-dialog';
 import { useAuth } from '@/components/auth-provider';
 import type { TrustStat, VerifiedAccount } from '@/lib/types';
+import { detectPdsProvider } from '@/lib/pds-utils';
 import { cn } from '@/lib/utils';
 
 const OPEN_TO_LABEL_KEYS: Record<string, string> = {
@@ -67,6 +69,7 @@ export function IdentityCard({
   const isEmbed = variant === 'embed';
   const isOwn = isOwnProfile || Boolean(session?.did && session.did === did);
   const [editing, setEditing] = useState(false);
+  const pdsProvider = detectPdsProvider(handle);
 
   const displayTrustStats =
     trustStats.length > 0
@@ -110,7 +113,18 @@ export function IdentityCard({
           </div>
           {/* Row 2: Handle + unclaimed badge */}
           <div className="flex items-center gap-2">
-            <p className="truncate text-sm text-muted-foreground">@{handle}</p>
+            {pdsProvider ? (
+              <a
+                href={pdsProvider.profileUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 truncate text-sm text-muted-foreground hover:text-foreground"
+              >
+                <PdsIcon provider={pdsProvider.name} className="h-3.5 w-3.5 shrink-0" />@{handle}
+              </a>
+            ) : (
+              <p className="truncate text-sm text-muted-foreground">@{handle}</p>
+            )}
             {!claimed && !isEmbed && (
               <Popover.Root>
                 <Popover.Trigger className="inline-flex h-5 shrink-0 cursor-pointer items-center rounded-full border border-amber-300 bg-amber-50 px-2 text-xs font-medium text-amber-800 transition-colors hover:bg-amber-100 dark:border-amber-700 dark:bg-amber-950/50 dark:text-amber-300 dark:hover:bg-amber-900/50">

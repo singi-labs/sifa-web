@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { TimelineSection, TimelineEntry } from './timeline';
+import { TimelineSection, TimelineEntry, formatTimelineDate } from './timeline';
 import { EditableSection, EditableEntry } from '@/components/profile-editor';
 import {
   POSITION_FIELDS,
@@ -55,30 +55,8 @@ export function CareerSection({ positions, isOwnProfile }: CareerSectionProps) {
 }
 
 function formatDateRange(start: string, end?: string, current?: boolean): string {
-  const s = formatDate(start);
+  const s = formatTimelineDate(start);
   if (current) return `${s} - Present`;
-  if (end) return `${s} - ${formatDate(end)}`;
+  if (end) return `${s} - ${formatTimelineDate(end)}`;
   return s;
-}
-
-function formatDate(dateStr: string): string {
-  if (dateStr.length === 4) return dateStr;
-  const [year, month] = dateStr.split('-');
-  if (!month) return year ?? dateStr;
-  const months = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
-  ];
-  const idx = parseInt(month, 10) - 1;
-  return `${months[idx]} ${year}`;
 }

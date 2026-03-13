@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { TimelineSection, TimelineEntry } from './timeline';
+import { TimelineSection, TimelineEntry, formatTimelineDate } from './timeline';
 import { EditableSection, EditableEntry, EDUCATION_FIELDS } from '@/components/profile-editor';
 import {
   educationToValues,
@@ -77,7 +77,7 @@ export function EducationSection({ education, courses = [], isOwnProfile }: Educ
 
 function formatEduDateRange(start?: string, end?: string): string {
   if (!start && !end) return '';
-  if (!start) return end ?? '';
-  if (!end) return `${start} - Present`;
-  return `${start} - ${end}`;
+  if (!start) return end ? formatTimelineDate(end) : '';
+  if (!end) return `${formatTimelineDate(start)} - Present`;
+  return `${formatTimelineDate(start)} - ${formatTimelineDate(end)}`;
 }
