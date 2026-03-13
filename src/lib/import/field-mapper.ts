@@ -1,3 +1,5 @@
+import { restoreLineBreaks } from './restore-line-breaks';
+
 const MONTHS: Record<string, string> = {
   Jan: '01',
   Feb: '02',
@@ -56,7 +58,7 @@ export function mapPositionsCsv(row: Record<string, string>): SifaPosition {
   return {
     companyName: row['Company Name']?.trim() ?? '',
     title: row['Title']?.trim() ?? '',
-    description: optional(row['Description']),
+    description: restoreLineBreaks(optional(row['Description'])),
     startDate,
     endDate,
     ...(current ? { current } : {}),
@@ -79,7 +81,7 @@ export function mapProfileCsv(row: Record<string, string>): SifaProfile {
     firstName: optional(row['First Name']),
     lastName: optional(row['Last Name']),
     headline: optional(row['Headline']),
-    about: optional(row['Summary']),
+    about: restoreLineBreaks(optional(row['Summary'])),
     location: optional(row['Geo Location']),
   };
 }
@@ -98,7 +100,7 @@ export function mapEducationCsv(row: Record<string, string>): SifaEducation {
   return {
     institution: row['School Name']?.trim() ?? '',
     degree: optional(row['Degree Name']),
-    description: optional(row['Notes']),
+    description: restoreLineBreaks(optional(row['Notes'])),
     startDate: parseLinkedInDate(row['Start Date']),
     endDate: parseLinkedInDate(row['End Date']),
   };
@@ -149,7 +151,7 @@ export interface SifaProject {
 export function mapProjectsCsv(row: Record<string, string>): SifaProject {
   return {
     name: row['Title']?.trim() ?? '',
-    description: optional(row['Description']),
+    description: restoreLineBreaks(optional(row['Description'])),
     url: optional(row['Url']),
     startDate: parseLinkedInDate(row['Started On']),
     endDate: parseLinkedInDate(row['Finished On']),
@@ -172,7 +174,7 @@ export function mapVolunteeringCsv(row: Record<string, string>): SifaVolunteerin
     organization: row['Company Name']?.trim() ?? '',
     role: optional(row['Role']),
     cause: optional(row['Cause']),
-    description: optional(row['Description']),
+    description: restoreLineBreaks(optional(row['Description'])),
     startDate: parseLinkedInDate(row['Started On']),
     endDate: parseLinkedInDate(row['Finished On']),
   };
@@ -213,7 +215,7 @@ export function mapPublicationsCsv(row: Record<string, string>): SifaPublication
     title: row['Name']?.trim() ?? '',
     publisher: optional(row['Publisher']),
     url: optional(row['Url']),
-    description: optional(row['Description']),
+    description: restoreLineBreaks(optional(row['Description'])),
     publishedAt: parsePublicationDate(row['Published On']),
   };
 }
@@ -243,7 +245,7 @@ export interface SifaHonor {
 export function mapHonorsCsv(row: Record<string, string>): SifaHonor {
   return {
     title: row['Title']?.trim() ?? '',
-    description: optional(row['Description']),
+    description: restoreLineBreaks(optional(row['Description'])),
     awardedAt: parseLinkedInDate(row['Issued On']),
   };
 }
