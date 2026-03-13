@@ -169,6 +169,9 @@ export function ConfirmStep({ preview, onDone }: ConfirmStepProps) {
             <CheckCircle className="size-12 text-primary" weight="fill" aria-hidden="true" />
             <p className="text-sm text-muted-foreground">{t('successMessage')}</p>
             {result?.importedCounts && <ImportBreakdown counts={result.importedCounts} />}
+            <p className="mt-3 rounded-md border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-300">
+              {t('formattingHint')}
+            </p>
             <Button onClick={onDone}>
               {t('viewProfile')}
               <ArrowRight className="ml-1 h-4 w-4" weight="bold" aria-hidden="true" />
@@ -190,6 +193,9 @@ export function ConfirmStep({ preview, onDone }: ConfirmStepProps) {
               )}
             </p>
             {result.importedCounts && <ImportBreakdown counts={result.importedCounts} />}
+            <p className="mt-3 rounded-md border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-300">
+              {t('formattingHint')}
+            </p>
             {result.failedItems.length > 0 && (
               <details className="w-full max-w-sm">
                 <summary className="cursor-pointer text-xs text-muted-foreground">

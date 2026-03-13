@@ -108,7 +108,8 @@
       "retryFailed": "Retry failed items",
       "retry": "Retry",
       "viewProfile": "View your profile",
-      "goToProfile": "Go to profile"
+      "goToProfile": "Go to profile",
+      "formattingHint": "LinkedIn exports strip text formatting. We did a first pass to restore paragraph breaks and bullet points, but some descriptions may still need manual cleanup. Review your profile and edit any sections that look off."
     }
   },
   "sections": {
