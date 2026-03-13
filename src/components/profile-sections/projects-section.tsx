@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { TimelineSection, TimelineEntry } from './timeline';
+import { TimelineSection, TimelineEntry, formatTimelineDate } from './timeline';
 import { EditableSection, EditableEntry, PROJECT_FIELDS } from '@/components/profile-editor';
 import { projectToValues, valuesToProject } from '@/components/profile-editor/section-converters';
 import type { ProfileProject } from '@/lib/types';
@@ -52,7 +52,7 @@ export function ProjectsSection({ projects, isOwnProfile }: ProjectsSectionProps
 
 function formatProjectDateRange(start?: string, end?: string): string {
   if (!start && !end) return '';
-  if (!start) return end ?? '';
-  if (!end) return start;
-  return `${start} - ${end}`;
+  if (!start) return end ? formatTimelineDate(end) : '';
+  if (!end) return formatTimelineDate(start);
+  return `${formatTimelineDate(start)} - ${formatTimelineDate(end)}`;
 }
