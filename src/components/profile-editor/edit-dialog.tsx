@@ -9,9 +9,10 @@ import { X } from '@phosphor-icons/react';
 export interface FieldDef {
   name: string;
   label: string;
-  type?: 'text' | 'textarea' | 'date' | 'url' | 'checkbox';
+  type?: 'text' | 'textarea' | 'month' | 'url' | 'checkbox' | 'select';
   required?: boolean;
   placeholder?: string;
+  options?: { value: string; label: string }[];
 }
 
 interface EditDialogProps {
@@ -107,6 +108,21 @@ export function EditDialog({
                   />
                   <span className="text-sm text-muted-foreground">{field.placeholder}</span>
                 </div>
+              ) : field.type === 'select' && field.options ? (
+                <select
+                  id={`edit-${field.name}`}
+                  className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  value={values[field.name] as string}
+                  onChange={(e) => updateValue(field.name, e.target.value)}
+                  required={field.required}
+                >
+                  <option value="">{field.placeholder ?? 'Select...'}</option>
+                  {field.options.map((opt) => (
+                    <option key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </option>
+                  ))}
+                </select>
               ) : (
                 <Input
                   id={`edit-${field.name}`}
