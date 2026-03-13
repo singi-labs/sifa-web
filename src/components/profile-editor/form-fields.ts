@@ -1,5 +1,5 @@
 import type { FieldDef } from './edit-dialog';
-import { PLATFORM_OPTIONS, FEED_PLATFORMS } from '@/lib/platforms';
+import { PLATFORM_OPTIONS } from '@/lib/platforms';
 
 export const EDUCATION_FIELDS: FieldDef[] = [
   { name: 'institution', label: 'Institution', required: true, placeholder: 'University name' },
@@ -93,7 +93,7 @@ export const EXTERNAL_ACCOUNT_FIELDS: FieldDef[] = [
     label: 'RSS / Atom Feed URL',
     type: 'url',
     placeholder: 'https://example.com/feed.xml',
-    description: 'Used to show your posts in the ATmosphere Stream. Leave empty if unknown.',
-    visibleWhen: (values) => FEED_PLATFORMS.has(values.platform as string),
+    description: 'Used to show your posts in the ATmosphere Stream. Leave empty for auto-detection.',
+    visibleWhen: (values) => values.platform === 'website',
   },
 ];
