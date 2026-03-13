@@ -26,12 +26,12 @@ export function TimelineEntry({
 
   const content = (
     <>
-      <div className="flex items-start justify-between gap-2">
+      <div className="flex items-baseline justify-between gap-2">
         <div className="min-w-0">
           <h3 className="font-medium">{title}</h3>
           <p className="text-sm text-muted-foreground">{subtitle}</p>
         </div>
-        <div className="flex shrink-0 items-center gap-1">
+        <div className="flex shrink-0 items-baseline gap-1">
           <span className="text-xs text-muted-foreground">{dateRange}</span>
           {hasExpandable &&
             (expanded ? (
@@ -57,7 +57,7 @@ export function TimelineEntry({
       </div>
 
       {/* Content */}
-      <div className={cn('min-w-0 pb-6', isLast && 'pb-0')}>
+      <div className={cn('min-w-0 flex-1 pb-6', isLast && 'pb-0')}>
         {hasExpandable ? (
           <button
             type="button"
@@ -79,6 +79,20 @@ export function TimelineEntry({
       </div>
     </div>
   );
+}
+
+const MONTHS = [
+  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+];
+
+/** Format "2007-01" as "Jan 2007", pass through year-only strings. */
+export function formatTimelineDate(dateStr: string): string {
+  if (dateStr.length === 4) return dateStr;
+  const [year, month] = dateStr.split('-');
+  if (!month) return year ?? dateStr;
+  const idx = parseInt(month, 10) - 1;
+  return `${MONTHS[idx]} ${year}`;
 }
 
 interface TimelineSectionProps {
