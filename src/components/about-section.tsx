@@ -99,7 +99,7 @@ export function AboutSection({ about, isOwnProfile }: AboutSectionProps) {
         <button
           type="button"
           onClick={() => setExpanded(!expanded)}
-          className="mt-2 text-sm font-medium text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          className="mt-2 text-sm font-semibold text-primary underline underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
         >
           {expanded ? t('readLess') : t('readMore')}
         </button>
