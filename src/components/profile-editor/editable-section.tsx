@@ -65,6 +65,12 @@ interface EditableSectionProps<T extends { rkey: string }> {
     item: T,
     editControls?: { onEdit: () => void; onDelete: () => void },
   ) => React.ReactNode;
+  /** Called when any field value changes in the edit dialog. Return partial values to auto-fill. */
+  onFieldChange?: (
+    name: string,
+    value: string | boolean,
+    currentValues: Record<string, string | boolean>,
+  ) => Record<string, string | boolean> | undefined;
 }
 
 type DialogState<T> = { mode: 'add' } | { mode: 'edit'; item: T };
@@ -78,6 +84,7 @@ export function EditableSection<T extends { rkey: string }>({
   fromValues,
   collection,
   renderEntry,
+  onFieldChange,
 }: EditableSectionProps<T>) {
   const { profile, addItem, updateItem, removeItem } = useProfileEdit();
   const [dialog, setDialog] = useState<DialogState<T> | null>(null);
@@ -155,6 +162,7 @@ export function EditableSection<T extends { rkey: string }>({
           initialValues={dialog.mode === 'edit' ? toValues(dialog.item) : undefined}
           onSave={handleSave}
           onCancel={() => setDialog(null)}
+          onFieldChange={onFieldChange}
         />
       )}
     </>
