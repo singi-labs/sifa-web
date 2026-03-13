@@ -54,11 +54,27 @@ vi.mock('@phosphor-icons/react', () => ({
   ShareNetwork: (props: Record<string, unknown>) => <span data-testid="icon-share" {...props} />,
   PencilSimple: (props: Record<string, unknown>) => <span data-testid="icon-pencil" {...props} />,
   CheckCircle: (props: Record<string, unknown>) => <span data-testid="icon-check" {...props} />,
+  X: (props: Record<string, unknown>) => <span data-testid="icon-x" {...props} />,
+  Info: (props: Record<string, unknown>) => <span data-testid="icon-info" {...props} />,
 }));
 
 // Mock sonner
 vi.mock('sonner', () => ({
   toast: vi.fn(),
+}));
+
+// Mock next/navigation
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({ refresh: vi.fn() }),
+}));
+
+// Mock profile-edit-dialog
+vi.mock('@/components/profile-edit-dialog', () => ({
+  ProfileEditDialog: ({ onClose }: { onClose: () => void }) => (
+    <div data-testid="profile-edit-dialog">
+      <button onClick={onClose}>Close</button>
+    </div>
+  ),
 }));
 
 const baseProps = {
@@ -164,8 +180,8 @@ describe('IdentityCard (default / page variant)', () => {
 
   it('renders Edit button for own profile', () => {
     render(<IdentityCard {...baseProps} isOwnProfile={true} />);
-    const editLink = screen.getByRole('link', { name: /Edit profile/ });
-    expect(editLink).toBeDefined();
+    const editButton = screen.getByRole('button', { name: /Edit profile/ });
+    expect(editButton).toBeDefined();
   });
 
   it('shows avatar letter placeholder when no avatar', () => {

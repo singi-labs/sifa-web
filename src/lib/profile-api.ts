@@ -61,6 +61,7 @@ export async function updateProfileSelf(data: {
   about?: string;
   location?: string;
   website?: string;
+  openTo?: string[];
 }): Promise<WriteResult> {
   return apiRequest('/api/profile/self', 'PUT', data);
 }
