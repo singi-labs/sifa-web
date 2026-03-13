@@ -202,10 +202,7 @@ export function ProfileEditDialog({
             <legend className="mb-2 text-sm font-medium">{t('openTo')}</legend>
             <div className="grid grid-cols-2 gap-2">
               {OPEN_TO_OPTIONS.map((option) => (
-                <label
-                  key={option.value}
-                  className="flex items-center gap-2 text-sm"
-                >
+                <label key={option.value} className="flex items-center gap-2 text-sm">
                   <input
                     type="checkbox"
                     className="h-4 w-4 rounded border-border"
