@@ -14,7 +14,14 @@ export async function GET(
     return NextResponse.json({ error: 'Profile not found' }, { status: 404 });
   }
 
-  const location: LocationValue | null = profile.location ?? null;
+  const location: LocationValue | null = profile.locationCountry
+    ? {
+        country: profile.locationCountry,
+        countryCode: profile.countryCode ?? undefined,
+        region: profile.locationRegion ?? undefined,
+        city: profile.locationCity ?? undefined,
+      }
+    : null;
 
   const data = {
     did: profile.did,
