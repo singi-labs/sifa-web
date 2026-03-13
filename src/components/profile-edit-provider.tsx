@@ -1,6 +1,7 @@
 'use client';
 
 import { createContext, useContext, useState, useCallback, type ReactNode } from 'react';
+import { useAuth } from '@/components/auth-provider';
 import type { Profile } from '@/lib/types';
 
 interface ProfileEditContextValue {
@@ -19,7 +20,18 @@ interface ProfileEditProviderProps {
 }
 
 export function ProfileEditProvider({ initialProfile, children }: ProfileEditProviderProps) {
-  const [profile, setProfile] = useState<Profile>(initialProfile);
+  const { session } = useAuth();
+  const isOwnProfile = Boolean(session?.did && session.did === initialProfile.did);
+  const [profile, setProfile] = useState<Profile>(() => ({
+    ...initialProfile,
+    isOwnProfile,
+  }));
+
+  // Keep isOwnProfile in sync when session loads (it's async)
+  const prevIsOwn = profile.isOwnProfile;
+  if (isOwnProfile !== prevIsOwn) {
+    setProfile((prev) => ({ ...prev, isOwnProfile }));
+  }
 
   const updateProfile = useCallback((fields: Partial<Profile>) => {
     setProfile((prev) => ({ ...prev, ...fields }));

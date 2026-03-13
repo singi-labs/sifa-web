@@ -51,7 +51,7 @@ export function EditableEntry({
   return (
     <div className="group/entry relative">
       {children}
-      <div className="absolute -right-2 top-0 flex gap-1 opacity-0 transition-opacity group-hover/entry:opacity-100 focus-within:opacity-100">
+      <div className="absolute -right-2 top-0 flex gap-1 opacity-0 transition-opacity group-hover/entry:opacity-100 focus-within:opacity-100 [@media(hover:none)]:opacity-60">
         <Button
           variant="ghost"
           size="sm"
