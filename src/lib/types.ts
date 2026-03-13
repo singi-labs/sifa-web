@@ -1,3 +1,12 @@
+export interface LocationValue {
+  city?: string;
+  region?: string;
+  country: string;
+  countryCode?: string;
+  postalCode?: string;
+  geonameId?: number;
+}
+
 export interface ProfilePosition {
   rkey: string;
   companyName: string;
@@ -5,7 +14,7 @@ export interface ProfilePosition {
   description?: string;
   startDate: string;
   endDate?: string;
-  location?: string;
+  location?: LocationValue | null;
   current: boolean;
 }
 
@@ -134,7 +143,7 @@ export interface Profile {
     headline?: string;
     about?: string;
   };
-  location?: string;
+  location?: LocationValue | null;
   website?: string;
   openTo?: string[];
   claimed: boolean;

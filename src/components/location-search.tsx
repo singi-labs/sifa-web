@@ -4,47 +4,12 @@ import { useState, useRef, useCallback, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { Input } from '@/components/ui/input';
 import { MagnifyingGlass, X, MapPin } from '@phosphor-icons/react';
+import type { LocationValue } from '@/lib/types';
+import { formatLocation, parseLocationString } from '@/lib/location-utils';
 
-export interface LocationValue {
-  city?: string;
-  region?: string;
-  country: string;
-  postalCode?: string;
-  geonameId?: number;
-}
-
-/** Format a LocationValue for display */
-export function formatLocation(loc: LocationValue | null): string {
-  if (!loc) return '';
-  const parts = [loc.city, loc.region, loc.country].filter(Boolean);
-  if (loc.postalCode && !loc.city) {
-    return `${loc.postalCode}, ${loc.country}`;
-  }
-  return parts.join(', ');
-}
-
-/** Parse a display string back into a LocationValue (best-effort for legacy data) */
-export function parseLocationString(str: string): LocationValue | null {
-  if (!str.trim()) return null;
-  const parts = str
-    .split(',')
-    .map((p) => p.trim())
-    .filter(Boolean);
-  if (parts.length >= 3) {
-    return {
-      city: parts[0],
-      region: parts[1],
-      country: parts[parts.length - 1]!,
-    };
-  }
-  if (parts.length === 2) {
-    return {
-      city: parts[0],
-      country: parts[1]!,
-    };
-  }
-  return { country: parts[0]! };
-}
+// Re-export for backward compatibility
+export type { LocationValue } from '@/lib/types';
+export { formatLocation, parseLocationString } from '@/lib/location-utils';
 
 const GEONAMES_BASE = 'https://secure.geonames.org';
 const GEONAMES_USER = 'gxjansen';
@@ -117,6 +82,7 @@ export function LocationSearch({ value, onChange, id }: LocationSearchProps) {
         city: g.name,
         region: g.adminName1 || undefined,
         country: g.countryName,
+        countryCode: g.countryCode,
         geonameId: g.geonameId,
         label: [g.name, g.adminName1, g.countryName].filter(Boolean).join(', '),
       }));
@@ -150,6 +116,7 @@ export function LocationSearch({ value, onChange, id }: LocationSearchProps) {
         city: p.placeName || undefined,
         region: p.adminName1 || undefined,
         country: p.countryCode,
+        countryCode: p.countryCode,
         label: [p.postalCode, p.placeName, p.adminName1, p.countryCode].filter(Boolean).join(', '),
       }));
       setResults(items);
@@ -179,6 +146,7 @@ export function LocationSearch({ value, onChange, id }: LocationSearchProps) {
       const data = (await res.json()) as { geonames: GeoNameResult[] };
       const items: SearchResultItem[] = (data.geonames ?? []).map((g) => ({
         country: g.countryName || g.name,
+        countryCode: g.countryCode,
         label: g.countryName || g.name,
       }));
       setResults(items);
@@ -214,6 +182,7 @@ export function LocationSearch({ value, onChange, id }: LocationSearchProps) {
       ...(item.city ? { city: item.city } : {}),
       ...(item.region ? { region: item.region } : {}),
       country: item.country,
+      ...(item.countryCode ? { countryCode: item.countryCode } : {}),
       ...(item.postalCode ? { postalCode: item.postalCode } : {}),
       ...(item.geonameId ? { geonameId: item.geonameId } : {}),
     };
