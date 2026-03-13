@@ -53,4 +53,3 @@ describe('getFaviconUrl', () => {
     expect(getFaviconUrl('not-a-url')).toBeNull();
   });
 });
-

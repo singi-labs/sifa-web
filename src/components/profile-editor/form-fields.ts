@@ -93,7 +93,8 @@ export const EXTERNAL_ACCOUNT_FIELDS: FieldDef[] = [
     label: 'RSS / Atom Feed URL',
     type: 'url',
     placeholder: 'https://example.com/feed.xml',
-    description: 'Used to show your posts in the ATmosphere Stream. Leave empty for auto-detection.',
+    description:
+      'Used to show your posts in the ATmosphere Stream. Leave empty for auto-detection.',
     visibleWhen: (values) => values.platform === 'website',
   },
 ];
