@@ -22,9 +22,7 @@ describe('restoreLineBreaks', () => {
   });
 
   it('inserts newline before asterisk bullets', () => {
-    expect(restoreLineBreaks('Overview. * First * Second')).toBe(
-      'Overview.\n* First\n* Second',
-    );
+    expect(restoreLineBreaks('Overview. * First * Second')).toBe('Overview.\n* First\n* Second');
   });
 
   it('inserts newline before bullet character', () => {
@@ -40,9 +38,7 @@ describe('restoreLineBreaks', () => {
   });
 
   it('does not break mid-sentence dashes', () => {
-    expect(restoreLineBreaks('This is a well-known fact.')).toBe(
-      'This is a well-known fact.',
-    );
+    expect(restoreLineBreaks('This is a well-known fact.')).toBe('This is a well-known fact.');
   });
 
   it('does not break decimal numbers', () => {
@@ -58,8 +54,7 @@ describe('restoreLineBreaks', () => {
   });
 
   it('handles combination of heuristics', () => {
-    const input =
-      'Led engineering team.  Key achievements: - Shipped v2 - Reduced latency 40%';
+    const input = 'Led engineering team.  Key achievements: - Shipped v2 - Reduced latency 40%';
     const expected =
       'Led engineering team.\n\nKey achievements:\n- Shipped v2\n- Reduced latency 40%';
     expect(restoreLineBreaks(input)).toBe(expected);
