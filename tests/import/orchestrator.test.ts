@@ -62,6 +62,23 @@ describe('Import orchestrator', () => {
     expect(preview.skills).toHaveLength(0);
   });
 
+  it('restores line breaks in flattened description fields', () => {
+    const csvFiles = new Map<string, string>();
+    csvFiles.set(
+      'Profile.csv',
+      'First Name,Last Name,Headline,Summary,Geo Location\nAlice,Smith,Engineer,"Led team.  Built platform. - Shipped v2 - Cut costs",Amsterdam',
+    );
+    csvFiles.set(
+      'Positions.csv',
+      'Company Name,Title,Description,Started On,Finished On\nAcme,Lead,"Overview. - Task A - Task B",Jan 2020,',
+    );
+
+    const preview = processLinkedInCsvFiles(csvFiles);
+
+    expect(preview.profile?.about).toContain('\n');
+    expect(preview.positions[0]?.description).toContain('\n');
+  });
+
   it('filters out rows with missing required fields', () => {
     const csvFiles = new Map<string, string>();
     csvFiles.set(
