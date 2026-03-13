@@ -13,7 +13,8 @@ import { FollowButton } from '@/components/follow-button';
 import { PdsIcon } from '@/components/pds-icon';
 import { ProfileEditDialog } from '@/components/profile-edit-dialog';
 import { useAuth } from '@/components/auth-provider';
-import type { TrustStat, VerifiedAccount } from '@/lib/types';
+import type { LocationValue, TrustStat, VerifiedAccount } from '@/lib/types';
+import { formatLocation, countryCodeToFlag } from '@/lib/location-utils';
 import { detectPdsProvider } from '@/lib/pds-utils';
 import { cn } from '@/lib/utils';
 
@@ -33,7 +34,7 @@ interface IdentityCardProps {
   avatar?: string;
   headline?: string;
   about?: string;
-  location?: string;
+  location?: LocationValue | null;
   website?: string;
   openTo?: string[];
   trustStats?: TrustStat[];
@@ -164,7 +165,16 @@ export function IdentityCard({
       {/* Row 4: Location + Website */}
       {(location || website) && (
         <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
-          {location && <span>{location}</span>}
+          {location && (
+            <span>
+              {formatLocation(location)}
+              {location.countryCode && (
+                <span className="ml-1" role="img" aria-label={location.countryCode}>
+                  {countryCodeToFlag(location.countryCode)}
+                </span>
+              )}
+            </span>
+          )}
           {website && (
             <a
               href={website.startsWith('http') ? website : `https://${website}`}

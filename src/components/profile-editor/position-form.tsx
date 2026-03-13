@@ -2,6 +2,7 @@
 
 import type { FieldDef } from './edit-dialog';
 import type { ProfilePosition } from '@/lib/types';
+import { formatLocation, parseLocationString } from '@/lib/location-utils';
 
 /** Normalise a partial date to YYYY-MM for the month input. */
 const toMonth = (v: string | undefined): string => {
@@ -37,7 +38,7 @@ export function positionToValues(pos: ProfilePosition): Record<string, string | 
     startDate: toMonth(pos.startDate),
     endDate: toMonth(pos.endDate),
     current: pos.current,
-    location: pos.location ?? '',
+    location: pos.location ? formatLocation(pos.location) : '',
     description: pos.description ?? '',
   };
 }
@@ -51,7 +52,9 @@ export function valuesToPosition(
     startDate: values.startDate as string,
     endDate: (values.endDate as string) || undefined,
     current: values.current as boolean,
-    location: (values.location as string) || undefined,
+    location: (values.location as string)
+      ? parseLocationString(values.location as string) ?? undefined
+      : undefined,
     description: (values.description as string) || undefined,
   };
 }
