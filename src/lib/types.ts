@@ -106,6 +106,7 @@ export interface ExternalAccount {
   url: string;
   label?: string;
   feedUrl?: string;
+  primary?: boolean;
   verifiable: boolean;
   verified: boolean;
   verifiedVia?: string | null;
