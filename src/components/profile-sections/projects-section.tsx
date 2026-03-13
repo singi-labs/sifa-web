@@ -38,7 +38,7 @@ export function ProjectsSection({ projects, isOwnProfile }: ProjectsSectionProps
           >
             <TimelineEntry
               title={proj.name}
-              subtitle={proj.url ? proj.url.replace(/^https?:\/\//, '') : ''}
+              subtitle={proj.url ? proj.url.replace(/^https?:\/\/(www\.)?/, '') : ''}
               dateRange={formatProjectDateRange(proj.startDate, proj.endDate)}
               description={proj.description}
               isLast={false}
