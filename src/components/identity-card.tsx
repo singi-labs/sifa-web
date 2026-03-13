@@ -53,6 +53,7 @@ export function IdentityCard({
   const t = useTranslations('identityCard');
   const { session } = useAuth();
   const isEmbed = variant === 'embed';
+  const isOwn = isOwnProfile || Boolean(session?.did && session.did === did);
 
   const displayTrustStats =
     trustStats.length > 0
@@ -185,7 +186,7 @@ export function IdentityCard({
         </div>
       ) : (
         <div className="mt-4 flex gap-2">
-          {isOwnProfile ? (
+          {isOwn ? (
             <Link
               href={`/p/${handle}/edit`}
               className="inline-flex h-8 items-center justify-center gap-1.5 rounded-md border border-border bg-background px-3 text-sm font-medium transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"

@@ -87,7 +87,7 @@ export function AboutSection({ about, isOwnProfile }: AboutSectionProps) {
           <Button
             variant="ghost"
             size="sm"
-            className="absolute -right-2 top-0 h-7 w-7 p-0 opacity-0 transition-opacity group-hover/about:opacity-100 focus-visible:opacity-100"
+            className="absolute -right-2 top-0 h-7 w-7 p-0 opacity-0 transition-opacity group-hover/about:opacity-100 focus-visible:opacity-100 [@media(hover:none)]:opacity-60"
             onClick={() => setEditing(true)}
             aria-label={t('editAbout')}
           >
