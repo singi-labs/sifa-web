@@ -1,11 +1,12 @@
 import type { FieldDef } from './edit-dialog';
+import { PLATFORM_OPTIONS } from '@/lib/platforms';
 
 export const EDUCATION_FIELDS: FieldDef[] = [
   { name: 'institution', label: 'Institution', required: true, placeholder: 'University name' },
   { name: 'degree', label: 'Degree', placeholder: 'BSc, MSc, PhD...' },
   { name: 'fieldOfStudy', label: 'Field of Study', placeholder: 'Computer Science' },
-  { name: 'startDate', label: 'Start Date', type: 'date' },
-  { name: 'endDate', label: 'End Date', type: 'date' },
+  { name: 'startDate', label: 'Start Date', type: 'month' },
+  { name: 'endDate', label: 'End Date', type: 'month' },
 ];
 
 export const SKILL_FIELDS: FieldDef[] = [
@@ -17,22 +18,22 @@ export const PROJECT_FIELDS: FieldDef[] = [
   { name: 'name', label: 'Project Name', required: true },
   { name: 'description', label: 'Description', type: 'textarea' },
   { name: 'url', label: 'URL', type: 'url' },
-  { name: 'startDate', label: 'Start Date', type: 'date' },
-  { name: 'endDate', label: 'End Date', type: 'date' },
+  { name: 'startDate', label: 'Start Date', type: 'month' },
+  { name: 'endDate', label: 'End Date', type: 'month' },
 ];
 
 export const CERTIFICATION_FIELDS: FieldDef[] = [
   { name: 'name', label: 'Certification Name', required: true },
   { name: 'issuingOrg', label: 'Issuing Organization', required: true },
-  { name: 'issueDate', label: 'Issue Date', type: 'date' },
-  { name: 'expiryDate', label: 'Expiry Date', type: 'date' },
+  { name: 'issueDate', label: 'Issue Date', type: 'month' },
+  { name: 'expiryDate', label: 'Expiry Date', type: 'month' },
   { name: 'credentialUrl', label: 'Credential URL', type: 'url' },
 ];
 
 export const PUBLICATION_FIELDS: FieldDef[] = [
   { name: 'title', label: 'Title', required: true },
   { name: 'publisher', label: 'Publisher' },
-  { name: 'date', label: 'Date', type: 'date' },
+  { name: 'date', label: 'Date', type: 'month' },
   { name: 'url', label: 'URL', type: 'url' },
   { name: 'description', label: 'Description', type: 'textarea' },
 ];
@@ -41,15 +42,15 @@ export const VOLUNTEERING_FIELDS: FieldDef[] = [
   { name: 'organization', label: 'Organization', required: true },
   { name: 'role', label: 'Role' },
   { name: 'cause', label: 'Cause' },
-  { name: 'startDate', label: 'Start Date', type: 'date' },
-  { name: 'endDate', label: 'End Date', type: 'date' },
+  { name: 'startDate', label: 'Start Date', type: 'month' },
+  { name: 'endDate', label: 'End Date', type: 'month' },
   { name: 'description', label: 'Description', type: 'textarea' },
 ];
 
 export const HONOR_FIELDS: FieldDef[] = [
   { name: 'title', label: 'Award Title', required: true },
   { name: 'issuer', label: 'Issuer' },
-  { name: 'date', label: 'Date', type: 'date' },
+  { name: 'date', label: 'Date', type: 'month' },
   { name: 'description', label: 'Description', type: 'textarea' },
 ];
 
@@ -58,7 +59,15 @@ export const LANGUAGE_FIELDS: FieldDef[] = [
   {
     name: 'proficiency',
     label: 'Proficiency',
-    placeholder: 'elementary, limited_working, professional_working, full_professional, native',
+    type: 'select',
+    placeholder: 'Select proficiency...',
+    options: [
+      { value: 'elementary', label: 'Elementary' },
+      { value: 'limited_working', label: 'Limited Working' },
+      { value: 'professional_working', label: 'Professional Working' },
+      { value: 'full_professional', label: 'Full Professional' },
+      { value: 'native', label: 'Native or Bilingual' },
+    ],
   },
 ];
 
@@ -72,8 +81,10 @@ export const EXTERNAL_ACCOUNT_FIELDS: FieldDef[] = [
   {
     name: 'platform',
     label: 'Platform',
+    type: 'select',
     required: true,
-    placeholder: 'github, website, fediverse, rss...',
+    placeholder: 'Select a platform...',
+    options: PLATFORM_OPTIONS,
   },
   { name: 'url', label: 'URL', type: 'url', required: true },
   { name: 'label', label: 'Label', placeholder: 'My Blog, Photography...' },

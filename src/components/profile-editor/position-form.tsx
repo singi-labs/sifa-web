@@ -3,11 +3,18 @@
 import type { FieldDef } from './edit-dialog';
 import type { ProfilePosition } from '@/lib/types';
 
+/** Normalise a partial date to YYYY-MM for the month input. */
+const toMonth = (v: string | undefined): string => {
+  if (!v) return '';
+  if (/^\d{4}$/.test(v)) return `${v}-01`;
+  return v;
+};
+
 export const POSITION_FIELDS: FieldDef[] = [
   { name: 'title', label: 'Job Title', required: true, placeholder: 'Software Engineer' },
   { name: 'companyName', label: 'Company', required: true, placeholder: 'Acme Corp' },
-  { name: 'startDate', label: 'Start Date', type: 'date', required: true },
-  { name: 'endDate', label: 'End Date', type: 'date' },
+  { name: 'startDate', label: 'Start Date', type: 'month', required: true },
+  { name: 'endDate', label: 'End Date', type: 'month' },
   {
     name: 'current',
     label: 'Current Position',
@@ -27,8 +34,8 @@ export function positionToValues(pos: ProfilePosition): Record<string, string | 
   return {
     title: pos.title,
     companyName: pos.companyName,
-    startDate: pos.startDate,
-    endDate: pos.endDate ?? '',
+    startDate: toMonth(pos.startDate),
+    endDate: toMonth(pos.endDate),
     current: pos.current,
     location: pos.location ?? '',
     description: pos.description ?? '',
