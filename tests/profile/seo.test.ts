@@ -71,7 +71,7 @@ describe('JSON-LD generation', () => {
   it('includes homeLocation', () => {
     const ld = buildPersonJsonLd({
       handle: 'alice.bsky.social',
-      location: 'Amsterdam, Netherlands',
+      location: { city: 'Amsterdam', country: 'Netherlands' },
     });
 
     expect(ld.homeLocation).toBeDefined();
@@ -94,7 +94,7 @@ describe('Meta description generation', () => {
     const desc = buildMetaDescription({
       handle: 'alice.bsky.social',
       headline: 'Dev',
-      location: 'Amsterdam',
+      location: { country: 'Amsterdam' },
     });
     expect(desc).toContain('Amsterdam');
   });

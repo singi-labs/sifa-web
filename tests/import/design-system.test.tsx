@@ -63,7 +63,7 @@ describe('Design system color alignment', () => {
       const { PreviewStep } = await import('@/app/(main)/import/components/preview-step');
 
       const preview = {
-        profile: { firstName: 'Test', lastName: 'User', headline: 'Dev', location: 'NL' },
+        profile: { firstName: 'Test', lastName: 'User', headline: 'Dev', location: { country: 'NL' } },
         positions: [
           { companyName: 'Acme', title: 'Dev', startDate: '2020-01' },
           { companyName: 'NewCo', title: 'Lead', startDate: '2022-06' },
@@ -101,7 +101,7 @@ describe('Design system color alignment', () => {
       const { PreviewStep } = await import('@/app/(main)/import/components/preview-step');
 
       const preview = {
-        profile: { firstName: 'Test', lastName: 'User', headline: 'Dev', location: 'NL' },
+        profile: { firstName: 'Test', lastName: 'User', headline: 'Dev', location: { country: 'NL' } },
         positions: [{ companyName: 'NewCo', title: 'Lead', startDate: '2022-06' }],
         education: [],
         skills: [],

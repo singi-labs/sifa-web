@@ -125,7 +125,7 @@ describe('IdentityCard (default / page variant)', () => {
   });
 
   it('renders location and website', () => {
-    render(<IdentityCard {...baseProps} location="Amsterdam, NL" website="https://example.com" />);
+    render(<IdentityCard {...baseProps} location={{ city: 'Amsterdam', country: 'NL' }} website="https://example.com" />);
     expect(screen.getByText('Amsterdam, NL')).toBeDefined();
     expect(screen.getByText('example.com')).toBeDefined();
   });
