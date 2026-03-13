@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { getPlatformInfo, PLATFORM_OPTIONS, getFaviconUrl, FEED_PLATFORMS } from '@/lib/platforms';
+import { getPlatformInfo, PLATFORM_OPTIONS, getFaviconUrl } from '@/lib/platforms';
 
 describe('getPlatformInfo', () => {
   it('returns correct info for known platforms', () => {
@@ -51,19 +51,5 @@ describe('getFaviconUrl', () => {
 
   it('returns null for invalid URLs', () => {
     expect(getFaviconUrl('not-a-url')).toBeNull();
-  });
-});
-
-describe('FEED_PLATFORMS', () => {
-  it('includes website, rss, fediverse, youtube', () => {
-    expect(FEED_PLATFORMS.has('website')).toBe(true);
-    expect(FEED_PLATFORMS.has('rss')).toBe(true);
-    expect(FEED_PLATFORMS.has('fediverse')).toBe(true);
-    expect(FEED_PLATFORMS.has('youtube')).toBe(true);
-  });
-
-  it('does not include non-feed platforms', () => {
-    expect(FEED_PLATFORMS.has('github')).toBe(false);
-    expect(FEED_PLATFORMS.has('linkedin')).toBe(false);
   });
 });

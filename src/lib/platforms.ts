@@ -27,9 +27,6 @@ const PLATFORM_MAP: Record<string, PlatformInfo> = {
   fediverse: { label: 'Fediverse', icon: MastodonLogo },
 };
 
-/** Platforms that commonly have RSS/Atom feeds. */
-export const FEED_PLATFORMS = new Set(['website', 'rss', 'fediverse', 'youtube']);
-
 export function getPlatformInfo(platform: string): PlatformInfo {
   return PLATFORM_MAP[platform] ?? PLATFORM_MAP.website!;
 }
