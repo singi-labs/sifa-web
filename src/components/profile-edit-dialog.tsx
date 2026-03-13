@@ -122,9 +122,7 @@ export function ProfileEditDialog({
           {/* Avatar — read-only with PDS explanation */}
           <div>
             <div className="mb-1 flex items-center gap-1.5">
-              <span className="block text-sm font-medium">
-                {t('avatar')}
-              </span>
+              <span className="block text-sm font-medium">{t('avatar')}</span>
               <Popover.Root>
                 <Popover.Trigger
                   className="inline-flex h-4 w-4 cursor-pointer items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-foreground"
@@ -221,14 +219,8 @@ export function ProfileEditDialog({
 
           {/* Location */}
           <div>
-            <span className="mb-1 block text-sm font-medium">
-              {t('location')}
-            </span>
-            <LocationSearch
-              id="edit-location"
-              value={locationValue}
-              onChange={setLocationValue}
-            />
+            <span className="mb-1 block text-sm font-medium">{t('location')}</span>
+            <LocationSearch id="edit-location" value={locationValue} onChange={setLocationValue} />
           </div>
 
           {/* Open To */}

@@ -93,10 +93,7 @@ export function LocationSearch({ value, onChange, id }: LocationSearchProps) {
   // Close dropdown on outside click
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(e.target as Node)
-      ) {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
         setIsOpen(false);
       }
     };
@@ -153,9 +150,7 @@ export function LocationSearch({ value, onChange, id }: LocationSearchProps) {
         city: p.placeName || undefined,
         region: p.adminName1 || undefined,
         country: p.countryCode,
-        label: [p.postalCode, p.placeName, p.adminName1, p.countryCode]
-          .filter(Boolean)
-          .join(', '),
+        label: [p.postalCode, p.placeName, p.adminName1, p.countryCode].filter(Boolean).join(', '),
       }));
       setResults(items);
       setIsOpen(items.length > 0);
@@ -295,9 +290,7 @@ export function LocationSearch({ value, onChange, id }: LocationSearchProps) {
     return (
       <div>
         {modeTabs}
-        <p className="mb-1 text-xs text-amber-600 dark:text-amber-400">
-          {t('locationApiFailed')}
-        </p>
+        <p className="mb-1 text-xs text-amber-600 dark:text-amber-400">{t('locationApiFailed')}</p>
         <Input
           id={id}
           type="text"

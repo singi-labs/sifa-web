@@ -30,25 +30,28 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
   const tEdit = useTranslations('profileEdit');
   const { updateItem } = useProfileEdit();
 
-  const handleTogglePrimary = useCallback(async (acc: ExternalAccount) => {
-    const newPrimary = !acc.primary;
-    const result = newPrimary
-      ? await setExternalAccountPrimary(acc.rkey)
-      : await unsetExternalAccountPrimary(acc.rkey);
+  const handleTogglePrimary = useCallback(
+    async (acc: ExternalAccount) => {
+      const newPrimary = !acc.primary;
+      const result = newPrimary
+        ? await setExternalAccountPrimary(acc.rkey)
+        : await unsetExternalAccountPrimary(acc.rkey);
 
-    if (result.success) {
-      // If setting as primary, unset all others first
-      if (newPrimary) {
-        for (const other of accounts) {
-          if (other.rkey !== acc.rkey && other.primary) {
-            updateItem('externalAccounts', other.rkey, { primary: false });
+      if (result.success) {
+        // If setting as primary, unset all others first
+        if (newPrimary) {
+          for (const other of accounts) {
+            if (other.rkey !== acc.rkey && other.primary) {
+              updateItem('externalAccounts', other.rkey, { primary: false });
+            }
           }
         }
+        updateItem('externalAccounts', acc.rkey, { primary: newPrimary });
+        toast.success(newPrimary ? tEdit('setPrimary') : tEdit('removePrimary'));
       }
-      updateItem('externalAccounts', acc.rkey, { primary: newPrimary });
-      toast.success(newPrimary ? tEdit('setPrimary') : tEdit('removePrimary'));
-    }
-  }, [accounts, updateItem, tEdit]);
+    },
+    [accounts, updateItem, tEdit],
+  );
 
   const handleFieldChange = useCallback(
     (
