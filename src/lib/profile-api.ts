@@ -15,9 +15,10 @@ async function apiRequest(
   body?: unknown,
 ): Promise<WriteResult> {
   try {
+    const headers: HeadersInit = body ? { 'Content-Type': 'application/json' } : {};
     const res = await fetch(`${API_URL}${path}`, {
       method,
-      headers: { 'Content-Type': 'application/json' },
+      headers,
       credentials: 'include',
       body: body ? JSON.stringify(body) : undefined,
     });
