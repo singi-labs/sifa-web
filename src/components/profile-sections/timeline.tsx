@@ -81,10 +81,7 @@ export function TimelineEntry({
   );
 }
 
-const MONTHS = [
-  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
-];
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 /** Format "2007-01" as "Jan 2007", pass through year-only strings. */
 export function formatTimelineDate(dateStr: string): string {
