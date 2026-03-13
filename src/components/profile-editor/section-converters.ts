@@ -13,6 +13,13 @@ import type {
 
 const optStr = (v: unknown): string | undefined => (v as string) || undefined;
 
+/** Normalise a partial date to YYYY-MM for the month input. */
+const toMonth = (v: string | undefined): string => {
+  if (!v) return '';
+  if (/^\d{4}$/.test(v)) return `${v}-01`;
+  return v;
+};
+
 // --- Education ---
 
 export function educationToValues(item: ProfileEducation): Record<string, string | boolean> {
@@ -20,8 +27,8 @@ export function educationToValues(item: ProfileEducation): Record<string, string
     institution: item.institution,
     degree: item.degree ?? '',
     fieldOfStudy: item.fieldOfStudy ?? '',
-    startDate: item.startDate ?? '',
-    endDate: item.endDate ?? '',
+    startDate: toMonth(item.startDate),
+    endDate: toMonth(item.endDate),
   };
 }
 
@@ -63,8 +70,8 @@ export function certificationToValues(
   return {
     name: item.name,
     issuingOrg: item.issuingOrg,
-    issueDate: item.issueDate ?? '',
-    expiryDate: item.expiryDate ?? '',
+    issueDate: toMonth(item.issueDate),
+    expiryDate: toMonth(item.expiryDate),
     credentialUrl: item.credentialUrl ?? '',
   };
 }
@@ -88,8 +95,8 @@ export function projectToValues(item: ProfileProject): Record<string, string | b
     name: item.name,
     description: item.description ?? '',
     url: item.url ?? '',
-    startDate: item.startDate ?? '',
-    endDate: item.endDate ?? '',
+    startDate: toMonth(item.startDate),
+    endDate: toMonth(item.endDate),
   };
 }
 
@@ -111,7 +118,7 @@ export function publicationToValues(item: ProfilePublication): Record<string, st
   return {
     title: item.title,
     publisher: item.publisher ?? '',
-    date: item.date ?? '',
+    date: toMonth(item.date),
     url: item.url ?? '',
     description: item.description ?? '',
   };
@@ -136,8 +143,8 @@ export function volunteeringToValues(item: ProfileVolunteering): Record<string, 
     organization: item.organization,
     role: item.role ?? '',
     cause: item.cause ?? '',
-    startDate: item.startDate ?? '',
-    endDate: item.endDate ?? '',
+    startDate: toMonth(item.startDate),
+    endDate: toMonth(item.endDate),
     description: item.description ?? '',
   };
 }
@@ -161,7 +168,7 @@ export function honorToValues(item: ProfileHonor): Record<string, string | boole
   return {
     title: item.title,
     issuer: item.issuer ?? '',
-    date: item.date ?? '',
+    date: toMonth(item.date),
     description: item.description ?? '',
   };
 }
