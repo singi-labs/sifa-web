@@ -1,5 +1,5 @@
 import type { FieldDef } from './edit-dialog';
-import { PLATFORM_OPTIONS } from '@/lib/platforms';
+import { PLATFORM_OPTIONS, FEED_PLATFORMS } from '@/lib/platforms';
 
 export const EDUCATION_FIELDS: FieldDef[] = [
   { name: 'institution', label: 'Institution', required: true, placeholder: 'University name' },
@@ -88,5 +88,12 @@ export const EXTERNAL_ACCOUNT_FIELDS: FieldDef[] = [
   },
   { name: 'url', label: 'URL', type: 'url', required: true },
   { name: 'label', label: 'Label', placeholder: 'My Blog, Photography...' },
-  { name: 'feedUrl', label: 'Feed URL (auto-detected)', type: 'url' },
+  {
+    name: 'feedUrl',
+    label: 'RSS / Atom Feed URL',
+    type: 'url',
+    placeholder: 'https://example.com/feed.xml',
+    description: 'Used to show your posts in the ATmosphere Stream. Leave empty if unknown.',
+    visibleWhen: (values) => FEED_PLATFORMS.has(values.platform as string),
+  },
 ];

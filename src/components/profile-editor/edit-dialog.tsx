@@ -12,7 +12,10 @@ export interface FieldDef {
   type?: 'text' | 'textarea' | 'month' | 'url' | 'checkbox' | 'select';
   required?: boolean;
   placeholder?: string;
+  description?: string;
   options?: { value: string; label: string }[];
+  /** Only show this field when the predicate returns true. */
+  visibleWhen?: (values: Record<string, string | boolean>) => boolean;
 }
 
 interface EditDialogProps {
@@ -24,6 +27,12 @@ interface EditDialogProps {
   ) => Promise<{ success: boolean; error?: string }>;
   onCancel: () => void;
   saving?: boolean;
+  /** Called when any field value changes. Return partial values to auto-fill other fields. */
+  onFieldChange?: (
+    name: string,
+    value: string | boolean,
+    currentValues: Record<string, string | boolean>,
+  ) => Record<string, string | boolean> | undefined;
 }
 
 export function EditDialog({
@@ -32,6 +41,7 @@ export function EditDialog({
   initialValues = {},
   onSave,
   onCancel,
+  onFieldChange,
 }: EditDialogProps) {
   const t = useTranslations('editor');
   const [values, setValues] = useState<Record<string, string | boolean>>(() => {
@@ -56,7 +66,16 @@ export function EditDialog({
   };
 
   const updateValue = (name: string, value: string | boolean) => {
-    setValues((prev) => ({ ...prev, [name]: value }));
+    setValues((prev) => {
+      const next = { ...prev, [name]: value };
+      if (onFieldChange) {
+        const autoFill = onFieldChange(name, value, next);
+        if (autoFill) {
+          return { ...next, ...autoFill };
+        }
+      }
+      return next;
+    });
   };
 
   return (
@@ -81,60 +100,66 @@ export function EditDialog({
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {fields.map((field) => (
-            <div key={field.name}>
-              <label htmlFor={`edit-${field.name}`} className="mb-1 block text-sm font-medium">
-                {field.label}
-                {field.required && <span className="text-destructive"> *</span>}
-              </label>
-              {field.type === 'textarea' ? (
-                <textarea
-                  id={`edit-${field.name}`}
-                  className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                  rows={4}
-                  value={values[field.name] as string}
-                  onChange={(e) => updateValue(field.name, e.target.value)}
-                  required={field.required}
-                  placeholder={field.placeholder}
-                />
-              ) : field.type === 'checkbox' ? (
-                <div className="flex items-center gap-2">
-                  <input
+          {fields.map((field) => {
+            if (field.visibleWhen && !field.visibleWhen(values)) return null;
+            return (
+              <div key={field.name}>
+                <label htmlFor={`edit-${field.name}`} className="mb-1 block text-sm font-medium">
+                  {field.label}
+                  {field.required && <span className="text-destructive"> *</span>}
+                </label>
+                {field.description && (
+                  <p className="mb-1 text-xs text-muted-foreground">{field.description}</p>
+                )}
+                {field.type === 'textarea' ? (
+                  <textarea
                     id={`edit-${field.name}`}
-                    type="checkbox"
-                    className="h-4 w-4 rounded border-border"
-                    checked={values[field.name] as boolean}
-                    onChange={(e) => updateValue(field.name, e.target.checked)}
+                    className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    rows={4}
+                    value={values[field.name] as string}
+                    onChange={(e) => updateValue(field.name, e.target.value)}
+                    required={field.required}
+                    placeholder={field.placeholder}
                   />
-                  <span className="text-sm text-muted-foreground">{field.placeholder}</span>
-                </div>
-              ) : field.type === 'select' && field.options ? (
-                <select
-                  id={`edit-${field.name}`}
-                  className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                  value={values[field.name] as string}
-                  onChange={(e) => updateValue(field.name, e.target.value)}
-                  required={field.required}
-                >
-                  <option value="">{field.placeholder ?? 'Select...'}</option>
-                  {field.options.map((opt) => (
-                    <option key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </option>
-                  ))}
-                </select>
-              ) : (
-                <Input
-                  id={`edit-${field.name}`}
-                  type={field.type ?? 'text'}
-                  value={values[field.name] as string}
-                  onChange={(e) => updateValue(field.name, e.target.value)}
-                  required={field.required}
-                  placeholder={field.placeholder}
-                />
-              )}
-            </div>
-          ))}
+                ) : field.type === 'checkbox' ? (
+                  <div className="flex items-center gap-2">
+                    <input
+                      id={`edit-${field.name}`}
+                      type="checkbox"
+                      className="h-4 w-4 rounded border-border"
+                      checked={values[field.name] as boolean}
+                      onChange={(e) => updateValue(field.name, e.target.checked)}
+                    />
+                    <span className="text-sm text-muted-foreground">{field.placeholder}</span>
+                  </div>
+                ) : field.type === 'select' && field.options ? (
+                  <select
+                    id={`edit-${field.name}`}
+                    className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    value={values[field.name] as string}
+                    onChange={(e) => updateValue(field.name, e.target.value)}
+                    required={field.required}
+                  >
+                    <option value="">{field.placeholder ?? 'Select...'}</option>
+                    {field.options.map((opt) => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <Input
+                    id={`edit-${field.name}`}
+                    type={field.type ?? 'text'}
+                    value={values[field.name] as string}
+                    onChange={(e) => updateValue(field.name, e.target.value)}
+                    required={field.required}
+                    placeholder={field.placeholder}
+                  />
+                )}
+              </div>
+            );
+          })}
 
           {error && (
             <p className="text-sm text-destructive" role="alert">

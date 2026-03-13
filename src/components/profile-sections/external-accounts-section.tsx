@@ -1,5 +1,6 @@
 'use client';
 
+import { useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import { CheckCircle, WarningCircle } from '@phosphor-icons/react';
 import {
@@ -12,7 +13,8 @@ import {
   valuesToExternalAccount,
 } from '@/components/profile-editor/section-converters';
 import type { ExternalAccount } from '@/lib/types';
-import { getPlatformInfo } from '@/lib/platforms';
+import { getPlatformInfo, PLATFORM_OPTIONS } from '@/lib/platforms';
+import { Favicon } from '@/components/ui/favicon';
 
 interface ExternalAccountsSectionProps {
   accounts: ExternalAccount[];
@@ -21,6 +23,23 @@ interface ExternalAccountsSectionProps {
 
 export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAccountsSectionProps) {
   const t = useTranslations('sections');
+
+  const handleFieldChange = useCallback(
+    (
+      name: string,
+      value: string | boolean,
+      currentValues: Record<string, string | boolean>,
+    ): Record<string, string | boolean> | undefined => {
+      if (name === 'platform' && typeof value === 'string' && !currentValues.label) {
+        const option = PLATFORM_OPTIONS.find((o) => o.value === value);
+        if (option) {
+          return { label: option.label };
+        }
+      }
+      return undefined;
+    },
+    [],
+  );
 
   if (!accounts.length && !isOwnProfile) return null;
 
@@ -39,10 +58,12 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
           ) => Omit<ExternalAccount, 'rkey'>
         }
         collection="id.sifa.profile.externalAccount"
+        onFieldChange={handleFieldChange}
         renderEntry={(acc, controls) => {
           const platform = getPlatformInfo(acc.platform);
           const Icon = platform.icon;
           const displayLabel = acc.label ?? platform.label;
+          const usesFavicon = acc.platform === 'website';
 
           return (
             <EditableEntry
@@ -53,7 +74,11 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
               entryLabel={displayLabel}
             >
               <li className="flex items-center gap-3">
-                <Icon size={20} weight="regular" className="shrink-0 text-muted-foreground" />
+                {usesFavicon ? (
+                  <Favicon url={acc.url} size={20} className="shrink-0 text-muted-foreground" />
+                ) : (
+                  <Icon size={20} weight="regular" className="shrink-0 text-muted-foreground" />
+                )}
                 <a
                   href={acc.url}
                   target="_blank"

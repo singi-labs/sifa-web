@@ -147,6 +147,28 @@
     "viewAll": "View full activity",
     "comingSoon": "Activity overview coming soon. This section will show your ATproto activity across the open social web."
   },
+  "profileEdit": {
+    "title": "Edit Profile",
+    "saved": "Profile updated",
+    "displayName": "Display Name",
+    "pdsFieldInfo": "Why can't I edit this?",
+    "pdsExplanation": "Your display name and avatar are managed by your AT Protocol identity provider (e.g. Bluesky). To change them, update your profile there and the changes will sync automatically.",
+    "headline": "Headline",
+    "headlinePlaceholder": "What do you do?",
+    "about": "About",
+    "aboutPlaceholder": "Tell your professional story...",
+    "location": "Location",
+    "locationPlaceholder": "City, Country",
+    "website": "Website",
+    "websitePlaceholder": "https://example.com",
+    "openTo": "Open to",
+    "fullTimeRoles": "Full-time roles",
+    "partTimeRoles": "Part-time roles",
+    "contractRoles": "Contract roles",
+    "boardPositions": "Board positions",
+    "mentoring": "Mentoring",
+    "collaborations": "Collaborations"
+  },
   "editor": {
     "save": "Save",
     "saving": "Saving...",
