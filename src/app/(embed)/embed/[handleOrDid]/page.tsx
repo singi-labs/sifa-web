@@ -22,10 +22,6 @@ export default async function EmbedPage({ params, searchParams }: EmbedPageProps
   const profile = await fetchProfile(handleOrDid);
   if (!profile) notFound();
 
-  const location = [profile.locationCity, profile.locationRegion, profile.locationCountry]
-    .filter(Boolean)
-    .join(', ');
-
   return (
     <div data-theme={theme} className="bg-transparent p-2">
       <IdentityCard
@@ -36,7 +32,7 @@ export default async function EmbedPage({ params, searchParams }: EmbedPageProps
         avatar={profile.avatar}
         headline={profile.headline}
         about={profile.about}
-        location={location || profile.location}
+        location={profile.location}
         website={profile.website}
         openTo={profile.openTo}
         trustStats={profile.trustStats}

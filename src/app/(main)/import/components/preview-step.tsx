@@ -13,6 +13,7 @@ import { PositionsTable } from './positions-table';
 import { EducationTable } from './education-table';
 import { SkillsList } from './skills-list';
 import { ImportItemList } from './import-item-list';
+import { formatLocation } from '@/lib/location-utils';
 
 function normalize(s: string | undefined | null): string {
   return (s ?? '').trim().toLowerCase();
@@ -155,7 +156,7 @@ export function PreviewStep({ preview, existingData, onConfirm, onBack }: Previe
               <p className="text-sm text-muted-foreground">{data.profile.headline}</p>
             )}
             {data.profile.location && (
-              <p className="text-sm text-muted-foreground">{data.profile.location}</p>
+              <p className="text-sm text-muted-foreground">{formatLocation(data.profile.location)}</p>
             )}
           </div>
         )}

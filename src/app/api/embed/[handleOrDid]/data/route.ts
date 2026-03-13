@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { fetchProfile } from '@/lib/api';
 import { sanitize } from '@/lib/sanitize';
+import type { LocationValue } from '@/lib/types';
 
 export async function GET(
   _request: NextRequest,
@@ -13,9 +14,7 @@ export async function GET(
     return NextResponse.json({ error: 'Profile not found' }, { status: 404 });
   }
 
-  const location = [profile.locationCity, profile.locationRegion, profile.locationCountry]
-    .filter(Boolean)
-    .join(', ');
+  const location: LocationValue | null = profile.location ?? null;
 
   const data = {
     did: profile.did,
@@ -23,7 +22,7 @@ export async function GET(
     displayName: profile.displayName ? sanitize(profile.displayName) : null,
     avatar: profile.avatar ?? null,
     headline: profile.headline ? sanitize(profile.headline) : null,
-    location: location || null,
+    location,
     website: profile.website ?? null,
     openTo: profile.openTo ?? [],
     trustStats: profile.trustStats ?? [],
