@@ -214,6 +214,7 @@
     "shareProfile": "Share profile",
     "share": "Share",
     "linkCopied": "Profile link copied to clipboard",
+    "embed": "Embed",
     "unclaimed": "Unclaimed",
     "unclaimedPopupText": "This profile shows public AT Protocol data. {name} hasn't set up their Sifa profile yet.",
     "claimYourProfile": "Claim your profile",

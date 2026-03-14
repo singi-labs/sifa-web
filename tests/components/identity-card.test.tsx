@@ -54,6 +54,7 @@ vi.mock('@phosphor-icons/react', () => ({
   ShareNetwork: (props: Record<string, unknown>) => <span data-testid="icon-share" {...props} />,
   PencilSimple: (props: Record<string, unknown>) => <span data-testid="icon-pencil" {...props} />,
   CheckCircle: (props: Record<string, unknown>) => <span data-testid="icon-check" {...props} />,
+  Code: (props: Record<string, unknown>) => <span data-testid="icon-code" {...props} />,
   X: (props: Record<string, unknown>) => <span data-testid="icon-x" {...props} />,
   Info: (props: Record<string, unknown>) => <span data-testid="icon-info" {...props} />,
 }));

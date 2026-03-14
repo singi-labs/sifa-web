@@ -6,9 +6,9 @@ import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 import { Popover } from '@base-ui/react/popover';
-import { ShareNetwork, PencilSimple, CheckCircle } from '@phosphor-icons/react';
+import { ShareNetwork, PencilSimple, CheckCircle, Code } from '@phosphor-icons/react';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { FollowButton } from '@/components/follow-button';
 import { PdsIcon } from '@/components/pds-icon';
 import { ProfileEditDialog } from '@/components/profile-edit-dialog';
@@ -249,6 +249,15 @@ export function IdentityCard({
             <ShareNetwork className="mr-1.5 h-4 w-4" weight="bold" aria-hidden="true" />
             {t('share')}
           </Button>
+          {isOwn && (
+            <Link
+              href={`/embed?handle=${encodeURIComponent(handle)}`}
+              className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }))}
+            >
+              <Code className="mr-1.5 h-4 w-4" weight="bold" aria-hidden="true" />
+              {t('embed')}
+            </Link>
+          )}
         </div>
       )}
       {editing && (

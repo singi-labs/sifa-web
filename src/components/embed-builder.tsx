@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
+import { useSearchParams } from 'next/navigation';
 import { useAuth } from '@/components/auth-provider';
 import { toast } from 'sonner';
 
@@ -10,7 +11,8 @@ type Theme = 'auto' | 'light' | 'dark';
 export function EmbedBuilder() {
   const t = useTranslations('embedBuilder');
   const { session } = useAuth();
-  const [identifier, setIdentifier] = useState(session?.handle ?? '');
+  const searchParams = useSearchParams();
+  const [identifier, setIdentifier] = useState(searchParams.get('handle') ?? session?.handle ?? '');
   const [theme, setTheme] = useState<Theme>('auto');
 
   const embedCode = useMemo(() => {
