@@ -77,24 +77,59 @@ export const COURSE_FIELDS: FieldDef[] = [
   { name: 'number', label: 'Course Number' },
 ];
 
-export const EXTERNAL_ACCOUNT_FIELDS: FieldDef[] = [
-  {
-    name: 'platform',
-    label: 'Platform',
-    type: 'select',
-    required: true,
-    placeholder: 'Select a platform...',
-    options: PLATFORM_OPTIONS,
-  },
-  { name: 'url', label: 'URL', type: 'url', required: true },
-  { name: 'label', label: 'Label', placeholder: 'My Blog, Photography...' },
-  {
-    name: 'feedUrl',
-    label: 'RSS / Atom Feed URL',
-    type: 'url',
-    placeholder: 'https://example.com/feed.xml',
-    description:
-      'Used to show your posts in the ATmosphere Stream. Leave empty for auto-detection.',
-    visibleWhen: (values) => values.platform === 'website',
-  },
-];
+export function getExternalAccountFields(
+  handle: string,
+  tSections: (key: string, params?: Record<string, string>) => string,
+): FieldDef[] {
+  return [
+    {
+      name: 'platform',
+      label: 'Platform',
+      type: 'select',
+      required: true,
+      placeholder: 'Select a platform...',
+      options: PLATFORM_OPTIONS,
+    },
+    { name: 'url', label: 'URL', type: 'url', required: true },
+    { name: 'label', label: 'Label', placeholder: 'My Blog, Photography...' },
+    {
+      name: 'feedUrl',
+      label: 'RSS / Atom Feed URL',
+      type: 'url',
+      placeholder: 'https://example.com/feed.xml',
+      description:
+        'Used to show your posts in the ATmosphere Stream. Leave empty for auto-detection.',
+      visibleWhen: (values) => values.platform === 'website',
+    },
+    {
+      name: 'verifyHintGithub',
+      label: 'Verification',
+      type: 'hint',
+      description: tSections('verifyHintGithub', { handle }),
+      visibleWhen: (values) => values.platform === 'github',
+    },
+    {
+      name: 'verifyHintWebsite',
+      label: 'Verification',
+      type: 'hint',
+      description: tSections('verifyHintWebsite', { handle }),
+      visibleWhen: (values) => values.platform === 'website',
+    },
+    {
+      name: 'verifyHintFediverse',
+      label: 'Verification',
+      type: 'hint',
+      description: tSections('verifyHintFediverse', { handle }),
+      visibleWhen: (values) => values.platform === 'fediverse',
+    },
+    {
+      name: 'verifyHintRss',
+      label: 'Verification',
+      type: 'hint',
+      description: tSections('verifyHintRss', { handle }),
+      visibleWhen: (values) => values.platform === 'rss',
+    },
+  ];
+}
+
+export const EXTERNAL_ACCOUNT_FIELDS = getExternalAccountFields('', (k) => k);

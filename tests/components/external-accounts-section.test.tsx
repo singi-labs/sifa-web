@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { ProfileEditProvider } from '@/components/profile-edit-provider';
 import { ExternalAccountsSection } from '@/components/profile-sections/external-accounts-section';
 import type { ExternalAccount, Profile } from '@/lib/types';
@@ -56,10 +57,11 @@ describe('ExternalAccountsSection', () => {
     expect(screen.getByLabelText('Verified')).toBeDefined();
   });
 
-  it('shows unverified badge for verifiable but unverified accounts', () => {
+  it('shows no badge for verifiable but unverified accounts', () => {
     const acc = { ...baseAccount, verifiable: true, verified: false };
     withProvider(<ExternalAccountsSection accounts={[acc]} />, { externalAccounts: [acc] });
-    expect(screen.getByText('Unverified')).toBeDefined();
+    expect(screen.queryByText('Unverified')).toBeNull();
+    expect(screen.queryByLabelText('Verified')).toBeNull();
   });
 
   it('shows no badge for non-verifiable accounts', () => {
@@ -67,6 +69,17 @@ describe('ExternalAccountsSection', () => {
     withProvider(<ExternalAccountsSection accounts={[acc]} />, { externalAccounts: [acc] });
     expect(screen.queryByText('Unverified')).toBeNull();
     expect(screen.queryByLabelText('Verified')).toBeNull();
+  });
+
+  it('shows verification hint when selecting a verifiable platform', async () => {
+    const user = userEvent.setup();
+    withProvider(<ExternalAccountsSection accounts={[]} isOwnProfile />, {
+      externalAccounts: [],
+      handle: 'gui.do',
+    });
+    await user.click(screen.getByRole('button', { name: 'Add Other Profiles' }));
+    await user.selectOptions(screen.getByRole('combobox'), 'github');
+    expect(screen.getByText(/Add your Sifa profile URL/)).toBeDefined();
   });
 
   it('renders correct link targets', () => {

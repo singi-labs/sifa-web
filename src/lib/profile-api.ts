@@ -1,3 +1,5 @@
+import type { ExternalAccount } from '@/lib/types';
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3100';
 
 export interface WriteResult {
@@ -186,6 +188,20 @@ export async function unsetExternalAccountPrimary(rkey: string): Promise<WriteRe
 
 export async function resetProfile(): Promise<WriteResult> {
   return apiRequest('/api/profile/reset', 'DELETE');
+}
+
+export async function fetchExternalAccounts(handleOrDid: string): Promise<ExternalAccount[]> {
+  try {
+    const res = await fetch(
+      `${API_URL}/api/profile/${encodeURIComponent(handleOrDid)}/external-accounts`,
+      { credentials: 'include' },
+    );
+    if (!res.ok) return [];
+    const data = (await res.json()) as { accounts: ExternalAccount[] };
+    return data.accounts;
+  } catch {
+    return [];
+  }
 }
 
 export async function deleteAccount(): Promise<WriteResult & { handle?: string }> {

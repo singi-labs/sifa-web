@@ -119,7 +119,12 @@ const translations: Record<string, Record<string, string>> = {
     languages: 'Languages',
     otherProfiles: 'Other Profiles',
     verified: 'Verified',
-    unverified: 'Unverified',
+    verifyHintGithub: 'Add your Sifa profile URL as the Website on your GitHub profile.',
+    verifyHintWebsite: 'Add <link rel="me" href="https://sifa.id/p/{handle}"> to your site.',
+    verifyHintFediverse:
+      'Add your Sifa profile URL (https://sifa.id/p/{handle}) to a profile metadata field.',
+    verifyHintRss:
+      'Include a link to your Sifa profile (https://sifa.id/p/{handle}) on your feed page.',
   },
   editor: {
     save: 'Save',

@@ -1,16 +1,20 @@
 'use client';
 
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
-import { CheckCircle, WarningCircle, Star, Info } from '@phosphor-icons/react';
+import { CheckCircle, Star, Info } from '@phosphor-icons/react';
 import { Popover } from '@base-ui/react/popover';
 import { toast } from 'sonner';
-import { setExternalAccountPrimary, unsetExternalAccountPrimary } from '@/lib/profile-api';
+import {
+  setExternalAccountPrimary,
+  unsetExternalAccountPrimary,
+  fetchExternalAccounts,
+} from '@/lib/profile-api';
 import { useProfileEdit } from '@/components/profile-edit-provider';
 import {
   EditableSection,
   EditableEntry,
-  EXTERNAL_ACCOUNT_FIELDS,
+  getExternalAccountFields,
 } from '@/components/profile-editor';
 import {
   externalAccountToValues,
@@ -28,7 +32,12 @@ interface ExternalAccountsSectionProps {
 export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAccountsSectionProps) {
   const t = useTranslations('sections');
   const tEdit = useTranslations('profileEdit');
-  const { updateItem } = useProfileEdit();
+  const { profile, updateItem, updateProfile } = useProfileEdit();
+
+  const externalAccountFields = useMemo(
+    () => getExternalAccountFields(profile.handle, t),
+    [profile.handle, t],
+  );
 
   const handleTogglePrimary = useCallback(
     async (acc: ExternalAccount) => {
@@ -70,6 +79,15 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
     [],
   );
 
+  const handlePostSave = useCallback(() => {
+    setTimeout(async () => {
+      const fresh = await fetchExternalAccounts(profile.handle);
+      if (fresh.length > 0) {
+        updateProfile({ externalAccounts: fresh });
+      }
+    }, 2000);
+  }, [profile.handle, updateProfile]);
+
   if (!accounts.length && !isOwnProfile) return null;
 
   return (
@@ -99,7 +117,7 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
         sectionTitle={t('otherProfiles')}
         profileKey="externalAccounts"
         isOwnProfile={isOwnProfile}
-        fields={EXTERNAL_ACCOUNT_FIELDS}
+        fields={externalAccountFields}
         toValues={externalAccountToValues}
         fromValues={
           valuesToExternalAccount as (
@@ -107,6 +125,7 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
           ) => Omit<ExternalAccount, 'rkey'>
         }
         collection="id.sifa.profile.externalAccount"
+        onPostSave={handlePostSave}
         onFieldChange={handleFieldChange}
         renderEntry={(acc, controls) => {
           const platform = getPlatformInfo(acc.platform);
@@ -162,12 +181,7 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
                     aria-label={t('verified')}
                   />
                 )}
-                {acc.verifiable && !acc.verified && (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-xs text-amber-800 dark:bg-amber-900/30 dark:text-amber-300">
-                    <WarningCircle size={12} weight="fill" />
-                    {t('unverified')}
-                  </span>
-                )}
+
                 {acc.primary && !isOwnProfile && (
                   <Star
                     size={16}
