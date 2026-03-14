@@ -273,6 +273,15 @@
     "copied": "Copied to clipboard",
     "enterHandle": "Enter a handle or DID to see a preview"
   },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you're looking for doesn't exist or may have been moved.",
+    "goHome": "Go to homepage",
+    "goBack": "Go back",
+    "searchProfiles": "Search profiles",
+    "reportIssue": "Report an issue",
+    "easterEggMessage": "You found the secret! Sifa means \"praise\" in Swahili. Consider yourself praised for your curiosity."
+  },
   "terms": {
     "title": "Terms of Service",
     "lastUpdated": "Last updated: March 2026",
