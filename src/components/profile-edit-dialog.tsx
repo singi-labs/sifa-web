@@ -57,14 +57,18 @@ export function ProfileEditDialog({
 
   const handleRefreshPds = async () => {
     setRefreshing(true);
-    const result = await refreshPds();
-    setRefreshing(false);
-    if (result.success) {
-      if (result.displayName !== undefined) setCurrentDisplayName(result.displayName ?? undefined);
-      if (result.avatar !== undefined) setCurrentAvatar(result.avatar ?? undefined);
-      toast.success(t('refreshPdsSuccess'));
-    } else {
-      toast.error(t('refreshPdsFailed'));
+    try {
+      const result = await refreshPds();
+      if (result.success) {
+        if (result.displayName !== undefined) setCurrentDisplayName(result.displayName ?? undefined);
+        if (result.avatar !== undefined) setCurrentAvatar(result.avatar ?? undefined);
+        toast.success(t('refreshPdsSuccess'));
+        router.refresh();
+      } else {
+        toast.error(t('refreshPdsFailed'));
+      }
+    } finally {
+      setRefreshing(false);
     }
   };
 
