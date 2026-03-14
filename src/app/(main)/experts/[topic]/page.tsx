@@ -50,6 +50,8 @@ export default async function ExpertTopicPage({ params }: ExpertTopicPageProps) 
               handle={profile.handle}
               headline={profile.headline}
               avatar={profile.avatar}
+              currentRole={profile.currentRole}
+              currentCompany={profile.currentCompany}
             />
           ))
         )}
