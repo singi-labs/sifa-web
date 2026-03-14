@@ -56,10 +56,11 @@ describe('ExternalAccountsSection', () => {
     expect(screen.getByLabelText('Verified')).toBeDefined();
   });
 
-  it('shows unverified badge for verifiable but unverified accounts', () => {
+  it('shows no badge for verifiable but unverified accounts', () => {
     const acc = { ...baseAccount, verifiable: true, verified: false };
     withProvider(<ExternalAccountsSection accounts={[acc]} />, { externalAccounts: [acc] });
-    expect(screen.getByText('Unverified')).toBeDefined();
+    expect(screen.queryByText('Unverified')).toBeNull();
+    expect(screen.queryByLabelText('Verified')).toBeNull();
   });
 
   it('shows no badge for non-verifiable accounts', () => {

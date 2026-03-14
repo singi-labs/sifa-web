@@ -2,7 +2,7 @@
 
 import { useCallback } from 'react';
 import { useTranslations } from 'next-intl';
-import { CheckCircle, WarningCircle, Star, Info } from '@phosphor-icons/react';
+import { CheckCircle, Star, Info } from '@phosphor-icons/react';
 import { Popover } from '@base-ui/react/popover';
 import { toast } from 'sonner';
 import { setExternalAccountPrimary, unsetExternalAccountPrimary } from '@/lib/profile-api';
@@ -162,12 +162,7 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
                     aria-label={t('verified')}
                   />
                 )}
-                {acc.verifiable && !acc.verified && (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-xs text-amber-800 dark:bg-amber-900/30 dark:text-amber-300">
-                    <WarningCircle size={12} weight="fill" />
-                    {t('unverified')}
-                  </span>
-                )}
+
                 {acc.primary && !isOwnProfile && (
                   <Star
                     size={16}
