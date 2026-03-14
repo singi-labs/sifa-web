@@ -60,7 +60,8 @@ export function ProfileEditDialog({
     try {
       const result = await refreshPds();
       if (result.success) {
-        if (result.displayName !== undefined) setCurrentDisplayName(result.displayName ?? undefined);
+        if (result.displayName !== undefined)
+          setCurrentDisplayName(result.displayName ?? undefined);
         if (result.avatar !== undefined) setCurrentAvatar(result.avatar ?? undefined);
         toast.success(t('refreshPdsSuccess'));
         router.refresh();
@@ -164,7 +165,9 @@ export function ProfileEditDialog({
                   className="h-16 w-16 rounded-full object-cover"
                 />
               ) : (
-                <span aria-hidden="true">{(currentDisplayName ?? '?').charAt(0).toUpperCase()}</span>
+                <span aria-hidden="true">
+                  {(currentDisplayName ?? '?').charAt(0).toUpperCase()}
+                </span>
               )}
             </div>
             <div className="mt-2">
