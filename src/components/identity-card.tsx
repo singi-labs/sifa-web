@@ -34,6 +34,8 @@ interface IdentityCardProps {
   avatar?: string;
   headline?: string;
   about?: string;
+  currentRole?: string;
+  currentCompany?: string;
   location?: LocationValue | null;
   website?: string;
   openTo?: string[];
@@ -53,6 +55,8 @@ export function IdentityCard({
   avatar,
   headline,
   about,
+  currentRole,
+  currentCompany,
   location,
   website,
   openTo,
@@ -163,7 +167,14 @@ export function IdentityCard({
         </p>
       )}
 
-      {/* Row 4: Location + Website */}
+      {/* Row 4: Current role */}
+      {currentRole && currentCompany && (
+        <p className="mt-2 text-sm text-muted-foreground">
+          {currentRole} {t('roleAt')} {currentCompany}
+        </p>
+      )}
+
+      {/* Row 5: Location + Website */}
       {(location || website) && (
         <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
           {location && (
@@ -189,7 +200,7 @@ export function IdentityCard({
         </div>
       )}
 
-      {/* Row 5: Open to pills */}
+      {/* Row 6: Open to pills */}
       {openTo && openTo.length > 0 && (
         <div className="mt-3 flex flex-wrap gap-2">
           {openTo.map((item) => (
@@ -200,7 +211,7 @@ export function IdentityCard({
         </div>
       )}
 
-      {/* Row 6: Trust stats */}
+      {/* Row 7: Trust stats */}
       <div className="mt-4 flex gap-6" role="list" aria-label={t('trustStatsLabel')}>
         {displayTrustStats.map((stat) => (
           <div key={stat.key} className="text-center" role="listitem">
@@ -222,7 +233,7 @@ export function IdentityCard({
         </button>
       )}
 
-      {/* Row 7: Action buttons (page) or "View on Sifa" CTA (embed) */}
+      {/* Row 8: Action buttons (page) or "View on Sifa" CTA (embed) */}
       {isEmbed ? (
         <div className="mt-4 border-t border-border pt-3">
           <a

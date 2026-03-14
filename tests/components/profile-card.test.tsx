@@ -36,4 +36,20 @@ describe('ProfileCard', () => {
     const img = screen.getByRole('img');
     expect(img.getAttribute('src')).toBe('https://example.com/avatar.jpg');
   });
+
+  it('renders current role and company when both provided', () => {
+    render(
+      <ProfileCard
+        handle="alice.bsky.social"
+        currentRole="Senior Engineer"
+        currentCompany="Acme Corp"
+      />,
+    );
+    expect(screen.getByText('Senior Engineer at Acme Corp')).toBeDefined();
+  });
+
+  it('does not render current role row when no current position', () => {
+    render(<ProfileCard handle="alice.bsky.social" />);
+    expect(screen.queryByText(/\bat\b/)).toBeNull();
+  });
 });
