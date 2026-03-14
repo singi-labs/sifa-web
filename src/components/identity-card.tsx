@@ -182,7 +182,7 @@ export function IdentityCard({
               target="_blank"
               rel="noopener noreferrer"
             >
-              {website.replace(/^https?:\/\//, '')}
+              {website.replace(/^https?:\/\/(www\.)?/, '')}
             </a>
           )}
         </div>

@@ -4,30 +4,13 @@ import { useState, useRef, useCallback, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { Input } from '@/components/ui/input';
 import { MagnifyingGlass, X, MapPin } from '@phosphor-icons/react';
+import { COUNTRIES } from '@/lib/countries';
 import type { LocationValue } from '@/lib/types';
 import { formatLocation, parseLocationString } from '@/lib/location-utils';
 
 // Re-export for backward compatibility
 export type { LocationValue } from '@/lib/types';
 export { formatLocation, parseLocationString } from '@/lib/location-utils';
-
-const GEONAMES_BASE = 'https://secure.geonames.org';
-const GEONAMES_USER = 'gxjansen';
-
-interface GeoNameResult {
-  geonameId: number;
-  name: string;
-  adminName1?: string;
-  countryName: string;
-  countryCode: string;
-}
-
-interface PostalCodeResult {
-  postalCode: string;
-  placeName: string;
-  adminName1?: string;
-  countryCode: string;
-}
 
 type SearchMode = 'city' | 'postal' | 'country';
 
@@ -49,7 +32,6 @@ export function LocationSearch({ value, onChange, id }: LocationSearchProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [apiFailed, setApiFailed] = useState(false);
-  const [fallbackText, setFallbackText] = useState('');
   const [activeIndex, setActiveIndex] = useState(-1);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -66,97 +48,43 @@ export function LocationSearch({ value, onChange, id }: LocationSearchProps) {
     return () => document.removeEventListener('mousedown', handleClick);
   }, []);
 
-  const searchCities = useCallback(async (q: string) => {
+  const searchApi = useCallback(async (q: string, searchMode: SearchMode) => {
     if (q.length < 2) {
       setResults([]);
       return;
     }
     setLoading(true);
     try {
-      const res = await fetch(
-        `${GEONAMES_BASE}/searchJSON?q=${encodeURIComponent(q)}&maxRows=8&featureClass=P&style=medium&username=${GEONAMES_USER}`,
-      );
-      if (!res.ok) throw new Error('GeoNames API error');
-      const data = (await res.json()) as { geonames: GeoNameResult[] };
-      const items: SearchResultItem[] = (data.geonames ?? []).map((g) => ({
-        city: g.name,
-        region: g.adminName1 || undefined,
-        country: g.countryName,
-        countryCode: g.countryCode,
-        geonameId: g.geonameId,
-        label: [g.name, g.adminName1, g.countryName].filter(Boolean).join(', '),
-      }));
-      setResults(items);
-      setIsOpen(items.length > 0);
+      const res = await fetch(`/api/location/search?q=${encodeURIComponent(q)}&mode=${searchMode}`);
+      if (!res.ok) throw new Error('API error');
+      const data = (await res.json()) as {
+        results: SearchResultItem[];
+        error?: string;
+      };
+      if (data.error === 'geonames_unavailable') throw new Error('GeoNames unavailable');
+      setResults(data.results);
+      setIsOpen(data.results.length > 0);
       setActiveIndex(-1);
       setApiFailed(false);
     } catch {
       setApiFailed(true);
-      setResults([]);
-      setIsOpen(false);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  const searchPostalCodes = useCallback(async (q: string) => {
-    if (q.length < 2) {
-      setResults([]);
-      return;
-    }
-    setLoading(true);
-    try {
-      const res = await fetch(
-        `${GEONAMES_BASE}/postalCodeSearchJSON?postalcode=${encodeURIComponent(q)}&maxRows=8&username=${GEONAMES_USER}`,
-      );
-      if (!res.ok) throw new Error('GeoNames API error');
-      const data = (await res.json()) as { postalCodes: PostalCodeResult[] };
-      const items: SearchResultItem[] = (data.postalCodes ?? []).map((p) => ({
-        postalCode: p.postalCode,
-        city: p.placeName || undefined,
-        region: p.adminName1 || undefined,
-        country: p.countryCode,
-        countryCode: p.countryCode,
-        label: [p.postalCode, p.placeName, p.adminName1, p.countryCode].filter(Boolean).join(', '),
-      }));
-      setResults(items);
-      setIsOpen(items.length > 0);
-      setActiveIndex(-1);
-      setApiFailed(false);
-    } catch {
-      setApiFailed(true);
-      setResults([]);
-      setIsOpen(false);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  const searchCountries = useCallback(async (q: string) => {
-    if (q.length < 2) {
-      setResults([]);
-      return;
-    }
-    setLoading(true);
-    try {
-      const res = await fetch(
-        `${GEONAMES_BASE}/searchJSON?q=${encodeURIComponent(q)}&maxRows=8&featureCode=PCLI&style=medium&username=${GEONAMES_USER}`,
-      );
-      if (!res.ok) throw new Error('GeoNames API error');
-      const data = (await res.json()) as { geonames: GeoNameResult[] };
-      const items: SearchResultItem[] = (data.geonames ?? []).map((g) => ({
-        country: g.countryName || g.name,
-        countryCode: g.countryCode,
-        label: g.countryName || g.name,
-      }));
-      setResults(items);
-      setIsOpen(items.length > 0);
-      setActiveIndex(-1);
-      setApiFailed(false);
-    } catch {
-      setApiFailed(true);
-      setResults([]);
-      setIsOpen(false);
+      // For country mode, fall back to local list immediately
+      if (searchMode === 'country') {
+        const q2 = q.toLowerCase();
+        const localResults = COUNTRIES.filter((c) => c.name.toLowerCase().includes(q2))
+          .slice(0, 8)
+          .map((c) => ({
+            country: c.name,
+            countryCode: c.code,
+            label: c.name,
+          }));
+        setResults(localResults);
+        setIsOpen(localResults.length > 0);
+        setActiveIndex(-1);
+      } else {
+        setResults([]);
+        setIsOpen(false);
+      }
     } finally {
       setLoading(false);
     }
@@ -170,10 +98,25 @@ export function LocationSearch({ value, onChange, id }: LocationSearchProps) {
       setIsOpen(false);
       return;
     }
+
+    // If API already failed and we're in country mode, use local results
+    if (apiFailed && mode === 'country') {
+      const q2 = q.toLowerCase();
+      const localResults = COUNTRIES.filter((c) => c.name.toLowerCase().includes(q2))
+        .slice(0, 8)
+        .map((c) => ({
+          country: c.name,
+          countryCode: c.code,
+          label: c.name,
+        }));
+      setResults(localResults);
+      setIsOpen(localResults.length > 0);
+      setActiveIndex(-1);
+      return;
+    }
+
     debounceRef.current = setTimeout(() => {
-      if (mode === 'city') void searchCities(q);
-      else if (mode === 'postal') void searchPostalCodes(q);
-      else void searchCountries(q);
+      void searchApi(q, mode);
     }, 300);
   };
 
@@ -196,7 +139,6 @@ export function LocationSearch({ value, onChange, id }: LocationSearchProps) {
   const handleClear = () => {
     onChange(null);
     setQuery('');
-    setFallbackText('');
   };
 
   const handleModeChange = (newMode: SearchMode) => {
@@ -205,6 +147,10 @@ export function LocationSearch({ value, onChange, id }: LocationSearchProps) {
     setResults([]);
     setIsOpen(false);
     setActiveIndex(-1);
+    // Reset API failure when switching to country mode (local fallback available)
+    if (newMode === 'country') {
+      setApiFailed(false);
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -254,23 +200,14 @@ export function LocationSearch({ value, onChange, id }: LocationSearchProps) {
     </div>
   );
 
-  // Fallback mode: plain text input when API fails
-  if (apiFailed) {
+  // When API failed for city/postal modes, show message + suggest country tab
+  if (apiFailed && mode !== 'country') {
     return (
       <div>
         {modeTabs}
-        <p className="mb-1 text-xs text-amber-600 dark:text-amber-400">{t('locationApiFailed')}</p>
-        <Input
-          id={id}
-          type="text"
-          value={fallbackText}
-          onChange={(e) => {
-            setFallbackText(e.target.value);
-            const parsed = parseLocationString(e.target.value);
-            if (parsed) onChange(parsed);
-          }}
-          placeholder={t('locationPlaceholder')}
-        />
+        <p className="mb-1 text-xs text-amber-600 dark:text-amber-400">
+          {t('locationApiFailedWithFallback')}
+        </p>
       </div>
     );
   }
