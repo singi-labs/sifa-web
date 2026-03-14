@@ -83,51 +83,46 @@ export function LocationSearch({ value, onChange, id }: LocationSearchProps) {
     return () => document.removeEventListener('mousedown', handleClick);
   }, []);
 
-  const searchApi = useCallback(
-    async (q: string, searchMode: SearchMode) => {
-      if (q.length < 2) {
-        setResults([]);
-        return;
-      }
-      setLoading(true);
-      try {
-        const res = await fetch(
-          `/api/location/search?q=${encodeURIComponent(q)}&mode=${searchMode}`,
-        );
-        if (!res.ok) throw new Error('API error');
-        const data = (await res.json()) as {
-          results: SearchResultItem[];
-          error?: string;
-        };
-        if (data.error === 'geonames_unavailable') throw new Error('GeoNames unavailable');
-        setResults(data.results);
-        setIsOpen(data.results.length > 0);
+  const searchApi = useCallback(async (q: string, searchMode: SearchMode) => {
+    if (q.length < 2) {
+      setResults([]);
+      return;
+    }
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/location/search?q=${encodeURIComponent(q)}&mode=${searchMode}`);
+      if (!res.ok) throw new Error('API error');
+      const data = (await res.json()) as {
+        results: SearchResultItem[];
+        error?: string;
+      };
+      if (data.error === 'geonames_unavailable') throw new Error('GeoNames unavailable');
+      setResults(data.results);
+      setIsOpen(data.results.length > 0);
+      setActiveIndex(-1);
+      setApiFailed(false);
+    } catch {
+      setApiFailed(true);
+      // For country mode, fall back to local list immediately
+      if (searchMode === 'country') {
+        const q2 = q.toLowerCase();
+        const localResults = COUNTRIES.filter((c) => c.name.toLowerCase().includes(q2))
+          .slice(0, 8)
+          .map((c) => ({
+            country: c.name,
+            label: c.name,
+          }));
+        setResults(localResults);
+        setIsOpen(localResults.length > 0);
         setActiveIndex(-1);
-        setApiFailed(false);
-      } catch {
-        setApiFailed(true);
-        // For country mode, fall back to local list immediately
-        if (searchMode === 'country') {
-          const q2 = q.toLowerCase();
-          const localResults = COUNTRIES.filter((c) => c.name.toLowerCase().includes(q2))
-            .slice(0, 8)
-            .map((c) => ({
-              country: c.name,
-              label: c.name,
-            }));
-          setResults(localResults);
-          setIsOpen(localResults.length > 0);
-          setActiveIndex(-1);
-        } else {
-          setResults([]);
-          setIsOpen(false);
-        }
-      } finally {
-        setLoading(false);
+      } else {
+        setResults([]);
+        setIsOpen(false);
       }
-    },
-    [],
-  );
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   const handleQueryChange = (q: string) => {
     setQuery(q);
