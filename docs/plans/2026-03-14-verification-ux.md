@@ -13,6 +13,7 @@
 ### Task 1: Remove Unverified Badge (Positive Labeling)
 
 **Files:**
+
 - Modify: `src/components/profile-sections/external-accounts-section.tsx:147-152`
 - Modify: `tests/components/external-accounts-section.test.tsx:59-63`
 
@@ -39,12 +40,14 @@ Expected: FAIL -- "Unverified" text is still found in the DOM.
 In `src/components/profile-sections/external-accounts-section.tsx`, delete lines 147-152 (the `acc.verifiable && !acc.verified` block):
 
 ```tsx
-{acc.verifiable && !acc.verified && (
-  <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-xs text-amber-800 dark:bg-amber-900/30 dark:text-amber-300">
-    <WarningCircle size={12} weight="fill" />
-    {t('unverified')}
-  </span>
-)}
+{
+  acc.verifiable && !acc.verified && (
+    <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-xs text-amber-800 dark:bg-amber-900/30 dark:text-amber-300">
+      <WarningCircle size={12} weight="fill" />
+      {t('unverified')}
+    </span>
+  );
+}
 ```
 
 Also remove the `WarningCircle` import from the Phosphor icons import line (line 5) since it's no longer used.
@@ -82,6 +85,7 @@ EOF
 ### Task 2: Add Hint Field Type to EditDialog
 
 **Files:**
+
 - Modify: `src/components/profile-editor/edit-dialog.tsx:9-19` (FieldDef type), `src/components/profile-editor/edit-dialog.tsx:103-161` (render logic)
 - Create: `tests/components/edit-dialog-hint.test.tsx`
 
@@ -296,6 +300,7 @@ EOF
 ### Task 3: Add Verification Instructions to External Account Form
 
 **Files:**
+
 - Modify: `src/components/profile-editor/form-fields.ts:80-100`
 - Modify: `src/components/profile-sections/external-accounts-section.tsx` (pass handle to fields)
 - Modify: `src/i18n/locales/en.json` (add verification hint strings)
@@ -308,10 +313,10 @@ Add a test to `tests/components/external-accounts-section.test.tsx`:
 ```tsx
 it('shows verification hint when selecting a verifiable platform', async () => {
   const user = userEvent.setup();
-  withProvider(
-    <ExternalAccountsSection accounts={[]} isOwnProfile />,
-    { externalAccounts: [], handle: 'gui.do' },
-  );
+  withProvider(<ExternalAccountsSection accounts={[]} isOwnProfile />, {
+    externalAccounts: [],
+    handle: 'gui.do',
+  });
   await user.click(screen.getByRole('button', { name: 'Add Other Profiles' }));
   await user.selectOptions(screen.getByRole('combobox'), 'github');
   expect(screen.getByText(/Add your Sifa profile URL/)).toBeDefined();
@@ -454,7 +459,7 @@ export const EXTERNAL_ACCOUNT_FIELDS = getExternalAccountFields('', (k) => k);
 In `src/components/profile-sections/external-accounts-section.tsx`:
 
 1. Replace `EXTERNAL_ACCOUNT_FIELDS` import with `getExternalAccountFields`
-2. Get handle from profile context: `const { profile } = useProfileEdit();`  (already available)
+2. Get handle from profile context: `const { profile } = useProfileEdit();` (already available)
 3. Build fields: `const externalAccountFields = useMemo(() => getExternalAccountFields(profile.handle, t), [profile.handle, t]);`
 4. Pass `externalAccountFields` to `EditableSection` instead of `EXTERNAL_ACCOUNT_FIELDS`
 
@@ -491,6 +496,7 @@ EOF
 ### Task 4: Poll for Verification Status After Save
 
 **Files:**
+
 - Modify: `src/components/profile-editor/editable-section.tsx:56-74,95-125`
 - Modify: `src/components/profile-sections/external-accounts-section.tsx`
 - Modify: `src/lib/profile-api.ts` (add `fetchExternalAccounts` function)
@@ -535,16 +541,20 @@ Expected: FAIL -- `onPostSave` is not a valid prop.
 In `src/components/profile-editor/editable-section.tsx`:
 
 1. Add to `EditableSectionProps`:
+
 ```tsx
 /** Called after a successful create or update. Use for post-save side effects like verification polling. */
 onPostSave?: () => void;
 ```
 
 2. Destructure in the component:
+
 ```tsx
 }: EditableSectionProps<T>) {
 ```
+
 becomes:
+
 ```tsx
   onPostSave,
 }: EditableSectionProps<T>) {
@@ -553,6 +563,7 @@ becomes:
 3. In `handleSave`, after each successful save (both edit and create), call `onPostSave`:
 
 After `toast.success(...)` in both the edit branch (line 108) and add branch (line 120), add:
+
 ```tsx
 onPostSave?.();
 ```
@@ -564,9 +575,7 @@ onPostSave?.();
 In `src/lib/profile-api.ts`, add:
 
 ```tsx
-export async function fetchExternalAccounts(
-  handleOrDid: string,
-): Promise<ExternalAccount[]> {
+export async function fetchExternalAccounts(handleOrDid: string): Promise<ExternalAccount[]> {
   try {
     const res = await fetch(
       `${API_URL}/api/profile/${encodeURIComponent(handleOrDid)}/external-accounts`,
@@ -637,6 +646,7 @@ EOF
 ### Task 5: Clean Up Unused i18n Key and Final Verification
 
 **Files:**
+
 - Modify: `src/i18n/locales/en.json` (remove `unverified` key from sections)
 - Modify: `tests/setup.ts` (remove `unverified` from mock translations)
 
