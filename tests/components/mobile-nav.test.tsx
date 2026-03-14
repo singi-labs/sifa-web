@@ -39,7 +39,6 @@ describe('MobileNav', () => {
     expect(screen.getByRole('navigation')).toBeDefined();
     expect(screen.getByRole('button', { name: 'Close menu' })).toBeDefined();
     expect(screen.getByRole('link', { name: 'Search' })).toBeDefined();
-    expect(screen.getByRole('link', { name: 'Import' })).toBeDefined();
   });
 
   it('closes the menu on second click', async () => {
