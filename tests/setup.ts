@@ -170,6 +170,7 @@ const translations: Record<string, Record<string, string>> = {
     shareProfile: 'Share profile',
     share: 'Share',
     linkCopied: 'Link copied',
+    embed: 'Embed',
     viewOnSifa: 'View on Sifa',
   },
   home: {
