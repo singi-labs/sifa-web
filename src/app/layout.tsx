@@ -6,6 +6,7 @@ import { Toaster } from 'sonner';
 import './globals.css';
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://sifa.id'),
   title: {
     default: 'Sifa',
     template: '%s | Sifa',
