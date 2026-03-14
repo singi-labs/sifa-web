@@ -225,6 +225,7 @@
     "unclaimed": "Unclaimed",
     "unclaimedPopupText": "This profile shows public AT Protocol data. {name} hasn't set up their Sifa profile yet.",
     "claimYourProfile": "Claim your profile",
+    "roleAt": "at",
     "viewOnSifa": "View on Sifa"
   },
   "unclaimedBanner": {

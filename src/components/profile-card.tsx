@@ -6,9 +6,17 @@ interface ProfileCardProps {
   handle: string;
   headline?: string;
   avatar?: string;
+  currentRole?: string;
+  currentCompany?: string;
 }
 
-export function ProfileCard({ handle, headline, avatar }: ProfileCardProps) {
+export function ProfileCard({
+  handle,
+  headline,
+  avatar,
+  currentRole,
+  currentCompany,
+}: ProfileCardProps) {
   return (
     <Link href={`/p/${encodeURIComponent(handle)}`} className="block">
       <Card className="transition-colors hover:bg-muted/50">
@@ -29,6 +37,11 @@ export function ProfileCard({ handle, headline, avatar }: ProfileCardProps) {
             <p className="truncate font-medium">{sanitize(handle)}</p>
             {headline && (
               <p className="truncate text-sm text-muted-foreground">{sanitize(headline)}</p>
+            )}
+            {currentRole && currentCompany && (
+              <p className="truncate text-sm text-muted-foreground">
+                {sanitize(currentRole)} at {sanitize(currentCompany)}
+              </p>
             )}
           </div>
         </CardContent>

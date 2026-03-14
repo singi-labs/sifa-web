@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import { buildPersonJsonLd, buildMetaDescription } from '@/lib/jsonld';
 import { sanitize } from '@/lib/sanitize';
 import { IdentityCard } from '@/components/identity-card';
-import type { LocationValue } from '@/lib/types';
+import type { LocationValue, ProfilePosition } from '@/lib/types';
 import { DataTransparencyCard } from '@/components/data-transparency-card';
 import { ProfileBody } from '@/components/profile-body';
 import { UnclaimedBanner } from '@/components/unclaimed-banner';
@@ -71,6 +71,10 @@ export default async function ProfilePage({
   // Replace the API's string location with structured LocationValue for downstream components
   profile.location = location;
 
+  const currentPosition = (profile.positions as ProfilePosition[] | undefined)?.find(
+    (p) => p.current,
+  );
+
   return (
     <>
       {deleted === '1' && <DeletedAccountModal />}
@@ -89,6 +93,8 @@ export default async function ProfilePage({
           avatar={profile.avatar}
           headline={profile.headline}
           about={profile.about}
+          currentRole={currentPosition?.title}
+          currentCompany={currentPosition?.companyName}
           location={location}
           website={profile.website}
           openTo={profile.openTo}

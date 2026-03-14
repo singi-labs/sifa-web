@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import { fetchProfile } from '@/lib/api';
 import { IdentityCard } from '@/components/identity-card';
 import { EmbedResizeEmitter } from '@/components/embed-resize-emitter';
-import type { LocationValue } from '@/lib/types';
+import type { LocationValue, ProfilePosition } from '@/lib/types';
 
 export const revalidate = 3600; // 1 hour ISR
 
@@ -33,6 +33,10 @@ export default async function EmbedPage({ params, searchParams }: EmbedPageProps
       }
     : null;
 
+  const currentPosition = (profile.positions as ProfilePosition[] | undefined)?.find(
+    (p) => p.current,
+  );
+
   return (
     <div data-theme={theme} className="bg-transparent p-2">
       <EmbedResizeEmitter />
@@ -44,6 +48,8 @@ export default async function EmbedPage({ params, searchParams }: EmbedPageProps
         avatar={profile.avatar}
         headline={profile.headline}
         about={profile.about}
+        currentRole={currentPosition?.title}
+        currentCompany={currentPosition?.companyName}
         location={location}
         website={profile.website}
         openTo={profile.openTo}
