@@ -12,9 +12,7 @@ export function EmbedBuilder() {
   const t = useTranslations('embedBuilder');
   const { session } = useAuth();
   const searchParams = useSearchParams();
-  const [identifier, setIdentifier] = useState(
-    searchParams.get('handle') ?? session?.handle ?? '',
-  );
+  const [identifier, setIdentifier] = useState(searchParams.get('handle') ?? session?.handle ?? '');
   const [theme, setTheme] = useState<Theme>('auto');
 
   const embedCode = useMemo(() => {

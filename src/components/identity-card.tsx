@@ -252,9 +252,7 @@ export function IdentityCard({
           {isOwn && (
             <Link
               href={`/embed?handle=${encodeURIComponent(handle)}`}
-              className={cn(
-                buttonVariants({ variant: 'ghost', size: 'sm' }),
-              )}
+              className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }))}
             >
               <Code className="mr-1.5 h-4 w-4" weight="bold" aria-hidden="true" />
               {t('embed')}
