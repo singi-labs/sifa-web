@@ -5,47 +5,12 @@ import { useTranslations } from 'next-intl';
 import { Input } from '@/components/ui/input';
 import { MagnifyingGlass, X, MapPin } from '@phosphor-icons/react';
 import { COUNTRIES } from '@/lib/countries';
+import type { LocationValue } from '@/lib/types';
+import { formatLocation } from '@/lib/location-utils';
 
-export interface LocationValue {
-  city?: string;
-  region?: string;
-  country: string;
-  postalCode?: string;
-  geonameId?: number;
-}
-
-/** Format a LocationValue for display */
-export function formatLocation(loc: LocationValue | null): string {
-  if (!loc) return '';
-  const parts = [loc.city, loc.region, loc.country].filter(Boolean);
-  if (loc.postalCode && !loc.city) {
-    return `${loc.postalCode}, ${loc.country}`;
-  }
-  return parts.join(', ');
-}
-
-/** Parse a display string back into a LocationValue (best-effort for legacy data) */
-export function parseLocationString(str: string): LocationValue | null {
-  if (!str.trim()) return null;
-  const parts = str
-    .split(',')
-    .map((p) => p.trim())
-    .filter(Boolean);
-  if (parts.length >= 3) {
-    return {
-      city: parts[0],
-      region: parts[1],
-      country: parts[parts.length - 1]!,
-    };
-  }
-  if (parts.length === 2) {
-    return {
-      city: parts[0],
-      country: parts[1]!,
-    };
-  }
-  return { country: parts[0]! };
-}
+// Re-export for backward compatibility
+export type { LocationValue } from '@/lib/types';
+export { formatLocation, parseLocationString } from '@/lib/location-utils';
 
 type SearchMode = 'city' | 'postal' | 'country';
 
@@ -110,6 +75,7 @@ export function LocationSearch({ value, onChange, id }: LocationSearchProps) {
           .slice(0, 8)
           .map((c) => ({
             country: c.name,
+            countryCode: c.code,
             label: c.name,
           }));
         setResults(localResults);
@@ -140,6 +106,7 @@ export function LocationSearch({ value, onChange, id }: LocationSearchProps) {
         .slice(0, 8)
         .map((c) => ({
           country: c.name,
+          countryCode: c.code,
           label: c.name,
         }));
       setResults(localResults);
@@ -158,6 +125,7 @@ export function LocationSearch({ value, onChange, id }: LocationSearchProps) {
       ...(item.city ? { city: item.city } : {}),
       ...(item.region ? { region: item.region } : {}),
       country: item.country,
+      ...(item.countryCode ? { countryCode: item.countryCode } : {}),
       ...(item.postalCode ? { postalCode: item.postalCode } : {}),
       ...(item.geonameId ? { geonameId: item.geonameId } : {}),
     };

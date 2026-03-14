@@ -215,7 +215,7 @@ describe('About form helpers', () => {
     const values = profileToAboutValues({
       headline: 'Dev',
       about: 'Hi',
-      location: 'NL',
+      location: { country: 'NL' },
     });
     expect(values.headline).toBe('Dev');
     expect(values.website).toBe('');

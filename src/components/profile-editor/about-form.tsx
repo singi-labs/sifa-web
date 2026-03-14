@@ -1,6 +1,8 @@
 'use client';
 
 import type { FieldDef } from './edit-dialog';
+import type { LocationValue } from '@/lib/types';
+import { formatLocation } from '@/lib/location-utils';
 
 export const ABOUT_FIELDS: FieldDef[] = [
   { name: 'headline', label: 'Headline', placeholder: 'What do you do?' },
@@ -17,13 +19,13 @@ export const ABOUT_FIELDS: FieldDef[] = [
 export function profileToAboutValues(profile: {
   headline?: string;
   about?: string;
-  location?: string;
+  location?: LocationValue | null;
   website?: string;
 }): Record<string, string | boolean> {
   return {
     headline: profile.headline ?? '',
     about: profile.about ?? '',
-    location: profile.location ?? '',
+    location: formatLocation(profile.location),
     website: profile.website ?? '',
   };
 }

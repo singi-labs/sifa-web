@@ -1,3 +1,5 @@
+import type { LocationValue } from '@/lib/types';
+import { parseLocationString } from '@/lib/location-utils';
 import { restoreLineBreaks } from './restore-line-breaks';
 
 const MONTHS: Record<string, string> = {
@@ -47,7 +49,7 @@ export interface SifaPosition {
   startDate?: string;
   endDate?: string;
   current?: boolean;
-  location?: string;
+  location?: LocationValue;
 }
 
 export function mapPositionsCsv(row: Record<string, string>): SifaPosition {
@@ -62,7 +64,7 @@ export function mapPositionsCsv(row: Record<string, string>): SifaPosition {
     startDate,
     endDate,
     ...(current ? { current } : {}),
-    location: optional(row['Location']),
+    location: row['Location'] ? (parseLocationString(row['Location']) ?? undefined) : undefined,
   };
 }
 
@@ -73,7 +75,7 @@ export interface SifaProfile {
   lastName?: string;
   headline?: string;
   about?: string;
-  location?: string;
+  location?: LocationValue;
 }
 
 export function mapProfileCsv(row: Record<string, string>): SifaProfile {
@@ -82,7 +84,9 @@ export function mapProfileCsv(row: Record<string, string>): SifaProfile {
     lastName: optional(row['Last Name']),
     headline: optional(row['Headline']),
     about: restoreLineBreaks(optional(row['Summary'])),
-    location: optional(row['Geo Location']),
+    location: row['Geo Location']
+      ? (parseLocationString(row['Geo Location']) ?? undefined)
+      : undefined,
   };
 }
 

@@ -27,7 +27,7 @@ describe('embed.js', function () {
           displayName: 'Alice',
           headline: 'Engineer',
           avatar: null,
-          location: 'Amsterdam',
+          location: { country: 'Amsterdam' },
           profileUrl: 'https://sifa.id/p/alice.bsky.social',
           trustStats: [],
           verifiedAccounts: [],

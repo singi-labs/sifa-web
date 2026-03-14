@@ -60,7 +60,7 @@ async function apiCreateRequest(path: string, body: unknown): Promise<CreateResu
 export async function updateProfileSelf(data: {
   headline?: string;
   about?: string;
-  location?: string | { country: string; region?: string; city?: string };
+  location?: { country: string; countryCode?: string; region?: string; city?: string };
   website?: string;
   openTo?: string[];
 }): Promise<WriteResult> {
