@@ -15,7 +15,7 @@ const mockPreview: ImportPreview = {
     firstName: 'Alice',
     lastName: 'Smith',
     headline: 'Engineer',
-    location: '',
+    location: undefined,
   },
   positions: [
     {

@@ -1,3 +1,6 @@
+import type { LocationValue } from '@/lib/types';
+import { formatLocation } from '@/lib/location-utils';
+
 interface ProfilePosition {
   current?: boolean;
   companyName?: string;
@@ -24,7 +27,7 @@ interface ProfileData {
   headline?: string;
   about?: string;
   avatar?: string;
-  location?: string;
+  location?: LocationValue | null;
   website?: string;
   positions?: ProfilePosition[];
   education?: ProfileEducation[];
@@ -60,7 +63,18 @@ export function buildPersonJsonLd(profile: ProfileData, sanitizer: Sanitizer = i
     description: profile.about ? s(profile.about) : undefined,
     url: `https://sifa.id/p/${profile.handle}`,
     image: profile.avatar ?? undefined,
-    ...(profile.location && { homeLocation: { '@type': 'Place', name: s(profile.location) } }),
+    ...(profile.location && {
+      homeLocation: {
+        '@type': 'Place',
+        name: s(formatLocation(profile.location)),
+        ...(profile.location.countryCode && {
+          address: {
+            '@type': 'PostalAddress',
+            addressCountry: profile.location.countryCode,
+          },
+        }),
+      },
+    }),
     ...(currentPosition?.companyName && {
       worksFor: {
         '@type': 'Organization',
@@ -100,7 +114,7 @@ export function buildMetaDescription(profile: ProfileData): string {
   }
 
   if (profile.location) {
-    parts.push(profile.location);
+    parts.push(formatLocation(profile.location));
   }
 
   if (parts.length === 0) {

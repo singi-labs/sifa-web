@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { buildPersonJsonLd, buildMetaDescription } from '@/lib/jsonld';
 import { sanitize } from '@/lib/sanitize';
 import { IdentityCard } from '@/components/identity-card';
+import type { LocationValue } from '@/lib/types';
 import { DataTransparencyCard } from '@/components/data-transparency-card';
 import { ProfileBody } from '@/components/profile-body';
 import { UnclaimedBanner } from '@/components/unclaimed-banner';
@@ -52,6 +53,19 @@ export default async function ProfilePage({ params }: { params: Promise<{ handle
   const profile = await fetchProfile(handle);
   if (!profile) notFound();
 
+  // Assemble structured location from API's separate fields
+  const location: LocationValue | null = profile.locationCountry
+    ? {
+        country: profile.locationCountry,
+        countryCode: profile.countryCode ?? undefined,
+        region: profile.locationRegion ?? undefined,
+        city: profile.locationCity ?? undefined,
+      }
+    : null;
+
+  // Replace the API's string location with structured LocationValue for downstream components
+  profile.location = location;
+
   return (
     <>
       {!profile.claimed && <UnclaimedBanner />}
@@ -69,7 +83,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ handle
           avatar={profile.avatar}
           headline={profile.headline}
           about={profile.about}
-          location={profile.location}
+          location={location}
           website={profile.website}
           openTo={profile.openTo}
           trustStats={profile.trustStats}

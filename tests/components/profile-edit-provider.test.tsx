@@ -50,11 +50,11 @@ describe('ProfileEditProvider', () => {
     });
 
     act(() => {
-      result.current.updateProfile({ headline: 'New', location: 'NL' });
+      result.current.updateProfile({ headline: 'New', location: { country: 'NL' } });
     });
 
     expect(result.current.profile.headline).toBe('New');
-    expect(result.current.profile.location).toBe('NL');
+    expect(result.current.profile.location).toEqual({ country: 'NL' });
   });
 
   it('addItem appends to the array', () => {

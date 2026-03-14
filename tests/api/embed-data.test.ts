@@ -56,7 +56,12 @@ describe('GET /api/embed/[handleOrDid]/data', () => {
     expect(body.handle).toBe('alice.bsky.social');
     expect(body.displayName).toBe('Alice Smith');
     expect(body.headline).toBe('Senior Engineer at Acme');
-    expect(body.location).toBe('Amsterdam, North Holland, Netherlands');
+    expect(body.location).toEqual({
+      country: 'Netherlands',
+      countryCode: undefined,
+      region: 'North Holland',
+      city: 'Amsterdam',
+    });
     expect(body.profileUrl).toBe('https://sifa.id/p/alice.bsky.social');
 
     const cacheControl = response.headers.get('Cache-Control');

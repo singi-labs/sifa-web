@@ -10,11 +10,8 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { updateProfileSelf } from '@/lib/profile-api';
-import {
-  LocationSearch,
-  parseLocationString,
-  type LocationValue,
-} from '@/components/location-search';
+import { LocationSearch } from '@/components/location-search';
+import type { LocationValue } from '@/lib/types';
 
 const OPEN_TO_OPTIONS = [
   { value: 'id.sifa.defs#fullTimeRoles', labelKey: 'fullTimeRoles' },
@@ -30,7 +27,7 @@ interface ProfileEditDialogProps {
   avatar?: string;
   headline?: string;
   about?: string;
-  location?: string;
+  location?: LocationValue | null;
   openTo?: string[];
   onClose: () => void;
 }
@@ -50,9 +47,7 @@ export function ProfileEditDialog({
 
   const [headline, setHeadline] = useState(initialHeadline ?? '');
   const [about, setAbout] = useState(initialAbout ?? '');
-  const [locationValue, setLocationValue] = useState<LocationValue | null>(
-    initialLocation ? parseLocationString(initialLocation) : null,
-  );
+  const [locationValue, setLocationValue] = useState<LocationValue | null>(initialLocation ?? null);
   const [openTo, setOpenTo] = useState<Set<string>>(new Set(initialOpenTo ?? []));
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -80,8 +75,9 @@ export function ProfileEditDialog({
       location: locationValue
         ? {
             country: locationValue.country,
-            ...(locationValue.region ? { region: locationValue.region } : {}),
-            ...(locationValue.city ? { city: locationValue.city } : {}),
+            countryCode: locationValue.countryCode,
+            region: locationValue.region,
+            city: locationValue.city,
           }
         : undefined,
       openTo: [...openTo],
