@@ -20,8 +20,10 @@ const fields: FieldDef[] = [
     name: 'verifyHintGithub',
     label: 'Verification',
     type: 'hint',
-    description: 'Add your Sifa profile URL as the Website or as a Social account.',
+    description: 'Add your Sifa profile URL in the "URL" field or under "Social accounts".',
     hintUrl: 'https://sifa.id/p/testuser',
+    hintActionUrl: 'https://github.com/settings/',
+    hintActionLabel: 'Open GitHub profile settings',
     visibleWhen: (values) => values.platform === 'github',
   },
   {
@@ -121,7 +123,7 @@ describe('EditDialog hint field', () => {
     expect(screen.queryByRole('link', { name: /sifa.id/ })).toBeNull();
   });
 
-  it('renders copy button in hint', () => {
+  it('renders copy button with "Copy profile URL" for non-snippet hints', () => {
     render(
       <EditDialog
         title="Add Link"
@@ -132,5 +134,33 @@ describe('EditDialog hint field', () => {
       />,
     );
     expect(screen.getByRole('button', { name: 'Copy profile URL' })).toBeDefined();
+  });
+
+  it('renders copy button with "Copy snippet" for snippet hints', () => {
+    render(
+      <EditDialog
+        title="Add Link"
+        fields={fields}
+        initialValues={{ platform: 'website', url: '' }}
+        onSave={vi.fn().mockResolvedValue({ success: true })}
+        onCancel={vi.fn()}
+      />,
+    );
+    expect(screen.getByRole('button', { name: 'Copy snippet' })).toBeDefined();
+  });
+
+  it('renders clickable action link when hintActionUrl is provided', () => {
+    render(
+      <EditDialog
+        title="Add Link"
+        fields={fields}
+        initialValues={{ platform: 'github', url: '' }}
+        onSave={vi.fn().mockResolvedValue({ success: true })}
+        onCancel={vi.fn()}
+      />,
+    );
+    const actionLink = screen.getByRole('link', { name: 'Open GitHub profile settings' });
+    expect(actionLink.getAttribute('href')).toBe('https://github.com/settings/');
+    expect(actionLink.getAttribute('target')).toBe('_blank');
   });
 });
