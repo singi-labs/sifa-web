@@ -21,12 +21,7 @@ export default function DefaultOgImage() {
         }}
       >
         {/* Sifa logo mark */}
-        <svg
-          viewBox="0 0 256 256"
-          width="120"
-          height="120"
-          style={{ marginBottom: 32 }}
-        >
+        <svg viewBox="0 0 256 256" width="120" height="120" style={{ marginBottom: 32 }}>
           <g transform="matrix(0.333333,0,0,0.333333,37.583333,37.083333)">
             <path
               d="M128,71.5C159.183,71.5 184.5,96.817 184.5,128C184.5,159.183 159.183,184.5 128,184.5C96.817,184.5 71.5,159.183 71.5,128C71.5,96.817 96.817,71.5 128,71.5ZM128,104.5C115.03,104.5 104.5,115.03 104.5,128C104.5,140.97 115.03,151.5 128,151.5C140.97,151.5 151.5,140.97 151.5,128C151.5,115.03 140.97,104.5 128,104.5Z"
@@ -51,12 +46,7 @@ export default function DefaultOgImage() {
             stroke="#fafafa"
             strokeWidth="12"
           />
-          <path
-            d="M152,192 L176,160 L200,192"
-            fill="none"
-            stroke="#fafafa"
-            strokeWidth="11"
-          />
+          <path d="M152,192 L176,160 L200,192" fill="none" stroke="#fafafa" strokeWidth="11" />
         </svg>
 
         <div

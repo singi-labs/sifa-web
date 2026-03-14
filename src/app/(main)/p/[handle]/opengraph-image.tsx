@@ -34,11 +34,7 @@ function getCurrentRole(profile: ProfileData): string | null {
   return parts.length > 0 ? parts.join(' at ') : null;
 }
 
-export default async function ProfileOgImage({
-  params,
-}: {
-  params: Promise<{ handle: string }>;
-}) {
+export default async function ProfileOgImage({ params }: { params: Promise<{ handle: string }> }) {
   const { handle } = await params;
 
   const res = await fetch(`${API_URL}/api/profile/${encodeURIComponent(handle)}`, {
@@ -230,12 +226,7 @@ export default async function ProfileOgImage({
                 stroke="#a3a3a3"
                 strokeWidth="12"
               />
-              <path
-                d="M152,192 L176,160 L200,192"
-                fill="none"
-                stroke="#a3a3a3"
-                strokeWidth="11"
-              />
+              <path d="M152,192 L176,160 L200,192" fill="none" stroke="#a3a3a3" strokeWidth="11" />
             </svg>
             <div style={{ fontSize: 24, color: '#a3a3a3', fontWeight: 600 }}>sifa.id</div>
           </div>
