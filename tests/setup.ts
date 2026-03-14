@@ -119,12 +119,14 @@ const translations: Record<string, Record<string, string>> = {
     languages: 'Languages',
     otherProfiles: 'Other Profiles',
     verified: 'Verified',
-    verifyHintGithub: 'Add your Sifa profile URL as the Website on your GitHub profile.',
-    verifyHintWebsite: 'Add <link rel="me" href="https://sifa.id/p/{handle}"> to your site.',
+    verifyHintGithub:
+      "Add your Sifa profile URL as the Website or as a Social account on your GitHub profile. We'll verify the link automatically when you save.",
+    verifyHintWebsite:
+      "Add the following tag to your site's head section. We'll verify the link automatically when you save.",
     verifyHintFediverse:
-      'Add your Sifa profile URL (https://sifa.id/p/{handle}) to a profile metadata field.',
+      "Add your Sifa profile URL to one of your Fediverse profile metadata fields. We'll verify the link automatically when you save.",
     verifyHintRss:
-      'Include a link to your Sifa profile (https://sifa.id/p/{handle}) on your feed page.',
+      'Add a link with rel="me" pointing to your Sifa profile URL on your feed\'s HTML page. We\'ll verify the link automatically when you save.',
   },
   editor: {
     save: 'Save',
@@ -137,6 +139,8 @@ const translations: Record<string, Record<string, string>> = {
     updated: '{section} updated',
     removed: '{section} removed',
     failedToDelete: 'Failed to delete',
+    copyUrl: 'Copy profile URL',
+    copied: 'Copied!',
   },
   trackRecord: {
     title: 'Track Record',

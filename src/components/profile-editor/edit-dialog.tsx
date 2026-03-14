@@ -4,7 +4,7 @@ import { useState, type FormEvent } from 'react';
 import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { X } from '@phosphor-icons/react';
+import { X, Copy, Check } from '@phosphor-icons/react';
 
 export interface FieldDef {
   name: string;
@@ -16,6 +16,10 @@ export interface FieldDef {
   options?: { value: string; label: string }[];
   /** Only show this field when the predicate returns true. */
   visibleWhen?: (values: Record<string, string | boolean>) => boolean;
+  /** URL to display as a clickable link with copy button (for hint fields). */
+  hintUrl?: string;
+  /** Code snippet to display and copy instead of the URL (for hint fields). */
+  hintSnippet?: string;
 }
 
 interface EditDialogProps {
@@ -54,6 +58,7 @@ export function EditDialog({
   });
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [copiedHint, setCopiedHint] = useState<string | null>(null);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -104,12 +109,56 @@ export function EditDialog({
           {fields.map((field) => {
             if (field.visibleWhen && !field.visibleWhen(values)) return null;
             if (field.type === 'hint') {
+              const copyText = field.hintSnippet ?? field.hintUrl;
+              const isCopied = copiedHint === field.name;
+              const handleCopy = async () => {
+                if (!copyText) return;
+                await navigator.clipboard.writeText(copyText);
+                setCopiedHint(field.name);
+                setTimeout(() => setCopiedHint(null), 2000);
+              };
               return (
                 <div
                   key={field.name}
                   className="rounded-md border border-blue-200 bg-blue-50 p-3 text-sm text-blue-800 dark:border-blue-800 dark:bg-blue-950/30 dark:text-blue-300"
                 >
-                  {field.description}
+                  <p>{field.description}</p>
+                  {copyText && (
+                    <div className="mt-2 flex items-center gap-2">
+                      {field.hintSnippet ? (
+                        <code className="block flex-1 rounded bg-blue-100 px-2 py-1 text-xs break-all dark:bg-blue-900/40">
+                          {field.hintSnippet}
+                        </code>
+                      ) : (
+                        <a
+                          href={field.hintUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex-1 break-all underline underline-offset-2"
+                        >
+                          {field.hintUrl}
+                        </a>
+                      )}
+                      <button
+                        type="button"
+                        onClick={handleCopy}
+                        className="inline-flex shrink-0 items-center gap-1 rounded px-2 py-1 text-xs font-medium transition-colors hover:bg-blue-200 dark:hover:bg-blue-800"
+                        aria-label={t('copyUrl')}
+                      >
+                        {isCopied ? (
+                          <>
+                            <Check size={14} weight="bold" />
+                            {t('copied')}
+                          </>
+                        ) : (
+                          <>
+                            <Copy size={14} />
+                            {t('copyUrl')}
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  )}
                 </div>
               );
             }
