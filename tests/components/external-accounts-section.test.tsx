@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { ProfileEditProvider } from '@/components/profile-edit-provider';
 import { ExternalAccountsSection } from '@/components/profile-sections/external-accounts-section';
 import type { ExternalAccount, Profile } from '@/lib/types';
@@ -68,6 +69,17 @@ describe('ExternalAccountsSection', () => {
     withProvider(<ExternalAccountsSection accounts={[acc]} />, { externalAccounts: [acc] });
     expect(screen.queryByText('Unverified')).toBeNull();
     expect(screen.queryByLabelText('Verified')).toBeNull();
+  });
+
+  it('shows verification hint when selecting a verifiable platform', async () => {
+    const user = userEvent.setup();
+    withProvider(
+      <ExternalAccountsSection accounts={[]} isOwnProfile />,
+      { externalAccounts: [], handle: 'gui.do' },
+    );
+    await user.click(screen.getByRole('button', { name: 'Add Other Profiles' }));
+    await user.selectOptions(screen.getByRole('combobox'), 'github');
+    expect(screen.getByText(/Add your Sifa profile URL/)).toBeDefined();
   });
 
   it('renders correct link targets', () => {

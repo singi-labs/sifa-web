@@ -14,5 +14,6 @@ export {
   LANGUAGE_FIELDS,
   COURSE_FIELDS,
   EXTERNAL_ACCOUNT_FIELDS,
+  getExternalAccountFields,
 } from './form-fields';
 export * from './section-converters';

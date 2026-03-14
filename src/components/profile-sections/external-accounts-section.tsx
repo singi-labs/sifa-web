@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import { CheckCircle, Star, Info } from '@phosphor-icons/react';
 import { Popover } from '@base-ui/react/popover';
@@ -10,7 +10,7 @@ import { useProfileEdit } from '@/components/profile-edit-provider';
 import {
   EditableSection,
   EditableEntry,
-  EXTERNAL_ACCOUNT_FIELDS,
+  getExternalAccountFields,
 } from '@/components/profile-editor';
 import {
   externalAccountToValues,
@@ -28,7 +28,12 @@ interface ExternalAccountsSectionProps {
 export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAccountsSectionProps) {
   const t = useTranslations('sections');
   const tEdit = useTranslations('profileEdit');
-  const { updateItem } = useProfileEdit();
+  const { profile, updateItem } = useProfileEdit();
+
+  const externalAccountFields = useMemo(
+    () => getExternalAccountFields(profile.handle, t),
+    [profile.handle, t],
+  );
 
   const handleTogglePrimary = useCallback(
     async (acc: ExternalAccount) => {
@@ -99,7 +104,7 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
         sectionTitle={t('otherProfiles')}
         profileKey="externalAccounts"
         isOwnProfile={isOwnProfile}
-        fields={EXTERNAL_ACCOUNT_FIELDS}
+        fields={externalAccountFields}
         toValues={externalAccountToValues}
         fromValues={
           valuesToExternalAccount as (
