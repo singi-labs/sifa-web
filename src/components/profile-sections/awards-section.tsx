@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { EditableSection, EditableEntry, HONOR_FIELDS } from '@/components/profile-editor';
 import { honorToValues, valuesToHonor } from '@/components/profile-editor/section-converters';
+import { formatTimelineDate } from './timeline';
 import type { ProfileHonor } from '@/lib/types';
 
 interface AwardsSectionProps {
@@ -42,7 +43,7 @@ export function AwardsSection({ honors, isOwnProfile }: AwardsSectionProps) {
                 {honor.issuer && <p className="text-sm text-muted-foreground">{honor.issuer}</p>}
               </div>
               {honor.date && (
-                <span className="shrink-0 text-xs text-muted-foreground">{honor.date}</span>
+                <span className="shrink-0 text-xs text-muted-foreground">{formatTimelineDate(honor.date)}</span>
               )}
             </div>
           </EditableEntry>

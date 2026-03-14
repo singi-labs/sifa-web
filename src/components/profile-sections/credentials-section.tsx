@@ -6,6 +6,7 @@ import {
   certificationToValues,
   valuesToCertification,
 } from '@/components/profile-editor/section-converters';
+import { formatTimelineDate } from './timeline';
 import type { ProfileCertification } from '@/lib/types';
 
 interface CredentialsSectionProps {
@@ -60,7 +61,7 @@ export function CredentialsSection({ certifications, isOwnProfile }: Credentials
                 <p className="text-sm text-muted-foreground">{cert.issuingOrg}</p>
               </div>
               {cert.issueDate && (
-                <span className="shrink-0 text-xs text-muted-foreground">{cert.issueDate}</span>
+                <span className="shrink-0 text-xs text-muted-foreground">{formatTimelineDate(cert.issueDate)}</span>
               )}
             </div>
           </EditableEntry>
