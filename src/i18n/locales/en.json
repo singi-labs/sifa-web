@@ -126,7 +126,6 @@
     "languages": "Languages",
     "otherProfiles": "Other Profiles",
     "verified": "Verified",
-    "unverified": "Unverified",
     "verifyHintGithub": "Add your Sifa profile URL as the Website on your GitHub profile at github.com/settings/profile. We'll verify the link automatically when you save.",
     "verifyHintWebsite": "Add <link rel=\"me\" href=\"https://sifa.id/p/{handle}\"> to your site's <head> tag. We'll verify the link automatically when you save.",
     "verifyHintFediverse": "Add your Sifa profile URL (https://sifa.id/p/{handle}) to one of your profile metadata fields. We'll verify the link automatically when you save.",
