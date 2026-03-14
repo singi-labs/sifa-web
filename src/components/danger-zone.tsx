@@ -45,9 +45,7 @@ function ConfirmAction({
   return (
     <div className="space-y-3">
       <div>
-        <h3 className="text-sm font-semibold">
-          {title}
-        </h3>
+        <h3 className="text-sm font-semibold">{title}</h3>
         <p className="text-sm text-muted-foreground">{description}</p>
       </div>
       <div className="space-y-2">
