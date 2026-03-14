@@ -114,6 +114,23 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
           const displayLabel = acc.label ?? platform.label;
           const usesFavicon = acc.platform === 'website';
 
+          const starToggle = isOwnProfile ? (
+            <button
+              type="button"
+              onClick={() => void handleTogglePrimary(acc)}
+              className={`shrink-0 rounded-full p-1 transition-colors ${
+                acc.primary
+                  ? 'text-amber-500 hover:text-amber-600 dark:text-amber-400 dark:hover:text-amber-300'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+              aria-label={acc.primary ? tEdit('removePrimary') : tEdit('setPrimary')}
+              aria-pressed={acc.primary}
+              title={acc.primary ? tEdit('removePrimary') : tEdit('setPrimary')}
+            >
+              <Star size={16} weight={acc.primary ? 'fill' : 'regular'} />
+            </button>
+          ) : undefined;
+
           return (
             <EditableEntry
               key={acc.rkey}
@@ -121,6 +138,7 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
               onEdit={controls?.onEdit ?? (() => {})}
               onDelete={controls?.onDelete ?? (() => {})}
               entryLabel={displayLabel}
+              trailingContent={starToggle}
             >
               <li className="flex items-center gap-3">
                 {usesFavicon ? (
@@ -150,28 +168,13 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
                     {t('unverified')}
                   </span>
                 )}
-                {acc.primary && (
+                {acc.primary && !isOwnProfile && (
                   <Star
                     size={16}
                     weight="fill"
                     className="shrink-0 text-amber-500 dark:text-amber-400"
                     aria-label={tEdit('primaryLink')}
                   />
-                )}
-                {isOwnProfile && (
-                  <button
-                    type="button"
-                    onClick={() => void handleTogglePrimary(acc)}
-                    className={`ml-auto shrink-0 rounded-full p-1 transition-colors ${
-                      acc.primary
-                        ? 'text-amber-500 hover:text-amber-600 dark:text-amber-400 dark:hover:text-amber-300'
-                        : 'text-muted-foreground hover:text-foreground'
-                    }`}
-                    aria-label={acc.primary ? tEdit('removePrimary') : tEdit('setPrimary')}
-                    title={acc.primary ? tEdit('removePrimary') : tEdit('setPrimary')}
-                  >
-                    <Star size={16} weight={acc.primary ? 'fill' : 'regular'} />
-                  </button>
                 )}
               </li>
             </EditableEntry>
