@@ -72,32 +72,42 @@ describe('EditableEntry', () => {
       </EditableEntry>,
     );
     expect(screen.getByText('Entry')).toBeDefined();
-    expect(screen.queryByRole('button', { name: /edit/i })).toBeNull();
+    expect(screen.queryByRole('button', { name: /options/i })).toBeNull();
   });
 
-  it('shows edit and delete buttons for own profile', () => {
+  it('shows kebab menu trigger for own profile', () => {
     render(
       <EditableEntry isOwnProfile onEdit={vi.fn()} onDelete={vi.fn()} entryLabel="Engineer">
         <p>Entry</p>
       </EditableEntry>,
     );
-    expect(screen.getByRole('button', { name: 'Edit Engineer' })).toBeDefined();
-    expect(screen.getByRole('button', { name: 'Delete Engineer' })).toBeDefined();
+    expect(screen.getByRole('button', { name: 'Engineer options' })).toBeDefined();
   });
 
-  it('shows confirm on delete click', async () => {
-    const user = userEvent.setup();
-    const onDelete = vi.fn();
+  it('renders kebab trigger with correct aria attributes', () => {
     render(
-      <EditableEntry isOwnProfile onEdit={vi.fn()} onDelete={onDelete} entryLabel="Engineer">
+      <EditableEntry isOwnProfile onEdit={vi.fn()} onDelete={vi.fn()} entryLabel="Engineer">
         <p>Entry</p>
       </EditableEntry>,
     );
-    await user.click(screen.getByRole('button', { name: 'Delete Engineer' }));
-    const confirmBtn = screen.getByRole('button', { name: 'Confirm delete Engineer' });
-    expect(confirmBtn).toBeDefined();
-    await user.click(confirmBtn);
-    expect(onDelete).toHaveBeenCalledOnce();
+    const trigger = screen.getByRole('button', { name: 'Engineer options' });
+    expect(trigger.getAttribute('aria-haspopup')).toBe('menu');
+  });
+
+  it('renders trailing content alongside kebab menu', () => {
+    render(
+      <EditableEntry
+        isOwnProfile
+        onEdit={vi.fn()}
+        onDelete={vi.fn()}
+        entryLabel="GitHub"
+        trailingContent={<button type="button" aria-label="Set as primary">star</button>}
+      >
+        <p>GitHub link</p>
+      </EditableEntry>,
+    );
+    expect(screen.getByRole('button', { name: 'Set as primary' })).toBeDefined();
+    expect(screen.getByRole('button', { name: 'GitHub options' })).toBeDefined();
   });
 });
 

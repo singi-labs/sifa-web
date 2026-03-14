@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { PencilSimple, Plus, Trash } from '@phosphor-icons/react';
+import { DotsThreeVertical, PencilSimple, Plus, Trash } from '@phosphor-icons/react';
+import { Menu } from '@base-ui/react/menu';
 import { Button } from '@/components/ui/button';
 
 interface SectionEditorProps {
@@ -35,6 +35,8 @@ interface EditableEntryProps {
   onDelete: () => void;
   entryLabel: string;
   children: React.ReactNode;
+  /** Optional content (e.g. star toggle) to render before the kebab menu */
+  trailingContent?: React.ReactNode;
 }
 
 export function EditableEntry({
@@ -43,50 +45,42 @@ export function EditableEntry({
   onDelete,
   entryLabel,
   children,
+  trailingContent,
 }: EditableEntryProps) {
-  const [confirmDelete, setConfirmDelete] = useState(false);
-
   if (!isOwnProfile) return <>{children}</>;
 
   return (
-    <div className="group/entry relative">
-      {children}
-      <div className="absolute -right-2 top-0 flex gap-1 opacity-0 transition-opacity group-hover/entry:opacity-100 focus-within:opacity-100 [@media(hover:none)]:opacity-60">
-        <Button
-          variant="ghost"
-          size="sm"
-          className="h-7 w-7 p-0"
-          onClick={onEdit}
-          aria-label={`Edit ${entryLabel}`}
+    <div className="flex items-start gap-2">
+      <div className="min-w-0 flex-1">{children}</div>
+      {trailingContent}
+      <Menu.Root>
+        <Menu.Trigger
+          className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          aria-label={`${entryLabel} options`}
         >
-          <PencilSimple className="h-3.5 w-3.5" weight="bold" aria-hidden="true" />
-        </Button>
-        {confirmDelete ? (
-          <Button
-            variant="destructive"
-            size="sm"
-            className="h-7 px-2 text-xs"
-            onClick={() => {
-              onDelete();
-              setConfirmDelete(false);
-            }}
-            onBlur={() => setConfirmDelete(false)}
-            aria-label={`Confirm delete ${entryLabel}`}
-          >
-            Confirm
-          </Button>
-        ) : (
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-7 w-7 p-0 text-destructive"
-            onClick={() => setConfirmDelete(true)}
-            aria-label={`Delete ${entryLabel}`}
-          >
-            <Trash className="h-3.5 w-3.5" weight="bold" aria-hidden="true" />
-          </Button>
-        )}
-      </div>
+          <DotsThreeVertical className="h-4 w-4" weight="bold" aria-hidden="true" />
+        </Menu.Trigger>
+        <Menu.Portal>
+          <Menu.Positioner align="end" sideOffset={4}>
+            <Menu.Popup className="z-[60] min-w-[140px] rounded-md border border-border bg-card py-1 shadow-md">
+              <Menu.Item
+                className="flex w-full cursor-pointer items-center gap-2 px-3 py-1.5 text-sm text-foreground outline-none hover:bg-accent focus:bg-accent"
+                onSelect={onEdit}
+              >
+                <PencilSimple className="h-3.5 w-3.5" weight="bold" aria-hidden="true" />
+                Edit
+              </Menu.Item>
+              <Menu.Item
+                className="flex w-full cursor-pointer items-center gap-2 px-3 py-1.5 text-sm text-destructive outline-none hover:bg-destructive/10 focus:bg-destructive/10"
+                onSelect={onDelete}
+              >
+                <Trash className="h-3.5 w-3.5" weight="bold" aria-hidden="true" />
+                Delete
+              </Menu.Item>
+            </Menu.Popup>
+          </Menu.Positioner>
+        </Menu.Portal>
+      </Menu.Root>
     </div>
   );
 }
