@@ -101,7 +101,11 @@ describe('EditableEntry', () => {
         onEdit={vi.fn()}
         onDelete={vi.fn()}
         entryLabel="GitHub"
-        trailingContent={<button type="button" aria-label="Set as primary">star</button>}
+        trailingContent={
+          <button type="button" aria-label="Set as primary">
+            star
+          </button>
+        }
       >
         <p>GitHub link</p>
       </EditableEntry>,
