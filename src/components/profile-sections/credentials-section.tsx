@@ -61,7 +61,9 @@ export function CredentialsSection({ certifications, isOwnProfile }: Credentials
                 <p className="text-sm text-muted-foreground">{cert.issuingOrg}</p>
               </div>
               {cert.issueDate && (
-                <span className="shrink-0 text-xs text-muted-foreground">{formatTimelineDate(cert.issueDate)}</span>
+                <span className="shrink-0 text-xs text-muted-foreground">
+                  {formatTimelineDate(cert.issueDate)}
+                </span>
               )}
             </div>
           </EditableEntry>

@@ -43,7 +43,9 @@ export function AwardsSection({ honors, isOwnProfile }: AwardsSectionProps) {
                 {honor.issuer && <p className="text-sm text-muted-foreground">{honor.issuer}</p>}
               </div>
               {honor.date && (
-                <span className="shrink-0 text-xs text-muted-foreground">{formatTimelineDate(honor.date)}</span>
+                <span className="shrink-0 text-xs text-muted-foreground">
+                  {formatTimelineDate(honor.date)}
+                </span>
               )}
             </div>
           </EditableEntry>

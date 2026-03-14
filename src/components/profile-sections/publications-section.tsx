@@ -61,7 +61,9 @@ export function PublicationsSection({ publications, isOwnProfile }: Publications
                 {pub.publisher && <p className="text-sm text-muted-foreground">{pub.publisher}</p>}
               </div>
               {pub.date && (
-                <span className="shrink-0 text-xs text-muted-foreground">{formatTimelineDate(pub.date)}</span>
+                <span className="shrink-0 text-xs text-muted-foreground">
+                  {formatTimelineDate(pub.date)}
+                </span>
               )}
             </div>
           </EditableEntry>
