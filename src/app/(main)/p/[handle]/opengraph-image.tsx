@@ -34,42 +34,61 @@ function getCurrentRole(profile: ProfileData): string | null {
   return parts.length > 0 ? parts.join(' at ') : null;
 }
 
+async function fetchAvatarDataUrl(url: string): Promise<string | null> {
+  try {
+    const res = await fetch(url, { signal: AbortSignal.timeout(5000) });
+    if (!res.ok) return null;
+    const contentType = res.headers.get('content-type') ?? 'image/jpeg';
+    const buffer = await res.arrayBuffer();
+    const base64 = Buffer.from(buffer).toString('base64');
+    return `data:${contentType};base64,${base64}`;
+  } catch {
+    return null;
+  }
+}
+
+function fallbackImage() {
+  return new ImageResponse(
+    (
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: '#1a1a1a',
+          color: '#fafafa',
+          fontFamily: 'system-ui, sans-serif',
+          fontSize: 36,
+        }}
+      >
+        Profile not found
+      </div>
+    ),
+    { ...size },
+  );
+}
+
 export default async function ProfileOgImage({ params }: { params: Promise<{ handle: string }> }) {
   const { handle } = await params;
 
-  const res = await fetch(`${API_URL}/api/profile/${encodeURIComponent(handle)}`, {
-    next: { revalidate: 43200 },
-  });
-
-  if (!res.ok) {
-    return new ImageResponse(
-      (
-        <div
-          style={{
-            width: '100%',
-            height: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: '#1a1a1a',
-            color: '#fafafa',
-            fontFamily: 'system-ui, sans-serif',
-            fontSize: 36,
-          }}
-        >
-          Profile not found
-        </div>
-      ),
-      { ...size },
-    );
+  let profile: ProfileData;
+  try {
+    const res = await fetch(`${API_URL}/api/profile/${encodeURIComponent(handle)}`, {
+      next: { revalidate: 43200 },
+    });
+    if (!res.ok) return fallbackImage();
+    profile = await res.json();
+  } catch {
+    return fallbackImage();
   }
-
-  const profile: ProfileData = await res.json();
 
   const displayName = profile.displayName ?? profile.handle;
   const location = formatLocation(profile);
   const currentRole = getCurrentRole(profile);
   const trustStats = (profile.trustStats ?? []).slice(0, 3);
+  const avatarDataUrl = profile.avatar ? await fetchAvatarDataUrl(profile.avatar) : null;
 
   return new ImageResponse(
     (
@@ -88,20 +107,15 @@ export default async function ProfileOgImage({ params }: { params: Promise<{ han
         {/* Top section: avatar + identity */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 28 }}>
           {/* Avatar */}
-          {profile.avatar ? (
+          {avatarDataUrl ? (
             // eslint-disable-next-line jsx-a11y/alt-text -- rendered to PNG by Satori, not a browser DOM
-            <img
-              src={profile.avatar}
-              width={96}
-              height={96}
-              style={{ borderRadius: '50%', objectFit: 'cover' }}
-            />
+            <img src={avatarDataUrl} width={96} height={96} style={{ borderRadius: 48 }} />
           ) : (
             <div
               style={{
                 width: 96,
                 height: 96,
-                borderRadius: '50%',
+                borderRadius: 48,
                 backgroundColor: '#333',
                 display: 'flex',
                 alignItems: 'center',
