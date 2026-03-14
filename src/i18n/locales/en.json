@@ -175,13 +175,14 @@
     "setPrimary": "Set as primary",
     "removePrimary": "Remove as primary",
     "locationMode_city": "City",
-    "locationMode_postal": "Postal code",
+    "locationMode_postal": "Postal/ZIP code",
     "locationMode_country": "Country",
     "locationCityPlaceholder": "Search for a city...",
-    "locationPostalPlaceholder": "Enter postal code...",
-    "locationCountryPlaceholder": "Search for a country...",
+    "locationPostalPlaceholder": "Enter postal or ZIP code...",
+    "locationCountryPlaceholder": "Country",
     "locationClear": "Clear location",
-    "locationApiFailed": "Location search is temporarily unavailable. Enter your location manually."
+    "locationApiFailed": "Location search is temporarily unavailable. Enter your location manually.",
+    "locationApiFailedWithFallback": "City and postal code search is temporarily unavailable. You can still select your country using the Country tab."
   },
   "editor": {
     "save": "Save",
