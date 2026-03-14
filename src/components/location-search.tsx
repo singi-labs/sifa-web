@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { MagnifyingGlass, X, MapPin } from '@phosphor-icons/react';
 import { COUNTRIES } from '@/lib/countries';
 import type { LocationValue } from '@/lib/types';
-import { formatLocation, parseLocationString } from '@/lib/location-utils';
+import { formatLocation } from '@/lib/location-utils';
 
 // Re-export for backward compatibility
 export type { LocationValue } from '@/lib/types';
