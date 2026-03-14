@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import { fetchProfile } from '@/lib/api';
 import { IdentityCard } from '@/components/identity-card';
+import { EmbedResizeEmitter } from '@/components/embed-resize-emitter';
 import type { LocationValue } from '@/lib/types';
 
 export const revalidate = 3600; // 1 hour ISR
@@ -34,6 +35,7 @@ export default async function EmbedPage({ params, searchParams }: EmbedPageProps
 
   return (
     <div data-theme={theme} className="bg-transparent p-2">
+      <EmbedResizeEmitter />
       <IdentityCard
         variant="embed"
         did={profile.did}

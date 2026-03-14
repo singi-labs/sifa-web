@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { useAuth } from '@/components/auth-provider';
@@ -24,6 +24,19 @@ export function EmbedBuilder() {
 
     return `<script src="https://sifa.id/embed.js" ${dataAttr}${themeAttr}></script>`;
   }, [identifier, theme]);
+
+  const [iframeHeight, setIframeHeight] = useState(300);
+
+  const handleMessage = useCallback((e: MessageEvent) => {
+    if (e.data?.type === 'sifa-embed-resize' && typeof e.data.height === 'number') {
+      setIframeHeight(e.data.height);
+    }
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
+  }, [handleMessage]);
 
   const previewBg = theme === 'dark' ? '#1a1a2e' : theme === 'light' ? '#fff' : undefined;
 
@@ -94,14 +107,15 @@ export function EmbedBuilder() {
       <div>
         <p className="text-sm font-medium">{t('previewLabel')}</p>
         <div
-          className="mt-2 min-h-[300px] rounded-md border border-border"
+          className="mt-2 rounded-md border border-border"
           style={previewBg ? { backgroundColor: previewBg } : undefined}
         >
           {identifier.trim() ? (
             <iframe
               src={`/embed/${encodeURIComponent(identifier)}?theme=${theme}`}
               title={t('previewTitle')}
-              className="h-[300px] w-full rounded-md"
+              className="w-full rounded-md"
+              style={{ height: `${iframeHeight}px` }}
             />
           ) : (
             <div className="flex h-[300px] items-center justify-center text-muted-foreground">
