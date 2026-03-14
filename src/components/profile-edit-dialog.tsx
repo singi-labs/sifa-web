@@ -126,14 +126,12 @@ export function ProfileEditDialog({
                 >
                   <Info className="h-3.5 w-3.5" weight="bold" />
                 </Popover.Trigger>
-                <Popover.Portal>
-                  <Popover.Positioner sideOffset={8}>
-                    <Popover.Popup className="z-[100] w-72 rounded-lg border border-border bg-popover p-3 text-sm text-popover-foreground shadow-md">
-                      <Popover.Arrow className="fill-popover stroke-border" />
-                      <p className="text-muted-foreground">{t('pdsExplanation')}</p>
-                    </Popover.Popup>
-                  </Popover.Positioner>
-                </Popover.Portal>
+                <Popover.Positioner sideOffset={8}>
+                  <Popover.Popup className="z-[200] w-72 rounded-lg border border-border bg-popover p-3 text-sm text-popover-foreground shadow-md">
+                    <Popover.Arrow className="fill-popover stroke-border" />
+                    <p className="text-muted-foreground">{t('pdsExplanation')}</p>
+                  </Popover.Popup>
+                </Popover.Positioner>
               </Popover.Root>
             </div>
             <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full bg-muted text-xl font-semibold text-muted-foreground">
@@ -164,14 +162,12 @@ export function ProfileEditDialog({
                 >
                   <Info className="h-3.5 w-3.5" weight="bold" />
                 </Popover.Trigger>
-                <Popover.Portal>
-                  <Popover.Positioner sideOffset={8}>
-                    <Popover.Popup className="z-[100] w-72 rounded-lg border border-border bg-popover p-3 text-sm text-popover-foreground shadow-md">
-                      <Popover.Arrow className="fill-popover stroke-border" />
-                      <p className="text-muted-foreground">{t('pdsExplanation')}</p>
-                    </Popover.Popup>
-                  </Popover.Positioner>
-                </Popover.Portal>
+                <Popover.Positioner sideOffset={8}>
+                  <Popover.Popup className="z-[200] w-72 rounded-lg border border-border bg-popover p-3 text-sm text-popover-foreground shadow-md">
+                    <Popover.Arrow className="fill-popover stroke-border" />
+                    <p className="text-muted-foreground">{t('pdsExplanation')}</p>
+                  </Popover.Popup>
+                </Popover.Positioner>
               </Popover.Root>
             </div>
             <Input
