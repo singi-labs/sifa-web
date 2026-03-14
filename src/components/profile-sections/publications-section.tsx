@@ -6,6 +6,7 @@ import {
   publicationToValues,
   valuesToPublication,
 } from '@/components/profile-editor/section-converters';
+import { formatTimelineDate } from './timeline';
 import type { ProfilePublication } from '@/lib/types';
 
 interface PublicationsSectionProps {
@@ -60,7 +61,9 @@ export function PublicationsSection({ publications, isOwnProfile }: Publications
                 {pub.publisher && <p className="text-sm text-muted-foreground">{pub.publisher}</p>}
               </div>
               {pub.date && (
-                <span className="shrink-0 text-xs text-muted-foreground">{pub.date}</span>
+                <span className="shrink-0 text-xs text-muted-foreground">
+                  {formatTimelineDate(pub.date)}
+                </span>
               )}
             </div>
           </EditableEntry>
