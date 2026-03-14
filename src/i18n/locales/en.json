@@ -273,6 +273,15 @@
     "copied": "Copied to clipboard",
     "enterHandle": "Enter a handle or DID to see a preview"
   },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you're looking for doesn't exist or may have been moved.",
+    "goHome": "Go to homepage",
+    "goBack": "Go back",
+    "searchProfiles": "Search profiles",
+    "reportIssue": "Report an issue",
+    "easterEggMessage": "You found the secret! Sifa means \"praise\" in Swahili. Consider yourself praised for your curiosity."
+  },
   "terms": {
     "title": "Terms of Service",
     "lastUpdated": "Last updated: March 2026",
@@ -284,5 +293,22 @@
     "contentBody": "You are responsible for the accuracy and legality of the profile information you publish. Sifa may remove content that violates applicable law or community guidelines.",
     "disclaimerTitle": "Disclaimer",
     "disclaimerBody": "Sifa is provided as-is during the beta period. We make no guarantees about uptime or data preservation beyond what the AT Protocol itself provides. Your data in your PDS is under your control regardless of Sifa's availability."
+  },
+  "dangerZone": {
+    "title": "Danger Zone",
+    "resetTitle": "Reset Profile",
+    "resetDescription": "Remove all your Sifa profile data and start fresh. Your positions, education, skills, and all other profile sections will be deleted from both Sifa and your Personal Data Server. Your AT Protocol account, Bluesky profile, posts, follows, and data from other apps are not affected.",
+    "deleteTitle": "Delete Account",
+    "deleteDescription": "Remove all your Sifa profile data and sign out. This is the same as resetting your profile, but also ends your session.",
+    "handleConfirmLabel": "Type your handle to confirm",
+    "handlePlaceholder": "your.handle",
+    "resetButton": "Reset Profile",
+    "deleteButton": "Delete Account",
+    "resetSuccess": "Profile reset complete.",
+    "deleteModalTitle": "Your Sifa account has been deleted.",
+    "deleteModalBody": "Your AT Protocol account and Personal Data Server still exist. Sifa only removed its own data. If you want to delete your AT Protocol account entirely, visit your PDS provider's settings.",
+    "deleteModalBlueskyLink": "Bluesky: Settings > Account > Delete Account",
+    "deleteModalDismiss": "Got it",
+    "error": "Something went wrong. Please try again."
   }
 }
