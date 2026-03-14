@@ -69,6 +69,32 @@ export async function updateProfileSelf(data: {
   return apiRequest('/api/profile/self', 'PUT', data);
 }
 
+export async function refreshPds(): Promise<
+  WriteResult & { displayName?: string | null; avatar?: string | null }
+> {
+  try {
+    const res = await fetch(`${API_URL}/api/profile/refresh-pds`, {
+      method: 'POST',
+      credentials: 'include',
+    });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      return {
+        success: false,
+        error: (data as { message?: string }).message ?? `Request failed (${res.status})`,
+      };
+    }
+    const data = (await res.json()) as {
+      ok: boolean;
+      displayName: string | null;
+      avatar: string | null;
+    };
+    return { success: true, displayName: data.displayName, avatar: data.avatar };
+  } catch {
+    return { success: false, error: 'Network error' };
+  }
+}
+
 export async function createRecord(
   collection: string,
   data: Record<string, unknown>,
