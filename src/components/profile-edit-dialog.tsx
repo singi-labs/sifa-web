@@ -4,12 +4,12 @@ import { useState, type FormEvent } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { X, Info } from '@phosphor-icons/react';
+import { X, Info, ArrowsClockwise } from '@phosphor-icons/react';
 import { Popover } from '@base-ui/react/popover';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { updateProfileSelf } from '@/lib/profile-api';
+import { updateProfileSelf, refreshPds } from '@/lib/profile-api';
 import { LocationSearch } from '@/components/location-search';
 import type { LocationValue } from '@/lib/types';
 
@@ -51,6 +51,27 @@ export function ProfileEditDialog({
   const [openTo, setOpenTo] = useState<Set<string>>(new Set(initialOpenTo ?? []));
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
+  const [currentDisplayName, setCurrentDisplayName] = useState(displayName);
+  const [currentAvatar, setCurrentAvatar] = useState(avatar);
+
+  const handleRefreshPds = async () => {
+    setRefreshing(true);
+    try {
+      const result = await refreshPds();
+      if (result.success) {
+        if (result.displayName !== undefined)
+          setCurrentDisplayName(result.displayName ?? undefined);
+        if (result.avatar !== undefined) setCurrentAvatar(result.avatar ?? undefined);
+        toast.success(t('refreshPdsSuccess'));
+        router.refresh();
+      } else {
+        toast.error(t('refreshPdsFailed'));
+      }
+    } finally {
+      setRefreshing(false);
+    }
+  };
 
   const toggleOpenTo = (value: string) => {
     setOpenTo((prev) => {
@@ -126,28 +147,45 @@ export function ProfileEditDialog({
                 >
                   <Info className="h-3.5 w-3.5" weight="bold" />
                 </Popover.Trigger>
-                <Popover.Portal>
-                  <Popover.Positioner sideOffset={8}>
-                    <Popover.Popup className="z-[100] w-72 rounded-lg border border-border bg-popover p-3 text-sm text-popover-foreground shadow-md">
-                      <Popover.Arrow className="fill-popover stroke-border" />
-                      <p className="text-muted-foreground">{t('pdsExplanation')}</p>
-                    </Popover.Popup>
-                  </Popover.Positioner>
-                </Popover.Portal>
+                <Popover.Positioner sideOffset={8}>
+                  <Popover.Popup className="z-[200] w-72 rounded-lg border border-border bg-popover p-3 text-sm text-popover-foreground shadow-md">
+                    <Popover.Arrow className="fill-popover stroke-border" />
+                    <p className="text-muted-foreground">{t('pdsExplanation')}</p>
+                  </Popover.Popup>
+                </Popover.Positioner>
               </Popover.Root>
             </div>
             <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full bg-muted text-xl font-semibold text-muted-foreground">
-              {avatar ? (
+              {currentAvatar ? (
                 <Image
-                  src={avatar}
+                  src={currentAvatar}
                   alt=""
                   width={64}
                   height={64}
                   className="h-16 w-16 rounded-full object-cover"
                 />
               ) : (
-                <span aria-hidden="true">{(displayName ?? '?').charAt(0).toUpperCase()}</span>
+                <span aria-hidden="true">
+                  {(currentDisplayName ?? '?').charAt(0).toUpperCase()}
+                </span>
               )}
+            </div>
+            <div className="mt-2">
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="h-7 gap-1.5 text-xs text-muted-foreground"
+                onClick={handleRefreshPds}
+                disabled={refreshing}
+              >
+                <ArrowsClockwise
+                  className={`h-3.5 w-3.5${refreshing ? ' animate-spin' : ''}`}
+                  weight="bold"
+                  aria-hidden="true"
+                />
+                {t('refreshPds')}
+              </Button>
             </div>
           </div>
 
@@ -164,20 +202,18 @@ export function ProfileEditDialog({
                 >
                   <Info className="h-3.5 w-3.5" weight="bold" />
                 </Popover.Trigger>
-                <Popover.Portal>
-                  <Popover.Positioner sideOffset={8}>
-                    <Popover.Popup className="z-[100] w-72 rounded-lg border border-border bg-popover p-3 text-sm text-popover-foreground shadow-md">
-                      <Popover.Arrow className="fill-popover stroke-border" />
-                      <p className="text-muted-foreground">{t('pdsExplanation')}</p>
-                    </Popover.Popup>
-                  </Popover.Positioner>
-                </Popover.Portal>
+                <Popover.Positioner sideOffset={8}>
+                  <Popover.Popup className="z-[200] w-72 rounded-lg border border-border bg-popover p-3 text-sm text-popover-foreground shadow-md">
+                    <Popover.Arrow className="fill-popover stroke-border" />
+                    <p className="text-muted-foreground">{t('pdsExplanation')}</p>
+                  </Popover.Popup>
+                </Popover.Positioner>
               </Popover.Root>
             </div>
             <Input
               id="edit-displayName"
               type="text"
-              value={displayName ?? ''}
+              value={currentDisplayName ?? ''}
               disabled
               className="bg-muted text-muted-foreground"
             />
