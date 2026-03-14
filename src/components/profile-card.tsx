@@ -10,7 +10,13 @@ interface ProfileCardProps {
   currentCompany?: string;
 }
 
-export function ProfileCard({ handle, headline, avatar, currentRole, currentCompany }: ProfileCardProps) {
+export function ProfileCard({
+  handle,
+  headline,
+  avatar,
+  currentRole,
+  currentCompany,
+}: ProfileCardProps) {
   return (
     <Link href={`/p/${encodeURIComponent(handle)}`} className="block">
       <Card className="transition-colors hover:bg-muted/50">

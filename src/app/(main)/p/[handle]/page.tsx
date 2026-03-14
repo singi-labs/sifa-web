@@ -71,7 +71,9 @@ export default async function ProfilePage({
   // Replace the API's string location with structured LocationValue for downstream components
   profile.location = location;
 
-  const currentPosition = (profile.positions as ProfilePosition[] | undefined)?.find((p) => p.current);
+  const currentPosition = (profile.positions as ProfilePosition[] | undefined)?.find(
+    (p) => p.current,
+  );
 
   return (
     <>

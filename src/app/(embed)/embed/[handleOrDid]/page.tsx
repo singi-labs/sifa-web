@@ -33,7 +33,9 @@ export default async function EmbedPage({ params, searchParams }: EmbedPageProps
       }
     : null;
 
-  const currentPosition = (profile.positions as ProfilePosition[] | undefined)?.find((p) => p.current);
+  const currentPosition = (profile.positions as ProfilePosition[] | undefined)?.find(
+    (p) => p.current,
+  );
 
   return (
     <div data-theme={theme} className="bg-transparent p-2">
