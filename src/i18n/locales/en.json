@@ -64,7 +64,7 @@
   },
   "import": {
     "title": "Import from LinkedIn",
-    "subtitle": "Bring your professional history to Sifa. Your data is processed entirely in your browser.",
+    "subtitle": "Bring your professional history to Sifa. Your LinkedIn ZIP is extracted in your browser and never leaves your device.",
     "uploadStep": "Upload",
     "previewStep": "Review",
     "confirmStep": "Import",
@@ -76,7 +76,7 @@
       "processing": "Processing ZIP file...",
       "fileTypeError": "Please select a ZIP file (.zip). LinkedIn exports are delivered as ZIP archives.",
       "fileSizeError": "File is too large (max 500 MB). Try re-downloading your LinkedIn export.",
-      "privacyNote": "Your data is processed entirely in your browser. No raw CSV data is sent to our servers."
+      "privacyNote": "Your LinkedIn ZIP is extracted in your browser and never leaves your device. The structured profile data is then written directly to your Personal Data Server through our API."
     },
     "preview": {
       "heading": "Review imported data",
@@ -250,7 +250,7 @@
     "dataStorageTitle": "Your data, your PDS",
     "dataStorageBody": "Your professional profile data is stored in your AT Protocol Personal Data Server (PDS), not on Sifa's servers. You control your data and can move it to any compatible provider at any time.",
     "importTitle": "LinkedIn import",
-    "importBody": "When you import data from LinkedIn, the ZIP file is processed entirely in your browser. Raw CSV data never leaves your device. Only the structured profile records are written to your PDS.",
+    "importBody": "When you import data from LinkedIn, the ZIP file is extracted in your browser and never leaves your device. The structured profile data is then written directly to your Personal Data Server (PDS) through our API.",
     "cookiesTitle": "Cookies and sessions",
     "cookiesBody": "Sifa uses session cookies for authentication and a theme preference cookie for dark/light mode. We do not use tracking cookies, analytics cookies, or third-party advertising cookies.",
     "contactTitle": "Contact",
