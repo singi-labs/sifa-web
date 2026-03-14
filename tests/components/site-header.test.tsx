@@ -24,7 +24,7 @@ describe('SiteHeader', () => {
 
     expect(screen.getByRole('navigation', { name: 'Main navigation' })).toBeDefined();
     expect(screen.getByRole('link', { name: 'Search' })).toBeDefined();
-    expect(screen.getByRole('link', { name: 'Import' })).toBeDefined();
+    expect(screen.queryByRole('link', { name: 'Import' })).toBeNull();
   });
 
   it('renders sign in when not authenticated', async () => {

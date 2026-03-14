@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
-import { PencilSimple, SignOut, User } from '@phosphor-icons/react';
+import { ArrowSquareIn, PencilSimple, SignOut, User } from '@phosphor-icons/react';
 import { useAuth } from '@/components/auth-provider';
 import { getLoginUrl, logout } from '@/lib/auth';
 import { useState, useRef, useEffect } from 'react';
@@ -96,6 +96,15 @@ export function UserMenu() {
           >
             <PencilSimple className="h-4 w-4" weight="bold" aria-hidden="true" />
             {t('editProfile')}
+          </Link>
+          <Link
+            href="/import"
+            className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-accent"
+            role="menuitem"
+            onClick={() => setOpen(false)}
+          >
+            <ArrowSquareIn className="h-4 w-4" weight="bold" aria-hidden="true" />
+            {t('import')}
           </Link>
           <button
             type="button"

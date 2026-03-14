@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { List, PencilSimple, SignOut, User, X } from '@phosphor-icons/react';
+import { ArrowSquareIn, List, PencilSimple, SignOut, User, X } from '@phosphor-icons/react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -54,13 +54,6 @@ export function MobileNav() {
               className="rounded-md px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
             >
               {t('search')}
-            </Link>
-            <Link
-              href="/import"
-              onClick={() => setOpen(false)}
-              className="rounded-md px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
-            >
-              {t('import')}
             </Link>
             <Link
               href="/find-people"
@@ -119,6 +112,14 @@ export function MobileNav() {
                 >
                   <PencilSimple className="h-4 w-4" weight="bold" aria-hidden="true" />
                   {t('editProfile')}
+                </Link>
+                <Link
+                  href="/import"
+                  onClick={() => setOpen(false)}
+                  className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+                >
+                  <ArrowSquareIn className="h-4 w-4" weight="bold" aria-hidden="true" />
+                  {t('import')}
                 </Link>
                 <button
                   type="button"
