@@ -107,6 +107,8 @@ export function getExternalAccountFields(
       type: 'hint',
       description: tSections('verifyHintGithub'),
       hintUrl: `https://sifa.id/p/${handle}`,
+      hintActionUrl: 'https://github.com/settings/',
+      hintActionLabel: 'Open GitHub profile settings',
       visibleWhen: (values) => values.platform === 'github',
     },
     {

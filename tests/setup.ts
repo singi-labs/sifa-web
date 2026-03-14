@@ -120,7 +120,7 @@ const translations: Record<string, Record<string, string>> = {
     otherProfiles: 'Other Profiles',
     verified: 'Verified',
     verifyHintGithub:
-      "Add your Sifa profile URL as the Website or as a Social account on your GitHub profile. We'll verify the link automatically when you save.",
+      'Add your Sifa profile URL in the "URL" field or under "Social accounts" in your GitHub profile settings. We\'ll verify the link automatically when you save.',
     verifyHintWebsite:
       "Add the following tag to your site's head section. We'll verify the link automatically when you save.",
     verifyHintFediverse:
@@ -140,6 +140,7 @@ const translations: Record<string, Record<string, string>> = {
     removed: '{section} removed',
     failedToDelete: 'Failed to delete',
     copyUrl: 'Copy profile URL',
+    copySnippet: 'Copy snippet',
     copied: 'Copied!',
   },
   trackRecord: {

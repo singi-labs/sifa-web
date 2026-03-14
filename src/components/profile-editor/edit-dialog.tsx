@@ -20,6 +20,10 @@ export interface FieldDef {
   hintUrl?: string;
   /** Code snippet to display and copy instead of the URL (for hint fields). */
   hintSnippet?: string;
+  /** External link to show in the hint (e.g. link to platform settings page). */
+  hintActionUrl?: string;
+  /** Label for the external link (e.g. "GitHub profile settings"). */
+  hintActionLabel?: string;
 }
 
 interface EditDialogProps {
@@ -117,12 +121,28 @@ export function EditDialog({
                 setCopiedHint(field.name);
                 setTimeout(() => setCopiedHint(null), 2000);
               };
+              const copyLabel = field.hintSnippet ? t('copySnippet') : t('copyUrl');
               return (
                 <div
                   key={field.name}
                   className="rounded-md border border-blue-200 bg-blue-50 p-3 text-sm text-blue-800 dark:border-blue-800 dark:bg-blue-950/30 dark:text-blue-300"
                 >
-                  <p>{field.description}</p>
+                  <p>
+                    {field.description}
+                    {field.hintActionUrl && (
+                      <>
+                        {' '}
+                        <a
+                          href={field.hintActionUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="underline underline-offset-2"
+                        >
+                          {field.hintActionLabel ?? field.hintActionUrl}
+                        </a>
+                      </>
+                    )}
+                  </p>
                   {copyText && (
                     <div className="mt-2 flex items-center gap-2">
                       {field.hintSnippet ? (
@@ -143,7 +163,7 @@ export function EditDialog({
                         type="button"
                         onClick={handleCopy}
                         className="inline-flex shrink-0 items-center gap-1 rounded px-2 py-1 text-xs font-medium transition-colors hover:bg-blue-200 dark:hover:bg-blue-800"
-                        aria-label={t('copyUrl')}
+                        aria-label={copyLabel}
                       >
                         {isCopied ? (
                           <>
@@ -153,7 +173,7 @@ export function EditDialog({
                         ) : (
                           <>
                             <Copy size={14} />
-                            {t('copyUrl')}
+                            {copyLabel}
                           </>
                         )}
                       </button>
