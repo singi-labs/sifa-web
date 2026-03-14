@@ -4,6 +4,8 @@ export interface ProfileSearchResult {
   handle: string;
   headline?: string;
   avatar?: string;
+  currentRole?: string;
+  currentCompany?: string;
 }
 
 export async function fetchProfile(handleOrDid: string) {
