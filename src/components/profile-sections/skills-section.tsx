@@ -2,9 +2,11 @@
 
 import { useState, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
+import { PencilSimple, X } from '@phosphor-icons/react';
 import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
-import { SectionEditor, EditableEntry } from '@/components/profile-editor';
+import { Button } from '@/components/ui/button';
+import { SectionEditor } from '@/components/profile-editor';
 import { EditDialog } from '@/components/profile-editor/edit-dialog';
 import { SKILL_FIELDS } from '@/components/profile-editor/form-fields';
 import { skillToValues, valuesToSkill } from '@/components/profile-editor/section-converters';
@@ -23,6 +25,7 @@ export function SkillsSection({ isOwnProfile }: SkillsSectionProps) {
   const t = useTranslations('sections');
   const { profile, addItem, updateItem, removeItem } = useProfileEdit();
   const [dialog, setDialog] = useState<DialogState | null>(null);
+  const [editing, setEditing] = useState(false);
 
   const skills = profile.skills;
 
@@ -80,7 +83,24 @@ export function SkillsSection({ isOwnProfile }: SkillsSectionProps) {
 
   return (
     <section className="mt-8" aria-label={t('skills')}>
-      <h2 className="mb-4 text-xl font-semibold">{t('skills')}</h2>
+      <div className="mb-4 flex items-center gap-2">
+        <h2 className="text-xl font-semibold">{t('skills')}</h2>
+        {isOwnProfile && skills.length > 0 && (
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-7 px-2 text-xs"
+            onClick={() => setEditing(!editing)}
+            aria-label={editing ? 'Done editing skills' : 'Edit skills'}
+          >
+            {editing ? (
+              'Done'
+            ) : (
+              <PencilSimple className="h-3.5 w-3.5" weight="bold" aria-hidden="true" />
+            )}
+          </Button>
+        )}
+      </div>
       <SectionEditor
         sectionTitle={t('skills')}
         isOwnProfile={isOwnProfile}
@@ -93,22 +113,52 @@ export function SkillsSection({ isOwnProfile }: SkillsSectionProps) {
             )}
             <div className="flex flex-wrap gap-2">
               {categorySkills.map((skill) => (
-                <EditableEntry
+                <Badge
                   key={skill.rkey}
-                  isOwnProfile={isOwnProfile}
-                  onEdit={() => setDialog({ mode: 'edit', item: skill })}
-                  onDelete={() => handleDelete(skill.rkey)}
-                  entryLabel={skill.skillName}
+                  variant="secondary"
+                  className={
+                    isOwnProfile && !editing
+                      ? 'cursor-pointer transition-colors hover:bg-secondary/80'
+                      : undefined
+                  }
+                  onClick={
+                    isOwnProfile && !editing
+                      ? () => setDialog({ mode: 'edit', item: skill })
+                      : undefined
+                  }
+                  role={isOwnProfile && !editing ? 'button' : undefined}
+                  tabIndex={isOwnProfile && !editing ? 0 : undefined}
+                  onKeyDown={
+                    isOwnProfile && !editing
+                      ? (e: React.KeyboardEvent) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            setDialog({ mode: 'edit', item: skill });
+                          }
+                        }
+                      : undefined
+                  }
                 >
-                  <Badge variant="secondary">
-                    {skill.skillName}
-                    {skill.endorsementCount != null && skill.endorsementCount > 0 && (
-                      <span className="ml-1.5 text-xs text-muted-foreground">
-                        {skill.endorsementCount}
-                      </span>
-                    )}
-                  </Badge>
-                </EditableEntry>
+                  {skill.skillName}
+                  {skill.endorsementCount != null && skill.endorsementCount > 0 && (
+                    <span className="ml-1.5 text-xs text-muted-foreground">
+                      {skill.endorsementCount}
+                    </span>
+                  )}
+                  {editing && (
+                    <button
+                      type="button"
+                      className="ml-1.5 inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-destructive/20 hover:text-destructive"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        void handleDelete(skill.rkey);
+                      }}
+                      aria-label={`Remove ${skill.skillName}`}
+                    >
+                      <X className="h-3 w-3" weight="bold" aria-hidden="true" />
+                    </button>
+                  )}
+                </Badge>
               ))}
             </div>
           </div>

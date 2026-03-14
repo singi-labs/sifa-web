@@ -65,14 +65,14 @@ export function EditableEntry({
             <Menu.Popup className="z-[60] min-w-[140px] rounded-md border border-border bg-card py-1 shadow-md">
               <Menu.Item
                 className="flex w-full cursor-pointer items-center gap-2 px-3 py-1.5 text-sm text-foreground outline-none hover:bg-accent focus:bg-accent"
-                onSelect={onEdit}
+                onClick={onEdit}
               >
                 <PencilSimple className="h-3.5 w-3.5" weight="bold" aria-hidden="true" />
                 Edit
               </Menu.Item>
               <Menu.Item
                 className="flex w-full cursor-pointer items-center gap-2 px-3 py-1.5 text-sm text-destructive outline-none hover:bg-destructive/10 focus:bg-destructive/10"
-                onSelect={onDelete}
+                onClick={onDelete}
               >
                 <Trash className="h-3.5 w-3.5" weight="bold" aria-hidden="true" />
                 Delete
