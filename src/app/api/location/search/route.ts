@@ -38,6 +38,7 @@ export async function GET(request: NextRequest) {
         city: g.name,
         region: g.adminName1 || undefined,
         country: g.countryName,
+        countryCode: g.countryCode,
         geonameId: g.geonameId,
         label: [g.name, g.adminName1, g.countryName].filter(Boolean).join(', '),
       }));
@@ -55,6 +56,7 @@ export async function GET(request: NextRequest) {
         city: p.placeName || undefined,
         region: p.adminName1 || undefined,
         country: p.countryCode,
+        countryCode: p.countryCode,
         label: [p.postalCode, p.placeName, p.adminName1, p.countryCode].filter(Boolean).join(', '),
       }));
       return NextResponse.json({ results });
@@ -68,6 +70,7 @@ export async function GET(request: NextRequest) {
       const data = (await res.json()) as { geonames?: GeoNameResult[] };
       const results = (data.geonames ?? []).map((g) => ({
         country: g.countryName || g.name,
+        countryCode: g.countryCode,
         label: g.countryName || g.name,
       }));
       return NextResponse.json({ results });

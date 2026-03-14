@@ -120,6 +120,11 @@ describe('EmbedPage', () => {
     });
     render(page as React.ReactElement);
 
-    expect(identityCardProps[0]?.location).toBe('Amsterdam, North Holland, Netherlands');
+    expect(identityCardProps[0]?.location).toEqual({
+      country: 'Netherlands',
+      countryCode: undefined,
+      region: 'North Holland',
+      city: 'Amsterdam',
+    });
   });
 });

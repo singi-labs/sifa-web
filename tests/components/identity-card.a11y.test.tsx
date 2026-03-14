@@ -13,7 +13,7 @@ describe('IdentityCard accessibility', () => {
         handle="alice.bsky.social"
         displayName="Alice Smith"
         headline="Senior Engineer"
-        location="Amsterdam"
+        location={{ country: 'Amsterdam' }}
         claimed={true}
         trustStats={[
           { key: 'connections', label: 'Connections', value: 10 },

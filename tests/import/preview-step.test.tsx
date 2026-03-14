@@ -12,7 +12,12 @@ vi.mock('@phosphor-icons/react', () => ({
 }));
 
 const fullPreview: ImportPreview = {
-  profile: { firstName: 'Jane', lastName: 'Doe', headline: 'Engineer', location: 'Amsterdam' },
+  profile: {
+    firstName: 'Jane',
+    lastName: 'Doe',
+    headline: 'Engineer',
+    location: { country: 'Amsterdam' },
+  },
   positions: [{ companyName: 'Acme', title: 'Senior Dev', startDate: '2024-01', current: true }],
   education: [{ institution: 'TU Delft', degree: 'MSc CS' }],
   skills: [{ skillName: 'TypeScript' }],

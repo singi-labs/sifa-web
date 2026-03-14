@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import { fetchProfile } from '@/lib/api';
 import { IdentityCard } from '@/components/identity-card';
+import type { LocationValue } from '@/lib/types';
 
 export const revalidate = 3600; // 1 hour ISR
 
@@ -22,9 +23,14 @@ export default async function EmbedPage({ params, searchParams }: EmbedPageProps
   const profile = await fetchProfile(handleOrDid);
   if (!profile) notFound();
 
-  const location = [profile.locationCity, profile.locationRegion, profile.locationCountry]
-    .filter(Boolean)
-    .join(', ');
+  const location: LocationValue | null = profile.locationCountry
+    ? {
+        country: profile.locationCountry,
+        countryCode: profile.countryCode ?? undefined,
+        region: profile.locationRegion ?? undefined,
+        city: profile.locationCity ?? undefined,
+      }
+    : null;
 
   return (
     <div data-theme={theme} className="bg-transparent p-2">
@@ -36,7 +42,7 @@ export default async function EmbedPage({ params, searchParams }: EmbedPageProps
         avatar={profile.avatar}
         headline={profile.headline}
         about={profile.about}
-        location={location || profile.location}
+        location={location}
         website={profile.website}
         openTo={profile.openTo}
         trustStats={profile.trustStats}
