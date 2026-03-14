@@ -9,7 +9,7 @@ import { X } from '@phosphor-icons/react';
 export interface FieldDef {
   name: string;
   label: string;
-  type?: 'text' | 'textarea' | 'month' | 'url' | 'checkbox' | 'select';
+  type?: 'text' | 'textarea' | 'month' | 'url' | 'checkbox' | 'select' | 'hint';
   required?: boolean;
   placeholder?: string;
   description?: string;
@@ -47,6 +47,7 @@ export function EditDialog({
   const [values, setValues] = useState<Record<string, string | boolean>>(() => {
     const init: Record<string, string | boolean> = {};
     for (const f of fields) {
+      if (f.type === 'hint') continue;
       init[f.name] = initialValues[f.name] ?? (f.type === 'checkbox' ? false : '');
     }
     return init;
@@ -102,6 +103,13 @@ export function EditDialog({
         <form onSubmit={handleSubmit} className="space-y-4">
           {fields.map((field) => {
             if (field.visibleWhen && !field.visibleWhen(values)) return null;
+            if (field.type === 'hint') {
+              return (
+                <div key={field.name} className="rounded-md border border-blue-200 bg-blue-50 p-3 text-sm text-blue-800 dark:border-blue-800 dark:bg-blue-950/30 dark:text-blue-300">
+                  {field.description}
+                </div>
+              );
+            }
             return (
               <div key={field.name}>
                 <label htmlFor={`edit-${field.name}`} className="mb-1 block text-sm font-medium">
