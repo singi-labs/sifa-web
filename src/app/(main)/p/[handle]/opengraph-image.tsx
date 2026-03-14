@@ -12,11 +12,11 @@ interface ProfileData {
   displayName?: string;
   avatar?: string;
   headline?: string;
+  website?: string;
   locationCountry?: string;
   locationRegion?: string;
   locationCity?: string;
   positions?: { title?: string; companyName?: string; current?: boolean }[];
-  trustStats?: { key: string; label: string; value: number }[];
 }
 
 async function fetchAvatarDataUrl(url: string): Promise<string | null> {
@@ -73,12 +73,17 @@ export default async function ProfileOgImage({ params }: { params: Promise<{ han
 
   const displayName = profile.displayName ?? profile.handle;
   const current = profile.positions?.find((p) => p.current);
-  const subtitle =
-    profile.headline ??
-    (current ? [current.title, current.companyName].filter(Boolean).join(' at ') : '');
+  const roleAtCompany =
+    current && current.title && current.companyName
+      ? `${current.title} at ${current.companyName}`
+      : null;
+  const headline = profile.headline ?? '';
   const location = [profile.locationCity, profile.locationRegion, profile.locationCountry]
     .filter(Boolean)
     .join(', ');
+  const website = profile.website
+    ? profile.website.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '')
+    : null;
   const avatarDataUrl = profile.avatar ? await fetchAvatarDataUrl(profile.avatar) : null;
 
   return new ImageResponse(
@@ -96,7 +101,9 @@ export default async function ProfileOgImage({ params }: { params: Promise<{ han
           padding: 60,
         }}
       >
+        {/* Top section: profile info */}
         <div style={{ display: 'flex', flexDirection: 'column' }}>
+          {/* Avatar + name/handle */}
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
             {avatarDataUrl ? (
               // eslint-disable-next-line jsx-a11y/alt-text -- rendered to PNG by Satori
@@ -134,19 +141,84 @@ export default async function ProfileOgImage({ params }: { params: Promise<{ han
               </div>
             </div>
           </div>
-          <div style={{ display: 'flex', fontSize: 26, color: '#d4d4d4', marginTop: 28 }}>
-            {subtitle
-              ? subtitle.length > 120
-                ? subtitle.slice(0, 120) + '\u2026'
-                : subtitle
+          {/* Role at Company */}
+          {roleAtCompany && (
+            <div style={{ display: 'flex', fontSize: 24, color: '#d4d4d4', marginTop: 24 }}>
+              {roleAtCompany.length > 80 ? roleAtCompany.slice(0, 80) + '\u2026' : roleAtCompany}
+            </div>
+          )}
+          {/* Headline */}
+          <div
+            style={{
+              display: 'flex',
+              fontSize: 22,
+              color: '#a3a3a3',
+              marginTop: roleAtCompany ? 8 : 24,
+            }}
+          >
+            {headline
+              ? headline.length > 120
+                ? headline.slice(0, 120) + '\u2026'
+                : headline
               : '\u00A0'}
           </div>
-          <div style={{ display: 'flex', fontSize: 22, color: '#a3a3a3', marginTop: 8 }}>
-            {location || '\u00A0'}
+          {/* Location + Website */}
+          <div style={{ display: 'flex', flexDirection: 'row', marginTop: 8 }}>
+            {location && (
+              <div style={{ display: 'flex', fontSize: 20, color: '#737373', marginRight: 24 }}>
+                {location}
+              </div>
+            )}
+            {website && (
+              <div style={{ display: 'flex', fontSize: 20, color: '#737373' }}>{website}</div>
+            )}
           </div>
         </div>
 
-        <div style={{ display: 'flex', fontSize: 24, color: '#a3a3a3' }}>sifa.id</div>
+        {/* Bottom section: CTA with Sifa branding */}
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+            {/* Sifa brand mark */}
+            <div
+              style={{
+                width: 36,
+                height: 36,
+                borderRadius: 18,
+                backgroundColor: '#4385BE',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: 20,
+                fontWeight: 700,
+                color: '#ffffff',
+                marginRight: 14,
+              }}
+            >
+              S
+            </div>
+            <div style={{ display: 'flex', fontSize: 22, color: '#a3a3a3' }}>
+              Visit my profile on
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                fontSize: 22,
+                fontWeight: 600,
+                color: '#d4d4d4',
+                marginLeft: 6,
+              }}
+            >
+              sifa.id
+            </div>
+          </div>
+        </div>
       </div>
     ),
     { ...size },
