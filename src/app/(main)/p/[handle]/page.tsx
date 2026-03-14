@@ -35,16 +35,13 @@ export async function generateMetadata({ params }: { params: Promise<{ handle: s
       title: `${title} | Sifa`,
       description,
       url: canonicalUrl,
+      siteName: 'Sifa',
       type: 'profile',
-      ...(profile.avatar && {
-        images: [{ url: profile.avatar, width: 400, height: 400, alt: `${title}'s profile photo` }],
-      }),
     },
     twitter: {
-      card: 'summary',
+      card: 'summary_large_image',
       title: `${title} | Sifa`,
       description,
-      ...(profile.avatar && { images: [profile.avatar] }),
     },
   };
 }
