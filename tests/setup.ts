@@ -50,7 +50,7 @@ const translations: Record<string, Record<string, string>> = {
   import: {
     title: 'Import from LinkedIn',
     subtitle:
-      'Bring your professional history to Sifa. Your data is processed entirely in your browser.',
+      'Bring your professional history to Sifa. Your LinkedIn ZIP is extracted in your browser and never leaves your device.',
     uploadStep: 'Upload',
     previewStep: 'Review',
     confirmStep: 'Import',
@@ -66,7 +66,7 @@ const translations: Record<string, Record<string, string>> = {
       'Please select a ZIP file (.zip). LinkedIn exports are delivered as ZIP archives.',
     fileSizeError: 'File is too large (max 500 MB). Try re-downloading your LinkedIn export.',
     privacyNote:
-      'Your data is processed entirely in your browser. No raw CSV data is sent to our servers.',
+      'Your LinkedIn ZIP is extracted in your browser and never leaves your device. The structured profile data is then written directly to your Personal Data Server through our API.',
   },
   'import.preview': {
     heading: 'Review imported data',
@@ -197,7 +197,7 @@ const translations: Record<string, Record<string, string>> = {
     dataStorageTitle: 'Your data, your PDS',
     dataStorageBody: 'Your professional profile data is stored in your PDS.',
     importTitle: 'LinkedIn import',
-    importBody: 'ZIP is processed in your browser.',
+    importBody: 'ZIP is extracted in your browser and never leaves your device.',
     cookiesTitle: 'Cookies and sessions',
     cookiesBody: 'Session cookies only.',
     contactTitle: 'Contact',

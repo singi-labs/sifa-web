@@ -141,7 +141,8 @@ export function processLinkedInCsvFiles(csvFiles: Map<string, string>): ImportPr
 
 /**
  * Full pipeline: extract a LinkedIn ZIP file and produce an import preview.
- * The ZIP is processed client-side (browser) -- raw CSV data never leaves the user's device.
+ * The ZIP is extracted client-side (browser) and never leaves the user's device.
+ * The structured profile data is then written to the user's PDS through the Sifa API.
  */
 export async function processLinkedInExport(file: File): Promise<ImportPreview> {
   const csvFiles = await extractLinkedInZip(file);
