@@ -66,9 +66,9 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
     (
       name: string,
       value: string | boolean,
-      currentValues: Record<string, string | boolean>,
+      _currentValues: Record<string, string | boolean>,
     ): Record<string, string | boolean> | undefined => {
-      if (name === 'platform' && typeof value === 'string' && !currentValues.label) {
+      if (name === 'platform' && typeof value === 'string') {
         const option = PLATFORM_OPTIONS.find((o) => o.value === value);
         if (option) {
           return { label: option.label };
