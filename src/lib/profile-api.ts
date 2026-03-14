@@ -1,4 +1,4 @@
-import type { ExternalAccount } from '@/lib/types';
+import type { ExternalAccount, SkillSuggestion } from '@/lib/types';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3100';
 
@@ -199,6 +199,18 @@ export async function fetchExternalAccounts(handleOrDid: string): Promise<Extern
     if (!res.ok) return [];
     const data = (await res.json()) as { accounts: ExternalAccount[] };
     return data.accounts;
+  } catch {
+    return [];
+  }
+}
+
+export async function searchSkills(query: string, limit = 10): Promise<SkillSuggestion[]> {
+  try {
+    const res = await fetch(
+      `${API_URL}/api/skills/search?q=${encodeURIComponent(query)}&limit=${limit}`,
+    );
+    if (!res.ok) return [];
+    return (await res.json()) as SkillSuggestion[];
   } catch {
     return [];
   }
