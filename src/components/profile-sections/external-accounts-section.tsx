@@ -5,7 +5,11 @@ import { useTranslations } from 'next-intl';
 import { CheckCircle, Star, Info } from '@phosphor-icons/react';
 import { Popover } from '@base-ui/react/popover';
 import { toast } from 'sonner';
-import { setExternalAccountPrimary, unsetExternalAccountPrimary } from '@/lib/profile-api';
+import {
+  setExternalAccountPrimary,
+  unsetExternalAccountPrimary,
+  fetchExternalAccounts,
+} from '@/lib/profile-api';
 import { useProfileEdit } from '@/components/profile-edit-provider';
 import {
   EditableSection,
@@ -28,7 +32,7 @@ interface ExternalAccountsSectionProps {
 export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAccountsSectionProps) {
   const t = useTranslations('sections');
   const tEdit = useTranslations('profileEdit');
-  const { profile, updateItem } = useProfileEdit();
+  const { profile, updateItem, updateProfile } = useProfileEdit();
 
   const externalAccountFields = useMemo(
     () => getExternalAccountFields(profile.handle, t),
@@ -75,6 +79,15 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
     [],
   );
 
+  const handlePostSave = useCallback(() => {
+    setTimeout(async () => {
+      const fresh = await fetchExternalAccounts(profile.handle);
+      if (fresh.length > 0) {
+        updateProfile({ externalAccounts: fresh });
+      }
+    }, 2000);
+  }, [profile.handle, updateProfile]);
+
   if (!accounts.length && !isOwnProfile) return null;
 
   return (
@@ -112,6 +125,7 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
           ) => Omit<ExternalAccount, 'rkey'>
         }
         collection="id.sifa.profile.externalAccount"
+        onPostSave={handlePostSave}
         onFieldChange={handleFieldChange}
         renderEntry={(acc, controls) => {
           const platform = getPlatformInfo(acc.platform);

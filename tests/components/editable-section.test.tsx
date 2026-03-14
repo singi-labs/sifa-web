@@ -143,4 +143,28 @@ describe('EditableSection', () => {
       expect(mockRemoveItem).toHaveBeenCalledWith('skills', 'sk1');
     });
   });
+
+  it('calls onPostSave after successful create', async () => {
+    const user = userEvent.setup();
+    const onPostSave = vi.fn();
+    render(
+      <EditableSection<TestSkill>
+        sectionTitle="Skills"
+        profileKey="skills"
+        isOwnProfile
+        fields={SKILL_FIELDS}
+        toValues={toValues}
+        fromValues={fromValues}
+        collection="id.sifa.profile.skill"
+        renderEntry={renderEntry}
+        onPostSave={onPostSave}
+      />,
+    );
+    await user.click(screen.getByRole('button', { name: 'Add Skills' }));
+    await user.type(screen.getByLabelText(/Skill Name/), 'Go');
+    await user.click(screen.getByRole('button', { name: 'Save' }));
+    await vi.waitFor(() => {
+      expect(onPostSave).toHaveBeenCalled();
+    });
+  });
 });

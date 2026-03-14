@@ -65,6 +65,8 @@ interface EditableSectionProps<T extends { rkey: string }> {
     item: T,
     editControls?: { onEdit: () => void; onDelete: () => void },
   ) => React.ReactNode;
+  /** Called after a successful create or update. */
+  onPostSave?: () => void;
   /** Called when any field value changes in the edit dialog. Return partial values to auto-fill. */
   onFieldChange?: (
     name: string,
@@ -84,6 +86,7 @@ export function EditableSection<T extends { rkey: string }>({
   fromValues,
   collection,
   renderEntry,
+  onPostSave,
   onFieldChange,
 }: EditableSectionProps<T>) {
   const { profile, addItem, updateItem, removeItem } = useProfileEdit();
@@ -106,6 +109,7 @@ export function EditableSection<T extends { rkey: string }>({
           updateItem(profileKey, dialog.item.rkey, data);
           setDialog(null);
           toast.success(`${sectionTitle} updated`);
+          onPostSave?.();
         }
         return result;
       }
@@ -118,10 +122,11 @@ export function EditableSection<T extends { rkey: string }>({
         });
         setDialog(null);
         toast.success(`${sectionTitle} added`);
+        onPostSave?.();
       }
       return result;
     },
-    [dialog, routes, collection, fromValues, profileKey, sectionTitle, addItem, updateItem],
+    [dialog, routes, collection, fromValues, profileKey, sectionTitle, addItem, updateItem, onPostSave],
   );
 
   const handleDelete = useCallback(
