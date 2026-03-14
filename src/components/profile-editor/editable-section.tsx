@@ -126,7 +126,17 @@ export function EditableSection<T extends { rkey: string }>({
       }
       return result;
     },
-    [dialog, routes, collection, fromValues, profileKey, sectionTitle, addItem, updateItem, onPostSave],
+    [
+      dialog,
+      routes,
+      collection,
+      fromValues,
+      profileKey,
+      sectionTitle,
+      addItem,
+      updateItem,
+      onPostSave,
+    ],
   );
 
   const handleDelete = useCallback(

@@ -190,9 +190,7 @@ export async function resetProfile(): Promise<WriteResult> {
   return apiRequest('/api/profile/reset', 'DELETE');
 }
 
-export async function fetchExternalAccounts(
-  handleOrDid: string,
-): Promise<ExternalAccount[]> {
+export async function fetchExternalAccounts(handleOrDid: string): Promise<ExternalAccount[]> {
   try {
     const res = await fetch(
       `${API_URL}/api/profile/${encodeURIComponent(handleOrDid)}/external-accounts`,

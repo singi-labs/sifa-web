@@ -73,10 +73,10 @@ describe('ExternalAccountsSection', () => {
 
   it('shows verification hint when selecting a verifiable platform', async () => {
     const user = userEvent.setup();
-    withProvider(
-      <ExternalAccountsSection accounts={[]} isOwnProfile />,
-      { externalAccounts: [], handle: 'gui.do' },
-    );
+    withProvider(<ExternalAccountsSection accounts={[]} isOwnProfile />, {
+      externalAccounts: [],
+      handle: 'gui.do',
+    });
     await user.click(screen.getByRole('button', { name: 'Add Other Profiles' }));
     await user.selectOptions(screen.getByRole('combobox'), 'github');
     expect(screen.getByText(/Add your Sifa profile URL/)).toBeDefined();

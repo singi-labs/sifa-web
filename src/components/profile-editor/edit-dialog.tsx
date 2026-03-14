@@ -105,7 +105,10 @@ export function EditDialog({
             if (field.visibleWhen && !field.visibleWhen(values)) return null;
             if (field.type === 'hint') {
               return (
-                <div key={field.name} className="rounded-md border border-blue-200 bg-blue-50 p-3 text-sm text-blue-800 dark:border-blue-800 dark:bg-blue-950/30 dark:text-blue-300">
+                <div
+                  key={field.name}
+                  className="rounded-md border border-blue-200 bg-blue-50 p-3 text-sm text-blue-800 dark:border-blue-800 dark:bg-blue-950/30 dark:text-blue-300"
+                >
                   {field.description}
                 </div>
               );
