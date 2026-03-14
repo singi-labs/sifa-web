@@ -7,6 +7,7 @@ import type { LocationValue } from '@/lib/types';
 import { DataTransparencyCard } from '@/components/data-transparency-card';
 import { ProfileBody } from '@/components/profile-body';
 import { UnclaimedBanner } from '@/components/unclaimed-banner';
+import { DeletedAccountModal } from '@/components/deleted-account-modal';
 
 export async function generateMetadata({ params }: { params: Promise<{ handle: string }> }) {
   const { handle } = await params;
@@ -48,8 +49,15 @@ export async function generateMetadata({ params }: { params: Promise<{ handle: s
   };
 }
 
-export default async function ProfilePage({ params }: { params: Promise<{ handle: string }> }) {
+export default async function ProfilePage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ handle: string }>;
+  searchParams: Promise<{ deleted?: string }>;
+}) {
   const { handle } = await params;
+  const { deleted } = await searchParams;
   const profile = await fetchProfile(handle);
   if (!profile) notFound();
 
@@ -68,6 +76,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ handle
 
   return (
     <>
+      {deleted === '1' && <DeletedAccountModal />}
       {!profile.claimed && <UnclaimedBanner />}
       <div className="mx-auto max-w-4xl px-4 py-8">
         <script

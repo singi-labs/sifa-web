@@ -21,6 +21,7 @@ import {
   LanguagesSection,
   ExternalAccountsSection,
 } from '@/components/profile-sections';
+import { DangerZone } from '@/components/danger-zone';
 import type { Profile } from '@/lib/types';
 
 interface ProfileBodyProps {
@@ -150,6 +151,7 @@ function ProfileBodyContent() {
       <div id="other-profiles" className="scroll-mt-20">
         <ExternalAccountsSection accounts={profile.externalAccounts ?? []} isOwnProfile={isOwn} />
       </div>
+      {isOwn && <DangerZone handle={profile.handle} />}
     </div>
   );
 

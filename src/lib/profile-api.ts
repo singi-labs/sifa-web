@@ -183,3 +183,27 @@ export async function setExternalAccountPrimary(rkey: string): Promise<WriteResu
 export async function unsetExternalAccountPrimary(rkey: string): Promise<WriteResult> {
   return apiRequest(`/api/profile/external-accounts/${encodeURIComponent(rkey)}/primary`, 'DELETE');
 }
+
+export async function resetProfile(): Promise<WriteResult> {
+  return apiRequest('/api/profile/reset', 'DELETE');
+}
+
+export async function deleteAccount(): Promise<WriteResult & { handle?: string }> {
+  try {
+    const res = await fetch(`${API_URL}/api/profile/account`, {
+      method: 'DELETE',
+      credentials: 'include',
+    });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      return {
+        success: false,
+        error: (data as { message?: string }).message ?? `Request failed (${res.status})`,
+      };
+    }
+    const data = (await res.json()) as { ok: boolean; handle?: string };
+    return { success: true, handle: data.handle };
+  } catch {
+    return { success: false, error: 'Network error' };
+  }
+}
