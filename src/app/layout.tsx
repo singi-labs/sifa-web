@@ -6,11 +6,19 @@ import { Toaster } from 'sonner';
 import './globals.css';
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://sifa.id'),
   title: {
     default: 'Sifa',
     template: '%s | Sifa',
   },
   description: 'Professional identity on the AT Protocol',
+  openGraph: {
+    siteName: 'Sifa',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+  },
 };
 
 export default async function RootLayout({
