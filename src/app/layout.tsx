@@ -11,6 +11,13 @@ export const metadata: Metadata = {
     template: '%s | Sifa',
   },
   description: 'Professional identity on the AT Protocol',
+  openGraph: {
+    siteName: 'Sifa',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+  },
 };
 
 export default async function RootLayout({
