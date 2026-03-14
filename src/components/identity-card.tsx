@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 import { Popover } from '@base-ui/react/popover';
-import { ShareNetwork, PencilSimple, CheckCircle, Code } from '@phosphor-icons/react';
+import { ShareNetwork, PencilSimple, CheckCircle, Check, Code } from '@phosphor-icons/react';
 import { Badge } from '@/components/ui/badge';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { FollowButton } from '@/components/follow-button';
@@ -70,6 +70,7 @@ export function IdentityCard({
   const isEmbed = variant === 'embed';
   const isOwn = isOwnProfile || Boolean(session?.did && session.did === did);
   const [editing, setEditing] = useState(false);
+  const [copied, setCopied] = useState(false);
   const pdsProvider = detectPdsProvider(handle);
 
   const displayTrustStats =
@@ -241,13 +242,24 @@ export function IdentityCard({
             size="sm"
             onClick={() => {
               void navigator.clipboard.writeText(`https://sifa.id/p/${handle}`).then(() => {
-                toast(t('linkCopied'));
+                setCopied(true);
+                toast.success(t('linkCopied'));
+                setTimeout(() => setCopied(false), 2000);
               });
             }}
             aria-label={t('shareProfile')}
           >
-            <ShareNetwork className="mr-1.5 h-4 w-4" weight="bold" aria-hidden="true" />
-            {t('share')}
+            {copied ? (
+              <>
+                <Check className="mr-1.5 h-4 w-4 text-green-600" weight="bold" aria-hidden="true" />
+                {t('copied')}
+              </>
+            ) : (
+              <>
+                <ShareNetwork className="mr-1.5 h-4 w-4" weight="bold" aria-hidden="true" />
+                {t('share')}
+              </>
+            )}
           </Button>
           {isOwn && (
             <Link

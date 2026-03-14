@@ -54,15 +54,18 @@ vi.mock('@phosphor-icons/react', () => ({
   ShareNetwork: (props: Record<string, unknown>) => <span data-testid="icon-share" {...props} />,
   PencilSimple: (props: Record<string, unknown>) => <span data-testid="icon-pencil" {...props} />,
   CheckCircle: (props: Record<string, unknown>) => <span data-testid="icon-check" {...props} />,
+  Check: (props: Record<string, unknown>) => <span data-testid="icon-check-inline" {...props} />,
   Code: (props: Record<string, unknown>) => <span data-testid="icon-code" {...props} />,
   X: (props: Record<string, unknown>) => <span data-testid="icon-x" {...props} />,
   Info: (props: Record<string, unknown>) => <span data-testid="icon-info" {...props} />,
 }));
 
 // Mock sonner
-vi.mock('sonner', () => ({
-  toast: vi.fn(),
-}));
+vi.mock('sonner', () => {
+  const fn = vi.fn() as ReturnType<typeof vi.fn> & { success: ReturnType<typeof vi.fn> };
+  fn.success = vi.fn();
+  return { toast: fn };
+});
 
 // Mock next/navigation
 vi.mock('next/navigation', () => ({
