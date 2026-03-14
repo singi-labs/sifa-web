@@ -46,6 +46,7 @@
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "@vitejs/plugin-react": "5.1.4",
+    "@vitest/expect": "4.0.18",
     "eslint": "9.39.4",
     "eslint-config-next": "16.1.6",
     "eslint-plugin-jsx-a11y": "6.10.2",

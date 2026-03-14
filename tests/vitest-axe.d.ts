@@ -1,4 +1,8 @@
-import type { AxeMatchers } from 'vitest-axe/matchers';
+import '@vitest/expect';
+
+interface AxeMatchers {
+  toHaveNoViolations(): void;
+}
 
 declare module '@vitest/expect' {
   // eslint-disable-next-line @typescript-eslint/no-empty-object-type

@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
+import { GithubLogo } from '@phosphor-icons/react';
 
 export function SiteFooter() {
   const t = useTranslations('common');
@@ -45,11 +46,12 @@ export function SiteFooter() {
           </Link>
           <a
             href="https://github.com/singi-labs"
-            className="text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+            className="text-muted-foreground hover:text-foreground"
             target="_blank"
             rel="noopener noreferrer"
+            aria-label="GitHub"
           >
-            GitHub
+            <GithubLogo size={20} />
           </a>
         </nav>
       </div>
