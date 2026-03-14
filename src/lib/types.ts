@@ -34,6 +34,12 @@ export interface ProfileSkill {
   endorsementCount?: number;
 }
 
+export interface SkillSuggestion {
+  canonicalName: string;
+  slug: string;
+  category: string;
+}
+
 export interface ProfileCertification {
   rkey: string;
   name: string;
