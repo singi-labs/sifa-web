@@ -64,7 +64,7 @@ export function mapPositionsCsv(row: Record<string, string>): SifaPosition {
     startDate,
     endDate,
     ...(current ? { current } : {}),
-    location: row['Location'] ? parseLocationString(row['Location']) ?? undefined : undefined,
+    location: row['Location'] ? (parseLocationString(row['Location']) ?? undefined) : undefined,
   };
 }
 
@@ -84,7 +84,9 @@ export function mapProfileCsv(row: Record<string, string>): SifaProfile {
     lastName: optional(row['Last Name']),
     headline: optional(row['Headline']),
     about: restoreLineBreaks(optional(row['Summary'])),
-    location: row['Geo Location'] ? parseLocationString(row['Geo Location']) ?? undefined : undefined,
+    location: row['Geo Location']
+      ? (parseLocationString(row['Geo Location']) ?? undefined)
+      : undefined,
   };
 }
 

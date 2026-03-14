@@ -156,7 +156,9 @@ export function PreviewStep({ preview, existingData, onConfirm, onBack }: Previe
               <p className="text-sm text-muted-foreground">{data.profile.headline}</p>
             )}
             {data.profile.location && (
-              <p className="text-sm text-muted-foreground">{formatLocation(data.profile.location)}</p>
+              <p className="text-sm text-muted-foreground">
+                {formatLocation(data.profile.location)}
+              </p>
             )}
           </div>
         )}

@@ -7,13 +7,13 @@ describe('formatLocation', () => {
   });
 
   it('formats city, region, country', () => {
-    expect(formatLocation({ city: 'Amsterdam', region: 'North Holland', country: 'Netherlands' }))
-      .toBe('Amsterdam, North Holland, Netherlands');
+    expect(
+      formatLocation({ city: 'Amsterdam', region: 'North Holland', country: 'Netherlands' }),
+    ).toBe('Amsterdam, North Holland, Netherlands');
   });
 
   it('formats city, country (no region)', () => {
-    expect(formatLocation({ city: 'Berlin', country: 'Germany' }))
-      .toBe('Berlin, Germany');
+    expect(formatLocation({ city: 'Berlin', country: 'Germany' })).toBe('Berlin, Germany');
   });
 
   it('formats country only', () => {
@@ -21,8 +21,9 @@ describe('formatLocation', () => {
   });
 
   it('formats postalCode fallback when no city', () => {
-    expect(formatLocation({ postalCode: '1234AB', country: 'Netherlands' }))
-      .toBe('1234AB, Netherlands');
+    expect(formatLocation({ postalCode: '1234AB', country: 'Netherlands' })).toBe(
+      '1234AB, Netherlands',
+    );
   });
 });
 

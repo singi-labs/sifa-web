@@ -53,7 +53,7 @@ export function valuesToPosition(
     endDate: (values.endDate as string) || undefined,
     current: values.current as boolean,
     location: (values.location as string)
-      ? parseLocationString(values.location as string) ?? undefined
+      ? (parseLocationString(values.location as string) ?? undefined)
       : undefined,
     description: (values.description as string) || undefined,
   };

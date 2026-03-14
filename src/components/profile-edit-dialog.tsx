@@ -47,9 +47,7 @@ export function ProfileEditDialog({
 
   const [headline, setHeadline] = useState(initialHeadline ?? '');
   const [about, setAbout] = useState(initialAbout ?? '');
-  const [locationValue, setLocationValue] = useState<LocationValue | null>(
-    initialLocation ?? null,
-  );
+  const [locationValue, setLocationValue] = useState<LocationValue | null>(initialLocation ?? null);
   const [openTo, setOpenTo] = useState<Set<string>>(new Set(initialOpenTo ?? []));
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
