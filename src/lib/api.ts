@@ -103,3 +103,15 @@ export async function createInvite(subjectDid: string): Promise<string> {
   const data = await res.json();
   return data.inviteUrl;
 }
+
+export async function fetchStats(): Promise<{ profileCount: number } | null> {
+  try {
+    const res = await fetch(`${API_URL}/api/stats`, {
+      next: { revalidate: 900 },
+    });
+    if (!res.ok) return null;
+    return res.json();
+  } catch {
+    return null;
+  }
+}
