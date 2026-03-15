@@ -28,7 +28,11 @@ const baseProfile: Profile = {
 
 describe('ProfileBody', () => {
   it('renders about section when profile has about text', () => {
-    render(<ProfileBody profile={{ ...baseProfile, about: 'I am a developer' }} />);
+    render(
+      <ProfileBody
+        profile={{ ...baseProfile, headline: 'Software Engineer', about: 'I am a developer' }}
+      />,
+    );
     expect(screen.getByText('I am a developer')).toBeDefined();
   });
 
@@ -57,6 +61,7 @@ describe('ProfileBody', () => {
   it('renders section nav when 3+ sections populated', () => {
     const profile: Profile = {
       ...baseProfile,
+      headline: 'Software Engineer',
       about: 'Summary',
       positions: [
         { rkey: '1', companyName: 'Acme', title: 'Engineer', startDate: '2020', current: true },
