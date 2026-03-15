@@ -126,14 +126,15 @@ describe('SkillsSection', () => {
     expect(screen.getByText('Technical')).toBeDefined();
   });
 
-  it('shows category inline on skill chip with middle dot separator', () => {
+  it('shows category as group heading, not inline on chip', () => {
     const skills = [{ rkey: '1', skillName: 'React', category: 'creative' }];
     withProvider(<SkillsSection skills={skills} />, { skills });
+    // Category is displayed as a group heading, not inline on the chip
+    expect(screen.getByRole('heading', { level: 3 }).textContent).toBe('Creative');
     const badge =
       screen.getByText('React').closest('[class*="badge"]') ??
       screen.getByText('React').parentElement;
-    expect(badge?.textContent).toContain('\u00b7');
-    expect(badge?.textContent).toContain('creative');
+    expect(badge?.textContent).not.toContain('\u00b7');
   });
 
   it('does not show category separator when no category', () => {
