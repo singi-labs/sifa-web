@@ -236,7 +236,8 @@ export async function searchSkills(query: string, limit = 10): Promise<SkillSugg
       `${API_URL}/api/skills/search?q=${encodeURIComponent(query)}&limit=${limit}`,
     );
     if (!res.ok) return [];
-    return (await res.json()) as SkillSuggestion[];
+    const data = (await res.json()) as { skills: SkillSuggestion[] };
+    return data.skills;
   } catch {
     return [];
   }

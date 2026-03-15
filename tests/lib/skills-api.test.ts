@@ -16,9 +16,9 @@ describe('searchSkills', () => {
     mockFetch.mockResolvedValue({
       ok: true,
       json: () =>
-        Promise.resolve([
-          { canonicalName: 'TypeScript', slug: 'typescript', category: 'Technical' },
-        ]),
+        Promise.resolve({
+          skills: [{ canonicalName: 'TypeScript', slug: 'typescript', category: 'Technical' }],
+        }),
     });
 
     const results = await searchSkills('Type', 5);
@@ -32,7 +32,7 @@ describe('searchSkills', () => {
   it('uses default limit of 10', async () => {
     mockFetch.mockResolvedValue({
       ok: true,
-      json: () => Promise.resolve([]),
+      json: () => Promise.resolve({ skills: [] }),
     });
 
     await searchSkills('React');
@@ -58,7 +58,7 @@ describe('searchSkills', () => {
   it('encodes special characters in query', async () => {
     mockFetch.mockResolvedValue({
       ok: true,
-      json: () => Promise.resolve([]),
+      json: () => Promise.resolve({ skills: [] }),
     });
 
     await searchSkills('C++ & C#');
