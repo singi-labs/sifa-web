@@ -14,21 +14,12 @@ vi.mock('@/components/identity-card', () => ({
   },
 }));
 
-const themeForcerProps: Record<string, unknown>[] = [];
-vi.mock('@/components/embed-theme-forcer', () => ({
-  EmbedThemeForcer: (props: Record<string, unknown>) => {
-    themeForcerProps.push(props);
-    return null;
-  },
-}));
-
 import EmbedPage from '@/app/(embed)/embed/[handleOrDid]/page';
 
 describe('EmbedPage', () => {
   beforeEach(() => {
     mockFetchProfile.mockReset();
     identityCardProps.length = 0;
-    themeForcerProps.length = 0;
   });
 
   it('renders IdentityCard with embed variant', async () => {
@@ -47,44 +38,11 @@ describe('EmbedPage', () => {
 
     const page = await EmbedPage({
       params: Promise.resolve({ handleOrDid: 'alice.bsky.social' }),
-      searchParams: Promise.resolve({}),
     });
     render(page as React.ReactElement);
 
     expect(screen.getByTestId('identity-card')).toBeDefined();
     expect(identityCardProps[0]?.variant).toBe('embed');
-  });
-
-  it('passes theme to EmbedThemeForcer', async () => {
-    mockFetchProfile.mockResolvedValue({
-      did: 'did:plc:test',
-      handle: 'alice.bsky.social',
-      claimed: true,
-    });
-
-    const page = await EmbedPage({
-      params: Promise.resolve({ handleOrDid: 'alice.bsky.social' }),
-      searchParams: Promise.resolve({ theme: 'dark' }),
-    });
-    render(page as React.ReactElement);
-
-    expect(themeForcerProps[0]?.theme).toBe('dark');
-  });
-
-  it('defaults theme to auto', async () => {
-    mockFetchProfile.mockResolvedValue({
-      did: 'did:plc:test',
-      handle: 'alice.bsky.social',
-      claimed: true,
-    });
-
-    const page = await EmbedPage({
-      params: Promise.resolve({ handleOrDid: 'alice.bsky.social' }),
-      searchParams: Promise.resolve({}),
-    });
-    render(page as React.ReactElement);
-
-    expect(themeForcerProps[0]?.theme).toBe('auto');
   });
 
   it('calls fetchProfile with the handleOrDid param', async () => {
@@ -96,7 +54,6 @@ describe('EmbedPage', () => {
 
     await EmbedPage({
       params: Promise.resolve({ handleOrDid: 'bob.bsky.social' }),
-      searchParams: Promise.resolve({}),
     });
 
     expect(mockFetchProfile).toHaveBeenCalledWith('bob.bsky.social');
@@ -108,7 +65,6 @@ describe('EmbedPage', () => {
     await expect(
       EmbedPage({
         params: Promise.resolve({ handleOrDid: 'nonexistent' }),
-        searchParams: Promise.resolve({}),
       }),
     ).rejects.toThrow();
   });
@@ -125,7 +81,6 @@ describe('EmbedPage', () => {
 
     const page = await EmbedPage({
       params: Promise.resolve({ handleOrDid: 'alice.bsky.social' }),
-      searchParams: Promise.resolve({}),
     });
     render(page as React.ReactElement);
 

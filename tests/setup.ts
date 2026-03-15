@@ -219,8 +219,9 @@ const translations: Record<string, Record<string, string>> = {
       'Add a live professional profile card to any website with a single line of code.',
     pageSubtitle: 'Add a live professional profile card to any website with a single line of code.',
     identifierLabel: 'Handle or DID',
-    themeLabel: 'Theme',
     codeLabel: 'Embed code',
+    themeNote:
+      "The embed automatically adjusts between light and dark mode based on the visitor's browser setting.",
     previewLabel: 'Preview',
     previewTitle: 'Embed preview',
     copy: 'Copy',
