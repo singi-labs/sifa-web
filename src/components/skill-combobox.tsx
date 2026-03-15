@@ -202,9 +202,7 @@ export function SkillCombobox({ value, category, onChange, id }: SkillComboboxPr
             >
               <span className="font-medium">{suggestion.canonicalName}</span>
               {suggestion.category && (
-                <span className="ml-2 text-xs text-muted-foreground">
-                  {suggestion.category}
-                </span>
+                <span className="ml-2 text-xs text-muted-foreground">{suggestion.category}</span>
               )}
             </div>
           ))}
