@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 interface AtprotoCounterProps {
   userCount: number;
@@ -9,6 +9,12 @@ interface AtprotoCounterProps {
   prefix: string;
   suffix: string;
   cta: string;
+}
+
+function nextPoissonDelay(ratePerSecond: number): number {
+  const meanMs = 1000 / ratePerSecond;
+  const delay = -Math.log(Math.random()) * meanMs;
+  return Math.max(500, Math.min(delay, meanMs * 5));
 }
 
 export function AtprotoCounter({
@@ -26,16 +32,25 @@ export function AtprotoCounter({
   }, [userCount, growthPerSecond, timestamp]);
 
   const [displayCount, setDisplayCount] = useState(interpolate);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout>>(null);
 
   useEffect(() => {
     if (growthPerSecond <= 0) return;
 
-    const interval = setInterval(() => {
-      setDisplayCount(interpolate());
-    }, 1000);
+    function scheduleTick() {
+      const delay = nextPoissonDelay(growthPerSecond);
+      timeoutRef.current = setTimeout(() => {
+        setDisplayCount((prev) => prev + 1);
+        scheduleTick();
+      }, delay);
+    }
 
-    return () => clearInterval(interval);
-  }, [growthPerSecond, interpolate]);
+    scheduleTick();
+
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, [growthPerSecond]);
 
   const formatted = displayCount.toLocaleString('en-US');
 
