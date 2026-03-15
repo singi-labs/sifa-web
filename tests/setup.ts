@@ -67,6 +67,8 @@ const translations: Record<string, Record<string, string>> = {
     fileSizeError: 'File is too large (max 500 MB). Try re-downloading your LinkedIn export.',
     privacyNote:
       'Your LinkedIn ZIP is extracted in your browser and never leaves your device. The structured profile data is then written directly to your Personal Data Server through our API.',
+    publicDataNotice:
+      'All imported data will be publicly visible. Anyone on the internet can view your Sifa profile, including people without a Sifa account. This is similar to LinkedIn, where your profile is visible to all logged-in users and partially visible to logged-out visitors -- except on Sifa, everything is fully public. Review your data carefully before importing.',
   },
   'import.preview': {
     heading: 'Review imported data',
