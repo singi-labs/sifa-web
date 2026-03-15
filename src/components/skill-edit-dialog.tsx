@@ -7,12 +7,14 @@ import { X } from '@phosphor-icons/react';
 import { SkillCombobox } from '@/components/skill-combobox';
 import { SKILL_CATEGORIES } from '@/lib/skill-categories';
 import { PositionLinkList } from '@/components/position-link-list';
-import type { ProfilePosition } from '@/lib/types';
+import type { ProfilePosition, ProfileSkill } from '@/lib/types';
 
 interface SkillEditDialogProps {
   title: string;
   initialSkillName?: string;
   initialCategory?: string;
+  /** User's own profile skills for combobox suggestions. */
+  profileSkills?: ProfileSkill[];
   positions?: ProfilePosition[];
   linkedPositionRkeys?: string[];
   onPositionLinkChange?: (positionRkey: string, linked: boolean) => void;
@@ -28,6 +30,7 @@ export function SkillEditDialog({
   title,
   initialSkillName = '',
   initialCategory = '',
+  profileSkills,
   positions,
   linkedPositionRkeys,
   onPositionLinkChange,
@@ -92,6 +95,7 @@ export function SkillEditDialog({
               value={skillName}
               category={category}
               onChange={handleSkillChange}
+              profileSkills={profileSkills}
             />
           </div>
 
