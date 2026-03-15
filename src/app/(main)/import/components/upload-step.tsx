@@ -104,8 +104,15 @@ export function UploadStep({ onFileSelected, isProcessing, extractionError }: Up
             </p>
           )}
         </div>
-        <div className="mt-4 flex gap-3 rounded-lg border border-amber-200 bg-amber-50 p-4 dark:border-amber-800 dark:bg-amber-950/30" role="note">
-          <Eye className="mt-0.5 size-5 shrink-0 text-amber-600 dark:text-amber-400" weight="fill" aria-hidden="true" />
+        <div
+          className="mt-4 flex gap-3 rounded-lg border border-amber-200 bg-amber-50 p-4 dark:border-amber-800 dark:bg-amber-950/30"
+          role="note"
+        >
+          <Eye
+            className="mt-0.5 size-5 shrink-0 text-amber-600 dark:text-amber-400"
+            weight="fill"
+            aria-hidden="true"
+          />
           <p className="text-sm text-amber-800 dark:text-amber-300">{t('publicDataNotice')}</p>
         </div>
         <p className="mt-3 text-xs text-muted-foreground">{t('privacyNote')}</p>

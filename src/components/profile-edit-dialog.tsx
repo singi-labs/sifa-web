@@ -137,8 +137,15 @@ export function ProfileEditDialog({
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="flex gap-3 rounded-lg border border-amber-200 bg-amber-50 p-3 dark:border-amber-800 dark:bg-amber-950/30" role="note">
-            <Eye className="mt-0.5 size-4 shrink-0 text-amber-600 dark:text-amber-400" weight="fill" aria-hidden="true" />
+          <div
+            className="flex gap-3 rounded-lg border border-amber-200 bg-amber-50 p-3 dark:border-amber-800 dark:bg-amber-950/30"
+            role="note"
+          >
+            <Eye
+              className="mt-0.5 size-4 shrink-0 text-amber-600 dark:text-amber-400"
+              weight="fill"
+              aria-hidden="true"
+            />
             <p className="text-xs text-amber-800 dark:text-amber-300">{t('publicDataNotice')}</p>
           </div>
 
