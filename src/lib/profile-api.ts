@@ -1,4 +1,4 @@
-import type { ExternalAccount, SkillSuggestion } from '@/lib/types';
+import type { ExternalAccount, SkillSuggestion, SkillRef } from '@/lib/types';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3100';
 
@@ -240,6 +240,26 @@ export async function searchSkills(query: string, limit = 10): Promise<SkillSugg
   } catch {
     return [];
   }
+}
+
+export async function linkSkillToPosition(
+  positionRkey: string,
+  skillRef: SkillRef,
+  currentSkills: SkillRef[],
+): Promise<WriteResult> {
+  const alreadyLinked = currentSkills.some((s) => s.uri === skillRef.uri);
+  if (alreadyLinked) return { success: true };
+  const updatedSkills = [...currentSkills, skillRef];
+  return updatePosition(positionRkey, { skills: updatedSkills });
+}
+
+export async function unlinkSkillFromPosition(
+  positionRkey: string,
+  skillRef: SkillRef,
+  currentSkills: SkillRef[],
+): Promise<WriteResult> {
+  const updatedSkills = currentSkills.filter((s) => s.uri !== skillRef.uri);
+  return updatePosition(positionRkey, { skills: updatedSkills });
 }
 
 export async function deleteAccount(): Promise<WriteResult & { handle?: string }> {
