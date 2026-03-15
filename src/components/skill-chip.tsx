@@ -71,9 +71,7 @@ export function SkillChip({
       <Badge
         variant="secondary"
         className={
-          isClickable
-            ? 'cursor-pointer transition-colors hover:bg-secondary/80'
-            : undefined
+          isClickable ? 'cursor-pointer transition-colors hover:bg-secondary/80' : undefined
         }
         onClick={handleClick}
         role={isClickable ? 'button' : undefined}

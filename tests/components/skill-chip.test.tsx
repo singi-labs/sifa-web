@@ -38,17 +38,13 @@ describe('SkillChip', () => {
   });
 
   it('prefers activity-backed over endorsed when both are true', () => {
-    render(
-      <SkillChip skill={makeSkill({ endorsed: true, activityBacked: true })} />,
-    );
+    render(<SkillChip skill={makeSkill({ endorsed: true, activityBacked: true })} />);
     expect(screen.getByTestId('activity-backed-icon')).toBeDefined();
     expect(screen.queryByTestId('endorsed-icon')).toBeNull();
   });
 
   it('never displays endorsement count', () => {
-    render(
-      <SkillChip skill={makeSkill({ endorsementCount: 42, endorsed: true })} />,
-    );
+    render(<SkillChip skill={makeSkill({ endorsementCount: 42, endorsed: true })} />);
     expect(screen.queryByText('42')).toBeNull();
   });
 
@@ -57,18 +53,14 @@ describe('SkillChip', () => {
     render(<SkillChip skill={makeSkill({ endorsed: true })} />);
     const chip = screen.getByText('TypeScript').closest('[data-skill-chip]')!;
     await user.hover(chip);
-    expect(
-      screen.getByRole('tooltip', { name: /confirmed by people/i }),
-    ).toBeDefined();
+    expect(screen.getByRole('tooltip', { name: /confirmed by people/i })).toBeDefined();
   });
 
   it('shows tooltip on focus for endorsed skills (keyboard accessible)', async () => {
     const user = userEvent.setup();
     render(<SkillChip skill={makeSkill({ endorsed: true })} />);
     await user.tab();
-    expect(
-      screen.getByRole('tooltip', { name: /confirmed by people/i }),
-    ).toBeDefined();
+    expect(screen.getByRole('tooltip', { name: /confirmed by people/i })).toBeDefined();
   });
 
   it('shows tooltip on hover for activity-backed skills', async () => {
@@ -76,9 +68,7 @@ describe('SkillChip', () => {
     render(<SkillChip skill={makeSkill({ activityBacked: true })} />);
     const chip = screen.getByText('TypeScript').closest('[data-skill-chip]')!;
     await user.hover(chip);
-    expect(
-      screen.getByRole('tooltip', { name: /backed by verified activity/i }),
-    ).toBeDefined();
+    expect(screen.getByRole('tooltip', { name: /backed by verified activity/i })).toBeDefined();
   });
 
   it('does not show tooltip for self-declared skills', async () => {
@@ -90,31 +80,20 @@ describe('SkillChip', () => {
   });
 
   it('shows category when showCategory is true', () => {
-    render(
-      <SkillChip
-        skill={makeSkill({ category: 'Programming' })}
-        showCategory
-      />,
-    );
+    render(<SkillChip skill={makeSkill({ category: 'Programming' })} showCategory />);
     expect(screen.getByText(/Programming/)).toBeDefined();
   });
 
   it('shows delete button when editing', () => {
     const onDelete = vi.fn();
-    render(
-      <SkillChip skill={makeSkill()} editing onDelete={onDelete} />,
-    );
-    expect(
-      screen.getByRole('button', { name: /remove typescript/i }),
-    ).toBeDefined();
+    render(<SkillChip skill={makeSkill()} editing onDelete={onDelete} />);
+    expect(screen.getByRole('button', { name: /remove typescript/i })).toBeDefined();
   });
 
   it('calls onEdit when clicked in editable non-editing mode', async () => {
     const user = userEvent.setup();
     const onEdit = vi.fn();
-    render(
-      <SkillChip skill={makeSkill()} editable onEdit={onEdit} />,
-    );
+    render(<SkillChip skill={makeSkill()} editable onEdit={onEdit} />);
     await user.click(screen.getByText('TypeScript'));
     expect(onEdit).toHaveBeenCalledOnce();
   });
@@ -124,9 +103,7 @@ describe('SkillChip', () => {
       <div>
         <SkillChip skill={makeSkill()} />
         <SkillChip skill={makeSkill({ endorsed: true, skillName: 'React', rkey: 'r1' })} />
-        <SkillChip
-          skill={makeSkill({ activityBacked: true, skillName: 'Node.js', rkey: 'r2' })}
-        />
+        <SkillChip skill={makeSkill({ activityBacked: true, skillName: 'Node.js', rkey: 'r2' })} />
       </div>,
     );
     const results = await axe(container);

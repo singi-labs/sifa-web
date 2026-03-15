@@ -13,10 +13,7 @@ export function PublicSkillChips({ skills }: { skills: Skill[] }) {
   return (
     <>
       {skills.map((skill, i) => (
-        <SkillChip
-          key={`${skill.skillName}-${i}`}
-          skill={{ rkey: `pub-${i}`, ...skill }}
-        />
+        <SkillChip key={`${skill.skillName}-${i}`} skill={{ rkey: `pub-${i}`, ...skill }} />
       ))}
     </>
   );
