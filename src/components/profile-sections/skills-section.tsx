@@ -139,11 +139,6 @@ export function SkillsSection({ isOwnProfile }: SkillsSectionProps) {
                   }
                 >
                   {skill.skillName}
-                  {skill.endorsementCount != null && skill.endorsementCount > 0 && (
-                    <span className="ml-1.5 text-xs text-muted-foreground">
-                      {skill.endorsementCount}
-                    </span>
-                  )}
                   {editing && (
                     <button
                       type="button"

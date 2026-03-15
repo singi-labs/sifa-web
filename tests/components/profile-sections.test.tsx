@@ -126,10 +126,10 @@ describe('SkillsSection', () => {
     expect(screen.getByText('Frontend')).toBeDefined();
   });
 
-  it('shows endorsement count', () => {
+  it('does not render endorsement counts', () => {
     const skills = [{ rkey: '1', skillName: 'TypeScript', endorsementCount: 5 }];
     withProvider(<SkillsSection skills={skills} />, { skills });
-    expect(screen.getByText('5')).toBeDefined();
+    expect(screen.queryByText('5')).toBeNull();
   });
 });
 

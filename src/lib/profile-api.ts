@@ -216,6 +216,13 @@ export async function searchSkills(query: string, limit = 10): Promise<SkillSugg
   }
 }
 
+export async function createEndorsement(data: {
+  skillUri: string;
+  comment?: string;
+}): Promise<CreateResult> {
+  return apiCreateRequest('/api/endorsements', data);
+}
+
 export async function deleteAccount(): Promise<WriteResult & { handle?: string }> {
   try {
     const res = await fetch(`${API_URL}/api/profile/account`, {
