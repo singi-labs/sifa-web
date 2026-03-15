@@ -262,6 +262,12 @@ export async function unlinkSkillFromPosition(
   return updatePosition(positionRkey, { skills: updatedSkills });
 }
 
+export async function createEndorsement(data: {
+  skillUri: string;
+  comment?: string;
+}): Promise<CreateResult> {
+  return apiCreateRequest('/api/endorsements', data);
+}
 export async function deleteAccount(): Promise<WriteResult & { handle?: string }> {
   try {
     const res = await fetch(`${API_URL}/api/profile/account`, {
