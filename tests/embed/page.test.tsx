@@ -14,12 +14,21 @@ vi.mock('@/components/identity-card', () => ({
   },
 }));
 
+const themeForcerProps: Record<string, unknown>[] = [];
+vi.mock('@/components/embed-theme-forcer', () => ({
+  EmbedThemeForcer: (props: Record<string, unknown>) => {
+    themeForcerProps.push(props);
+    return null;
+  },
+}));
+
 import EmbedPage from '@/app/(embed)/embed/[handleOrDid]/page';
 
 describe('EmbedPage', () => {
   beforeEach(() => {
     mockFetchProfile.mockReset();
     identityCardProps.length = 0;
+    themeForcerProps.length = 0;
   });
 
   it('renders IdentityCard with embed variant', async () => {
@@ -46,7 +55,7 @@ describe('EmbedPage', () => {
     expect(identityCardProps[0]?.variant).toBe('embed');
   });
 
-  it('passes theme as data attribute', async () => {
+  it('passes theme to EmbedThemeForcer', async () => {
     mockFetchProfile.mockResolvedValue({
       did: 'did:plc:test',
       handle: 'alice.bsky.social',
@@ -57,9 +66,9 @@ describe('EmbedPage', () => {
       params: Promise.resolve({ handleOrDid: 'alice.bsky.social' }),
       searchParams: Promise.resolve({ theme: 'dark' }),
     });
-    const { container } = render(page as React.ReactElement);
+    render(page as React.ReactElement);
 
-    expect(container.querySelector('[data-theme="dark"]')).not.toBeNull();
+    expect(themeForcerProps[0]?.theme).toBe('dark');
   });
 
   it('defaults theme to auto', async () => {
@@ -73,9 +82,9 @@ describe('EmbedPage', () => {
       params: Promise.resolve({ handleOrDid: 'alice.bsky.social' }),
       searchParams: Promise.resolve({}),
     });
-    const { container } = render(page as React.ReactElement);
+    render(page as React.ReactElement);
 
-    expect(container.querySelector('[data-theme="auto"]')).not.toBeNull();
+    expect(themeForcerProps[0]?.theme).toBe('auto');
   });
 
   it('calls fetchProfile with the handleOrDid param', async () => {

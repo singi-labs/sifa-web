@@ -17,6 +17,19 @@
     }
   }
 
+  var sifaIconSvg =
+    '<svg viewBox="0 0 256 256" class="sifa-icon" role="img" aria-label="Sifa">' +
+    '<g transform="matrix(0.333333,0,0,0.333333,37.583333,37.083333)">' +
+    '<path d="M128,71.5C159.183,71.5 184.5,96.817 184.5,128C184.5,159.183 159.183,184.5 128,184.5C96.817,184.5 71.5,159.183 71.5,128C71.5,96.817 96.817,71.5 128,71.5ZM128,104.5C115.03,104.5 104.5,115.03 104.5,128C104.5,140.97 115.03,151.5 128,151.5C140.97,151.5 151.5,140.97 151.5,128C151.5,115.03 140.97,104.5 128,104.5Z" fill="currentColor"/>' +
+    '</g>' +
+    '<g transform="matrix(0.333333,0,0,0.333333,37.583333,37.083333)">' +
+    '<path d="M174.866,194.259C182.45,189.218 192.7,191.282 197.741,198.866C202.782,206.45 200.718,216.7 193.134,221.741C175.432,233.507 150.846,240.5 128,240.5C66.284,240.5 15.5,189.716 15.5,128C15.5,66.284 66.284,15.5 128,15.5C189.716,15.5 240.5,66.284 240.5,128C240.5,160.538 225.46,184.5 196,184.5C166.54,184.5 151.5,160.538 151.5,128L151.5,88C151.5,78.893 158.893,71.5 168,71.5C177.107,71.5 184.5,78.893 184.5,88L184.5,128C184.5,134.408 185.237,140.363 187.279,145.164C188.851,148.858 191.536,151.5 196,151.5C200.464,151.5 203.149,148.858 204.721,145.164C206.763,140.363 207.5,134.408 207.5,128C207.5,84.388 171.612,48.5 128,48.5C84.388,48.5 48.5,84.388 48.5,128C48.5,171.612 84.388,207.5 128,207.5C144.415,207.5 162.148,202.713 174.866,194.259Z" fill="currentColor"/>' +
+    '</g>' +
+    '<path d="M176,47.75 L208,79.75 L176,111.75 L144,79.75 Z" fill="none" stroke="currentColor" stroke-width="12"/>' +
+    '<path d="M80,144 L112,176 L80,208 L48,176 Z" fill="none" stroke="currentColor" stroke-width="12"/>' +
+    '<path d="M152,192 L176,160 L200,192" fill="none" stroke="currentColor" stroke-width="11"/>' +
+    '</svg>';
+
   function buildStyles(theme) {
     var lightVars =
       '--sifa-bg:#fff;--sifa-card:#fff;--sifa-text:#111;--sifa-muted:#666;--sifa-border:#e5e5e5;--sifa-primary:#6366f1;';
@@ -37,12 +50,15 @@
       themeBlock +
       ":host{display:block;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:var(--sifa-text);}" +
       '.card{background:var(--sifa-card);border:1px solid var(--sifa-border);border-radius:12px;padding:20px;max-width:400px;}' +
-      '.header{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;}' +
-      '.avatar{width:48px;height:48px;border-radius:50%;object-fit:cover;}' +
-      '.avatar-placeholder{width:48px;height:48px;border-radius:50%;background:var(--sifa-primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:600;}' +
+      '.top{display:flex;gap:12px;}' +
+      '.info{flex:1;min-width:0;}' +
+      '.name-row a{text-decoration:none;color:inherit;}' +
       '.name{font-size:16px;font-weight:600;margin:0;}' +
       '.handle{font-size:13px;color:var(--sifa-muted);margin:0;}' +
-      '.headline{font-size:14px;color:var(--sifa-muted);margin:8px 0 0;}' +
+      '.avatar-col{flex-shrink:0;}' +
+      '.avatar{width:64px;height:64px;border-radius:50%;object-fit:cover;}' +
+      '.avatar-placeholder{width:64px;height:64px;border-radius:50%;background:var(--sifa-primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:600;}' +
+      '.headline{font-size:14px;color:var(--sifa-muted);margin:6px 0 0;}' +
       '.location{font-size:13px;color:var(--sifa-muted);margin:4px 0 0;}' +
       '.open-to{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0;}' +
       '.pill{font-size:12px;padding:3px 10px;border-radius:12px;background:var(--sifa-primary);color:#fff;}' +
@@ -50,9 +66,10 @@
       '.stat{text-align:center;}' +
       '.stat-value{font-size:18px;font-weight:700;display:block;}' +
       '.stat-label{font-size:11px;color:var(--sifa-muted);}' +
-      '.footer{margin-top:14px;padding-top:12px;border-top:1px solid var(--sifa-border);}' +
+      '.footer{margin-top:14px;padding-top:12px;border-top:1px solid var(--sifa-border);display:flex;align-items:center;justify-content:space-between;}' +
       '.cta{display:inline-block;font-size:13px;color:var(--sifa-primary);text-decoration:none;font-weight:500;}' +
       '.cta:hover{text-decoration:underline;}' +
+      '.sifa-icon{width:16px;height:16px;color:var(--sifa-muted);opacity:0.5;}' +
       '.error{font-size:14px;color:var(--sifa-muted);padding:16px;text-align:center;}'
     );
   }
@@ -70,20 +87,6 @@
       var letter = (data.displayName || data.handle || '?').charAt(0).toUpperCase();
       avatarHtml = '<div class="avatar-placeholder">' + escapeHtml(letter) + '</div>';
     }
-
-    var headerHtml =
-      '<a class="header" href="' +
-      escapeHtml(data.profileUrl) +
-      '" target="_blank" rel="noopener">' +
-      avatarHtml +
-      '<div>' +
-      '<p class="name">' +
-      escapeHtml(data.displayName || data.handle) +
-      '</p>' +
-      '<p class="handle">@' +
-      escapeHtml(data.handle) +
-      '</p>' +
-      '</div></a>';
 
     var headlineHtml = data.headline
       ? '<div class="headline">' + escapeHtml(data.headline) + '</div>'
@@ -126,13 +129,31 @@
       '<a class="cta" href="' +
       escapeHtml(data.profileUrl) +
       '" target="_blank" rel="noopener">View on Sifa</a>' +
+      sifaIconSvg +
       '</div>';
 
     return (
       '<div class="card">' +
-      headerHtml +
+      '<div class="top">' +
+      '<div class="info">' +
+      '<div class="name-row"><a href="' +
+      escapeHtml(data.profileUrl) +
+      '" target="_blank" rel="noopener">' +
+      '<p class="name">' +
+      escapeHtml(data.displayName || data.handle) +
+      '</p></a></div>' +
+      '<p class="handle">@' +
+      escapeHtml(data.handle) +
+      '</p>' +
       headlineHtml +
       locationHtml +
+      '</div>' +
+      '<div class="avatar-col"><a href="' +
+      escapeHtml(data.profileUrl) +
+      '" target="_blank" rel="noopener">' +
+      avatarHtml +
+      '</a></div>' +
+      '</div>' +
       openToHtml +
       statsHtml +
       footerHtml +
