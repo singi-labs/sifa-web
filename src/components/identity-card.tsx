@@ -44,7 +44,6 @@ interface IdentityCardProps {
   claimed: boolean;
   isOwnProfile?: boolean;
   isFollowing?: boolean;
-  autoEdit?: boolean;
   variant?: 'page' | 'embed';
   className?: string;
 }
@@ -66,7 +65,6 @@ export function IdentityCard({
   claimed,
   isOwnProfile,
   isFollowing,
-  autoEdit,
   variant = 'page',
   className,
 }: IdentityCardProps) {
@@ -77,11 +75,6 @@ export function IdentityCard({
   const isOwn = isOwnProfile || Boolean(session?.did && session.did === did);
   const [editing, setEditing] = useState(false);
   const [copied, setCopied] = useState(false);
-
-  // Auto-open edit dialog when navigating with ?edit=true (session loads async)
-  if (isOwn && autoEdit && !editing) {
-    setEditing(true);
-  }
   const pdsProvider = detectPdsProvider(handle);
 
   const displayTrustStats =

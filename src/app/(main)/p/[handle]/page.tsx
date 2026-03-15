@@ -51,10 +51,10 @@ export default async function ProfilePage({
   searchParams,
 }: {
   params: Promise<{ handle: string }>;
-  searchParams: Promise<{ deleted?: string; edit?: string }>;
+  searchParams: Promise<{ deleted?: string }>;
 }) {
   const { handle } = await params;
-  const { deleted, edit } = await searchParams;
+  const { deleted } = await searchParams;
   const profile = await fetchProfile(handle);
   if (!profile) notFound();
 
@@ -103,7 +103,6 @@ export default async function ProfilePage({
           claimed={profile.claimed}
           isOwnProfile={profile.isOwnProfile}
           isFollowing={profile.isFollowing}
-          autoEdit={edit === 'true'}
         />
         {profile.isOwnProfile && <DataTransparencyCard did={profile.did} />}
         <ProfileBody profile={profile} />
