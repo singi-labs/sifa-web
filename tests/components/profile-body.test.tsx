@@ -28,7 +28,11 @@ const baseProfile: Profile = {
 
 describe('ProfileBody', () => {
   it('renders about section when profile has about text', () => {
-    render(<ProfileBody profile={{ ...baseProfile, headline: 'Software Engineer', about: 'I am a developer' }} />);
+    render(
+      <ProfileBody
+        profile={{ ...baseProfile, headline: 'Software Engineer', about: 'I am a developer' }}
+      />,
+    );
     expect(screen.getByText('I am a developer')).toBeDefined();
   });
 
