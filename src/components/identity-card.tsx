@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 import { Popover } from '@base-ui/react/popover';
@@ -45,6 +44,7 @@ interface IdentityCardProps {
   claimed: boolean;
   isOwnProfile?: boolean;
   isFollowing?: boolean;
+  autoEdit?: boolean;
   variant?: 'page' | 'embed';
   className?: string;
 }
@@ -66,6 +66,7 @@ export function IdentityCard({
   claimed,
   isOwnProfile,
   isFollowing,
+  autoEdit,
   variant = 'page',
   className,
 }: IdentityCardProps) {
@@ -74,13 +75,11 @@ export function IdentityCard({
   const { session } = useAuth();
   const isEmbed = variant === 'embed';
   const isOwn = isOwnProfile || Boolean(session?.did && session.did === did);
-  const searchParams = useSearchParams();
-  const wantsEdit = searchParams.get('edit') === 'true';
   const [editing, setEditing] = useState(false);
   const [copied, setCopied] = useState(false);
 
   // Auto-open edit dialog when navigating with ?edit=true (session loads async)
-  if (isOwn && wantsEdit && !editing) {
+  if (isOwn && autoEdit && !editing) {
     setEditing(true);
   }
   const pdsProvider = detectPdsProvider(handle);
