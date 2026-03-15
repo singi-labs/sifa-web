@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { X, Info, ArrowsClockwise } from '@phosphor-icons/react';
+// @base-ui/react v1.2.0: Popover.Positioner MUST be inside Popover.Portal or it throws at runtime
 import { Popover } from '@base-ui/react/popover';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -147,12 +148,14 @@ export function ProfileEditDialog({
                 >
                   <Info className="h-3.5 w-3.5" weight="bold" />
                 </Popover.Trigger>
-                <Popover.Positioner sideOffset={8}>
-                  <Popover.Popup className="z-[9999] w-72 rounded-lg border border-border bg-popover p-3 text-sm text-popover-foreground shadow-md">
-                    <Popover.Arrow className="fill-popover stroke-border" />
-                    <p className="text-muted-foreground">{t('pdsExplanation')}</p>
-                  </Popover.Popup>
-                </Popover.Positioner>
+                <Popover.Portal>
+                  <Popover.Positioner sideOffset={8}>
+                    <Popover.Popup className="z-[9999] w-72 rounded-lg border border-border bg-popover p-3 text-sm text-popover-foreground shadow-md">
+                      <Popover.Arrow className="fill-popover stroke-border" />
+                      <p className="text-muted-foreground">{t('pdsExplanation')}</p>
+                    </Popover.Popup>
+                  </Popover.Positioner>
+                </Popover.Portal>
               </Popover.Root>
             </div>
             <div className="flex items-center gap-4">
