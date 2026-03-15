@@ -146,7 +146,9 @@ describe('SkillsSection', () => {
   });
 
   it('shows endorsement count', () => {
-    const skills = [{ rkey: '1', skillName: 'TypeScript', category: 'technical', endorsementCount: 5 }];
+    const skills = [
+      { rkey: '1', skillName: 'TypeScript', category: 'technical', endorsementCount: 5 },
+    ];
     withProvider(<SkillsSection skills={skills} />, { skills });
     expect(screen.getByText('5')).toBeDefined();
   });
@@ -177,9 +179,7 @@ describe('SkillsSection', () => {
   });
 
   it('does not render empty category groups', () => {
-    const skills = [
-      { rkey: '1', skillName: 'TypeScript', category: 'technical' },
-    ];
+    const skills = [{ rkey: '1', skillName: 'TypeScript', category: 'technical' }];
     withProvider(<SkillsSection skills={skills} />, { skills });
 
     const headings = screen.getAllByRole('heading', { level: 3 });

@@ -2,7 +2,9 @@ import { describe, it, expect } from 'vitest';
 import { groupSkillsByCategory, CATEGORY_ORDER, CATEGORY_LABELS } from '@/lib/skill-grouping';
 import type { ProfileSkill } from '@/lib/types';
 
-function skill(overrides: Partial<ProfileSkill> & { rkey: string; skillName: string }): ProfileSkill {
+function skill(
+  overrides: Partial<ProfileSkill> & { rkey: string; skillName: string },
+): ProfileSkill {
   return { endorsementCount: 0, ...overrides };
 }
 
