@@ -61,14 +61,11 @@ export function AtprotoCounter({
         <span className="font-mono text-base font-semibold tabular-nums text-foreground">
           {formatted}
         </span>{' '}
-        {suffix}
+        {suffix}{' '}
+        <a href="/search" className="font-medium text-primary hover:underline">
+          {cta}
+        </a>
       </p>
-      <a
-        href="/search"
-        className="mt-1 inline-block text-sm font-medium text-primary hover:underline"
-      >
-        {cta}
-      </a>
     </div>
   );
 }
