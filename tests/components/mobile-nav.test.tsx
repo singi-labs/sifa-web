@@ -92,7 +92,7 @@ describe('MobileNav', () => {
       expect(screen.getByText('@alice.bsky.social')).toBeDefined();
     });
     expect(screen.getByRole('link', { name: /View profile/ })).toBeDefined();
-    expect(screen.getByRole('link', { name: /Edit profile/ })).toBeDefined();
+    expect(screen.queryByRole('link', { name: /Edit profile/ })).toBeNull();
     expect(screen.getByRole('button', { name: /Sign out/ })).toBeDefined();
     expect(screen.queryByRole('link', { name: 'Sign in' })).toBeNull();
   });
