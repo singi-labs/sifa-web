@@ -3,11 +3,14 @@ import Image from 'next/image';
 import { getTranslations } from 'next-intl/server';
 import { AuthReturnHandler } from '@/components/auth-return-handler';
 import { SuggestionsBanner } from '@/components/suggestions-banner';
+import { fetchStats } from '@/lib/api';
 
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
   const t = await getTranslations('home');
+  const stats = await fetchStats();
+  const showCount = stats !== null && stats.profileCount > 0;
 
   return (
     <div className="flex flex-col items-center justify-center px-4 py-24 text-center">
@@ -29,6 +32,11 @@ export default async function Home() {
       />
       <h1 className="text-4xl font-bold tracking-tight">{t('title')}</h1>
       <p className="mt-4 max-w-md text-lg text-muted-foreground">{t('subtitle')}</p>
+      {showCount && (
+        <p className="mt-4 text-sm font-medium text-foreground">
+          {t('profileCount', { count: stats.profileCount })}
+        </p>
+      )}
       <p className="mt-8 text-sm text-muted-foreground">{t('comingSoon')}</p>
       <div className="mt-6 flex gap-4">
         <Link
