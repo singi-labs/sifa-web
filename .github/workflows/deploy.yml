@@ -42,3 +42,4 @@ jobs:
             cd /opt/sifa
             docker compose pull
             docker compose up -d
+            docker image prune -af
