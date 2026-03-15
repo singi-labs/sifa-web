@@ -209,9 +209,11 @@ describe('SkillCombobox', () => {
 
     await vi.advanceTimersByTimeAsync(350);
 
-    // Dropdown should not appear, but typing should still work (free text)
+    // No API suggestions, but "Add as new" option still shows (free text fallback)
     await waitFor(() => {
-      expect(screen.queryByRole('listbox')).toBeNull();
+      const options = screen.getAllByRole('option');
+      expect(options.length).toBe(1);
+      expect(options[0]?.textContent).toContain('as new skill');
     });
     // onChange should have been called with the typed text
     expect(onChange).toHaveBeenCalledWith('T', '');
@@ -229,9 +231,11 @@ describe('SkillCombobox', () => {
 
     await vi.advanceTimersByTimeAsync(350);
 
-    // Should not crash, dropdown should not appear
+    // Should not crash; "Add as new" option is the only fallback
     await waitFor(() => {
-      expect(screen.queryByRole('listbox')).toBeNull();
+      const options = screen.getAllByRole('option');
+      expect(options.length).toBe(1);
+      expect(options[0]?.textContent).toContain('as new skill');
     });
   });
 
@@ -287,5 +291,167 @@ describe('SkillCombobox', () => {
 
     await user.keyboard('{ArrowDown}');
     expect(input.getAttribute('aria-activedescendant')).toBe('test-skill-listbox-option-1');
+  });
+
+  describe('profile skills layer', () => {
+    const profileSkills = [
+      { rkey: 'sk1', skillName: 'TypeScript', category: 'Technical' },
+      { rkey: 'sk2', skillName: 'React', category: 'Frontend' },
+      { rkey: 'sk3', skillName: 'Python', category: 'Technical' },
+    ];
+
+    it('shows profile skills instantly without API call', async () => {
+      const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+      mockFetch.mockClear();
+
+      renderCombobox({ profileSkills });
+      const input = screen.getByRole('combobox');
+      await user.type(input, 'Ty');
+
+      // Listbox should appear immediately (before debounce)
+      expect(screen.getByRole('listbox')).toBeDefined();
+      expect(screen.getByText('TypeScript')).toBeDefined();
+      expect(screen.getByText('Your skills')).toBeDefined();
+
+      // API should not have been called yet
+      expect(mockFetch).not.toHaveBeenCalled();
+    });
+
+    it('shows "Your skills" header for profile matches', async () => {
+      const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+      mockFetch.mockResolvedValue({
+        ok: true,
+        json: () => Promise.resolve({ skills: [] }),
+      });
+
+      renderCombobox({ profileSkills });
+      const input = screen.getByRole('combobox');
+      await user.type(input, 'React');
+
+      expect(screen.getByText('Your skills')).toBeDefined();
+      expect(screen.getByText('React')).toBeDefined();
+    });
+
+    it('shows "Suggestions" header for API results', async () => {
+      const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+      mockFetch.mockResolvedValue({
+        ok: true,
+        json: () => Promise.resolve({ skills: mockSuggestions }),
+      });
+
+      renderCombobox();
+      const input = screen.getByRole('combobox');
+      await user.type(input, 'Typ');
+
+      await vi.advanceTimersByTimeAsync(350);
+      await waitFor(() => {
+        expect(screen.getByText('Suggestions')).toBeDefined();
+      });
+    });
+
+    it('deduplicates API results against profile skills', async () => {
+      const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+      // API returns TypeScript which is also in profile skills
+      mockFetch.mockResolvedValue({
+        ok: true,
+        json: () =>
+          Promise.resolve({
+            skills: [
+              { canonicalName: 'TypeScript', slug: 'typescript', category: 'Technical' },
+              { canonicalName: 'Typesafe SQL', slug: 'typesafe-sql', category: 'Technical' },
+            ],
+          }),
+      });
+
+      renderCombobox({ profileSkills });
+      const input = screen.getByRole('combobox');
+      await user.type(input, 'Typ');
+
+      await vi.advanceTimersByTimeAsync(350);
+      await waitFor(() => {
+        expect(screen.getByText('Suggestions')).toBeDefined();
+      });
+
+      // TypeScript should only appear once (in "Your skills"), not in "Suggestions"
+      const options = screen.getAllByRole('option');
+      const tsOptions = options.filter(
+        (opt) => opt.querySelector('.font-medium')?.textContent === 'TypeScript',
+      );
+      expect(tsOptions.length).toBe(1);
+
+      // Typesafe SQL should appear in suggestions (not a profile skill)
+      expect(screen.getByText('Typesafe SQL')).toBeDefined();
+    });
+
+    it('shows profile matches even when API fails', async () => {
+      const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+      mockFetch.mockRejectedValue(new Error('Network failure'));
+
+      renderCombobox({ profileSkills });
+      const input = screen.getByRole('combobox');
+      await user.type(input, 'React');
+
+      await vi.advanceTimersByTimeAsync(350);
+
+      // Profile match should still be visible
+      expect(screen.getByRole('listbox')).toBeDefined();
+      expect(screen.getByText('React')).toBeDefined();
+    });
+
+    it('keyboard navigates across profile and API layers', async () => {
+      const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+      mockFetch.mockResolvedValue({
+        ok: true,
+        json: () =>
+          Promise.resolve({
+            skills: [
+              { canonicalName: 'Typesafe SQL', slug: 'typesafe-sql', category: 'Technical' },
+            ],
+          }),
+      });
+
+      const { onChange } = renderCombobox({ profileSkills });
+      const input = screen.getByRole('combobox');
+      await user.type(input, 'Typ');
+
+      await vi.advanceTimersByTimeAsync(350);
+      await waitFor(() => {
+        expect(screen.getByText('Suggestions')).toBeDefined();
+      });
+
+      // First option: profile TypeScript (index 0)
+      await user.keyboard('{ArrowDown}');
+      expect(input.getAttribute('aria-activedescendant')).toBe('test-skill-listbox-option-0');
+
+      // Second option: API Typesafe SQL (index 1)
+      await user.keyboard('{ArrowDown}');
+      expect(input.getAttribute('aria-activedescendant')).toBe('test-skill-listbox-option-1');
+
+      // Select API suggestion with Enter
+      await user.keyboard('{Enter}');
+      expect(onChange).toHaveBeenCalledWith('Typesafe SQL', 'Technical');
+    });
+
+    it('fires onSelect for profile skill selection', async () => {
+      const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+      const onSelect = vi.fn();
+
+      renderCombobox({ profileSkills, onSelect });
+      const input = screen.getByRole('combobox');
+      await user.type(input, 'React');
+
+      await user.click(screen.getByText('React'));
+      expect(onSelect).toHaveBeenCalledWith('React', 'Frontend');
+    });
+
+    it('does not show profile matches below 2-character threshold', async () => {
+      const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+
+      renderCombobox({ profileSkills });
+      const input = screen.getByRole('combobox');
+      await user.type(input, 'T');
+
+      expect(screen.queryByRole('listbox')).toBeNull();
+    });
   });
 });

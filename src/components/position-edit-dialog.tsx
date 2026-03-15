@@ -141,6 +141,7 @@ export function PositionEditDialog({ title, position, onSave, onCancel }: Positi
 
           <PositionSkillEditor
             linkedSkills={linkedSkills}
+            profileSkills={profile.skills}
             onAdd={handleAddSkill}
             onRemove={handleRemoveSkill}
           />

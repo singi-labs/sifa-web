@@ -8,11 +8,18 @@ import type { ProfileSkill } from '@/lib/types';
 
 interface PositionSkillEditorProps {
   linkedSkills: ProfileSkill[];
+  /** All skills on the user's profile, for combobox suggestions. */
+  profileSkills?: ProfileSkill[];
   onAdd: (skillName: string, category: string) => void;
   onRemove: (rkey: string) => void;
 }
 
-export function PositionSkillEditor({ linkedSkills, onAdd, onRemove }: PositionSkillEditorProps) {
+export function PositionSkillEditor({
+  linkedSkills,
+  profileSkills,
+  onAdd,
+  onRemove,
+}: PositionSkillEditorProps) {
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('');
 
@@ -59,6 +66,7 @@ export function PositionSkillEditor({ linkedSkills, onAdd, onRemove }: PositionS
         category={category}
         onChange={handleChange}
         onSelect={handleSelect}
+        profileSkills={profileSkills}
       />
     </div>
   );

@@ -177,6 +177,7 @@ export function SkillsSection({ isOwnProfile }: SkillsSectionProps) {
           initialSkillName={dialog.mode === 'edit' ? dialog.item.skillName : undefined}
           initialCategory={dialog.mode === 'edit' ? dialog.item.category : undefined}
           isEditMode={dialog.mode === 'edit'}
+          profileSkills={skills}
           positions={positions}
           linkedPositionRkeys={
             dialog.mode === 'edit' ? getLinkedPositionRkeys(dialog.item.rkey) : undefined

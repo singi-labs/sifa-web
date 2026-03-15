@@ -1,11 +1,11 @@
 'use client';
 
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useState, useRef, useCallback, useEffect, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import { Input } from '@/components/ui/input';
 import { MagnifyingGlass, X } from '@phosphor-icons/react';
 import { searchSkills } from '@/lib/profile-api';
-import type { SkillSuggestion } from '@/lib/types';
+import type { ProfileSkill, SkillSuggestion } from '@/lib/types';
 
 interface SkillComboboxProps {
   value: string;
@@ -13,13 +13,28 @@ interface SkillComboboxProps {
   onChange: (skillName: string, category: string) => void;
   /** Fires only on explicit selection (dropdown click or Enter). */
   onSelect?: (skillName: string, category: string) => void;
+  /** User's own profile skills — shown instantly as "Your skills" layer. */
+  profileSkills?: ProfileSkill[];
   id?: string;
 }
 
-export function SkillCombobox({ value, category, onChange, onSelect, id }: SkillComboboxProps) {
+/** Case-insensitive substring match for client-side filtering. */
+function matchesQuery(skillName: string, q: string): boolean {
+  const lower = q.toLowerCase();
+  return skillName.toLowerCase().includes(lower);
+}
+
+export function SkillCombobox({
+  value,
+  category,
+  onChange,
+  onSelect,
+  profileSkills,
+  id,
+}: SkillComboboxProps) {
   const t = useTranslations('sections');
   const [query, setQuery] = useState(value);
-  const [results, setResults] = useState<SkillSuggestion[]>([]);
+  const [apiResults, setApiResults] = useState<SkillSuggestion[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
@@ -43,22 +58,36 @@ export function SkillCombobox({ value, category, onChange, onSelect, id }: Skill
     return () => document.removeEventListener('mousedown', handleClick);
   }, []);
 
+  // Layer 1: filter profile skills client-side (instant, no debounce)
+  const profileMatches = useMemo(() => {
+    if (!profileSkills || query.trim().length < 2) return [];
+    return profileSkills.filter((s) => matchesQuery(s.skillName, query.trim()));
+  }, [profileSkills, query]);
+
+  // Layer 2: API results, deduplicated against profile matches
+  const globalSuggestions = useMemo(() => {
+    const profileNames = new Set(profileMatches.map((s) => s.skillName.toLowerCase()));
+    return apiResults.filter((s) => !profileNames.has(s.canonicalName.toLowerCase()));
+  }, [apiResults, profileMatches]);
+
+  // Build flat option list for keyboard navigation
+  const hasExactMatch =
+    profileMatches.some((s) => s.skillName.toLowerCase() === query.trim().toLowerCase()) ||
+    globalSuggestions.some((r) => r.canonicalName.toLowerCase() === query.trim().toLowerCase());
+  const showAddNew = query.trim().length >= 2 && !hasExactMatch;
+  const totalOptions = profileMatches.length + globalSuggestions.length + (showAddNew ? 1 : 0);
+
   const performSearch = useCallback(async (q: string) => {
     if (q.length < 2) {
-      setResults([]);
-      setIsOpen(false);
+      setApiResults([]);
       return;
     }
     setLoading(true);
     try {
       const suggestions = await searchSkills(q);
-      setResults(Array.isArray(suggestions) ? suggestions : []);
-      setIsOpen(true);
-      setActiveIndex(-1);
+      setApiResults(Array.isArray(suggestions) ? suggestions : []);
     } catch {
-      // Graceful fallback: keep dropdown closed, allow free text
-      setResults([]);
-      setIsOpen(false);
+      setApiResults([]);
     } finally {
       setLoading(false);
     }
@@ -66,35 +95,47 @@ export function SkillCombobox({ value, category, onChange, onSelect, id }: Skill
 
   const handleQueryChange = (q: string) => {
     setQuery(q);
-    // Also update the parent with the typed text (free text entry)
     onChange(q, category);
 
     if (debounceRef.current) clearTimeout(debounceRef.current);
-    if (q.length < 2) {
-      setResults([]);
+
+    if (q.trim().length < 2) {
+      setApiResults([]);
       setIsOpen(false);
       return;
     }
+
+    // Open immediately for profile matches (instant)
+    setIsOpen(true);
+    setActiveIndex(-1);
 
     debounceRef.current = setTimeout(() => {
       void performSearch(q);
     }, 300);
   };
 
-  const handleSelect = (suggestion: SkillSuggestion) => {
+  const handleSelectProfileSkill = (skill: ProfileSkill) => {
+    setQuery(skill.skillName);
+    onChange(skill.skillName, skill.category ?? '');
+    onSelect?.(skill.skillName, skill.category ?? '');
+    setApiResults([]);
+    setIsOpen(false);
+    setActiveIndex(-1);
+  };
+
+  const handleSelectSuggestion = (suggestion: SkillSuggestion) => {
     setQuery(suggestion.canonicalName);
     onChange(suggestion.canonicalName, suggestion.category);
     onSelect?.(suggestion.canonicalName, suggestion.category);
-    setResults([]);
+    setApiResults([]);
     setIsOpen(false);
     setActiveIndex(-1);
   };
 
   const handleSelectFreeText = () => {
-    // Use the current query as-is
     onChange(query, category);
     onSelect?.(query, category);
-    setResults([]);
+    setApiResults([]);
     setIsOpen(false);
     setActiveIndex(-1);
   };
@@ -102,17 +143,20 @@ export function SkillCombobox({ value, category, onChange, onSelect, id }: Skill
   const handleClear = () => {
     setQuery('');
     onChange('', '');
-    setResults([]);
+    setApiResults([]);
     setIsOpen(false);
     setActiveIndex(-1);
   };
 
-  // Total options: results + possible "Add as new" option
-  const hasExactMatch = results.some(
-    (r) => r.canonicalName.toLowerCase() === query.trim().toLowerCase(),
-  );
-  const showAddNew = query.trim().length >= 2 && !hasExactMatch;
-  const totalOptions = results.length + (showAddNew ? 1 : 0);
+  const selectByIndex = (index: number) => {
+    if (index < profileMatches.length) {
+      handleSelectProfileSkill(profileMatches[index]!);
+    } else if (index < profileMatches.length + globalSuggestions.length) {
+      handleSelectSuggestion(globalSuggestions[index - profileMatches.length]!);
+    } else {
+      handleSelectFreeText();
+    }
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (!isOpen || totalOptions === 0) return;
@@ -124,16 +168,15 @@ export function SkillCombobox({ value, category, onChange, onSelect, id }: Skill
       setActiveIndex((prev) => (prev > 0 ? prev - 1 : totalOptions - 1));
     } else if (e.key === 'Enter' && activeIndex >= 0) {
       e.preventDefault();
-      if (activeIndex < results.length) {
-        handleSelect(results[activeIndex]!);
-      } else {
-        handleSelectFreeText();
-      }
+      selectByIndex(activeIndex);
     } else if (e.key === 'Escape') {
       setIsOpen(false);
       setActiveIndex(-1);
     }
   };
+
+  // Running index counter for flat option IDs
+  let optionIndex = 0;
 
   return (
     <div ref={containerRef} className="relative">
@@ -186,50 +229,88 @@ export function SkillCombobox({ value, category, onChange, onSelect, id }: Skill
           role="listbox"
           className="absolute z-[100] mt-1 max-h-48 w-full overflow-y-auto rounded-md border border-border bg-popover shadow-lg"
         >
-          {results.map((suggestion, i) => (
-            <div
-              key={suggestion.slug}
-              id={`${listboxId}-option-${i}`}
-              role="option"
-              aria-selected={i === activeIndex}
-              className={`w-full cursor-pointer px-3 py-2 text-left text-sm hover:bg-accent ${
-                i === activeIndex ? 'bg-accent' : ''
-              }`}
-              onClick={() => handleSelect(suggestion)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  handleSelect(suggestion);
-                }
-              }}
-              tabIndex={-1}
-            >
-              <span className="font-medium">{suggestion.canonicalName}</span>
-              {suggestion.category && (
-                <span className="ml-2 text-xs text-muted-foreground">{suggestion.category}</span>
-              )}
-            </div>
-          ))}
-          {showAddNew && (
-            <div
-              id={`${listboxId}-option-${results.length}`}
-              role="option"
-              aria-selected={activeIndex === results.length}
-              className={`w-full cursor-pointer border-t border-border px-3 py-2 text-left text-sm hover:bg-accent ${
-                activeIndex === results.length ? 'bg-accent' : ''
-              }`}
-              onClick={handleSelectFreeText}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  handleSelectFreeText();
-                }
-              }}
-              tabIndex={-1}
-            >
-              Add &lsquo;{query.trim()}&rsquo; as new skill
-            </div>
+          {profileMatches.length > 0 && (
+            <>
+              <div className="px-3 py-1 text-xs font-medium text-muted-foreground">
+                Your skills
+              </div>
+              {profileMatches.map((skill) => {
+                const i = optionIndex++;
+                return (
+                  <div
+                    key={`profile-${skill.rkey}`}
+                    id={`${listboxId}-option-${i}`}
+                    role="option"
+                    aria-selected={i === activeIndex}
+                    className={`w-full cursor-pointer px-3 py-2 text-left text-sm hover:bg-accent ${
+                      i === activeIndex ? 'bg-accent' : ''
+                    }`}
+                    onClick={() => handleSelectProfileSkill(skill)}
+                    onKeyDown={() => {}} // keyboard handled by combobox input
+                    tabIndex={-1}
+                  >
+                    <span className="font-medium">{skill.skillName}</span>
+                    {skill.category && (
+                      <span className="ml-2 text-xs text-muted-foreground">
+                        {skill.category}
+                      </span>
+                    )}
+                  </div>
+                );
+              })}
+            </>
           )}
+          {globalSuggestions.length > 0 && (
+            <>
+              <div
+                className={`px-3 py-1 text-xs font-medium text-muted-foreground${profileMatches.length > 0 ? ' border-t border-border' : ''}`}
+              >
+                Suggestions
+              </div>
+              {globalSuggestions.map((suggestion) => {
+                const i = optionIndex++;
+                return (
+                  <div
+                    key={suggestion.slug}
+                    id={`${listboxId}-option-${i}`}
+                    role="option"
+                    aria-selected={i === activeIndex}
+                    className={`w-full cursor-pointer px-3 py-2 text-left text-sm hover:bg-accent ${
+                      i === activeIndex ? 'bg-accent' : ''
+                    }`}
+                    onClick={() => handleSelectSuggestion(suggestion)}
+                    onKeyDown={() => {}} // keyboard handled by combobox input
+                    tabIndex={-1}
+                  >
+                    <span className="font-medium">{suggestion.canonicalName}</span>
+                    {suggestion.category && (
+                      <span className="ml-2 text-xs text-muted-foreground">
+                        {suggestion.category}
+                      </span>
+                    )}
+                  </div>
+                );
+              })}
+            </>
+          )}
+          {showAddNew && (() => {
+            const i = optionIndex++;
+            return (
+              <div
+                id={`${listboxId}-option-${i}`}
+                role="option"
+                aria-selected={i === activeIndex}
+                className={`w-full cursor-pointer border-t border-border px-3 py-2 text-left text-sm hover:bg-accent ${
+                  i === activeIndex ? 'bg-accent' : ''
+                }`}
+                onClick={handleSelectFreeText}
+                onKeyDown={() => {}} // keyboard handled by combobox input
+                tabIndex={-1}
+              >
+                Add &lsquo;{query.trim()}&rsquo; as new skill
+              </div>
+            );
+          })()}
         </div>
       )}
     </div>
