@@ -62,10 +62,7 @@ export function AtprotoCounter({
           {formatted}
         </span>{' '}
         {suffix}{' '}
-        <a
-          href="/search"
-          className="font-medium text-primary hover:underline"
-        >
+        <a href="/search" className="font-medium text-primary hover:underline">
           {cta}
         </a>
       </p>
