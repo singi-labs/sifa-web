@@ -6,24 +6,20 @@ import { useSearchParams } from 'next/navigation';
 import { useAuth } from '@/components/auth-provider';
 import { toast } from 'sonner';
 
-type Theme = 'auto' | 'light' | 'dark';
-
 export function EmbedBuilder() {
   const t = useTranslations('embedBuilder');
   const { session } = useAuth();
   const searchParams = useSearchParams();
   const [identifier, setIdentifier] = useState(searchParams.get('handle') ?? session?.handle ?? '');
-  const [theme, setTheme] = useState<Theme>('auto');
 
   const embedCode = useMemo(() => {
     if (!identifier.trim()) return '';
 
     const isDid = identifier.startsWith('did:');
     const dataAttr = isDid ? `data-did="${identifier}"` : `data-handle="${identifier}"`;
-    const themeAttr = theme !== 'auto' ? ` data-theme="${theme}"` : '';
 
-    return `<script src="https://sifa.id/embed.js" ${dataAttr}${themeAttr}></script>`;
-  }, [identifier, theme]);
+    return `<script src="https://sifa.id/embed.js" ${dataAttr}></script>`;
+  }, [identifier]);
 
   const [iframeHeight, setIframeHeight] = useState(300);
 
@@ -37,8 +33,6 @@ export function EmbedBuilder() {
     window.addEventListener('message', handleMessage);
     return () => window.removeEventListener('message', handleMessage);
   }, [handleMessage]);
-
-  const previewBg = theme === 'dark' ? '#1a1a2e' : theme === 'light' ? '#fff' : undefined;
 
   function handleCopy() {
     void navigator.clipboard.writeText(embedCode).then(() => {
@@ -65,23 +59,7 @@ export function EmbedBuilder() {
           />
         </div>
 
-        <fieldset>
-          <legend className="text-sm font-medium">{t('themeLabel')}</legend>
-          <div className="mt-2 flex gap-4">
-            {(['auto', 'light', 'dark'] as const).map((value) => (
-              <label key={value} className="flex items-center gap-2 text-sm">
-                <input
-                  type="radio"
-                  name="embed-theme"
-                  value={value}
-                  checked={theme === value}
-                  onChange={() => setTheme(value)}
-                />
-                {value.charAt(0).toUpperCase() + value.slice(1)}
-              </label>
-            ))}
-          </div>
-        </fieldset>
+        <p className="text-sm text-muted-foreground">{t('themeNote')}</p>
 
         {identifier.trim() && (
           <div>
@@ -106,13 +84,10 @@ export function EmbedBuilder() {
       {/* Right column: preview */}
       <div>
         <p className="text-sm font-medium">{t('previewLabel')}</p>
-        <div
-          className="mt-2 rounded-md border border-border"
-          style={previewBg ? { backgroundColor: previewBg } : undefined}
-        >
+        <div className="mt-2 rounded-md border border-border">
           {identifier.trim() ? (
             <iframe
-              src={`/embed/${encodeURIComponent(identifier)}?theme=${theme}`}
+              src={`/embed/${encodeURIComponent(identifier)}`}
               title={t('previewTitle')}
               className="w-full rounded-md"
               style={{ height: `${iframeHeight}px` }}
