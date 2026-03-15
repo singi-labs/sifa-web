@@ -55,17 +55,17 @@
       '.name-row a{text-decoration:none;color:inherit;}' +
       '.name{font-size:16px;font-weight:600;margin:0;}' +
       '.handle{font-size:13px;color:var(--sifa-muted);margin:0;}' +
-      '.avatar-col{flex-shrink:0;}' +
-      '.avatar{width:64px;height:64px;border-radius:50%;object-fit:cover;}' +
-      '.avatar-placeholder{width:64px;height:64px;border-radius:50%;background:var(--sifa-primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:600;}' +
+      '.avatar-col{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:8px;}' +
+      '.avatar{width:56px;height:56px;border-radius:50%;object-fit:cover;}' +
+      '.avatar-placeholder{width:56px;height:56px;border-radius:50%;background:var(--sifa-primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:600;}' +
       '.headline{font-size:14px;color:var(--sifa-muted);margin:6px 0 0;}' +
       '.location{font-size:13px;color:var(--sifa-muted);margin:4px 0 0;}' +
-      '.open-to{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0;}' +
-      '.pill{font-size:12px;padding:3px 10px;border-radius:12px;background:var(--sifa-primary);color:#fff;}' +
-      '.stats{display:flex;gap:16px;margin:12px 0 0;}' +
+      '.open-to{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0 0;}' +
+      '.pill{font-size:11px;padding:2px 8px;border-radius:10px;background:var(--sifa-primary);color:#fff;}' +
+      '.stats{display:flex;gap:12px;}' +
       '.stat{text-align:center;}' +
-      '.stat-value{font-size:18px;font-weight:700;display:block;}' +
-      '.stat-label{font-size:11px;color:var(--sifa-muted);}' +
+      '.stat-value{font-size:14px;font-weight:700;display:block;}' +
+      '.stat-label{font-size:10px;color:var(--sifa-muted);}' +
       '.footer{margin-top:14px;padding-top:12px;border-top:1px solid var(--sifa-border);display:flex;align-items:center;justify-content:space-between;}' +
       '.cta{display:inline-block;font-size:13px;color:var(--sifa-primary);text-decoration:none;font-weight:500;}' +
       '.cta:hover{text-decoration:underline;}' +
@@ -152,10 +152,11 @@
       escapeHtml(data.profileUrl) +
       '" target="_blank" rel="noopener">' +
       avatarHtml +
-      '</a></div>' +
+      '</a>' +
+      statsHtml +
+      '</div>' +
       '</div>' +
       openToHtml +
-      statsHtml +
       footerHtml +
       '</div>'
     );
