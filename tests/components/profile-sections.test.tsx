@@ -130,7 +130,9 @@ describe('SkillsSection', () => {
     const skills = [{ rkey: '1', skillName: 'React', category: 'creative' }];
     withProvider(<SkillsSection skills={skills} />, { skills });
     // The badge should contain the skill name and the category with a middle dot
-    const badge = screen.getByText('React').closest('[class*="badge"]') ?? screen.getByText('React').parentElement;
+    const badge =
+      screen.getByText('React').closest('[class*="badge"]') ??
+      screen.getByText('React').parentElement;
     expect(badge?.textContent).toContain('\u00b7');
     expect(badge?.textContent).toContain('creative');
   });
@@ -138,7 +140,9 @@ describe('SkillsSection', () => {
   it('does not show category separator when no category', () => {
     const skills = [{ rkey: '1', skillName: 'TypeScript' }];
     withProvider(<SkillsSection skills={skills} />, { skills });
-    const badge = screen.getByText('TypeScript').closest('[class*="badge"]') ?? screen.getByText('TypeScript').parentElement;
+    const badge =
+      screen.getByText('TypeScript').closest('[class*="badge"]') ??
+      screen.getByText('TypeScript').parentElement;
     expect(badge?.textContent).not.toContain('\u00b7');
   });
 
