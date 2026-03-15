@@ -11,6 +11,7 @@ import { SkillEditDialog } from '@/components/skill-edit-dialog';
 import { valuesToSkill } from '@/components/profile-editor/section-converters';
 import { useProfileEdit } from '@/components/profile-edit-provider';
 import { createSkill, updateSkill, deleteSkill } from '@/lib/profile-api';
+import { groupSkillsByCategory, CATEGORY_LABELS } from '@/lib/skill-grouping';
 import type { ProfileSkill } from '@/lib/types';
 
 type DialogState = { mode: 'add' } | { mode: 'edit'; item: ProfileSkill };
@@ -72,13 +73,7 @@ export function SkillsSection({ isOwnProfile }: SkillsSectionProps) {
 
   if (!skills.length && !isOwnProfile) return null;
 
-  // Group by category
-  const grouped = new Map<string, ProfileSkill[]>();
-  for (const skill of skills) {
-    const cat = skill.category ?? '';
-    if (!grouped.has(cat)) grouped.set(cat, []);
-    grouped.get(cat)!.push(skill);
-  }
+  const orderedGroups = groupSkillsByCategory(skills);
 
   return (
     <section className="mt-8" aria-label={t('skills')}>
@@ -105,11 +100,11 @@ export function SkillsSection({ isOwnProfile }: SkillsSectionProps) {
         isOwnProfile={isOwnProfile}
         onAdd={() => setDialog({ mode: 'add' })}
       >
-        {Array.from(grouped.entries()).map(([category, categorySkills]) => (
-          <div key={category} className={category ? 'mt-3' : ''}>
-            {category && (
-              <h3 className="mb-2 text-sm font-medium text-muted-foreground">{category}</h3>
-            )}
+        {orderedGroups.map(([category, categorySkills]) => (
+          <div key={category} className="mt-3">
+            <h3 className="mb-2 text-sm font-medium text-muted-foreground">
+              {CATEGORY_LABELS[category] ?? category}
+            </h3>
             <div className="flex flex-wrap gap-2">
               {categorySkills.map((skill) => (
                 <Badge
