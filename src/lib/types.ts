@@ -38,7 +38,9 @@ export interface ProfileSkill {
   rkey: string;
   skillName: string;
   category?: string;
-  endorsementCount?: number;
+  endorsementCount?: number; // keep for internal logic, never display
+  endorsed?: boolean; // true if at least one confirmed mutual endorsement
+  activityBacked?: boolean; // true if backed by verified external accounts or community activity
 }
 
 export interface SkillSuggestion {

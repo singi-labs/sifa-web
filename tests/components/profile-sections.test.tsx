@@ -145,12 +145,12 @@ describe('SkillsSection', () => {
     expect(badge?.textContent).not.toContain('\u00b7');
   });
 
-  it('shows endorsement count', () => {
+  it('never displays endorsement count', () => {
     const skills = [
       { rkey: '1', skillName: 'TypeScript', category: 'technical', endorsementCount: 5 },
     ];
     withProvider(<SkillsSection skills={skills} />, { skills });
-    expect(screen.getByText('5')).toBeDefined();
+    expect(screen.queryByText('5')).toBeNull();
   });
 
   it('displays groups in defined category order', () => {
