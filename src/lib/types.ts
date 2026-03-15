@@ -7,6 +7,11 @@ export interface LocationValue {
   geonameId?: number;
 }
 
+export interface SkillRef {
+  uri: string;
+  cid: string;
+}
+
 export interface ProfilePosition {
   rkey: string;
   companyName: string;
@@ -16,6 +21,8 @@ export interface ProfilePosition {
   endDate?: string;
   location?: LocationValue | null;
   current: boolean;
+  skills?: SkillRef[];
+  linkedSkills?: ProfileSkill[];
 }
 
 export interface ProfileEducation {
