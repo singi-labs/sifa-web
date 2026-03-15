@@ -35,23 +35,13 @@ describe('PositionLinkList', () => {
   it('renders positions list with checkboxes', () => {
     const onToggle = vi.fn();
     render(
-      <PositionLinkList
-        positions={positions}
-        linkedPositionRkeys={['pos1']}
-        onToggle={onToggle}
-      />,
+      <PositionLinkList positions={positions} linkedPositionRkeys={['pos1']} onToggle={onToggle} />,
     );
 
     expect(screen.getByText('Used in')).toBeDefined();
-    expect(
-      screen.getByText('Senior Engineer at Stripe (2022 - Present)'),
-    ).toBeDefined();
-    expect(
-      screen.getByText('Software Developer at Acme (2019 - 2022)'),
-    ).toBeDefined();
-    expect(
-      screen.getByText('Junior Dev at StartupCo (2017 - 2019)'),
-    ).toBeDefined();
+    expect(screen.getByText('Senior Engineer at Stripe (2022 - Present)')).toBeDefined();
+    expect(screen.getByText('Software Developer at Acme (2019 - 2022)')).toBeDefined();
+    expect(screen.getByText('Junior Dev at StartupCo (2017 - 2019)')).toBeDefined();
 
     const checkboxes = screen.getAllByRole('checkbox');
     expect(checkboxes).toHaveLength(3);
@@ -63,13 +53,7 @@ describe('PositionLinkList', () => {
   it('calls onToggle when checking a position', async () => {
     const user = userEvent.setup();
     const onToggle = vi.fn();
-    render(
-      <PositionLinkList
-        positions={positions}
-        linkedPositionRkeys={[]}
-        onToggle={onToggle}
-      />,
-    );
+    render(<PositionLinkList positions={positions} linkedPositionRkeys={[]} onToggle={onToggle} />);
 
     const checkboxes = screen.getAllByRole('checkbox');
     await user.click(checkboxes[0]!);
@@ -80,11 +64,7 @@ describe('PositionLinkList', () => {
     const user = userEvent.setup();
     const onToggle = vi.fn();
     render(
-      <PositionLinkList
-        positions={positions}
-        linkedPositionRkeys={['pos2']}
-        onToggle={onToggle}
-      />,
+      <PositionLinkList positions={positions} linkedPositionRkeys={['pos2']} onToggle={onToggle} />,
     );
 
     const checkboxes = screen.getAllByRole('checkbox');
@@ -94,17 +74,9 @@ describe('PositionLinkList', () => {
 
   it('shows message when user has no positions', () => {
     const onToggle = vi.fn();
-    render(
-      <PositionLinkList
-        positions={[]}
-        linkedPositionRkeys={[]}
-        onToggle={onToggle}
-      />,
-    );
+    render(<PositionLinkList positions={[]} linkedPositionRkeys={[]} onToggle={onToggle} />);
 
-    expect(
-      screen.getByText('Add positions to link skills to roles'),
-    ).toBeDefined();
+    expect(screen.getByText('Add positions to link skills to roles')).toBeDefined();
     expect(screen.queryAllByRole('checkbox')).toHaveLength(0);
   });
 
@@ -126,30 +98,16 @@ describe('PositionLinkList', () => {
 
   it('has accessible labels on checkboxes', () => {
     const onToggle = vi.fn();
-    render(
-      <PositionLinkList
-        positions={positions}
-        linkedPositionRkeys={[]}
-        onToggle={onToggle}
-      />,
-    );
+    render(<PositionLinkList positions={positions} linkedPositionRkeys={[]} onToggle={onToggle} />);
 
-    expect(
-      screen.getByLabelText('Senior Engineer at Stripe (2022 - Present)'),
-    ).toBeDefined();
-    expect(
-      screen.getByLabelText('Software Developer at Acme (2019 - 2022)'),
-    ).toBeDefined();
+    expect(screen.getByLabelText('Senior Engineer at Stripe (2022 - Present)')).toBeDefined();
+    expect(screen.getByLabelText('Software Developer at Acme (2019 - 2022)')).toBeDefined();
   });
 
   it('passes axe accessibility checks', async () => {
     const onToggle = vi.fn();
     const { container } = render(
-      <PositionLinkList
-        positions={positions}
-        linkedPositionRkeys={['pos1']}
-        onToggle={onToggle}
-      />,
+      <PositionLinkList positions={positions} linkedPositionRkeys={['pos1']} onToggle={onToggle} />,
     );
 
     const results = await axe(container);
