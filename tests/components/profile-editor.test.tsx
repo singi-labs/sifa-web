@@ -277,13 +277,13 @@ describe('Section converters', () => {
 
   describe('skill round-trip', () => {
     it('converts skill to values and back', () => {
-      const original = { rkey: 's1', skillName: 'TypeScript', category: 'Frontend' };
+      const original = { rkey: 's1', skillName: 'TypeScript', category: 'technical' };
       const values = skillToValues(original);
       expect(values.skillName).toBe('TypeScript');
 
       const result = valuesToSkill(values);
       expect(result.skillName).toBe('TypeScript');
-      expect(result.category).toBe('Frontend');
+      expect(result.category).toBe('technical');
     });
 
     it('converts empty category to undefined', () => {

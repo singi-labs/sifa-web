@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { X } from '@phosphor-icons/react';
 import { SkillCombobox } from '@/components/skill-combobox';
+import { SKILL_CATEGORIES } from '@/lib/skill-categories';
 
 interface SkillEditDialogProps {
   title: string;
@@ -15,19 +16,6 @@ interface SkillEditDialogProps {
   ) => Promise<{ success: boolean; error?: string }>;
   onCancel: () => void;
 }
-
-const CATEGORY_OPTIONS = [
-  { value: '', label: 'None' },
-  { value: 'Technical', label: 'Technical' },
-  { value: 'Frontend', label: 'Frontend' },
-  { value: 'Backend', label: 'Backend' },
-  { value: 'DevOps', label: 'DevOps' },
-  { value: 'Design', label: 'Design' },
-  { value: 'Management', label: 'Management' },
-  { value: 'Communication', label: 'Communication' },
-  { value: 'Leadership', label: 'Leadership' },
-  { value: 'Other', label: 'Other' },
-];
 
 export function SkillEditDialog({
   title,
@@ -106,7 +94,8 @@ export function SkillEditDialog({
               value={category}
               onChange={(e) => setCategory(e.target.value)}
             >
-              {CATEGORY_OPTIONS.map((opt) => (
+              <option value="">None</option>
+              {SKILL_CATEGORIES.map((opt) => (
                 <option key={opt.value} value={opt.value}>
                   {opt.label}
                 </option>
