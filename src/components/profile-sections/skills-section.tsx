@@ -2,10 +2,10 @@
 
 import { useState, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
-import { PencilSimple, X } from '@phosphor-icons/react';
+import { PencilSimple } from '@phosphor-icons/react';
 import { toast } from 'sonner';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { SkillChip } from '@/components/skill-chip';
 import { SectionEditor } from '@/components/profile-editor';
 import { SkillEditDialog } from '@/components/skill-edit-dialog';
 import { valuesToSkill } from '@/components/profile-editor/section-converters';
@@ -112,52 +112,14 @@ export function SkillsSection({ isOwnProfile }: SkillsSectionProps) {
             )}
             <div className="flex flex-wrap gap-2">
               {categorySkills.map((skill) => (
-                <Badge
+                <SkillChip
                   key={skill.rkey}
-                  variant="secondary"
-                  className={
-                    isOwnProfile && !editing
-                      ? 'cursor-pointer transition-colors hover:bg-secondary/80'
-                      : undefined
-                  }
-                  onClick={
-                    isOwnProfile && !editing
-                      ? () => setDialog({ mode: 'edit', item: skill })
-                      : undefined
-                  }
-                  role={isOwnProfile && !editing ? 'button' : undefined}
-                  tabIndex={isOwnProfile && !editing ? 0 : undefined}
-                  onKeyDown={
-                    isOwnProfile && !editing
-                      ? (e: React.KeyboardEvent) => {
-                          if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault();
-                            setDialog({ mode: 'edit', item: skill });
-                          }
-                        }
-                      : undefined
-                  }
-                >
-                  {skill.skillName}
-                  {skill.endorsementCount != null && skill.endorsementCount > 0 && (
-                    <span className="ml-1.5 text-xs text-muted-foreground">
-                      {skill.endorsementCount}
-                    </span>
-                  )}
-                  {editing && (
-                    <button
-                      type="button"
-                      className="ml-1.5 inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-destructive/20 hover:text-destructive"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        void handleDelete(skill.rkey);
-                      }}
-                      aria-label={`Remove ${skill.skillName}`}
-                    >
-                      <X className="h-3 w-3" weight="bold" aria-hidden="true" />
-                    </button>
-                  )}
-                </Badge>
+                  skill={skill}
+                  editable={isOwnProfile}
+                  editing={editing}
+                  onEdit={() => setDialog({ mode: 'edit', item: skill })}
+                  onDelete={() => void handleDelete(skill.rkey)}
+                />
               ))}
             </div>
           </div>
