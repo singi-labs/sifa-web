@@ -118,6 +118,7 @@ const translations: Record<string, Record<string, string>> = {
     awards: 'Awards',
     languages: 'Languages',
     otherProfiles: 'Other Profiles',
+    usedIn: 'Used in',
     verified: 'Verified',
     verifyHintGithub:
       'Add your Sifa profile URL in the "URL" field or under "Social accounts" in your GitHub profile settings. We\'ll verify the link automatically when you save.',
