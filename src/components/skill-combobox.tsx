@@ -231,9 +231,7 @@ export function SkillCombobox({
         >
           {profileMatches.length > 0 && (
             <>
-              <div className="px-3 py-1 text-xs font-medium text-muted-foreground">
-                Your skills
-              </div>
+              <div className="px-3 py-1 text-xs font-medium text-muted-foreground">Your skills</div>
               {profileMatches.map((skill) => {
                 const i = optionIndex++;
                 return (
@@ -251,9 +249,7 @@ export function SkillCombobox({
                   >
                     <span className="font-medium">{skill.skillName}</span>
                     {skill.category && (
-                      <span className="ml-2 text-xs text-muted-foreground">
-                        {skill.category}
-                      </span>
+                      <span className="ml-2 text-xs text-muted-foreground">{skill.category}</span>
                     )}
                   </div>
                 );
@@ -293,24 +289,25 @@ export function SkillCombobox({
               })}
             </>
           )}
-          {showAddNew && (() => {
-            const i = optionIndex++;
-            return (
-              <div
-                id={`${listboxId}-option-${i}`}
-                role="option"
-                aria-selected={i === activeIndex}
-                className={`w-full cursor-pointer border-t border-border px-3 py-2 text-left text-sm hover:bg-accent ${
-                  i === activeIndex ? 'bg-accent' : ''
-                }`}
-                onClick={handleSelectFreeText}
-                onKeyDown={() => {}} // keyboard handled by combobox input
-                tabIndex={-1}
-              >
-                Add &lsquo;{query.trim()}&rsquo; as new skill
-              </div>
-            );
-          })()}
+          {showAddNew &&
+            (() => {
+              const i = optionIndex++;
+              return (
+                <div
+                  id={`${listboxId}-option-${i}`}
+                  role="option"
+                  aria-selected={i === activeIndex}
+                  className={`w-full cursor-pointer border-t border-border px-3 py-2 text-left text-sm hover:bg-accent ${
+                    i === activeIndex ? 'bg-accent' : ''
+                  }`}
+                  onClick={handleSelectFreeText}
+                  onKeyDown={() => {}} // keyboard handled by combobox input
+                  tabIndex={-1}
+                >
+                  Add &lsquo;{query.trim()}&rsquo; as new skill
+                </div>
+              );
+            })()}
         </div>
       )}
     </div>
