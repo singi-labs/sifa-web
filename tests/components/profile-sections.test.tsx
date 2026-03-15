@@ -117,19 +117,18 @@ describe('EducationSection', () => {
 describe('SkillsSection', () => {
   it('renders skills as badges', () => {
     const skills = [
-      { rkey: '1', skillName: 'TypeScript' },
+      { rkey: '1', skillName: 'TypeScript', category: 'technical' },
       { rkey: '2', skillName: 'React', category: 'technical' },
     ];
     withProvider(<SkillsSection skills={skills} />, { skills });
     expect(screen.getByText('TypeScript')).toBeDefined();
     expect(screen.getByText('React')).toBeDefined();
-    expect(screen.getByText('technical')).toBeDefined();
+    expect(screen.getByText('Technical')).toBeDefined();
   });
 
   it('shows category inline on skill chip with middle dot separator', () => {
     const skills = [{ rkey: '1', skillName: 'React', category: 'creative' }];
     withProvider(<SkillsSection skills={skills} />, { skills });
-    // The badge should contain the skill name and the category with a middle dot
     const badge =
       screen.getByText('React').closest('[class*="badge"]') ??
       screen.getByText('React').parentElement;
@@ -147,9 +146,58 @@ describe('SkillsSection', () => {
   });
 
   it('shows endorsement count', () => {
-    const skills = [{ rkey: '1', skillName: 'TypeScript', endorsementCount: 5 }];
+    const skills = [
+      { rkey: '1', skillName: 'TypeScript', category: 'technical', endorsementCount: 5 },
+    ];
     withProvider(<SkillsSection skills={skills} />, { skills });
     expect(screen.getByText('5')).toBeDefined();
+  });
+
+  it('displays groups in defined category order', () => {
+    const skills = [
+      { rkey: '1', skillName: 'Drawing', category: 'creative' },
+      { rkey: '2', skillName: 'TypeScript', category: 'technical' },
+      { rkey: '3', skillName: 'Empathy', category: 'interpersonal' },
+    ];
+    withProvider(<SkillsSection skills={skills} />, { skills });
+
+    const headings = screen.getAllByRole('heading', { level: 3 });
+    const labels = headings.map((h) => h.textContent);
+    expect(labels).toEqual(['Technical', 'Creative', 'Interpersonal']);
+  });
+
+  it('places uncategorized skills under "Other" at the end', () => {
+    const skills = [
+      { rkey: '1', skillName: 'TypeScript', category: 'technical' },
+      { rkey: '2', skillName: 'Mystery' },
+    ];
+    withProvider(<SkillsSection skills={skills} />, { skills });
+
+    const headings = screen.getAllByRole('heading', { level: 3 });
+    const labels = headings.map((h) => h.textContent);
+    expect(labels).toEqual(['Technical', 'Other']);
+  });
+
+  it('does not render empty category groups', () => {
+    const skills = [{ rkey: '1', skillName: 'TypeScript', category: 'technical' }];
+    withProvider(<SkillsSection skills={skills} />, { skills });
+
+    const headings = screen.getAllByRole('heading', { level: 3 });
+    expect(headings).toHaveLength(1);
+    expect(headings[0]!.textContent).toBe('Technical');
+  });
+
+  it('renders h3 heading elements for category names', () => {
+    const skills = [
+      { rkey: '1', skillName: 'TypeScript', category: 'technical' },
+      { rkey: '2', skillName: 'Sales', category: 'business' },
+    ];
+    withProvider(<SkillsSection skills={skills} />, { skills });
+
+    const headings = screen.getAllByRole('heading', { level: 3 });
+    expect(headings).toHaveLength(2);
+    expect(headings[0]!.tagName).toBe('H3');
+    expect(headings[1]!.tagName).toBe('H3');
   });
 });
 
