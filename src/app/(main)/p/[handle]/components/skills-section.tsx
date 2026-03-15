@@ -1,9 +1,11 @@
 import { getTranslations } from 'next-intl/server';
-import { sanitize } from '@/lib/sanitize';
+import { PublicSkillChips } from './public-skill-chips';
 
 interface Skill {
   skillName: string;
   category?: string;
+  endorsed?: boolean;
+  activityBacked?: boolean;
 }
 
 export async function SkillsSection({ skills }: { skills: Skill[] }) {
@@ -15,11 +17,7 @@ export async function SkillsSection({ skills }: { skills: Skill[] }) {
     <section className="mt-8">
       <h2 className="text-xl font-semibold">{t('skills')}</h2>
       <div className="mt-4 flex flex-wrap gap-2">
-        {skills.map((skill, i) => (
-          <span key={i} className="rounded-full border border-border px-3 py-1 text-sm">
-            {sanitize(skill.skillName)}
-          </span>
-        ))}
+        <PublicSkillChips skills={skills} />
       </div>
     </section>
   );
