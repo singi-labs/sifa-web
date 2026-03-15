@@ -136,10 +136,10 @@ export function ProfileEditDialog({
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Avatar — read-only with PDS explanation */}
+          {/* Avatar & Display Name — read-only, synced from AT Protocol profile */}
           <div>
-            <div className="mb-1 flex items-center gap-1.5">
-              <span className="block text-sm font-medium">{t('avatar')}</span>
+            <div className="mb-2 flex items-center gap-1.5">
+              <span className="block text-sm font-medium">{t('avatarAndName')}</span>
               <Popover.Root>
                 <Popover.Trigger
                   className="inline-flex h-4 w-4 cursor-pointer items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-foreground"
@@ -147,30 +147,38 @@ export function ProfileEditDialog({
                 >
                   <Info className="h-3.5 w-3.5" weight="bold" />
                 </Popover.Trigger>
-                <Popover.Portal>
-                  <Popover.Positioner sideOffset={8}>
-                    <Popover.Popup className="z-[200] w-72 rounded-lg border border-border bg-popover p-3 text-sm text-popover-foreground shadow-md">
-                      <Popover.Arrow className="fill-popover stroke-border" />
-                      <p className="text-muted-foreground">{t('pdsExplanation')}</p>
-                    </Popover.Popup>
-                  </Popover.Positioner>
-                </Popover.Portal>
+                <Popover.Positioner sideOffset={8}>
+                  <Popover.Popup className="z-[9999] w-72 rounded-lg border border-border bg-popover p-3 text-sm text-popover-foreground shadow-md">
+                    <Popover.Arrow className="fill-popover stroke-border" />
+                    <p className="text-muted-foreground">{t('pdsExplanation')}</p>
+                  </Popover.Popup>
+                </Popover.Positioner>
               </Popover.Root>
             </div>
-            <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full bg-muted text-xl font-semibold text-muted-foreground">
-              {currentAvatar ? (
-                <Image
-                  src={currentAvatar}
-                  alt=""
-                  width={64}
-                  height={64}
-                  className="h-16 w-16 rounded-full object-cover"
-                />
-              ) : (
-                <span aria-hidden="true">
-                  {(currentDisplayName ?? '?').charAt(0).toUpperCase()}
-                </span>
-              )}
+            <div className="flex items-center gap-4">
+              <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full bg-muted text-xl font-semibold text-muted-foreground">
+                {currentAvatar ? (
+                  <Image
+                    src={currentAvatar}
+                    alt=""
+                    width={64}
+                    height={64}
+                    className="h-16 w-16 rounded-full object-cover"
+                  />
+                ) : (
+                  <span aria-hidden="true">
+                    {(currentDisplayName ?? '?').charAt(0).toUpperCase()}
+                  </span>
+                )}
+              </div>
+              <Input
+                id="edit-displayName"
+                type="text"
+                value={currentDisplayName ?? ''}
+                disabled
+                className="bg-muted text-muted-foreground"
+                aria-label={t('displayName')}
+              />
             </div>
             <div className="mt-2">
               <Button
@@ -189,38 +197,6 @@ export function ProfileEditDialog({
                 {t('refreshPds')}
               </Button>
             </div>
-          </div>
-
-          {/* Display Name — read-only with PDS explanation */}
-          <div>
-            <div className="mb-1 flex items-center gap-1.5">
-              <label htmlFor="edit-displayName" className="block text-sm font-medium">
-                {t('displayName')}
-              </label>
-              <Popover.Root>
-                <Popover.Trigger
-                  className="inline-flex h-4 w-4 cursor-pointer items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-foreground"
-                  aria-label={t('pdsFieldInfo')}
-                >
-                  <Info className="h-3.5 w-3.5" weight="bold" />
-                </Popover.Trigger>
-                <Popover.Portal>
-                  <Popover.Positioner sideOffset={8}>
-                    <Popover.Popup className="z-[200] w-72 rounded-lg border border-border bg-popover p-3 text-sm text-popover-foreground shadow-md">
-                      <Popover.Arrow className="fill-popover stroke-border" />
-                      <p className="text-muted-foreground">{t('pdsExplanation')}</p>
-                    </Popover.Popup>
-                  </Popover.Positioner>
-                </Popover.Portal>
-              </Popover.Root>
-            </div>
-            <Input
-              id="edit-displayName"
-              type="text"
-              value={currentDisplayName ?? ''}
-              disabled
-              className="bg-muted text-muted-foreground"
-            />
           </div>
 
           {/* Headline */}
