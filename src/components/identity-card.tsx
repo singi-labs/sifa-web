@@ -93,15 +93,27 @@ export function IdentityCard({
     >
       {isEmbed ? (
         <>
-          {/* Embed layout: two-column with avatar on the right */}
-          <div className="flex gap-4">
-            {/* Left column: text content */}
+          {/* Embed layout: avatar-left, compact */}
+          <div className="flex items-start gap-3">
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-full bg-muted text-lg font-semibold text-muted-foreground">
+              {avatar ? (
+                <Image
+                  src={avatar}
+                  alt={t('avatarAlt', { name: displayName ?? handle })}
+                  width={56}
+                  height={56}
+                  className="h-14 w-14 rounded-full object-cover"
+                />
+              ) : (
+                <span aria-hidden="true">{(displayName ?? handle).charAt(0).toUpperCase()}</span>
+              )}
+            </div>
             <div className="min-w-0 flex-1">
-              <div className="flex items-center gap-2">
-                <h1 className="truncate text-xl font-bold">{displayName ?? handle}</h1>
+              <div className="flex items-center gap-1.5">
+                <h1 className="truncate text-base font-bold">{displayName ?? handle}</h1>
                 {verifiedAccounts.length > 0 && (
                   <CheckCircle
-                    className="h-5 w-5 shrink-0 text-primary"
+                    className="h-4 w-4 shrink-0 text-primary"
                     weight="fill"
                     aria-label={t('verified')}
                   />
@@ -113,82 +125,55 @@ export function IdentityCard({
                     href={pdsProvider.profileUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 truncate text-sm text-muted-foreground hover:text-foreground"
+                    className="inline-flex items-center gap-1 truncate text-xs text-muted-foreground hover:text-foreground"
                   >
-                    <PdsIcon provider={pdsProvider.name} className="h-3.5 w-3.5 shrink-0" />@
-                    {handle}
+                    <PdsIcon provider={pdsProvider.name} className="h-3 w-3 shrink-0" />@{handle}
                   </a>
                 ) : (
-                  <p className="truncate text-sm text-muted-foreground">@{handle}</p>
+                  <p className="truncate text-xs text-muted-foreground">@{handle}</p>
                 )}
-              </div>
-
-              {(headline || about) && (
-                <p className="mt-2 text-sm text-foreground">
-                  {headline ??
-                    (about && about.length > 120 ? about.slice(0, 120) + '\u2026' : about)}
-                </p>
-              )}
-
-              {currentRole && currentCompany && (
-                <p className="mt-1.5 text-sm text-muted-foreground">
-                  {currentRole} {t('roleAt')} {currentCompany}
-                </p>
-              )}
-
-              {(location || website) && (
-                <div className="mt-1.5 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
-                  {location && (
-                    <span>
-                      {formatLocation(location)}
-                      {location.countryCode && (
-                        <span className="ml-1" role="img" aria-label={location.countryCode}>
-                          {countryCodeToFlag(location.countryCode)}
-                        </span>
-                      )}
-                    </span>
-                  )}
-                  {website && (
-                    <a
-                      href={website.startsWith('http') ? website : `https://${website}`}
-                      className="underline-offset-4 hover:text-foreground hover:underline"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {website.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '')}
-                    </a>
-                  )}
-                </div>
-              )}
-            </div>
-
-            {/* Right column: avatar + trust stats */}
-            <div className="flex shrink-0 flex-col items-center gap-3">
-              <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full bg-muted text-xl font-semibold text-muted-foreground">
-                {avatar ? (
-                  <Image
-                    src={avatar}
-                    alt={t('avatarAlt', { name: displayName ?? handle })}
-                    width={64}
-                    height={64}
-                    className="h-16 w-16 rounded-full object-cover"
-                  />
-                ) : (
-                  <span aria-hidden="true">{(displayName ?? handle).charAt(0).toUpperCase()}</span>
-                )}
-              </div>
-              <div className="flex gap-4" role="list" aria-label={t('trustStatsLabel')}>
-                {displayTrustStats.map((stat) => (
-                  <div key={stat.key} className="text-center" role="listitem">
-                    <p className="text-sm font-semibold">{stat.value}</p>
-                    <p className="text-[10px] text-muted-foreground">{stat.label}</p>
-                  </div>
-                ))}
               </div>
             </div>
           </div>
 
-          {/* Open to pills — full width below the two columns */}
+          {(headline || about) && (
+            <p className="mt-2 line-clamp-2 text-sm text-foreground">
+              {headline ?? (about && about.length > 120 ? about.slice(0, 120) + '\u2026' : about)}
+            </p>
+          )}
+
+          {currentRole && currentCompany && (
+            <p className="mt-1 text-xs text-muted-foreground">
+              {currentRole} {t('roleAt')} {currentCompany}
+            </p>
+          )}
+
+          {(location || website) && (
+            <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-xs text-muted-foreground">
+              {location && (
+                <span>
+                  {formatLocation(location)}
+                  {location.countryCode && (
+                    <span className="ml-1" role="img" aria-label={location.countryCode}>
+                      {countryCodeToFlag(location.countryCode)}
+                    </span>
+                  )}
+                </span>
+              )}
+              {website && (
+                <a
+                  href={website.startsWith('http') ? website : `https://${website}`}
+                  className="underline-offset-4 hover:text-foreground hover:underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {website.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '')}
+                </a>
+              )}
+            </div>
+          )}
+
+          {/* Open to pills */}
           {openTo && openTo.length > 0 && (
             <div className="mt-2 flex flex-wrap gap-1.5">
               {openTo.map((item) => (
@@ -202,6 +187,16 @@ export function IdentityCard({
               ))}
             </div>
           )}
+
+          {/* Trust stats — compact row */}
+          <div className="mt-3 flex gap-5" role="list" aria-label={t('trustStatsLabel')}>
+            {displayTrustStats.map((stat) => (
+              <div key={stat.key} className="text-center" role="listitem">
+                <p className="text-sm font-semibold">{stat.value}</p>
+                <p className="text-[10px] text-muted-foreground">{stat.label}</p>
+              </div>
+            ))}
+          </div>
         </>
       ) : (
         <>

@@ -50,23 +50,23 @@
       themeBlock +
       ":host{display:block;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:var(--sifa-text);}" +
       '.card{background:var(--sifa-card);border:1px solid var(--sifa-border);border-radius:12px;padding:20px;max-width:400px;}' +
-      '.top{display:flex;gap:12px;}' +
+      '.top{display:flex;align-items:flex-start;gap:10px;}' +
+      '.avatar-link{flex-shrink:0;}' +
       '.info{flex:1;min-width:0;}' +
       '.name-row a{text-decoration:none;color:inherit;}' +
-      '.name{font-size:16px;font-weight:600;margin:0;}' +
-      '.handle{font-size:13px;color:var(--sifa-muted);margin:0;}' +
-      '.avatar-col{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:8px;}' +
-      '.avatar{width:56px;height:56px;border-radius:50%;object-fit:cover;}' +
-      '.avatar-placeholder{width:56px;height:56px;border-radius:50%;background:var(--sifa-primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:600;}' +
-      '.headline{font-size:14px;color:var(--sifa-muted);margin:6px 0 0;}' +
-      '.location{font-size:13px;color:var(--sifa-muted);margin:4px 0 0;}' +
+      '.name{font-size:15px;font-weight:600;margin:0;}' +
+      '.handle{font-size:12px;color:var(--sifa-muted);margin:0;}' +
+      '.avatar{width:48px;height:48px;border-radius:50%;object-fit:cover;}' +
+      '.avatar-placeholder{width:48px;height:48px;border-radius:50%;background:var(--sifa-primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:600;}' +
+      '.headline{font-size:13px;color:var(--sifa-muted);margin:6px 0 0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}' +
+      '.location{font-size:12px;color:var(--sifa-muted);margin:4px 0 0;}' +
       '.open-to{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0 0;}' +
       '.pill{font-size:11px;padding:2px 8px;border-radius:10px;background:var(--sifa-primary);color:#fff;}' +
-      '.stats{display:flex;gap:12px;}' +
+      '.stats{display:flex;gap:16px;margin-top:10px;}' +
       '.stat{text-align:center;}' +
       '.stat-value{font-size:14px;font-weight:700;display:block;}' +
       '.stat-label{font-size:10px;color:var(--sifa-muted);}' +
-      '.footer{margin-top:14px;padding-top:12px;border-top:1px solid var(--sifa-border);display:flex;align-items:center;justify-content:space-between;}' +
+      '.footer{margin-top:12px;padding-top:10px;border-top:1px solid var(--sifa-border);display:flex;align-items:center;justify-content:space-between;}' +
       '.cta{display:inline-block;font-size:13px;color:var(--sifa-primary);text-decoration:none;font-weight:500;}' +
       '.cta:hover{text-decoration:underline;}' +
       '.sifa-icon{width:16px;height:16px;color:var(--sifa-muted);opacity:0.5;}' +
@@ -135,6 +135,11 @@
     return (
       '<div class="card">' +
       '<div class="top">' +
+      '<a class="avatar-link" href="' +
+      escapeHtml(data.profileUrl) +
+      '" target="_blank" rel="noopener">' +
+      avatarHtml +
+      '</a>' +
       '<div class="info">' +
       '<div class="name-row"><a href="' +
       escapeHtml(data.profileUrl) +
@@ -145,18 +150,12 @@
       '<p class="handle">@' +
       escapeHtml(data.handle) +
       '</p>' +
+      '</div>' +
+      '</div>' +
       headlineHtml +
       locationHtml +
-      '</div>' +
-      '<div class="avatar-col"><a href="' +
-      escapeHtml(data.profileUrl) +
-      '" target="_blank" rel="noopener">' +
-      avatarHtml +
-      '</a>' +
-      statsHtml +
-      '</div>' +
-      '</div>' +
       openToHtml +
+      statsHtml +
       footerHtml +
       '</div>'
     );
