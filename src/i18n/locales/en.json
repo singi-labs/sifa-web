@@ -39,7 +39,9 @@
     "comingSoon": "Timeline and feed are coming soon.",
     "searchProfiles": "Search profiles",
     "importLinkedIn": "Import from LinkedIn",
-    "profileCount": "{count, plural, one {# profile, portable from day one} other {# profiles, portable from day one}}"
+    "atprotoCount": "identities on the AT Protocol. Every one of them can become a professional profile on Sifa.",
+    "claimProfile": "Claim yours",
+    "avatarReelCaption": "They claimed their professional profile. You're next."
   },
   "profile": {
     "experience": "Experience",

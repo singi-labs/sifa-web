@@ -104,7 +104,17 @@ export async function createInvite(subjectDid: string): Promise<string> {
   return data.inviteUrl;
 }
 
-export async function fetchStats(): Promise<{ profileCount: number } | null> {
+export interface StatsResponse {
+  profileCount: number;
+  avatars: string[];
+  atproto: {
+    userCount: number;
+    growthPerSecond: number;
+    timestamp: number;
+  } | null;
+}
+
+export async function fetchStats(): Promise<StatsResponse | null> {
   try {
     const res = await fetch(`${API_URL}/api/stats`, {
       next: { revalidate: 900 },
