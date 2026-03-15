@@ -53,7 +53,7 @@ const ALL_SECTIONS = [
 function isSectionPopulated(profile: Profile, id: string): boolean {
   switch (id) {
     case 'about':
-      return Boolean(profile.about);
+      return Boolean(profile.about && profile.headline);
     case 'career':
       return profile.positions.length > 0;
     case 'education':
@@ -106,7 +106,10 @@ function ProfileBodyContent() {
         createdAt={profile.createdAt}
       />
 
-      {profile.about ? (
+      {/* Hide the about section when the IdentityCard already shows it as a headline fallback */}
+      {profile.about && !profile.headline ? (
+        isOwn && <AboutSection about={profile.about} isOwnProfile />
+      ) : profile.about ? (
         <div id="about" className="scroll-mt-20">
           <AboutSection about={profile.about} isOwnProfile={isOwn} />
         </div>
