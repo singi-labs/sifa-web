@@ -39,7 +39,8 @@
     "comingSoon": "Timeline and feed are coming soon.",
     "searchProfiles": "Search profiles",
     "importLinkedIn": "Import from LinkedIn",
-    "atprotoCount": "professional identities on the open social web.",
+    "atprotoCountPrefix": "Do you already have a Bluesky or other AT Protocol account, like",
+    "atprotoCountSuffix": "others?",
     "claimProfile": "Find yourself on Sifa",
     "avatarReelCaption": "They own their career profile and can take it wherever they go. Are you next?"
   },
