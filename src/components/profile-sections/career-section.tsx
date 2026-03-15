@@ -7,11 +7,7 @@ import { TimelineSection, TimelineEntry, formatTimelineDate } from './timeline';
 import { SectionEditor, EditableEntry } from '@/components/profile-editor';
 import { PositionEditDialog, positionFormToData } from '@/components/position-edit-dialog';
 import { useProfileEdit } from '@/components/profile-edit-provider';
-import {
-  createPosition,
-  updatePosition,
-  deletePosition,
-} from '@/lib/profile-api';
+import { createPosition, updatePosition, deletePosition } from '@/lib/profile-api';
 import { Badge } from '@/components/ui/badge';
 import type { ProfilePosition, ProfileSkill, SkillRef } from '@/lib/types';
 

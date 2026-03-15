@@ -12,11 +12,7 @@ interface PositionSkillEditorProps {
   onRemove: (rkey: string) => void;
 }
 
-export function PositionSkillEditor({
-  linkedSkills,
-  onAdd,
-  onRemove,
-}: PositionSkillEditorProps) {
+export function PositionSkillEditor({ linkedSkills, onAdd, onRemove }: PositionSkillEditorProps) {
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('');
 
@@ -37,25 +33,13 @@ export function PositionSkillEditor({
 
   return (
     <div>
-      <label
-        htmlFor="position-skill-search"
-        className="mb-1 block text-sm font-medium"
-      >
+      <label htmlFor="position-skill-search" className="mb-1 block text-sm font-medium">
         Skills used
       </label>
       {linkedSkills.length > 0 && (
-        <div
-          className="mb-2 flex flex-wrap gap-1.5"
-          role="list"
-          aria-label="Linked skills"
-        >
+        <div className="mb-2 flex flex-wrap gap-1.5" role="list" aria-label="Linked skills">
           {linkedSkills.map((skill) => (
-            <Badge
-              key={skill.rkey}
-              variant="secondary"
-              className="gap-1"
-              role="listitem"
-            >
+            <Badge key={skill.rkey} variant="secondary" className="gap-1" role="listitem">
               {skill.skillName}
               <button
                 type="button"
