@@ -11,10 +11,12 @@ interface SkillComboboxProps {
   value: string;
   category: string;
   onChange: (skillName: string, category: string) => void;
+  /** Fires only on explicit selection (dropdown click or Enter). */
+  onSelect?: (skillName: string, category: string) => void;
   id?: string;
 }
 
-export function SkillCombobox({ value, category, onChange, id }: SkillComboboxProps) {
+export function SkillCombobox({ value, category, onChange, onSelect, id }: SkillComboboxProps) {
   const t = useTranslations('sections');
   const [query, setQuery] = useState(value);
   const [results, setResults] = useState<SkillSuggestion[]>([]);
@@ -82,6 +84,7 @@ export function SkillCombobox({ value, category, onChange, id }: SkillComboboxPr
   const handleSelect = (suggestion: SkillSuggestion) => {
     setQuery(suggestion.canonicalName);
     onChange(suggestion.canonicalName, suggestion.category);
+    onSelect?.(suggestion.canonicalName, suggestion.category);
     setResults([]);
     setIsOpen(false);
     setActiveIndex(-1);
@@ -90,6 +93,7 @@ export function SkillCombobox({ value, category, onChange, id }: SkillComboboxPr
   const handleSelectFreeText = () => {
     // Use the current query as-is
     onChange(query, category);
+    onSelect?.(query, category);
     setResults([]);
     setIsOpen(false);
     setActiveIndex(-1);
