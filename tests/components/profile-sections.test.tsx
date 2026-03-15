@@ -118,12 +118,32 @@ describe('SkillsSection', () => {
   it('renders skills as badges', () => {
     const skills = [
       { rkey: '1', skillName: 'TypeScript' },
-      { rkey: '2', skillName: 'React', category: 'Frontend' },
+      { rkey: '2', skillName: 'React', category: 'technical' },
     ];
     withProvider(<SkillsSection skills={skills} />, { skills });
     expect(screen.getByText('TypeScript')).toBeDefined();
     expect(screen.getByText('React')).toBeDefined();
-    expect(screen.getByText('Frontend')).toBeDefined();
+    expect(screen.getByText('technical')).toBeDefined();
+  });
+
+  it('shows category inline on skill chip with middle dot separator', () => {
+    const skills = [{ rkey: '1', skillName: 'React', category: 'creative' }];
+    withProvider(<SkillsSection skills={skills} />, { skills });
+    // The badge should contain the skill name and the category with a middle dot
+    const badge =
+      screen.getByText('React').closest('[class*="badge"]') ??
+      screen.getByText('React').parentElement;
+    expect(badge?.textContent).toContain('\u00b7');
+    expect(badge?.textContent).toContain('creative');
+  });
+
+  it('does not show category separator when no category', () => {
+    const skills = [{ rkey: '1', skillName: 'TypeScript' }];
+    withProvider(<SkillsSection skills={skills} />, { skills });
+    const badge =
+      screen.getByText('TypeScript').closest('[class*="badge"]') ??
+      screen.getByText('TypeScript').parentElement;
+    expect(badge?.textContent).not.toContain('\u00b7');
   });
 
   it('shows endorsement count', () => {
