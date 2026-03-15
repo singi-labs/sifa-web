@@ -7,9 +7,8 @@ import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { SectionEditor } from '@/components/profile-editor';
-import { EditDialog } from '@/components/profile-editor/edit-dialog';
-import { SKILL_FIELDS } from '@/components/profile-editor/form-fields';
-import { skillToValues, valuesToSkill } from '@/components/profile-editor/section-converters';
+import { SkillEditDialog } from '@/components/skill-edit-dialog';
+import { valuesToSkill } from '@/components/profile-editor/section-converters';
 import { useProfileEdit } from '@/components/profile-edit-provider';
 import { createSkill, updateSkill, deleteSkill } from '@/lib/profile-api';
 import type { ProfileSkill } from '@/lib/types';
@@ -165,10 +164,10 @@ export function SkillsSection({ isOwnProfile }: SkillsSectionProps) {
         ))}
       </SectionEditor>
       {dialog && (
-        <EditDialog
+        <SkillEditDialog
           title={dialog.mode === 'add' ? `Add ${t('skills')}` : `Edit ${t('skills')}`}
-          fields={SKILL_FIELDS}
-          initialValues={dialog.mode === 'edit' ? skillToValues(dialog.item) : undefined}
+          initialSkillName={dialog.mode === 'edit' ? dialog.item.skillName : undefined}
+          initialCategory={dialog.mode === 'edit' ? dialog.item.category : undefined}
           onSave={handleSave}
           onCancel={() => setDialog(null)}
         />
