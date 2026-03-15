@@ -162,44 +162,46 @@ export function IdentityCard({
               )}
             </div>
 
-            {/* Right column: avatar */}
+            {/* Right column: avatar + trust stats */}
             <div className="flex shrink-0 flex-col items-center gap-3">
-              <div className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-full bg-muted text-2xl font-semibold text-muted-foreground">
+              <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full bg-muted text-xl font-semibold text-muted-foreground">
                 {avatar ? (
                   <Image
                     src={avatar}
                     alt={t('avatarAlt', { name: displayName ?? handle })}
-                    width={80}
-                    height={80}
-                    className="h-20 w-20 rounded-full object-cover"
+                    width={64}
+                    height={64}
+                    className="h-16 w-16 rounded-full object-cover"
                   />
                 ) : (
                   <span aria-hidden="true">{(displayName ?? handle).charAt(0).toUpperCase()}</span>
                 )}
+              </div>
+              <div className="flex gap-4" role="list" aria-label={t('trustStatsLabel')}>
+                {displayTrustStats.map((stat) => (
+                  <div key={stat.key} className="text-center" role="listitem">
+                    <p className="text-sm font-semibold">{stat.value}</p>
+                    <p className="text-[10px] text-muted-foreground">{stat.label}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
 
           {/* Open to pills — full width below the two columns */}
           {openTo && openTo.length > 0 && (
-            <div className="mt-3 flex flex-wrap gap-2">
+            <div className="mt-2 flex flex-wrap gap-1.5">
               {openTo.map((item) => (
-                <Badge key={item} variant="outline" className="border-primary/30 text-primary">
+                <Badge
+                  key={item}
+                  variant="outline"
+                  className="border-primary/30 px-2 py-0 text-xs text-primary"
+                >
                   {OPEN_TO_LABEL_KEYS[item] ? tEdit(OPEN_TO_LABEL_KEYS[item]!) : item}
                 </Badge>
               ))}
             </div>
           )}
-
-          {/* Trust stats — full width */}
-          <div className="mt-4 flex gap-6" role="list" aria-label={t('trustStatsLabel')}>
-            {displayTrustStats.map((stat) => (
-              <div key={stat.key} className="text-center" role="listitem">
-                <p className="text-lg font-semibold">{stat.value}</p>
-                <p className="text-xs text-muted-foreground">{stat.label}</p>
-              </div>
-            ))}
-          </div>
         </>
       ) : (
         <>
