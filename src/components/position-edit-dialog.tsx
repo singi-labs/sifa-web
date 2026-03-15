@@ -29,12 +29,7 @@ interface PositionEditDialogProps {
   onCancel: () => void;
 }
 
-export function PositionEditDialog({
-  title,
-  position,
-  onSave,
-  onCancel,
-}: PositionEditDialogProps) {
+export function PositionEditDialog({ title, position, onSave, onCancel }: PositionEditDialogProps) {
   const t = useTranslations('editor');
   const { profile } = useProfileEdit();
 
@@ -51,9 +46,7 @@ export function PositionEditDialog({
   const [linkedSkills, setLinkedSkills] = useState<ProfileSkill[]>(
     () => position?.linkedSkills ?? [],
   );
-  const [skillRefs, setSkillRefs] = useState<SkillRef[]>(
-    () => position?.skills ?? [],
-  );
+  const [skillRefs, setSkillRefs] = useState<SkillRef[]>(() => position?.skills ?? []);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -102,15 +95,10 @@ export function PositionEditDialog({
     [linkedSkills, profile.skills, profile.did],
   );
 
-  const handleRemoveSkill = useCallback(
-    (rkey: string) => {
-      setLinkedSkills((prev) => prev.filter((s) => s.rkey !== rkey));
-      setSkillRefs((prev) =>
-        prev.filter((ref) => !ref.uri.endsWith(`/${rkey}`)),
-      );
-    },
-    [],
-  );
+  const handleRemoveSkill = useCallback((rkey: string) => {
+    setLinkedSkills((prev) => prev.filter((s) => s.rkey !== rkey));
+    setSkillRefs((prev) => prev.filter((ref) => !ref.uri.endsWith(`/${rkey}`)));
+  }, []);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
