@@ -26,18 +26,12 @@ export function PositionLinkList({
   const t = useTranslations('sections');
 
   if (positions.length === 0) {
-    return (
-      <p className="text-sm text-muted-foreground">
-        Add positions to link skills to roles
-      </p>
-    );
+    return <p className="text-sm text-muted-foreground">Add positions to link skills to roles</p>;
   }
 
   return (
     <fieldset className="space-y-2" disabled={disabled}>
-      <legend className="mb-1 block text-sm font-medium">
-        {t('usedIn')}
-      </legend>
+      <legend className="mb-1 block text-sm font-medium">{t('usedIn')}</legend>
       {positions.map((position) => {
         const isLinked = linkedPositionRkeys.includes(position.rkey);
         const label = `${position.title} at ${position.companyName} (${formatDateRange(position.startDate, position.endDate, position.current)})`;

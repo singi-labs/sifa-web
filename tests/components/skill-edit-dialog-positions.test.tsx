@@ -59,12 +59,8 @@ describe('SkillEditDialog — Used in positions', () => {
     );
 
     expect(screen.getByText('Used in')).toBeDefined();
-    expect(
-      screen.getByText('Senior Engineer at Stripe (2022 - Present)'),
-    ).toBeDefined();
-    expect(
-      screen.getByText('Developer at Acme (2019 - 2022)'),
-    ).toBeDefined();
+    expect(screen.getByText('Senior Engineer at Stripe (2022 - Present)')).toBeDefined();
+    expect(screen.getByText('Developer at Acme (2019 - 2022)')).toBeDefined();
 
     const checkboxes = screen.getAllByRole('checkbox');
     expect(checkboxes).toHaveLength(2);
@@ -139,8 +135,6 @@ describe('SkillEditDialog — Used in positions', () => {
       />,
     );
 
-    expect(
-      screen.getByText('Add positions to link skills to roles'),
-    ).toBeDefined();
+    expect(screen.getByText('Add positions to link skills to roles')).toBeDefined();
   });
 });
