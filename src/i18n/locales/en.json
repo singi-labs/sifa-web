@@ -308,6 +308,26 @@
     "disclaimerTitle": "Disclaimer",
     "disclaimerBody": "Sifa is provided as-is during the beta period. We make no guarantees about uptime or data preservation beyond what the AT Protocol itself provides. Your data in your PDS is under your control regardless of Sifa's availability."
   },
+  "endorsement": {
+    "endorseSkill": "Endorse {skillName}",
+    "endorsementContext": "How do you know this person's expertise?",
+    "workedTogether": "Worked together at...",
+    "collaboratedIn": "Collaborated in...",
+    "supervisedBy": "Supervised / was supervised by",
+    "coAuthored": "Co-authored",
+    "otherContext": "Other",
+    "endorseComment": "Share context about this person's expertise (optional)",
+    "endorseSubmit": "Endorse",
+    "endorseCancel": "Cancel",
+    "endorseAttribution": "Your endorsement will be attributed to your profile",
+    "contextDetail": "Details (optional)",
+    "endorsedBy": "Endorsed by",
+    "relationshipWorkedTogether": "Worked together at {detail}",
+    "relationshipCollaboratedIn": "Collaborated in {detail}",
+    "relationshipSupervisedBy": "Supervised / was supervised by",
+    "relationshipCoAuthored": "Co-authored",
+    "relationshipOther": "{detail}"
+  },
   "dangerZone": {
     "title": "Danger Zone",
     "resetTitle": "Reset Profile",

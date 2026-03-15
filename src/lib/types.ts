@@ -49,6 +49,22 @@ export interface SkillSuggestion {
   category: string;
 }
 
+export interface Endorsement {
+  endorserDid: string;
+  endorserHandle: string;
+  endorserDisplayName?: string;
+  endorserAvatar?: string;
+  comment?: string;
+  relationshipContext?: string;
+  createdAt: string;
+}
+
+export interface EndorsementData {
+  skillRkey: string;
+  comment?: string;
+  relationshipContext?: string;
+}
+
 export interface ProfileCertification {
   rkey: string;
   name: string;
