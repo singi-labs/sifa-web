@@ -38,7 +38,8 @@
     "subtitle": "Professional identity on the AT Protocol. Own your career narrative.",
     "comingSoon": "Timeline and feed are coming soon.",
     "searchProfiles": "Search profiles",
-    "importLinkedIn": "Import from LinkedIn"
+    "importLinkedIn": "Import from LinkedIn",
+    "profileCount": "{count, plural, one {# profile, portable from day one} other {# profiles, portable from day one}}"
   },
   "profile": {
     "experience": "Experience",
