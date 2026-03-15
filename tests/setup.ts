@@ -237,7 +237,7 @@ const translations: Record<string, Record<string, string>> = {
     supervisedBy: 'Supervised / was supervised by',
     coAuthored: 'Co-authored',
     otherContext: 'Other',
-    endorseComment: 'Share context about this person\'s expertise (optional)',
+    endorseComment: "Share context about this person's expertise (optional)",
     endorseSubmit: 'Endorse',
     endorseCancel: 'Cancel',
     endorseAttribution: 'Your endorsement will be attributed to your profile',

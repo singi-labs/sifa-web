@@ -17,7 +17,10 @@ export function EndorsementList({ endorsements }: EndorsementListProps) {
   return (
     <div className="space-y-3" aria-label={t('endorsedBy')}>
       {endorsements.map((endorsement) => (
-        <EndorsementCard key={`${endorsement.endorserDid}-${endorsement.createdAt}`} endorsement={endorsement} />
+        <EndorsementCard
+          key={`${endorsement.endorserDid}-${endorsement.createdAt}`}
+          endorsement={endorsement}
+        />
       ))}
     </div>
   );
@@ -56,9 +59,7 @@ function EndorsementCard({ endorsement }: EndorsementCardProps) {
             </Badge>
           )}
         </div>
-        {commentText && (
-          <p className="mt-1 text-sm text-muted-foreground">{commentText}</p>
-        )}
+        {commentText && <p className="mt-1 text-sm text-muted-foreground">{commentText}</p>}
       </div>
     </div>
   );

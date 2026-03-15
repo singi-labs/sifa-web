@@ -42,9 +42,7 @@ describe('No endorsement counts displayed', () => {
   });
 
   it('does not render any numeric endorsement indicators on skill badges', () => {
-    const skills = [
-      { rkey: '1', skillName: 'Python', endorsementCount: 100 },
-    ];
+    const skills = [{ rkey: '1', skillName: 'Python', endorsementCount: 100 }];
     withProvider(<SkillsSection skills={skills} />, { skills });
 
     // The number 100 should not appear anywhere

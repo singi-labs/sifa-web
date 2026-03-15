@@ -199,11 +199,6 @@ describe('SkillsSection', () => {
     expect(headings).toHaveLength(2);
     expect(headings[0]!.tagName).toBe('H3');
     expect(headings[1]!.tagName).toBe('H3');
-||||||| parent of b2c565f (feat(endorsements): relationship context selector, endorsement dialog, remove counts)
-    expect(screen.getByText('5')).toBeDefined();
-=======
-    expect(screen.queryByText('5')).toBeNull();
->>>>>>> b2c565f (feat(endorsements): relationship context selector, endorsement dialog, remove counts)
   });
 });
 

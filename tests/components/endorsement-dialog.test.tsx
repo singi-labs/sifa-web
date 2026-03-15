@@ -36,7 +36,9 @@ describe('EndorsementDialog', () => {
   it('renders comment textarea', () => {
     render(<EndorsementDialog {...defaultProps} />);
 
-    expect(screen.getByLabelText("Share context about this person's expertise (optional)")).toBeDefined();
+    expect(
+      screen.getByLabelText("Share context about this person's expertise (optional)"),
+    ).toBeDefined();
   });
 
   it('shows attribution notice', () => {
@@ -82,7 +84,9 @@ describe('EndorsementDialog', () => {
     await user.click(screen.getByLabelText('Worked together at...'));
 
     // Type a comment
-    const textarea = screen.getByLabelText("Share context about this person's expertise (optional)");
+    const textarea = screen.getByLabelText(
+      "Share context about this person's expertise (optional)",
+    );
     await user.type(textarea, 'Great skills');
 
     // Submit
