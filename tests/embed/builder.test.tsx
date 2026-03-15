@@ -18,13 +18,6 @@ describe('EmbedBuilder', () => {
     expect(screen.getByLabelText('Handle or DID')).toBeDefined();
   });
 
-  it('renders theme radio options', () => {
-    render(<EmbedBuilder />);
-    expect(screen.getByLabelText('Auto')).toBeDefined();
-    expect(screen.getByLabelText('Light')).toBeDefined();
-    expect(screen.getByLabelText('Dark')).toBeDefined();
-  });
-
   it('generates script tag with data-handle for handle input', () => {
     render(<EmbedBuilder />);
     fireEvent.change(screen.getByLabelText('Handle or DID'), {
@@ -46,18 +39,7 @@ describe('EmbedBuilder', () => {
     expect(code.textContent).toContain('data-did="did:plc:abc123"');
   });
 
-  it('includes data-theme when not auto', () => {
-    render(<EmbedBuilder />);
-    fireEvent.change(screen.getByLabelText('Handle or DID'), {
-      target: { value: 'alice.bsky.social' },
-    });
-    fireEvent.click(screen.getByLabelText('Dark'));
-
-    const code = screen.getByTestId('embed-code');
-    expect(code.textContent).toContain('data-theme="dark"');
-  });
-
-  it('omits data-theme when auto (default)', () => {
+  it('does not include data-theme in embed code', () => {
     render(<EmbedBuilder />);
     fireEvent.change(screen.getByLabelText('Handle or DID'), {
       target: { value: 'alice.bsky.social' },
@@ -75,6 +57,11 @@ describe('EmbedBuilder', () => {
   it('shows placeholder when no identifier', () => {
     render(<EmbedBuilder />);
     expect(screen.getByText('Enter a handle or DID to see a preview')).toBeDefined();
+  });
+
+  it('shows theme auto-adaptation note', () => {
+    render(<EmbedBuilder />);
+    expect(screen.getByText(/automatically adjusts between light and dark/)).toBeDefined();
   });
 
   it('copies code to clipboard on button click', () => {
