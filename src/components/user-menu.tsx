@@ -89,7 +89,7 @@ export function UserMenu() {
             View profile
           </Link>
           <Link
-            href={`/p/${session.handle}/edit`}
+            href={`/p/${session.handle}?edit=true`}
             className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-accent"
             role="menuitem"
             onClick={() => setOpen(false)}

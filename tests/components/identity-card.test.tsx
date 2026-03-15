@@ -70,6 +70,7 @@ vi.mock('sonner', () => {
 // Mock next/navigation
 vi.mock('next/navigation', () => ({
   useRouter: () => ({ refresh: vi.fn() }),
+  useSearchParams: () => new URLSearchParams(),
 }));
 
 // Mock profile-edit-dialog
