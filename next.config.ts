@@ -25,6 +25,11 @@ const nextConfig: NextConfig = {
         destination: '/p/:handle',
         permanent: true,
       },
+      {
+        source: '/p/:handle/edit',
+        destination: '/p/:handle',
+        permanent: true,
+      },
     ];
   },
   async headers() {
