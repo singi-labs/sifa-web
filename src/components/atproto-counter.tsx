@@ -6,7 +6,8 @@ interface AtprotoCounterProps {
   userCount: number;
   growthPerSecond: number;
   timestamp: number;
-  label: string;
+  prefix: string;
+  suffix: string;
   cta: string;
 }
 
@@ -14,7 +15,8 @@ export function AtprotoCounter({
   userCount,
   growthPerSecond,
   timestamp,
-  label,
+  prefix,
+  suffix,
   cta,
 }: AtprotoCounterProps) {
   const interpolate = useCallback(() => {
@@ -40,10 +42,11 @@ export function AtprotoCounter({
   return (
     <div className="mt-6 max-w-lg text-center">
       <p className="text-sm text-muted-foreground">
+        {prefix}{' '}
         <span className="font-mono text-base font-semibold tabular-nums text-foreground">
           {formatted}
         </span>{' '}
-        {label}
+        {suffix}
       </p>
       <a
         href="/search"

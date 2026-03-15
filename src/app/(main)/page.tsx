@@ -38,7 +38,8 @@ export default async function Home() {
           userCount={stats.atproto.userCount}
           growthPerSecond={stats.atproto.growthPerSecond}
           timestamp={stats.atproto.timestamp}
-          label={t('atprotoCount')}
+          prefix={t('atprotoCountPrefix')}
+          suffix={t('atprotoCountSuffix')}
           cta={t('claimProfile')}
         />
       )}
