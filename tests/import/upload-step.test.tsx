@@ -4,6 +4,7 @@ import { UploadStep } from '@/app/(main)/import/components/upload-step';
 
 vi.mock('@phosphor-icons/react', () => ({
   Upload: (props: Record<string, unknown>) => <span data-testid="icon-upload" {...props} />,
+  Eye: (props: Record<string, unknown>) => <span data-testid="icon-eye" {...props} />,
 }));
 
 describe('UploadStep', () => {
