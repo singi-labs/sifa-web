@@ -106,7 +106,7 @@ export function MobileNav() {
                   {t('viewProfile')}
                 </Link>
                 <Link
-                  href={`/p/${session.handle}?edit=true`}
+                  href={`/p/${session.handle}`}
                   onClick={() => setOpen(false)}
                   className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
                 >
