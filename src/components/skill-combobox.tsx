@@ -52,7 +52,7 @@ export function SkillCombobox({ value, category, onChange, onSelect, id }: Skill
     setLoading(true);
     try {
       const suggestions = await searchSkills(q);
-      setResults(suggestions);
+      setResults(Array.isArray(suggestions) ? suggestions : []);
       setIsOpen(true);
       setActiveIndex(-1);
     } catch {

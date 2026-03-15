@@ -52,7 +52,7 @@ describe('SkillCombobox', () => {
     const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     mockFetch.mockResolvedValue({
       ok: true,
-      json: () => Promise.resolve(mockSuggestions),
+      json: () => Promise.resolve({ skills: mockSuggestions }),
     });
 
     renderCombobox();
@@ -73,7 +73,7 @@ describe('SkillCombobox', () => {
     const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     mockFetch.mockResolvedValue({
       ok: true,
-      json: () => Promise.resolve(mockSuggestions),
+      json: () => Promise.resolve({ skills: mockSuggestions }),
     });
 
     const { onChange } = renderCombobox();
@@ -93,7 +93,7 @@ describe('SkillCombobox', () => {
     const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     mockFetch.mockResolvedValue({
       ok: true,
-      json: () => Promise.resolve(mockSuggestions),
+      json: () => Promise.resolve({ skills: mockSuggestions }),
     });
 
     renderCombobox();
@@ -116,7 +116,7 @@ describe('SkillCombobox', () => {
     const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     mockFetch.mockResolvedValue({
       ok: true,
-      json: () => Promise.resolve(mockSuggestions),
+      json: () => Promise.resolve({ skills: mockSuggestions }),
     });
 
     renderCombobox();
@@ -139,7 +139,7 @@ describe('SkillCombobox', () => {
     const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     mockFetch.mockResolvedValue({
       ok: true,
-      json: () => Promise.resolve(mockSuggestions),
+      json: () => Promise.resolve({ skills: mockSuggestions }),
     });
 
     const { onChange } = renderCombobox();
@@ -174,7 +174,7 @@ describe('SkillCombobox', () => {
     const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     mockFetch.mockResolvedValue({
       ok: true,
-      json: () => Promise.resolve(mockSuggestions),
+      json: () => Promise.resolve({ skills: mockSuggestions }),
     });
 
     renderCombobox();
@@ -250,7 +250,7 @@ describe('SkillCombobox', () => {
     const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     mockFetch.mockResolvedValue({
       ok: true,
-      json: () => Promise.resolve(mockSuggestions),
+      json: () => Promise.resolve({ skills: mockSuggestions }),
     });
 
     renderCombobox();
@@ -270,7 +270,7 @@ describe('SkillCombobox', () => {
     const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     mockFetch.mockResolvedValue({
       ok: true,
-      json: () => Promise.resolve(mockSuggestions),
+      json: () => Promise.resolve({ skills: mockSuggestions }),
     });
 
     renderCombobox();

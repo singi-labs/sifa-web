@@ -80,7 +80,7 @@ describe('SkillEditDialog', () => {
       const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
       mockFetch.mockResolvedValue({
         ok: true,
-        json: () => Promise.resolve(mockSuggestions),
+        json: () => Promise.resolve({ skills: mockSuggestions }),
       });
 
       renderDialog();
@@ -105,7 +105,7 @@ describe('SkillEditDialog', () => {
       const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
       mockFetch.mockResolvedValue({
         ok: true,
-        json: () => Promise.resolve(mockSuggestions),
+        json: () => Promise.resolve({ skills: mockSuggestions }),
       });
 
       renderDialog();
