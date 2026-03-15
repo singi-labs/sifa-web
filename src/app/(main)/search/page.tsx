@@ -4,6 +4,7 @@ import { getTranslations } from 'next-intl/server';
 export const dynamic = 'force-dynamic';
 import { ProfileCard } from '@/components/profile-card';
 import { SearchInput } from './search-input';
+import { SearchStatus } from './search-status';
 
 interface SearchPageProps {
   searchParams: Promise<{ q?: string }>;
@@ -35,6 +36,8 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
           />
         ))}
       </div>
+
+      <SearchStatus />
     </main>
   );
 }

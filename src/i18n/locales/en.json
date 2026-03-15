@@ -246,7 +246,21 @@
   },
   "search": {
     "placeholder": "Search people by name, skills, or headline",
-    "noResults": "No results found for \"{query}\""
+    "noResults": "No results found for \"{query}\"",
+    "statusTitle": "Search capabilities",
+    "statusDone": {
+      "nameHeadline": "Search by name and headline",
+      "bio": "Search by bio / about text",
+      "currentRole": "Show current role in results"
+    },
+    "statusPlanned": {
+      "skills": "Search by skills",
+      "location": "Filter by location",
+      "atproto": "Search all AT Protocol profiles (not just Sifa)",
+      "autocomplete": "Typeahead / autocomplete suggestions",
+      "filters": "Filter by company, industry, or expertise"
+    },
+    "sifaOnlyNote": "Search currently only includes profiles created on Sifa."
   },
   "login": {
     "title": "Sign in",
