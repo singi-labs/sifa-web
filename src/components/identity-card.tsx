@@ -115,7 +115,8 @@ export function IdentityCard({
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1 truncate text-sm text-muted-foreground hover:text-foreground"
                   >
-                    <PdsIcon provider={pdsProvider.name} className="h-3.5 w-3.5 shrink-0" />@{handle}
+                    <PdsIcon provider={pdsProvider.name} className="h-3.5 w-3.5 shrink-0" />@
+                    {handle}
                   </a>
                 ) : (
                   <p className="truncate text-sm text-muted-foreground">@{handle}</p>
@@ -124,7 +125,8 @@ export function IdentityCard({
 
               {(headline || about) && (
                 <p className="mt-2 text-sm text-foreground">
-                  {headline ?? (about && about.length > 120 ? about.slice(0, 120) + '\u2026' : about)}
+                  {headline ??
+                    (about && about.length > 120 ? about.slice(0, 120) + '\u2026' : about)}
                 </p>
               )}
 
@@ -237,7 +239,8 @@ export function IdentityCard({
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1 truncate text-sm text-muted-foreground hover:text-foreground"
                   >
-                    <PdsIcon provider={pdsProvider.name} className="h-3.5 w-3.5 shrink-0" />@{handle}
+                    <PdsIcon provider={pdsProvider.name} className="h-3.5 w-3.5 shrink-0" />@
+                    {handle}
                   </a>
                 ) : (
                   <p className="truncate text-sm text-muted-foreground">@{handle}</p>
@@ -357,13 +360,7 @@ export function IdentityCard({
           >
             {t('viewOnSifa')}
           </a>
-          <Image
-            src="/icon.svg"
-            alt="Sifa"
-            width={16}
-            height={16}
-            className="opacity-50"
-          />
+          <Image src="/icon.svg" alt="Sifa" width={16} height={16} className="opacity-50" />
         </div>
       ) : (
         <div className="mt-4 flex gap-2">
