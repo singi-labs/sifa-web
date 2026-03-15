@@ -61,9 +61,7 @@ export function EndorsementDialog({
     >
       <div className="mx-4 w-full max-w-lg rounded-lg border border-border bg-card p-6 shadow-lg">
         <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-lg font-semibold">
-            {t('endorseSkill', { skillName })}
-          </h3>
+          <h3 className="text-lg font-semibold">{t('endorseSkill', { skillName })}</h3>
           <Button
             variant="ghost"
             size="sm"
@@ -97,10 +95,12 @@ export function EndorsementDialog({
           </div>
 
           <div className="flex items-start gap-2 rounded-md bg-muted/50 p-3">
-            <Info className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" weight="fill" aria-hidden="true" />
-            <p className="text-xs text-muted-foreground">
-              {t('endorseAttribution')}
-            </p>
+            <Info
+              className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground"
+              weight="fill"
+              aria-hidden="true"
+            />
+            <p className="text-xs text-muted-foreground">{t('endorseAttribution')}</p>
           </div>
 
           {error && (

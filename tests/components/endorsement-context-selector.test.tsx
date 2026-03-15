@@ -33,17 +33,13 @@ describe('EndorsementContextSelector', () => {
   });
 
   it('shows detail input when option with hasDetail is selected', () => {
-    render(
-      <EndorsementContextSelector value="[worked_together]" onChange={vi.fn()} />,
-    );
+    render(<EndorsementContextSelector value="[worked_together]" onChange={vi.fn()} />);
 
     expect(screen.getByLabelText('Details (optional)')).toBeDefined();
   });
 
   it('does not show detail input for options without hasDetail', () => {
-    render(
-      <EndorsementContextSelector value="[supervised_by]" onChange={vi.fn()} />,
-    );
+    render(<EndorsementContextSelector value="[supervised_by]" onChange={vi.fn()} />);
 
     expect(screen.queryByLabelText('Details (optional)')).toBeNull();
   });
@@ -51,9 +47,7 @@ describe('EndorsementContextSelector', () => {
   it('calls onChange with detail when typing in detail input', async () => {
     const user = userEvent.setup();
     const onChange = vi.fn();
-    render(
-      <EndorsementContextSelector value="[worked_together]" onChange={onChange} />,
-    );
+    render(<EndorsementContextSelector value="[worked_together]" onChange={onChange} />);
 
     const detailInput = screen.getByLabelText('Details (optional)');
     await user.type(detailInput, 'Stripe');
@@ -77,9 +71,7 @@ describe('EndorsementContextSelector', () => {
   });
 
   it('passes axe accessibility audit', async () => {
-    const { container } = render(
-      <EndorsementContextSelector value="" onChange={vi.fn()} />,
-    );
+    const { container } = render(<EndorsementContextSelector value="" onChange={vi.fn()} />);
 
     const results = await axe(container);
     expect(results).toHaveNoViolations();
