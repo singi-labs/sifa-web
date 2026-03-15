@@ -10,8 +10,14 @@ import { SectionEditor } from '@/components/profile-editor';
 import { SkillEditDialog } from '@/components/skill-edit-dialog';
 import { valuesToSkill } from '@/components/profile-editor/section-converters';
 import { useProfileEdit } from '@/components/profile-edit-provider';
-import { createSkill, updateSkill, deleteSkill } from '@/lib/profile-api';
-import type { ProfileSkill } from '@/lib/types';
+import {
+  createSkill,
+  updateSkill,
+  deleteSkill,
+  linkSkillToPosition,
+  unlinkSkillFromPosition,
+} from '@/lib/profile-api';
+import type { ProfileSkill, StrongRef } from '@/lib/types';
 
 type DialogState = { mode: 'add' } | { mode: 'edit'; item: ProfileSkill };
 
@@ -27,6 +33,51 @@ export function SkillsSection({ isOwnProfile }: SkillsSectionProps) {
   const [editing, setEditing] = useState(false);
 
   const skills = profile.skills;
+  const positions = profile.positions;
+
+  /** Build a stub StrongRef for a skill rkey. Real URI/CID come from the API; this is best-effort. */
+  const buildSkillRef = useCallback(
+    (skillRkey: string): StrongRef => ({
+      uri: `at://${profile.did}/id.sifa.profile.skill/${skillRkey}`,
+      cid: '', // CID is unknown client-side; the API will resolve it
+    }),
+    [profile.did],
+  );
+
+  /** Determine which positions currently link to a given skill rkey. */
+  const getLinkedPositionRkeys = useCallback(
+    (skillRkey: string): string[] => {
+      const ref = buildSkillRef(skillRkey);
+      return positions
+        .filter((pos) => pos.skills?.some((s) => s.uri === ref.uri))
+        .map((pos) => pos.rkey);
+    },
+    [positions, buildSkillRef],
+  );
+
+  const handlePositionLinkChange = useCallback(
+    async (positionRkey: string, linked: boolean, skillRkey: string) => {
+      const position = positions.find((p) => p.rkey === positionRkey);
+      if (!position) return;
+
+      const skillRef = buildSkillRef(skillRkey);
+      const currentSkills = position.skills ?? [];
+
+      const result = linked
+        ? await linkSkillToPosition(positionRkey, skillRef, currentSkills)
+        : await unlinkSkillFromPosition(positionRkey, skillRef, currentSkills);
+
+      if (result.success) {
+        const updatedSkills = linked
+          ? [...currentSkills, skillRef]
+          : currentSkills.filter((s) => s.uri !== skillRef.uri);
+        updateItem('positions', positionRkey, { skills: updatedSkills });
+      } else {
+        toast.error(result.error ?? 'Failed to update position');
+      }
+    },
+    [positions, buildSkillRef, updateItem],
+  );
 
   const handleSave = useCallback(
     async (
@@ -168,6 +219,17 @@ export function SkillsSection({ isOwnProfile }: SkillsSectionProps) {
           title={dialog.mode === 'add' ? `Add ${t('skills')}` : `Edit ${t('skills')}`}
           initialSkillName={dialog.mode === 'edit' ? dialog.item.skillName : undefined}
           initialCategory={dialog.mode === 'edit' ? dialog.item.category : undefined}
+          isEditMode={dialog.mode === 'edit'}
+          positions={positions}
+          linkedPositionRkeys={
+            dialog.mode === 'edit' ? getLinkedPositionRkeys(dialog.item.rkey) : undefined
+          }
+          onPositionLinkChange={
+            dialog.mode === 'edit'
+              ? (posRkey, linked) =>
+                  void handlePositionLinkChange(posRkey, linked, dialog.item.rkey)
+              : undefined
+          }
           onSave={handleSave}
           onCancel={() => setDialog(null)}
         />

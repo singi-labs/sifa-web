@@ -5,15 +5,22 @@ import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { X } from '@phosphor-icons/react';
 import { SkillCombobox } from '@/components/skill-combobox';
+import { PositionLinkList } from '@/components/position-link-list';
+import type { ProfilePosition } from '@/lib/types';
 
 interface SkillEditDialogProps {
   title: string;
   initialSkillName?: string;
   initialCategory?: string;
+  positions?: ProfilePosition[];
+  linkedPositionRkeys?: string[];
+  onPositionLinkChange?: (positionRkey: string, linked: boolean) => void;
   onSave: (
     values: Record<string, string | boolean>,
   ) => Promise<{ success: boolean; error?: string }>;
   onCancel: () => void;
+  /** True when editing an existing skill (has an rkey). "Used in" section only shows in edit mode. */
+  isEditMode?: boolean;
 }
 
 const CATEGORY_OPTIONS = [
@@ -33,8 +40,12 @@ export function SkillEditDialog({
   title,
   initialSkillName = '',
   initialCategory = '',
+  positions,
+  linkedPositionRkeys,
+  onPositionLinkChange,
   onSave,
   onCancel,
+  isEditMode = false,
 }: SkillEditDialogProps) {
   const t = useTranslations('editor');
   const [skillName, setSkillName] = useState(initialSkillName);
@@ -113,6 +124,15 @@ export function SkillEditDialog({
               ))}
             </select>
           </div>
+
+          {isEditMode && positions && onPositionLinkChange && (
+            <PositionLinkList
+              positions={positions}
+              linkedPositionRkeys={linkedPositionRkeys ?? []}
+              onToggle={onPositionLinkChange}
+              disabled={saving}
+            />
+          )}
 
           {error && (
             <p className="text-sm text-destructive" role="alert">
