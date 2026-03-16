@@ -157,9 +157,10 @@ export function EventCardGrid({ entries, speakerCount, attendeeCount }: EventCar
             <Link
               key={profile.handle}
               href={`/p/${profile.handle}`}
-              className="transition-transform hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              className="h-full transition-transform hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
               <IdentityCard
+                className="h-full"
                 did={profile.did}
                 handle={profile.handle}
                 displayName={profile.displayName}
