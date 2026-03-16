@@ -40,10 +40,8 @@ export default async function Home() {
           timestamp={stats.atproto.timestamp}
           prefix={t('atprotoCountPrefix')}
           suffix={t('atprotoCountSuffix')}
-          cta={t('claimProfile')}
         />
       )}
-      <p className="mt-8 text-sm text-muted-foreground">{t('comingSoon')}</p>
       <div className="mt-6 flex gap-4">
         <Link
           href="/search"

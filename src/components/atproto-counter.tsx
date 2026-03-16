@@ -8,7 +8,6 @@ interface AtprotoCounterProps {
   timestamp: number;
   prefix: string;
   suffix: string;
-  cta: string;
 }
 
 function nextPoissonDelay(ratePerSecond: number): number {
@@ -23,7 +22,6 @@ export function AtprotoCounter({
   timestamp,
   prefix,
   suffix,
-  cta,
 }: AtprotoCounterProps) {
   const interpolate = useCallback(() => {
     if (growthPerSecond <= 0) return userCount;
@@ -59,10 +57,7 @@ export function AtprotoCounter({
       <p className="text-sm text-muted-foreground">
         {prefix}{' '}
         <span className="text-base font-semibold tabular-nums text-foreground">{formatted}</span>{' '}
-        {suffix}{' '}
-        <a href="/search" className="font-medium text-primary hover:underline">
-          {cta}
-        </a>
+        {suffix}
       </p>
     </div>
   );
