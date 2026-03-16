@@ -13,11 +13,20 @@ export interface ProfileSearchResult {
 }
 
 export async function fetchProfile(handleOrDid: string) {
-  const res = await fetch(`${API_URL}/api/profile/${encodeURIComponent(handleOrDid)}`, {
-    next: { revalidate: 300, tags: [`profile-${handleOrDid}`] },
-  });
-  if (!res.ok) return null;
-  return res.json();
+  const maxRetries = 3;
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    const res = await fetch(`${API_URL}/api/profile/${encodeURIComponent(handleOrDid)}`, {
+      next: { revalidate: 300, tags: [`profile-${handleOrDid}`] },
+    });
+    if (res.status === 429 && attempt < maxRetries) {
+      const retryAfter = parseInt(res.headers.get('retry-after') ?? '5', 10);
+      await new Promise((r) => setTimeout(r, retryAfter * 1000));
+      continue;
+    }
+    if (!res.ok) return null;
+    return res.json();
+  }
+  return null;
 }
 
 export async function searchProfiles(query: string): Promise<ProfileSearchResult[]> {
