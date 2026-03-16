@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import { sanitize } from '@/lib/sanitize';
+import { getDisplayLabel } from '@/lib/pds-utils';
 
 interface ProfileCardProps {
   handle: string;
@@ -21,7 +22,7 @@ export function ProfileCard({
   currentCompany,
   claimed,
 }: ProfileCardProps) {
-  const label = displayName ?? handle;
+  const label = getDisplayLabel(displayName, handle);
   return (
     <Link href={`/p/${encodeURIComponent(handle)}`} className="block">
       <Card className="transition-colors hover:bg-muted/50">
