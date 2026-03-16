@@ -32,7 +32,7 @@ export default function AdminPage() {
   const fetchStats = useCallback(async (daysParam: string) => {
     setLoading(true);
     try {
-      const url = `${API_URL}/api/admin/stats/signups${daysParam !== '0' ? `?days=${daysParam}` : ''}`;
+      const url = `${API_URL}/api/admin/stats/signups?days=${daysParam}`;
       const res = await fetch(url, { credentials: 'include' });
       if (!res.ok) {
         throw new Error(`Failed to fetch stats: ${res.status}`);
