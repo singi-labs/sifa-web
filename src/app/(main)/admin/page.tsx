@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { DailySignupsChart } from './_components/daily-signups-chart';
 import { CumulativeUsersChart } from './_components/cumulative-users-chart';
+import { LatestSignups } from './_components/latest-signups';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3100';
 
@@ -17,6 +18,14 @@ interface StatsResponse {
   signups: SignupEntry[];
 }
 
+interface SignupUser {
+  did: string;
+  handle: string;
+  displayName: string | null;
+  avatarUrl: string | null;
+  createdAt: string;
+}
+
 const TIME_RANGES = [
   { label: '7d', value: '7' },
   { label: '30d', value: '30' },
@@ -28,6 +37,8 @@ export default function AdminPage() {
   const [days, setDays] = useState('30');
   const [data, setData] = useState<StatsResponse | null>(null);
   const [loading, setLoading] = useState(true);
+  const [latestUsers, setLatestUsers] = useState<SignupUser[]>([]);
+  const [latestLoading, setLatestLoading] = useState(true);
 
   const fetchStats = useCallback(async (daysParam: string) => {
     setLoading(true);
@@ -49,6 +60,25 @@ export default function AdminPage() {
   useEffect(() => {
     void fetchStats(days);
   }, [days, fetchStats]);
+
+  useEffect(() => {
+    async function fetchLatest() {
+      setLatestLoading(true);
+      try {
+        const res = await fetch(`${API_URL}/api/admin/stats/latest-signups`, {
+          credentials: 'include',
+        });
+        if (!res.ok) throw new Error(`Failed: ${res.status}`);
+        const json = await res.json();
+        setLatestUsers(json.users);
+      } catch (err) {
+        console.error('Failed to fetch latest signups:', err);
+      } finally {
+        setLatestLoading(false);
+      }
+    }
+    void fetchLatest();
+  }, []);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
@@ -101,6 +131,15 @@ export default function AdminPage() {
         ) : (
           <p className="text-muted-foreground">Failed to load stats.</p>
         )}
+      </div>
+
+      {/* Latest signups */}
+      <div className="mt-8">
+        {latestLoading ? (
+          <div className="h-96 animate-pulse rounded-lg bg-muted" />
+        ) : latestUsers.length > 0 ? (
+          <LatestSignups users={latestUsers} />
+        ) : null}
       </div>
     </div>
   );
