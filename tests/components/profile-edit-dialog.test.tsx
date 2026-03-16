@@ -17,6 +17,7 @@ describe('ProfileEditDialog', () => {
     expect(() => {
       render(
         <ProfileEditDialog
+          handle="test.bsky.social"
           displayName="Test User"
           avatar={undefined}
           headline="Test headline"
@@ -32,6 +33,7 @@ describe('ProfileEditDialog', () => {
   it('renders the dialog with correct role', () => {
     const { container } = render(
       <ProfileEditDialog
+        handle="test.bsky.social"
         displayName="Test User"
         headline="Test headline"
         about="Test about"

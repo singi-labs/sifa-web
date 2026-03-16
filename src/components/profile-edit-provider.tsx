@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useCallback, type ReactNode } from 'react';
 import { useAuth } from '@/components/auth-provider';
+import { revalidateProfileCache } from '@/app/actions';
 import type { Profile } from '@/lib/types';
 
 interface ProfileEditContextValue {
@@ -33,36 +34,58 @@ export function ProfileEditProvider({ initialProfile, children }: ProfileEditPro
     setProfile((prev) => ({ ...prev, isOwnProfile }));
   }
 
-  const updateProfile = useCallback((fields: Partial<Profile>) => {
-    setProfile((prev) => ({ ...prev, ...fields }));
-  }, []);
+  /** Bust the ISR cache for this profile so the next page load gets fresh data. */
+  const bustCache = useCallback(() => {
+    void revalidateProfileCache(initialProfile.handle);
+    if (initialProfile.did) void revalidateProfileCache(initialProfile.did);
+  }, [initialProfile.handle, initialProfile.did]);
 
-  const addItem = useCallback((key: string, item: Record<string, unknown> & { rkey: string }) => {
-    setProfile((prev) => {
-      const existing = (prev[key as keyof Profile] as Array<{ rkey: string }>) ?? [];
-      return { ...prev, [key]: [...existing, item] };
-    });
-  }, []);
+  const updateProfile = useCallback(
+    (fields: Partial<Profile>) => {
+      setProfile((prev) => ({ ...prev, ...fields }));
+      bustCache();
+    },
+    [bustCache],
+  );
 
-  const updateItem = useCallback((key: string, rkey: string, fields: Record<string, unknown>) => {
-    setProfile((prev) => {
-      const existing = (prev[key as keyof Profile] as Array<{ rkey: string }>) ?? [];
-      return {
-        ...prev,
-        [key]: existing.map((item) => (item.rkey === rkey ? { ...item, ...fields } : item)),
-      };
-    });
-  }, []);
+  const addItem = useCallback(
+    (key: string, item: Record<string, unknown> & { rkey: string }) => {
+      setProfile((prev) => {
+        const existing = (prev[key as keyof Profile] as Array<{ rkey: string }>) ?? [];
+        return { ...prev, [key]: [...existing, item] };
+      });
+      bustCache();
+    },
+    [bustCache],
+  );
 
-  const removeItem = useCallback((key: string, rkey: string) => {
-    setProfile((prev) => {
-      const existing = (prev[key as keyof Profile] as Array<{ rkey: string }>) ?? [];
-      return {
-        ...prev,
-        [key]: existing.filter((item) => item.rkey !== rkey),
-      };
-    });
-  }, []);
+  const updateItem = useCallback(
+    (key: string, rkey: string, fields: Record<string, unknown>) => {
+      setProfile((prev) => {
+        const existing = (prev[key as keyof Profile] as Array<{ rkey: string }>) ?? [];
+        return {
+          ...prev,
+          [key]: existing.map((item) => (item.rkey === rkey ? { ...item, ...fields } : item)),
+        };
+      });
+      bustCache();
+    },
+    [bustCache],
+  );
+
+  const removeItem = useCallback(
+    (key: string, rkey: string) => {
+      setProfile((prev) => {
+        const existing = (prev[key as keyof Profile] as Array<{ rkey: string }>) ?? [];
+        return {
+          ...prev,
+          [key]: existing.filter((item) => item.rkey !== rkey),
+        };
+      });
+      bustCache();
+    },
+    [bustCache],
+  );
 
   return (
     <ProfileEditContext.Provider

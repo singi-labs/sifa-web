@@ -11,6 +11,7 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { updateProfileSelf, refreshPds } from '@/lib/profile-api';
+import { revalidateProfileCache } from '@/app/actions';
 import { LocationSearch } from '@/components/location-search';
 import type { LocationValue } from '@/lib/types';
 
@@ -24,6 +25,8 @@ const OPEN_TO_OPTIONS = [
 ] as const;
 
 interface ProfileEditDialogProps {
+  handle: string;
+  did?: string;
   displayName?: string;
   avatar?: string;
   headline?: string;
@@ -34,6 +37,8 @@ interface ProfileEditDialogProps {
 }
 
 export function ProfileEditDialog({
+  handle,
+  did,
   displayName,
   avatar,
   headline: initialHeadline,
@@ -65,6 +70,8 @@ export function ProfileEditDialog({
           setCurrentDisplayName(result.displayName ?? undefined);
         if (result.avatar !== undefined) setCurrentAvatar(result.avatar ?? undefined);
         toast.success(t('refreshPdsSuccess'));
+        void revalidateProfileCache(handle);
+        if (did) void revalidateProfileCache(did);
         router.refresh();
       } else {
         toast.error(t('refreshPdsFailed'));
@@ -108,6 +115,8 @@ export function ProfileEditDialog({
     setSaving(false);
     if (result.success) {
       toast.success(t('saved'));
+      void revalidateProfileCache(handle);
+      if (did) void revalidateProfileCache(did);
       router.refresh();
       onClose();
     } else {

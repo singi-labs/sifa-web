@@ -445,6 +445,8 @@ export function IdentityCard({
       )}
       {editing && (
         <ProfileEditDialog
+          handle={handle}
+          did={did}
           displayName={displayName}
           avatar={avatar}
           headline={headline}
