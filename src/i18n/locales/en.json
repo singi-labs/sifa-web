@@ -252,19 +252,26 @@
     "placeholder": "Search by name, headline, or AT Protocol handle",
     "noResults": "No results found for \"{query}\"",
     "statusTitle": "Search capabilities",
-    "statusDone": {
+    "sifaGroupTitle": "Sifa profiles",
+    "sifaGroupDone": {
       "nameHeadline": "Search by name and headline",
       "bio": "Search by bio / about text",
-      "currentRole": "Show current role in results",
-      "atproto": "Find any AT Protocol user by handle"
+      "currentRole": "Show current role in results"
     },
-    "statusPlanned": {
+    "sifaGroupPlanned": {
       "skills": "Search by skills",
       "location": "Filter by location",
       "autocomplete": "Typeahead / autocomplete suggestions",
       "filters": "Filter by company, industry, or expertise"
     },
-    "sifaOnlyNote": "Search finds Sifa members by name, headline, and bio. You can also look up any AT Protocol user by entering their handle (e.g. alice.bsky.social or just alice)."
+    "globalGroupTitle": "AT Protocol network",
+    "globalGroupDone": {
+      "handleLookup": "Find any user by handle (e.g. alice.bsky.social or just alice)"
+    },
+    "globalGroupPlanned": {
+      "fullTextGlobal": "Full-text search across the AT Protocol network"
+    },
+    "sifaOnlyNote": "Sifa profile search covers members by name, headline, and bio. Handle lookup works for anyone on the AT Protocol network."
   },
   "login": {
     "title": "Sign in",
