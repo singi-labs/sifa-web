@@ -5,7 +5,6 @@ import { fetchProfile } from '@/lib/api';
 import { fetchSmokeSignalAttendees } from '@/lib/smoke-signal';
 import { sanitize } from '@/lib/sanitize';
 import { event, SPEAKER_TYPE_LABELS } from '@/data/events/atmosphereconf-2026';
-import type { ProfilePosition } from '@/lib/types';
 import { EventCardGrid, type EventEntry, type FilterGroup } from './event-card-grid';
 
 export const revalidate = 3600;
