@@ -65,6 +65,8 @@ interface EditableSectionProps<T extends { rkey: string }> {
     item: T,
     editControls?: { onEdit: () => void; onDelete: () => void },
   ) => React.ReactNode;
+  /** Sort items before rendering. Receives the items array, returns a sorted copy. */
+  sortItems?: (items: T[]) => T[];
   /** Called after a successful create or update. */
   onPostSave?: () => void;
   /** Called when any field value changes in the edit dialog. Return partial values to auto-fill. */
@@ -86,13 +88,15 @@ export function EditableSection<T extends { rkey: string }>({
   fromValues,
   collection,
   renderEntry,
+  sortItems,
   onPostSave,
   onFieldChange,
 }: EditableSectionProps<T>) {
   const { profile, addItem, updateItem, removeItem } = useProfileEdit();
   const [dialog, setDialog] = useState<DialogState<T> | null>(null);
 
-  const items = (profile[profileKey as keyof typeof profile] as T[] | undefined) ?? [];
+  const rawItems = (profile[profileKey as keyof typeof profile] as T[] | undefined) ?? [];
+  const items = sortItems ? sortItems(rawItems) : rawItems;
   const routes = NAMED_ROUTES[collection];
 
   const handleSave = useCallback(

@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import { EditableSection, EditableEntry, HONOR_FIELDS } from '@/components/profile-editor';
 import { honorToValues, valuesToHonor } from '@/components/profile-editor/section-converters';
 import { formatTimelineDate } from './timeline';
+import { sortByDateDesc, singleDateExtractor } from '@/lib/sort-by-date';
 import type { ProfileHonor } from '@/lib/types';
 
 interface AwardsSectionProps {
@@ -29,6 +30,7 @@ export function AwardsSection({ honors, isOwnProfile }: AwardsSectionProps) {
           valuesToHonor as (v: Record<string, string | boolean>) => Omit<ProfileHonor, 'rkey'>
         }
         collection="id.sifa.profile.honor"
+        sortItems={(items) => sortByDateDesc(items, singleDateExtractor)}
         renderEntry={(honor, controls) => (
           <EditableEntry
             key={honor.rkey}

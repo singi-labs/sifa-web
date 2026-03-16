@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import { TimelineSection, TimelineEntry, formatTimelineDate } from './timeline';
 import { EditableSection, EditableEntry, PROJECT_FIELDS } from '@/components/profile-editor';
 import { projectToValues, valuesToProject } from '@/components/profile-editor/section-converters';
+import { sortByDateDesc, dateRangeExtractor } from '@/lib/sort-by-date';
 import type { ProfileProject } from '@/lib/types';
 
 interface ProjectsSectionProps {
@@ -28,6 +29,7 @@ export function ProjectsSection({ projects, isOwnProfile }: ProjectsSectionProps
           valuesToProject as (v: Record<string, string | boolean>) => Omit<ProfileProject, 'rkey'>
         }
         collection="id.sifa.profile.project"
+        sortItems={(items) => sortByDateDesc(items, dateRangeExtractor)}
         renderEntry={(proj, controls) => (
           <EditableEntry
             key={proj.rkey}
