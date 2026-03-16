@@ -293,7 +293,9 @@
   "privacy": {
     "title": "Privacy Policy",
     "lastUpdated": "Last updated: March 2026",
-    "introBody": "Sifa is operated by Singi Labs, founded by Guido X Jansen and based in the Netherlands. We built Sifa on the AT Protocol because professional identity data shouldn't be controlled by a single platform. This policy explains what data we handle and how.",
+    "introPrefix": "Sifa is operated by",
+    "introFoundedBy": ", founded by",
+    "introSuffix": "and based in the Netherlands. We built Sifa on the AT Protocol because professional identity data shouldn't be controlled by a single platform. This policy explains what data we handle and how.",
     "dataStorageTitle": "Your data, your PDS",
     "dataStorageBody": "Your professional profile data is stored in your AT Protocol Personal Data Server (PDS), not on Sifa's servers. You control your data and can move it to any compatible provider at any time. Sifa reads from and writes to your PDS on your behalf. We don't maintain a separate copy.",
     "importTitle": "LinkedIn import",
@@ -339,7 +341,9 @@
   "terms": {
     "title": "Terms of Service",
     "lastUpdated": "Last updated: March 2026",
-    "introBody": "Sifa is operated by Singi Labs, founded by Guido X Jansen and based in the Netherlands. By using Sifa, you agree to the following terms.",
+    "introPrefix": "Sifa is operated by",
+    "introFoundedBy": ", founded by",
+    "introSuffix": "and based in the Netherlands. By using Sifa, you agree to the following terms.",
     "serviceTitle": "The service",
     "serviceBody": "Sifa provides a web interface for managing professional profiles on the AT Protocol. Your profile data is stored in your Personal Data Server (PDS), not on Sifa's servers. We provide the tools to create, edit, and display that data. We don't control it.",
     "accountsTitle": "Accounts",

@@ -1,11 +1,14 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
+import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Terms of Service',
 };
+
+const linkClass = 'font-medium text-foreground underline-offset-4 hover:underline';
 
 export default async function TermsPage() {
   const t = await getTranslations('terms');
@@ -15,7 +18,17 @@ export default async function TermsPage() {
       <h1 className="text-3xl font-bold">{t('title')}</h1>
       <p className="mt-2 text-sm text-muted-foreground">{t('lastUpdated')}</p>
 
-      <p className="mt-6 text-muted-foreground">{t('introBody')}</p>
+      <p className="mt-6 text-muted-foreground">
+        {t('introPrefix')}{' '}
+        <a href="https://singi.dev" className={linkClass} target="_blank" rel="noopener noreferrer">
+          Singi Labs
+        </a>
+        {t('introFoundedBy')}{' '}
+        <Link href="/p/gui.do" className={linkClass}>
+          Guido X Jansen
+        </Link>{' '}
+        {t('introSuffix')}
+      </p>
 
       <div className="mt-8 space-y-8">
         <section>
