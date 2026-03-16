@@ -2,8 +2,16 @@
 
 import { useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Upload, Eye } from '@phosphor-icons/react';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { Upload, Eye, Info } from '@phosphor-icons/react';
 
 interface UploadStepProps {
   onFileSelected: (file: File) => void;
@@ -57,7 +65,36 @@ export function UploadStep({ onFileSelected, isProcessing, extractionError }: Up
     <Card>
       <CardHeader>
         <CardTitle>{t('heading')}</CardTitle>
-        <CardDescription>{t('description')}</CardDescription>
+        <CardDescription>
+          {t('descriptionPrefix')}
+          <a
+            href="https://www.linkedin.com/mypreferences/d/download-my-data"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-2 hover:text-foreground"
+          >
+            {t('descriptionLinkText')}
+          </a>
+          {t('descriptionMiddle')}
+          <Dialog>
+            <DialogTrigger className="ml-1 inline-flex translate-y-0.5 cursor-pointer text-muted-foreground hover:text-foreground">
+              <Info className="size-4" weight="fill" aria-hidden="true" />
+              <span className="sr-only">{t('screenshotCaption')}</span>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-lg">
+              <DialogHeader>
+                <DialogTitle>{t('screenshotCaption')}</DialogTitle>
+              </DialogHeader>
+              <Image
+                src="/assets/linkedin-download-data.png"
+                alt={t('screenshotAlt')}
+                width={800}
+                height={500}
+                className="rounded-lg border"
+              />
+            </DialogContent>
+          </Dialog>
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <div
