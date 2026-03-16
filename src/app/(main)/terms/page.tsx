@@ -15,6 +15,8 @@ export default async function TermsPage() {
       <h1 className="text-3xl font-bold">{t('title')}</h1>
       <p className="mt-2 text-sm text-muted-foreground">{t('lastUpdated')}</p>
 
+      <p className="mt-6 text-muted-foreground">{t('introBody')}</p>
+
       <div className="mt-8 space-y-8">
         <section>
           <h2 className="text-xl font-semibold">{t('serviceTitle')}</h2>
@@ -24,6 +26,11 @@ export default async function TermsPage() {
         <section>
           <h2 className="text-xl font-semibold">{t('accountsTitle')}</h2>
           <p className="mt-2 text-muted-foreground">{t('accountsBody')}</p>
+        </section>
+
+        <section>
+          <h2 className="text-xl font-semibold">{t('dataTitle')}</h2>
+          <p className="mt-2 text-muted-foreground">{t('dataBody')}</p>
         </section>
 
         <section>
