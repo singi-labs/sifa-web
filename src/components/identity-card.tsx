@@ -185,7 +185,8 @@ export function IdentityCard({
 
           {/* Open to pills */}
           {openTo && openTo.length > 0 && (
-            <div className="mt-2 flex flex-wrap gap-1.5">
+            <div className="mt-2 flex flex-wrap items-center gap-1.5">
+              <span className="text-xs font-medium text-muted-foreground">{tEdit('openTo')}:</span>
               {openTo.map((item) => (
                 <Badge
                   key={item}
@@ -323,7 +324,8 @@ export function IdentityCard({
 
           {/* Row 6: Open to pills */}
           {openTo && openTo.length > 0 && (
-            <div className="mt-3 flex flex-wrap gap-2">
+            <div className="mt-3 flex flex-wrap items-center gap-2">
+              <span className="text-sm font-medium text-muted-foreground">{tEdit('openTo')}:</span>
               {openTo.map((item) => (
                 <Badge key={item} variant="outline" className="border-primary/30 text-primary">
                   {OPEN_TO_LABEL_KEYS[item] ? tEdit(OPEN_TO_LABEL_KEYS[item]!) : item}
