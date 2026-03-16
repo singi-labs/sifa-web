@@ -2,7 +2,7 @@
 
 import { useState, type FormEvent } from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { X, Info, ArrowsClockwise, Eye } from '@phosphor-icons/react';
 // @base-ui/react v1.2.0: Popover.Positioner MUST be inside Popover.Portal or it throws at runtime
@@ -11,6 +11,7 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { updateProfileSelf, refreshPds } from '@/lib/profile-api';
+import { revalidateProfile } from '@/lib/actions';
 import { LocationSearch } from '@/components/location-search';
 import type { LocationValue } from '@/lib/types';
 
@@ -45,6 +46,7 @@ export function ProfileEditDialog({
   const t = useTranslations('profileEdit');
   const tEditor = useTranslations('editor');
   const router = useRouter();
+  const pathname = usePathname();
 
   const [headline, setHeadline] = useState(initialHeadline ?? '');
   const [about, setAbout] = useState(initialAbout ?? '');
@@ -108,6 +110,7 @@ export function ProfileEditDialog({
     setSaving(false);
     if (result.success) {
       toast.success(t('saved'));
+      await revalidateProfile(pathname);
       router.refresh();
       onClose();
     } else {
