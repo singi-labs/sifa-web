@@ -4,9 +4,9 @@ import { notFound } from 'next/navigation';
 import { fetchProfile } from '@/lib/api';
 import { fetchSmokeSignalAttendees } from '@/lib/smoke-signal';
 import { sanitize } from '@/lib/sanitize';
-import { IdentityCard } from '@/components/identity-card';
 import { event, SPEAKER_TYPE_LABELS } from '@/data/events/atmosphereconf-2026';
-import type { LocationValue, ProfilePosition } from '@/lib/types';
+import type { ProfilePosition } from '@/lib/types';
+import { EventCardGrid, type EventEntry, type FilterGroup } from './event-card-grid';
 
 export const revalidate = 3600;
 
@@ -71,6 +71,9 @@ export default async function EventPage({ params }: EventPageProps) {
   const speakerBadgeMap = new Map(
     event.speakers.map((s) => [s.handle, SPEAKER_TYPE_LABELS[s.speakerType]]),
   );
+  const speakerTypeMap = new Map(
+    event.speakers.map((s) => [s.handle, s.speakerType as FilterGroup]),
+  );
 
   const attendeeHandles = await fetchSmokeSignalAttendees(event.smokesignalUrl);
 
@@ -81,23 +84,19 @@ export default async function EventPage({ params }: EventPageProps) {
 
   const profiles = await fetchAllProfiles(allHandles);
 
-  // Build profile entries with badge info
-  type ProfileEntry = {
-    profile: NonNullable<Awaited<ReturnType<typeof fetchProfile>>>;
-    badge?: string;
-    isSpeaker: boolean;
-  };
-
-  const entries: ProfileEntry[] = [];
+  const entries: EventEntry[] = [];
   for (let i = 0; i < allHandles.length; i++) {
     const handle = allHandles[i]!;
     const profile = profiles[i];
     if (!profile) continue;
 
+    const isSpeaker = speakerHandles.has(handle);
+
     entries.push({
       profile,
       badge: speakerBadgeMap.get(handle),
-      isSpeaker: speakerHandles.has(handle),
+      isSpeaker,
+      group: isSpeaker ? (speakerTypeMap.get(handle) ?? 'presentation') : 'attendee',
     });
   }
 
@@ -152,7 +151,16 @@ export default async function EventPage({ params }: EventPageProps) {
           {event.dates} &middot; {event.location}
         </p>
         <p className="mt-3 text-sm text-muted-foreground">
-          Professional identity cards for everyone at{' '}
+          Professional identity cards for speakers and{' '}
+          <a
+            href={event.smokesignalUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-4 hover:text-foreground"
+          >
+            Smoke Signal RSVPs
+          </a>{' '}
+          at{' '}
           <a
             href={event.url}
             target="_blank"
@@ -173,69 +181,23 @@ export default async function EventPage({ params }: EventPageProps) {
         </div>
       </div>
 
-      {/* Stats */}
-      <div className="mb-6 flex justify-center gap-6 text-sm text-muted-foreground">
-        <span>
-          <strong className="text-foreground">{speakerCount}</strong> speakers
-        </span>
-        <span>
-          <strong className="text-foreground">{attendeeCount}</strong> attendees
-        </span>
-        <span>
-          <strong className="text-foreground">{entries.length}</strong> total
-        </span>
-      </div>
-
-      {/* Card grid */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {entries.map(({ profile, badge }) => {
-          const location: LocationValue | null = profile.locationCountry
-            ? {
-                country: profile.locationCountry,
-                countryCode: profile.countryCode ?? undefined,
-                region: profile.locationRegion ?? undefined,
-                city: profile.locationCity ?? undefined,
-              }
-            : null;
-
-          const currentPosition = (profile.positions as ProfilePosition[] | undefined)?.find(
-            (p: ProfilePosition) => p.current,
-          );
-
-          return (
-            <Link
-              key={profile.handle}
-              href={`/p/${profile.handle}`}
-              className="transition-transform hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-            >
-              <IdentityCard
-                did={profile.did}
-                handle={profile.handle}
-                displayName={profile.displayName}
-                avatar={profile.avatar}
-                headline={profile.headline}
-                about={profile.about}
-                currentRole={currentPosition?.title}
-                currentCompany={currentPosition?.companyName}
-                location={location}
-                website={profile.website}
-                openTo={profile.openTo}
-                trustStats={profile.trustStats}
-                verifiedAccounts={profile.verifiedAccounts}
-                claimed={profile.claimed}
-                variant="embed"
-                badge={badge}
-              />
-            </Link>
-          );
-        })}
-      </div>
+      <EventCardGrid entries={entries} speakerCount={speakerCount} attendeeCount={attendeeCount} />
 
       {/* RSVP CTA */}
       <div className="mt-12 rounded-lg border border-border bg-muted/30 p-6 text-center">
         <h2 className="text-lg font-semibold">Going to {event.name}?</h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          RSVP on Smoke Signal to appear on this page.
+          RSVP on{' '}
+          <a
+            href={event.smokesignalUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-4 hover:text-foreground"
+          >
+            Smoke Signal
+          </a>{' '}
+          to appear on this page. The conference expects 300+ attendees &mdash; these are the ones
+          who RSVPd on Smoke Signal.
         </p>
         <a
           href={event.smokesignalUrl}
