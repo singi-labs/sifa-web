@@ -34,6 +34,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
             avatar={profile.avatar}
             currentRole={profile.currentRole}
             currentCompany={profile.currentCompany}
+            claimed={profile.claimed}
           />
         ))}
       </div>
