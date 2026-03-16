@@ -7,6 +7,7 @@ import {
   volunteeringToValues,
   valuesToVolunteering,
 } from '@/components/profile-editor/section-converters';
+import { sortByDateDesc, dateRangeExtractor } from '@/lib/sort-by-date';
 import type { ProfileVolunteering } from '@/lib/types';
 
 interface VolunteeringSectionProps {
@@ -33,6 +34,7 @@ export function VolunteeringSection({ volunteering, isOwnProfile }: Volunteering
           ) => Omit<ProfileVolunteering, 'rkey'>
         }
         collection="id.sifa.profile.volunteering"
+        sortItems={(items) => sortByDateDesc(items, dateRangeExtractor)}
         renderEntry={(vol, controls) => (
           <EditableEntry
             key={vol.rkey}

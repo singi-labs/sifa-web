@@ -195,10 +195,12 @@ export function languageToValues(item: ProfileLanguage): Record<string, string |
 
 export function valuesToLanguage(
   values: Record<string, string | boolean>,
-): Omit<ProfileLanguage, 'rkey'> {
+): Record<string, unknown> {
   return {
+    // "name" is sent to the API (lexicon field), "language" is used by the UI (ProfileLanguage)
+    name: values.language as string,
     language: values.language as string,
-    proficiency: optStr(values.proficiency) as ProfileLanguage['proficiency'],
+    proficiency: optStr(values.proficiency),
   };
 }
 

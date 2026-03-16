@@ -7,6 +7,7 @@ import {
   valuesToCertification,
 } from '@/components/profile-editor/section-converters';
 import { formatTimelineDate } from './timeline';
+import { sortByDateDesc, certDateExtractor } from '@/lib/sort-by-date';
 import type { ProfileCertification } from '@/lib/types';
 
 interface CredentialsSectionProps {
@@ -34,6 +35,7 @@ export function CredentialsSection({ certifications, isOwnProfile }: Credentials
           ) => Omit<ProfileCertification, 'rkey'>
         }
         collection="id.sifa.profile.certification"
+        sortItems={(items) => sortByDateDesc(items, certDateExtractor)}
         renderEntry={(cert, controls) => (
           <EditableEntry
             key={cert.rkey}

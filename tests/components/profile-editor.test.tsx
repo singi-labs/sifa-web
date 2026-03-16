@@ -401,6 +401,7 @@ describe('Section converters', () => {
       expect(values.proficiency).toBe('native');
 
       const result = valuesToLanguage(values);
+      expect(result.name).toBe('Dutch');
       expect(result.language).toBe('Dutch');
       expect(result.proficiency).toBe('native');
     });
