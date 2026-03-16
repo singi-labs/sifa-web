@@ -34,12 +34,12 @@ function renderDialog(props: Partial<React.ComponentProps<typeof SkillEditDialog
 
 describe('SkillEditDialog', () => {
   describe('category dropdown', () => {
-    it('shows exactly 6 category options plus None', () => {
+    it('shows exactly 5 category options plus None', () => {
       renderDialog();
       const select = screen.getByLabelText('Category');
       const options = select.querySelectorAll('option');
-      // 6 knownValues + 1 "None" option
-      expect(options.length).toBe(7);
+      // 5 knownValues + 1 "None" option
+      expect(options.length).toBe(6);
       expect(options[0]?.textContent).toBe('None');
       expect(options[0]?.getAttribute('value')).toBe('');
     });

@@ -30,8 +30,7 @@ describe('groupSkillsByCategory', () => {
       skill({ rkey: '2', skillName: 'TypeScript', category: 'technical' }),
       skill({ rkey: '3', skillName: 'Empathy', category: 'interpersonal' }),
       skill({ rkey: '4', skillName: 'Budgeting', category: 'business' }),
-      skill({ rkey: '5', skillName: 'English', category: 'language' }),
-      skill({ rkey: '6', skillName: 'Healthcare', category: 'industry' }),
+      skill({ rkey: '5', skillName: 'Healthcare', category: 'industry' }),
     ];
 
     const result = groupSkillsByCategory(skills);
@@ -41,7 +40,6 @@ describe('groupSkillsByCategory', () => {
       'business',
       'creative',
       'interpersonal',
-      'language',
       'industry',
     ]);
   });
@@ -146,13 +144,12 @@ describe('groupSkillsByCategory', () => {
 });
 
 describe('CATEGORY_ORDER', () => {
-  it('contains exactly the 6 valid categories', () => {
+  it('contains exactly the 5 valid categories', () => {
     expect(CATEGORY_ORDER).toEqual([
       'technical',
       'business',
       'creative',
       'interpersonal',
-      'language',
       'industry',
     ]);
   });

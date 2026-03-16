@@ -5,7 +5,6 @@ export const CATEGORY_ORDER = [
   'business',
   'creative',
   'interpersonal',
-  'language',
   'industry',
 ] as const;
 
@@ -16,7 +15,6 @@ export const CATEGORY_LABELS: Record<string, string> = {
   business: 'Business',
   creative: 'Creative',
   interpersonal: 'Interpersonal',
-  language: 'Language',
   industry: 'Industry',
   other: 'Other',
 };
