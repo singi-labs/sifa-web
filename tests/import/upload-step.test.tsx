@@ -8,11 +8,6 @@ vi.mock('@phosphor-icons/react', () => ({
   Info: (props: Record<string, unknown>) => <span data-testid="icon-info" {...props} />,
 }));
 
-vi.mock('next/image', () => ({
-  // eslint-disable-next-line jsx-a11y/alt-text, @next/next/no-img-element
-  default: (props: Record<string, unknown>) => <img {...props} />,
-}));
-
 vi.mock('@/components/ui/dialog', () => ({
   Dialog: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
   DialogContent: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,

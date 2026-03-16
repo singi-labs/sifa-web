@@ -2,7 +2,6 @@
 
 import { useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import Image from 'next/image';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Dialog,
@@ -85,11 +84,10 @@ export function UploadStep({ onFileSelected, isProcessing, extractionError }: Up
               <DialogHeader>
                 <DialogTitle>{t('screenshotCaption')}</DialogTitle>
               </DialogHeader>
-              <Image
+              {/* eslint-disable-next-line @next/next/no-img-element -- static screenshot, no optimization needed */}
+              <img
                 src="/assets/linkedin-download-data.png"
                 alt={t('screenshotAlt')}
-                width={800}
-                height={500}
                 className="rounded-lg border"
               />
             </DialogContent>
