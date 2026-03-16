@@ -7,6 +7,7 @@ import {
   valuesToPublication,
 } from '@/components/profile-editor/section-converters';
 import { formatTimelineDate } from './timeline';
+import { sortByDateDesc, singleDateExtractor } from '@/lib/sort-by-date';
 import type { ProfilePublication } from '@/lib/types';
 
 interface PublicationsSectionProps {
@@ -34,6 +35,7 @@ export function PublicationsSection({ publications, isOwnProfile }: Publications
           ) => Omit<ProfilePublication, 'rkey'>
         }
         collection="id.sifa.profile.publication"
+        sortItems={(items) => sortByDateDesc(items, singleDateExtractor)}
         renderEntry={(pub, controls) => (
           <EditableEntry
             key={pub.rkey}

@@ -8,6 +8,7 @@ import { SectionEditor, EditableEntry } from '@/components/profile-editor';
 import { PositionEditDialog, positionFormToData } from '@/components/position-edit-dialog';
 import { useProfileEdit } from '@/components/profile-edit-provider';
 import { createPosition, updatePosition, deletePosition } from '@/lib/profile-api';
+import { sortByDateDesc, dateRangeExtractor } from '@/lib/sort-by-date';
 import { Badge } from '@/components/ui/badge';
 import type { ProfilePosition, ProfileSkill, SkillRef } from '@/lib/types';
 
@@ -23,7 +24,7 @@ export function CareerSection({ isOwnProfile }: CareerSectionProps) {
   const { profile, addItem, updateItem, removeItem } = useProfileEdit();
   const [dialog, setDialog] = useState<DialogState | null>(null);
 
-  const positions = profile.positions;
+  const positions = sortByDateDesc(profile.positions, dateRangeExtractor);
 
   const handleSave = useCallback(
     async (
