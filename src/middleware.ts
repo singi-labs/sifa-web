@@ -20,17 +20,14 @@ function handleAssetProtection(request: NextRequest): NextResponse | null {
   return null;
 }
 
-async function handleAdminProtection(
-  request: NextRequest,
-): Promise<NextResponse | null> {
+async function handleAdminProtection(request: NextRequest): Promise<NextResponse | null> {
   const sessionCookie = request.cookies.get('session');
 
   if (!sessionCookie?.value) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
-  const apiUrl =
-    process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3100';
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3100';
 
   let session: SessionResponse;
   try {
@@ -65,9 +62,7 @@ async function handleAdminProtection(
   return null;
 }
 
-export async function middleware(
-  request: NextRequest,
-): Promise<NextResponse> {
+export async function middleware(request: NextRequest): Promise<NextResponse> {
   const { pathname } = request.nextUrl;
 
   if (pathname.startsWith('/admin')) {
