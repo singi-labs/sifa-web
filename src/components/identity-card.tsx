@@ -108,7 +108,7 @@ export function IdentityCard({
                   className="h-14 w-14 rounded-full object-cover"
                 />
               ) : (
-                <span aria-hidden="true">{(label).charAt(0).toUpperCase()}</span>
+                <span aria-hidden="true">{label.charAt(0).toUpperCase()}</span>
               )}
             </div>
             <div className="min-w-0 flex-1">
@@ -225,7 +225,7 @@ export function IdentityCard({
                   className="h-16 w-16 rounded-full object-cover"
                 />
               ) : (
-                <span aria-hidden="true">{(label).charAt(0).toUpperCase()}</span>
+                <span aria-hidden="true">{label.charAt(0).toUpperCase()}</span>
               )}
             </div>
             <div className="min-w-0">
