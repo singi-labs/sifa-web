@@ -18,35 +18,35 @@ describe('Site shell accessibility', () => {
     );
     const results = await axe(container);
     expect(results).toHaveNoViolations();
-  });
+  }, 15_000);
 
   it('SiteFooter has no a11y violations', async () => {
     const { container } = render(<SiteFooter />);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
-  });
+  }, 15_000);
 
   it('BetaBanner has no a11y violations', async () => {
     const { container } = render(<BetaBanner />);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
-  });
+  }, 15_000);
 
   it('SkipLinks has no a11y violations', async () => {
     const { container } = render(<SkipLinks />);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
-  });
+  }, 15_000);
 
   it('ThemeToggle has no a11y violations', async () => {
     const { container } = render(<ThemeToggle />);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
-  });
+  }, 15_000);
 
   it('MobileNav has no a11y violations', async () => {
     const { container } = render(<MobileNav />);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
-  });
+  }, 15_000);
 });

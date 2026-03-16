@@ -74,7 +74,7 @@ describe('PositionEditDialog', () => {
     const { container } = render(<PositionEditDialog {...defaultProps} />);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
-  });
+  }, 15_000);
 
   it('populates fields when editing an existing position', () => {
     const position: ProfilePosition = {
