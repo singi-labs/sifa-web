@@ -197,8 +197,9 @@ export function valuesToLanguage(
   values: Record<string, string | boolean>,
 ): Record<string, unknown> {
   return {
-    // Form field is "language" but the API/lexicon expects "name"
+    // "name" is sent to the API (lexicon field), "language" is used by the UI (ProfileLanguage)
     name: values.language as string,
+    language: values.language as string,
     proficiency: optStr(values.proficiency),
   };
 }
