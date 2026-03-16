@@ -41,7 +41,12 @@ function parseHandlesFromHtml(html: string): string[] {
   while ((match = anchorRegex.exec(html)) !== null) {
     const handle = match[1]!;
     // Basic validation: must have at least one dot and no consecutive dots
-    if (handle.includes('.') && !handle.includes('..') && !handle.startsWith('.') && !handle.endsWith('.')) {
+    if (
+      handle.includes('.') &&
+      !handle.includes('..') &&
+      !handle.startsWith('.') &&
+      !handle.endsWith('.')
+    ) {
       handles.add(handle);
     }
   }

@@ -148,10 +148,7 @@ export default async function SideEventPage({ params }: SideEventPageProps) {
 
       {/* Breadcrumb */}
       <nav className="mb-6 text-sm text-muted-foreground" aria-label="Breadcrumb">
-        <Link
-          href={`/events/${event.slug}`}
-          className="hover:text-foreground hover:underline"
-        >
+        <Link href={`/events/${event.slug}`} className="hover:text-foreground hover:underline">
           {event.name}
         </Link>
         <span className="mx-2">/</span>
@@ -200,9 +197,9 @@ export default async function SideEventPage({ params }: SideEventPageProps) {
                   }
                 : null;
 
-              const currentPosition = (
-                profile.positions as ProfilePosition[] | undefined
-              )?.find((p: ProfilePosition) => p.current);
+              const currentPosition = (profile.positions as ProfilePosition[] | undefined)?.find(
+                (p: ProfilePosition) => p.current,
+              );
 
               return (
                 <Link
@@ -255,10 +252,7 @@ export default async function SideEventPage({ params }: SideEventPageProps) {
 
       {/* Footer CTAs */}
       <div className="mt-12 flex flex-col items-center gap-3 border-t border-border pt-8 text-center">
-        <Link
-          href="/login"
-          className="text-sm font-medium text-primary hover:underline"
-        >
+        <Link href="/login" className="text-sm font-medium text-primary hover:underline">
           Claim your profile on Sifa
         </Link>
         <Link

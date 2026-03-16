@@ -37,8 +37,7 @@ export const event: EventConfig = {
   dates: 'March 26\u201329, 2026',
   location: 'Vancouver, BC',
   url: 'https://atmosphereconf.org',
-  smokesignalUrl:
-    'https://smokesignal.events/did:plc:lehcqqkwzcwvjvw66uthu5oq/3lte3c7x43l2e',
+  smokesignalUrl: 'https://smokesignal.events/did:plc:lehcqqkwzcwvjvw66uthu5oq/3lte3c7x43l2e',
   speakers: [
     // Presentations (54)
     { handle: 'brittanyellich.com', speakerType: 'presentation' },

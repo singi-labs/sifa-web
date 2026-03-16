@@ -202,9 +202,9 @@ export default async function EventPage({ params }: EventPageProps) {
               }
             : null;
 
-          const currentPosition = (
-            profile.positions as ProfilePosition[] | undefined
-          )?.find((p: ProfilePosition) => p.current);
+          const currentPosition = (profile.positions as ProfilePosition[] | undefined)?.find(
+            (p: ProfilePosition) => p.current,
+          );
 
           return (
             <Link
@@ -272,10 +272,7 @@ export default async function EventPage({ params }: EventPageProps) {
 
       {/* Footer CTAs */}
       <div className="mt-12 flex flex-col items-center gap-3 border-t border-border pt-8 text-center">
-        <Link
-          href="/login"
-          className="text-sm font-medium text-primary hover:underline"
-        >
+        <Link href="/login" className="text-sm font-medium text-primary hover:underline">
           Claim your profile on Sifa
         </Link>
         <Link
