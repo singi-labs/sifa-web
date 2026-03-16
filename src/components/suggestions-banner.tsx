@@ -11,13 +11,19 @@ const BANNER_DISMISSED_KEY = 'sifa:suggestions-banner-dismissed';
 export function SuggestionsBanner() {
   const { session } = useAuth();
   const [count, setCount] = useState(0);
-  const [dismissed, setDismissed] = useState(() => {
-    try {
-      return window.localStorage.getItem(BANNER_DISMISSED_KEY) === 'true';
-    } catch {
-      return true; // Hidden by default on server or if localStorage unavailable
-    }
-  });
+  const [dismissed, setDismissed] = useState(true);
+
+  useEffect(() => {
+    const id = requestAnimationFrame(() => {
+      try {
+        const stored = window.localStorage.getItem(BANNER_DISMISSED_KEY) === 'true';
+        setDismissed(stored);
+      } catch {
+        // localStorage unavailable -- keep hidden
+      }
+    });
+    return () => cancelAnimationFrame(id);
+  }, []);
 
   useEffect(() => {
     if (!session || dismissed) return;
