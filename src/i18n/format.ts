@@ -31,6 +31,17 @@ export function formatNumber(
 }
 
 /**
+ * Format a number in compact notation (e.g., 1.2K, 3.4M).
+ * Falls back to full number for values under 1000.
+ */
+export function formatCompactNumber(value: number, locale: string): string {
+  return new Intl.NumberFormat(locale, {
+    notation: 'compact',
+    maximumFractionDigits: 1,
+  }).format(value);
+}
+
+/**
  * Format a currency value for display.
  */
 export function formatCurrency(

@@ -233,6 +233,11 @@ describe('IdentityCard (embed variant)', () => {
     expect(link.getAttribute('rel')).toBe('noopener noreferrer');
   });
 
+  it('hides "View on Sifa" when hideFooter is set', () => {
+    render(<IdentityCard {...baseProps} variant="embed" hideFooter />);
+    expect(screen.queryByText('View on Sifa')).toBeNull();
+  });
+
   it('hides unclaimed popover for unclaimed profiles', () => {
     render(<IdentityCard {...baseProps} variant="embed" claimed={false} />);
     expect(screen.queryByTestId('popover-root')).toBeNull();
@@ -243,9 +248,46 @@ describe('IdentityCard (embed variant)', () => {
     expect(screen.getByText('Senior Engineer')).toBeDefined();
   });
 
-  it('still shows trust stats', () => {
+  it('does not show trust stats in embed variant', () => {
     render(<IdentityCard {...baseProps} variant="embed" />);
-    expect(screen.getByRole('list', { name: 'Trust stats' })).toBeDefined();
-    expect(screen.getByText('10')).toBeDefined();
+    expect(screen.queryByRole('list', { name: 'Trust stats' })).toBeNull();
+  });
+
+  it('shows follower count when provided', () => {
+    render(<IdentityCard {...baseProps} variant="embed" followersCount={1234} />);
+    expect(screen.getByText(/followers/)).toBeDefined();
+  });
+
+  it('does not show follower count when zero', () => {
+    render(<IdentityCard {...baseProps} variant="embed" followersCount={0} />);
+    expect(screen.queryByText(/follower/)).toBeNull();
+  });
+
+  it('shows PDS provider label for bsky.social handles', () => {
+    render(<IdentityCard {...baseProps} variant="embed" />);
+    // Activity row with PDS provider info is rendered (next-intl mock returns key for parameterized strings)
+    expect(screen.getByText('pdsProvider')).toBeDefined();
+  });
+
+  it('renders active app badges', () => {
+    render(
+      <IdentityCard
+        {...baseProps}
+        variant="embed"
+        activeApps={[
+          { id: 'smokesignal', name: 'Smoke Signal' },
+          { id: 'whitewind', name: 'Whitewind' },
+        ]}
+      />,
+    );
+    expect(screen.getByText('Smoke Signal')).toBeDefined();
+    expect(screen.getByText('Whitewind')).toBeDefined();
+    // next-intl mock returns key for parameterized aria labels
+    expect(screen.getByRole('list', { name: 'activeAppsLabel' })).toBeDefined();
+  });
+
+  it('does not render active apps section when empty', () => {
+    render(<IdentityCard {...baseProps} variant="embed" activeApps={[]} />);
+    expect(screen.queryByRole('list', { name: 'Active on' })).toBeNull();
   });
 });

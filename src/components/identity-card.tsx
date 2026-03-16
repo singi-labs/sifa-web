@@ -13,9 +13,11 @@ import { FollowButton } from '@/components/follow-button';
 import { PdsIcon } from '@/components/pds-icon';
 import { ProfileEditDialog } from '@/components/profile-edit-dialog';
 import { useAuth } from '@/components/auth-provider';
-import type { LocationValue, TrustStat, VerifiedAccount } from '@/lib/types';
+import type { ActiveApp, LocationValue, TrustStat, VerifiedAccount } from '@/lib/types';
 import { formatLocation, countryCodeToFlag } from '@/lib/location-utils';
 import { detectPdsProvider, getDisplayLabel } from '@/lib/pds-utils';
+import { getAppMeta } from '@/lib/atproto-apps';
+import { formatCompactNumber } from '@/i18n/format';
 import { cn } from '@/lib/utils';
 
 const OPEN_TO_LABEL_KEYS: Record<string, string> = {
@@ -39,13 +41,16 @@ interface IdentityCardProps {
   location?: LocationValue | null;
   website?: string;
   openTo?: string[];
+  followersCount?: number;
   trustStats?: TrustStat[];
   verifiedAccounts?: VerifiedAccount[];
+  activeApps?: ActiveApp[];
   claimed: boolean;
   isOwnProfile?: boolean;
   isFollowing?: boolean;
   variant?: 'page' | 'embed';
   badge?: string;
+  hideFooter?: boolean;
   className?: string;
 }
 
@@ -61,13 +66,16 @@ export function IdentityCard({
   location,
   website,
   openTo,
+  followersCount,
   trustStats = [],
   verifiedAccounts = [],
+  activeApps = [],
   claimed,
   isOwnProfile,
   isFollowing,
   variant = 'page',
   badge,
+  hideFooter,
   className,
 }: IdentityCardProps) {
   const t = useTranslations('identityCard');
@@ -200,15 +208,46 @@ export function IdentityCard({
             </div>
           )}
 
-          {/* Trust stats — compact row */}
-          <div className="mt-3 flex gap-5" role="list" aria-label={t('trustStatsLabel')}>
-            {displayTrustStats.map((stat) => (
-              <div key={stat.key} className="text-center" role="listitem">
-                <p className="text-sm font-semibold">{stat.value}</p>
-                <p className="text-[10px] text-muted-foreground">{stat.label}</p>
-              </div>
-            ))}
-          </div>
+          {/* Activity indicators: follower count, PDS provider */}
+          {(followersCount != null && followersCount > 0) || pdsProvider ? (
+            <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
+              {followersCount != null && followersCount > 0 && (
+                <span>{t('followers', { count: formatCompactNumber(followersCount, 'en') })}</span>
+              )}
+              {pdsProvider && (
+                <span className="inline-flex items-center gap-1">
+                  <PdsIcon provider={pdsProvider.name} className="h-3 w-3 shrink-0" />
+                  {t('pdsProvider', { provider: pdsProvider.name })}
+                </span>
+              )}
+            </div>
+          ) : null}
+
+          {/* Active ATproto apps */}
+          {activeApps.length > 0 && (
+            <div
+              className="mt-2 flex flex-wrap gap-1"
+              role="list"
+              aria-label={t('activeAppsLabel')}
+            >
+              {activeApps.map((app) => {
+                const meta = getAppMeta(app.id);
+                return (
+                  <span
+                    key={app.id}
+                    role="listitem"
+                    className={cn(
+                      'rounded-full px-2 py-0.5 text-[10px] font-medium',
+                      meta.className,
+                    )}
+                    aria-label={t('activeOn', { app: meta.name })}
+                  >
+                    {meta.name}
+                  </span>
+                );
+              })}
+            </div>
+          )}
         </>
       ) : (
         <>
@@ -360,7 +399,7 @@ export function IdentityCard({
       )}
 
       {/* Row 8: Action buttons (page) or "View on Sifa" CTA (embed) */}
-      {isEmbed ? (
+      {isEmbed && !hideFooter && (
         <div className="mt-4 flex items-center justify-between border-t border-border pt-3">
           <a
             href={`https://sifa.id/p/${handle}`}
@@ -408,7 +447,8 @@ export function IdentityCard({
             />
           </svg>
         </div>
-      ) : (
+      )}
+      {!isEmbed && (
         <div className="mt-4 flex gap-2">
           {!isOwn && <FollowButton targetDid={did} isFollowing={isFollowing ?? false} />}
           <Button
