@@ -43,3 +43,6 @@ jobs:
             docker compose pull
             docker compose up -d
             docker image prune -af
+            # Warm ISR cache for heavy pages so the first real visitor gets instant response
+            sleep 5
+            curl -sf -o /dev/null http://localhost:3000/events/atmosphereconf-2026 || true
