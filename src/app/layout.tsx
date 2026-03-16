@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getMessages } from 'next-intl/server';
 import { ThemeProvider } from '@/components/theme-provider';
+import { KonamiRickroll } from '@/components/konami-rickroll';
 import { Toaster } from 'sonner';
 import './globals.css';
 
@@ -40,6 +41,7 @@ export default async function RootLayout({
             disableTransitionOnChange
           >
             {children}
+            <KonamiRickroll />
             <Toaster position="bottom-left" closeButton />
           </ThemeProvider>
         </NextIntlClientProvider>
