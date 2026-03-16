@@ -2,9 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
-import { PencilSimple } from '@phosphor-icons/react';
 import { toast } from 'sonner';
-import { Button } from '@/components/ui/button';
 import { SkillChip } from '@/components/skill-chip';
 import { SectionEditor } from '@/components/profile-editor';
 import { SkillEditDialog } from '@/components/skill-edit-dialog';
@@ -31,7 +29,6 @@ export function SkillsSection({ isOwnProfile }: SkillsSectionProps) {
   const t = useTranslations('sections');
   const { profile, addItem, updateItem, removeItem } = useProfileEdit();
   const [dialog, setDialog] = useState<DialogState | null>(null);
-  const [editing, setEditing] = useState(false);
 
   const skills = profile.skills;
   const positions = profile.positions;
@@ -128,23 +125,8 @@ export function SkillsSection({ isOwnProfile }: SkillsSectionProps) {
 
   return (
     <section className="mt-8" aria-label={t('skills')}>
-      <div className="mb-4 flex items-center gap-2">
+      <div className="mb-4">
         <h2 className="text-xl font-semibold">{t('skills')}</h2>
-        {isOwnProfile && skills.length > 0 && (
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-7 px-2 text-xs"
-            onClick={() => setEditing(!editing)}
-            aria-label={editing ? 'Done editing skills' : 'Edit skills'}
-          >
-            {editing ? (
-              'Done'
-            ) : (
-              <PencilSimple className="h-3.5 w-3.5" weight="bold" aria-hidden="true" />
-            )}
-          </Button>
-        )}
       </div>
       <SectionEditor
         sectionTitle={t('skills')}
@@ -162,7 +144,6 @@ export function SkillsSection({ isOwnProfile }: SkillsSectionProps) {
                   key={skill.rkey}
                   skill={skill}
                   editable={isOwnProfile}
-                  editing={editing}
                   onEdit={() => setDialog({ mode: 'edit', item: skill })}
                   onDelete={() => void handleDelete(skill.rkey)}
                 />
@@ -189,6 +170,14 @@ export function SkillsSection({ isOwnProfile }: SkillsSectionProps) {
               : undefined
           }
           onSave={handleSave}
+          onDelete={
+            dialog.mode === 'edit'
+              ? () => {
+                  void handleDelete(dialog.item.rkey);
+                  setDialog(null);
+                }
+              : undefined
+          }
           onCancel={() => setDialog(null)}
         />
       )}

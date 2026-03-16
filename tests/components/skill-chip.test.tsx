@@ -84,13 +84,19 @@ describe('SkillChip', () => {
     expect(screen.getByText(/Programming/)).toBeDefined();
   });
 
-  it('shows delete button when editing', () => {
+  it('shows delete button when editable with onDelete', () => {
     const onDelete = vi.fn();
-    render(<SkillChip skill={makeSkill()} editing onDelete={onDelete} />);
+    render(<SkillChip skill={makeSkill()} editable onDelete={onDelete} />);
     expect(screen.getByRole('button', { name: /remove typescript/i })).toBeDefined();
   });
 
-  it('calls onEdit when clicked in editable non-editing mode', async () => {
+  it('does not show delete button when not editable', () => {
+    const onDelete = vi.fn();
+    render(<SkillChip skill={makeSkill()} onDelete={onDelete} />);
+    expect(screen.queryByRole('button', { name: /remove typescript/i })).toBeNull();
+  });
+
+  it('calls onEdit when clicked in editable mode', async () => {
     const user = userEvent.setup();
     const onEdit = vi.fn();
     render(<SkillChip skill={makeSkill()} editable onEdit={onEdit} />);
