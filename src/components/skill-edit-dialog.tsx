@@ -22,6 +22,8 @@ interface SkillEditDialogProps {
     values: Record<string, string | boolean>,
   ) => Promise<{ success: boolean; error?: string }>;
   onCancel: () => void;
+  /** Called when the user confirms deletion. Only shown in edit mode. */
+  onDelete?: () => void;
   /** True when editing an existing skill (has an rkey). "Used in" section only shows in edit mode. */
   isEditMode?: boolean;
 }
@@ -36,6 +38,7 @@ export function SkillEditDialog({
   onPositionLinkChange,
   onSave,
   onCancel,
+  onDelete,
   isEditMode = false,
 }: SkillEditDialogProps) {
   const t = useTranslations('editor');
@@ -43,6 +46,7 @@ export function SkillEditDialog({
   const [category, setCategory] = useState(initialCategory);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
 
   const handleSkillChange = (name: string, cat: string) => {
     setSkillName(name);
@@ -133,13 +137,60 @@ export function SkillEditDialog({
             </p>
           )}
 
-          <div className="flex justify-end gap-2">
-            <Button type="button" variant="ghost" onClick={onCancel} disabled={saving}>
-              {t('cancel')}
-            </Button>
-            <Button type="submit" disabled={saving || !skillName.trim()}>
-              {saving ? t('saving') : t('save')}
-            </Button>
+          <div className="flex items-center justify-between">
+            {isEditMode && onDelete ? (
+              <div>
+                {confirmingDelete ? (
+                  <div className="flex gap-2">
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      size="sm"
+                      onClick={() => {
+                        onDelete();
+                        setConfirmingDelete(false);
+                      }}
+                      disabled={saving}
+                      aria-label="Confirm delete"
+                    >
+                      Confirm
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setConfirmingDelete(false)}
+                      disabled={saving}
+                      aria-label="Cancel delete"
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                ) : (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="text-destructive hover:text-destructive"
+                    onClick={() => setConfirmingDelete(true)}
+                    disabled={saving}
+                    aria-label="Delete skill"
+                  >
+                    Delete
+                  </Button>
+                )}
+              </div>
+            ) : (
+              <div />
+            )}
+            <div className="flex gap-2">
+              <Button type="button" variant="ghost" onClick={onCancel} disabled={saving}>
+                {t('cancel')}
+              </Button>
+              <Button type="submit" disabled={saving || !skillName.trim()}>
+                {saving ? t('saving') : t('save')}
+              </Button>
+            </div>
           </div>
         </form>
       </div>

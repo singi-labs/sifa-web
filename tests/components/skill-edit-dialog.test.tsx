@@ -129,6 +129,56 @@ describe('SkillEditDialog', () => {
     });
   });
 
+  describe('delete button', () => {
+    it('shows delete button in edit mode when onDelete is provided', () => {
+      renderDialog({ isEditMode: true, onDelete: vi.fn(), initialSkillName: 'React' });
+      expect(screen.getByRole('button', { name: /delete skill/i })).toBeDefined();
+    });
+
+    it('does not show delete button in add mode', () => {
+      renderDialog({ onDelete: vi.fn() });
+      expect(screen.queryByRole('button', { name: /delete skill/i })).toBeNull();
+    });
+
+    it('does not show delete button when onDelete is not provided', () => {
+      renderDialog({ isEditMode: true, initialSkillName: 'React' });
+      expect(screen.queryByRole('button', { name: /delete skill/i })).toBeNull();
+    });
+
+    it('shows confirmation prompt before deleting', async () => {
+      const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+      const onDelete = vi.fn();
+      renderDialog({ isEditMode: true, onDelete, initialSkillName: 'React' });
+
+      await user.click(screen.getByRole('button', { name: /delete skill/i }));
+      // Should show confirm button, not immediately delete
+      expect(onDelete).not.toHaveBeenCalled();
+      expect(screen.getByRole('button', { name: /confirm delete/i })).toBeDefined();
+    });
+
+    it('calls onDelete when confirmed', async () => {
+      const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+      const onDelete = vi.fn();
+      renderDialog({ isEditMode: true, onDelete, initialSkillName: 'React' });
+
+      await user.click(screen.getByRole('button', { name: /delete skill/i }));
+      await user.click(screen.getByRole('button', { name: /confirm delete/i }));
+      expect(onDelete).toHaveBeenCalledOnce();
+    });
+
+    it('cancels delete confirmation when clicking cancel', async () => {
+      const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+      const onDelete = vi.fn();
+      renderDialog({ isEditMode: true, onDelete, initialSkillName: 'React' });
+
+      await user.click(screen.getByRole('button', { name: /delete skill/i }));
+      await user.click(screen.getByRole('button', { name: /cancel delete/i }));
+      expect(onDelete).not.toHaveBeenCalled();
+      // Should be back to showing the delete button
+      expect(screen.getByRole('button', { name: /delete skill/i })).toBeDefined();
+    });
+  });
+
   describe('form submission', () => {
     it('includes category in save payload', async () => {
       const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
