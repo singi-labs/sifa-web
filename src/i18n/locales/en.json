@@ -74,7 +74,11 @@
     "confirmStep": "Import",
     "upload": {
       "heading": "Upload your LinkedIn data export",
-      "description": "Go to LinkedIn > Settings > Data Privacy > \"Download larger data archive\". Upload the ZIP file you receive (batch 1 arrives in ~10 minutes).",
+      "descriptionPrefix": "Go to ",
+      "descriptionLinkText": "LinkedIn's \"Download my data\" page",
+      "descriptionMiddle": " and select \"Download larger data archive\" (the first option on that page). Upload the ZIP file you receive (batch 1 arrives in your e-mail inbox in ~10 minutes).",
+      "screenshotAlt": "LinkedIn's Download my data page showing the \"Download larger data archive\" option selected",
+      "screenshotCaption": "What it looks like on LinkedIn",
       "dropZone": "Drag and drop your LinkedIn ZIP file here, or click to browse",
       "dropZoneLabel": "Drop zone for LinkedIn ZIP file",
       "processing": "Processing ZIP file...",

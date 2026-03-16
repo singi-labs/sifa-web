@@ -5,6 +5,22 @@ import { UploadStep } from '@/app/(main)/import/components/upload-step';
 vi.mock('@phosphor-icons/react', () => ({
   Upload: (props: Record<string, unknown>) => <span data-testid="icon-upload" {...props} />,
   Eye: (props: Record<string, unknown>) => <span data-testid="icon-eye" {...props} />,
+  Info: (props: Record<string, unknown>) => <span data-testid="icon-info" {...props} />,
+}));
+
+vi.mock('next/image', () => ({
+  // eslint-disable-next-line jsx-a11y/alt-text, @next/next/no-img-element
+  default: (props: Record<string, unknown>) => <img {...props} />,
+}));
+
+vi.mock('@/components/ui/dialog', () => ({
+  Dialog: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+  DialogContent: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+  DialogHeader: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+  DialogTitle: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+  DialogTrigger: ({ children, ...props }: { children: React.ReactNode }) => (
+    <button {...props}>{children}</button>
+  ),
 }));
 
 describe('UploadStep', () => {
