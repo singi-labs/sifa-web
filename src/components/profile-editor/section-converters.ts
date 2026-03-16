@@ -195,10 +195,11 @@ export function languageToValues(item: ProfileLanguage): Record<string, string |
 
 export function valuesToLanguage(
   values: Record<string, string | boolean>,
-): Omit<ProfileLanguage, 'rkey'> {
+): Record<string, unknown> {
   return {
-    language: values.language as string,
-    proficiency: optStr(values.proficiency) as ProfileLanguage['proficiency'],
+    // Form field is "language" but the API/lexicon expects "name"
+    name: values.language as string,
+    proficiency: optStr(values.proficiency),
   };
 }
 
