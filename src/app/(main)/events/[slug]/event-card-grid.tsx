@@ -4,7 +4,13 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { IdentityCard } from '@/components/identity-card';
 import { Badge } from '@/components/ui/badge';
-import type { ActiveApp, LocationValue, ProfilePosition, TrustStat, VerifiedAccount } from '@/lib/types';
+import type {
+  ActiveApp,
+  LocationValue,
+  ProfilePosition,
+  TrustStat,
+  VerifiedAccount,
+} from '@/lib/types';
 
 export type FilterGroup = 'presentation' | 'lightning' | 'panel' | 'workshop' | 'attendee';
 
