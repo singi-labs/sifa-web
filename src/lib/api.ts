@@ -2,6 +2,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3100';
 
 export interface ProfileSearchResult {
   handle: string;
+  displayName?: string;
   headline?: string;
   avatar?: string;
   currentRole?: string;

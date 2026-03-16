@@ -4,6 +4,7 @@ import { sanitize } from '@/lib/sanitize';
 
 interface ProfileCardProps {
   handle: string;
+  displayName?: string;
   headline?: string;
   avatar?: string;
   currentRole?: string;
@@ -12,11 +13,13 @@ interface ProfileCardProps {
 
 export function ProfileCard({
   handle,
+  displayName,
   headline,
   avatar,
   currentRole,
   currentCompany,
 }: ProfileCardProps) {
+  const label = displayName ?? handle;
   return (
     <Link href={`/p/${encodeURIComponent(handle)}`} className="block">
       <Card className="transition-colors hover:bg-muted/50">
@@ -26,15 +29,18 @@ export function ProfileCard({
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={avatar}
-                alt={`${handle}'s avatar`}
+                alt={`${label}'s avatar`}
                 className="size-12 rounded-full object-cover"
               />
             ) : (
-              handle.charAt(0).toUpperCase()
+              label.charAt(0).toUpperCase()
             )}
           </div>
           <div className="min-w-0">
-            <p className="truncate font-medium">{sanitize(handle)}</p>
+            <p className="truncate font-medium">{sanitize(label)}</p>
+            {displayName && (
+              <p className="truncate text-xs text-muted-foreground">@{sanitize(handle)}</p>
+            )}
             {headline && (
               <p className="truncate text-sm text-muted-foreground">{sanitize(headline)}</p>
             )}

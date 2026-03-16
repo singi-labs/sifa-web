@@ -29,6 +29,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
           <ProfileCard
             key={profile.handle}
             handle={profile.handle}
+            displayName={profile.displayName}
             headline={profile.headline}
             avatar={profile.avatar}
             currentRole={profile.currentRole}
