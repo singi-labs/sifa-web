@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { BEACHHEAD_TOPICS } from '@/data/experts';
 
 export const dynamic = 'force-dynamic';
 
@@ -7,22 +8,6 @@ export const metadata: Metadata = {
   title: 'Expert Directory',
   description: 'Find professionals and experts across industries and skills on Sifa.',
 };
-
-const BEACHHEAD_TOPICS = [
-  { slug: 'atproto', label: 'AT Protocol', description: 'Developers building on the AT Protocol' },
-  {
-    slug: 'devrel',
-    label: 'Developer Relations',
-    description: 'DevRel professionals and advocates',
-  },
-  {
-    slug: 'open-source',
-    label: 'Open Source',
-    description: 'Open source contributors and maintainers',
-  },
-  { slug: 'typescript', label: 'TypeScript', description: 'TypeScript developers and experts' },
-  { slug: 'react', label: 'React', description: 'React and frontend engineers' },
-];
 
 export default function ExpertsPage() {
   return (
