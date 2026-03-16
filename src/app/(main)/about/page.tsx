@@ -38,7 +38,16 @@ export default async function AboutPage() {
 
         <section>
           <h2 className="text-xl font-semibold">{t('founderTitle')}</h2>
-          <p className="mt-2 text-muted-foreground">{t('founder')}</p>
+          <p className="mt-2 text-muted-foreground">
+            {t('founderIntro')}{' '}
+            <Link
+              href="/p/gui.do"
+              className="font-medium text-foreground underline-offset-4 hover:underline"
+            >
+              {t('founderName')}
+            </Link>
+            {t('founderBio')}
+          </p>
         </section>
 
         <section>
