@@ -1,12 +1,15 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3100';
 
 export interface ProfileSearchResult {
+  did?: string;
   handle: string;
   displayName?: string;
   headline?: string;
   avatar?: string;
+  about?: string;
   currentRole?: string;
   currentCompany?: string;
+  claimed?: boolean;
 }
 
 export async function fetchProfile(handleOrDid: string) {

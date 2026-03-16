@@ -1,7 +1,7 @@
 import { getTranslations } from 'next-intl/server';
 
-const doneKeys = ['nameHeadline', 'bio', 'currentRole'] as const;
-const plannedKeys = ['skills', 'location', 'atproto', 'autocomplete', 'filters'] as const;
+const doneKeys = ['nameHeadline', 'bio', 'currentRole', 'atproto'] as const;
+const plannedKeys = ['skills', 'location', 'autocomplete', 'filters'] as const;
 
 export async function SearchStatus() {
   const t = await getTranslations('search');

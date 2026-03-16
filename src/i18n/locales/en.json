@@ -249,22 +249,22 @@
     "dismiss": "Dismiss"
   },
   "search": {
-    "placeholder": "Search people by name, skills, or headline",
+    "placeholder": "Search by name, headline, or AT Protocol handle",
     "noResults": "No results found for \"{query}\"",
     "statusTitle": "Search capabilities",
     "statusDone": {
       "nameHeadline": "Search by name and headline",
       "bio": "Search by bio / about text",
-      "currentRole": "Show current role in results"
+      "currentRole": "Show current role in results",
+      "atproto": "Find any AT Protocol user by handle"
     },
     "statusPlanned": {
       "skills": "Search by skills",
       "location": "Filter by location",
-      "atproto": "Search all AT Protocol profiles (not just Sifa)",
       "autocomplete": "Typeahead / autocomplete suggestions",
       "filters": "Filter by company, industry, or expertise"
     },
-    "sifaOnlyNote": "Search currently only includes profiles created on Sifa."
+    "sifaOnlyNote": "Search finds Sifa members by name, headline, and bio. You can also look up any AT Protocol user by entering their handle (e.g. alice.bsky.social or just alice)."
   },
   "login": {
     "title": "Sign in",

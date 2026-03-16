@@ -52,4 +52,19 @@ describe('ProfileCard', () => {
     render(<ProfileCard handle="alice.bsky.social" />);
     expect(screen.queryByText(/\bat\b/)).toBeNull();
   });
+
+  it('shows Unclaimed badge when claimed is false', () => {
+    render(<ProfileCard handle="someone.bsky.social" claimed={false} />);
+    expect(screen.getByText('Unclaimed')).toBeDefined();
+  });
+
+  it('does not show Unclaimed badge when claimed is true', () => {
+    render(<ProfileCard handle="someone.bsky.social" claimed={true} />);
+    expect(screen.queryByText('Unclaimed')).toBeNull();
+  });
+
+  it('does not show Unclaimed badge when claimed is undefined', () => {
+    render(<ProfileCard handle="someone.bsky.social" />);
+    expect(screen.queryByText('Unclaimed')).toBeNull();
+  });
 });
