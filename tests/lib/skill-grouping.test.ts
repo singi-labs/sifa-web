@@ -35,13 +35,7 @@ describe('groupSkillsByCategory', () => {
 
     const result = groupSkillsByCategory(skills);
     const categories = result.map(([cat]) => cat);
-    expect(categories).toEqual([
-      'technical',
-      'business',
-      'creative',
-      'interpersonal',
-      'industry',
-    ]);
+    expect(categories).toEqual(['technical', 'business', 'creative', 'interpersonal', 'industry']);
   });
 
   it('places uncategorized skills in "other" at the bottom', () => {
