@@ -9,7 +9,6 @@ export interface SkillChipProps {
   skill: ProfileSkill;
   showCategory?: boolean;
   editable?: boolean;
-  editing?: boolean;
   onEdit?: () => void;
   onDelete?: () => void;
 }
@@ -27,14 +26,7 @@ const TOOLTIP_TEXT: Record<Exclude<VisualState, 'self-declared'>, string> = {
   'activity-backed': 'Backed by verified activity',
 };
 
-export function SkillChip({
-  skill,
-  showCategory,
-  editable,
-  editing,
-  onEdit,
-  onDelete,
-}: SkillChipProps) {
+export function SkillChip({ skill, showCategory, editable, onEdit, onDelete }: SkillChipProps) {
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const tooltipId = useId();
   const state = getVisualState(skill);
@@ -48,7 +40,7 @@ export function SkillChip({
     setTooltipVisible(false);
   }, []);
 
-  const isClickable = editable && !editing;
+  const isClickable = !!editable;
 
   const handleClick = isClickable ? onEdit : undefined;
   const handleKeyDown = isClickable
@@ -101,7 +93,7 @@ export function SkillChip({
             data-testid="activity-backed-icon"
           />
         )}
-        {editing && onDelete && (
+        {editable && onDelete && (
           <button
             type="button"
             className="ml-1.5 inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-destructive/20 hover:text-destructive"
