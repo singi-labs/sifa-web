@@ -14,13 +14,6 @@ interface SideEventPageProps {
   params: Promise<{ slug: string; subSlug: string }>;
 }
 
-export async function generateStaticParams() {
-  return event.sideEvents.map((se) => ({
-    slug: event.slug,
-    subSlug: se.slug,
-  }));
-}
-
 export async function generateMetadata({ params }: SideEventPageProps): Promise<Metadata> {
   const { slug, subSlug } = await params;
   if (slug !== event.slug) return { title: 'Event Not Found' };

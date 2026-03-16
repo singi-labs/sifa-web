@@ -9,7 +9,7 @@ export async function fetchSmokeSignalAttendees(smokesignalUrl: string): Promise
 
   try {
     const res = await fetch(attendeesUrl, {
-      next: { revalidate: 3600 },
+      cache: 'no-store',
       headers: {
         'User-Agent': 'Sifa/1.0 (https://sifa.id)',
       },
