@@ -36,13 +36,11 @@
   "home": {
     "title": "Sifa",
     "subtitle": "Professional identity on the AT Protocol. Own your career narrative.",
-    "comingSoon": "Timeline and feed are coming soon.",
-    "searchProfiles": "Search profiles",
+    "searchProfiles": "Find yourself on Sifa",
     "importLinkedIn": "Import from LinkedIn",
     "atprotoCountPrefix": "Do you already have a Bluesky or other AT Protocol account, like",
     "atprotoCountSuffix": "others?",
-    "claimProfile": "Find yourself on Sifa",
-    "avatarReelCaption": "They own their career profile and can take it wherever they go. Are you next?"
+    "avatarReelCaption": "Professionals who already own their career data. Join them today!"
   },
   "profile": {
     "experience": "Experience",
