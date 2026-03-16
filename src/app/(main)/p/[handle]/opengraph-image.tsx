@@ -129,12 +129,7 @@ export default async function ProfileOgImage({ params }: { params: Promise<{ han
                 }}
               >
                 {/* eslint-disable-next-line jsx-a11y/alt-text -- rendered to PNG by Satori */}
-                <img
-                  src={avatarDataUrl}
-                  width={216}
-                  height={216}
-                  style={{ borderRadius: 108 }}
-                />
+                <img src={avatarDataUrl} width={216} height={216} style={{ borderRadius: 108 }} />
               </div>
             ) : (
               <div
@@ -221,9 +216,7 @@ export default async function ProfileOgImage({ params }: { params: Promise<{ han
                   color: '#d4d4d4',
                 }}
               >
-                {roleAtCompany.length > 50
-                  ? roleAtCompany.slice(0, 50) + '\u2026'
-                  : roleAtCompany}
+                {roleAtCompany.length > 50 ? roleAtCompany.slice(0, 50) + '\u2026' : roleAtCompany}
               </div>
             )}
 
