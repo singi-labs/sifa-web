@@ -40,6 +40,8 @@ export function AboutSection({ about, isOwnProfile }: AboutSectionProps) {
         </div>
         {editing && (
           <ProfileEditDialog
+            handle={profile.handle}
+            did={profile.did}
             displayName={profile.displayName}
             avatar={profile.avatar}
             headline={profile.headline}
@@ -87,6 +89,8 @@ export function AboutSection({ about, isOwnProfile }: AboutSectionProps) {
       )}
       {editing && (
         <ProfileEditDialog
+          handle={profile.handle}
+          did={profile.did}
           displayName={profile.displayName}
           avatar={profile.avatar}
           headline={profile.headline}

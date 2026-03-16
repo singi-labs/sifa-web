@@ -11,7 +11,7 @@ export interface ProfileSearchResult {
 
 export async function fetchProfile(handleOrDid: string) {
   const res = await fetch(`${API_URL}/api/profile/${encodeURIComponent(handleOrDid)}`, {
-    next: { revalidate: 300 }, // ISR: 5 minutes
+    next: { revalidate: 300, tags: [`profile-${handleOrDid}`] },
   });
   if (!res.ok) return null;
   return res.json();
