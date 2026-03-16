@@ -69,6 +69,8 @@ describe('PositionEditDialog', () => {
   });
 
   it('passes vitest-axe accessibility checks', async () => {
+    // axe uses real async internals that hang under fake timers
+    vi.useRealTimers();
     const { container } = render(<PositionEditDialog {...defaultProps} />);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
