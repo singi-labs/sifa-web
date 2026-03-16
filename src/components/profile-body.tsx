@@ -154,7 +154,11 @@ function ProfileBodyContent() {
       <div id="other-profiles" className="scroll-mt-20">
         <ExternalAccountsSection accounts={profile.externalAccounts ?? []} isOwnProfile={isOwn} />
       </div>
-      {isOwn && <DangerZone handle={profile.handle} />}
+      {isOwn && (
+        <div className="mt-12">
+          <DangerZone handle={profile.handle} />
+        </div>
+      )}
     </div>
   );
 
