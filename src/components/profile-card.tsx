@@ -9,6 +9,7 @@ interface ProfileCardProps {
   avatar?: string;
   currentRole?: string;
   currentCompany?: string;
+  claimed?: boolean;
 }
 
 export function ProfileCard({
@@ -18,6 +19,7 @@ export function ProfileCard({
   avatar,
   currentRole,
   currentCompany,
+  claimed,
 }: ProfileCardProps) {
   const label = displayName ?? handle;
   return (
@@ -36,8 +38,15 @@ export function ProfileCard({
               label.charAt(0).toUpperCase()
             )}
           </div>
-          <div className="min-w-0">
-            <p className="truncate font-medium">{sanitize(label)}</p>
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-2">
+              <p className="truncate font-medium">{sanitize(label)}</p>
+              {claimed === false && (
+                <span className="inline-flex shrink-0 items-center rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-800 dark:bg-amber-900/30 dark:text-amber-300">
+                  Unclaimed
+                </span>
+              )}
+            </div>
             {displayName && (
               <p className="truncate text-xs text-muted-foreground">@{sanitize(handle)}</p>
             )}
