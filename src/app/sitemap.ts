@@ -10,7 +10,11 @@ interface SitemapProfile {
   updatedAt: string;
 }
 
-const STATIC_PAGES: { path: string; changeFrequency: MetadataRoute.Sitemap[0]['changeFrequency']; priority: number }[] = [
+const STATIC_PAGES: {
+  path: string;
+  changeFrequency: MetadataRoute.Sitemap[0]['changeFrequency'];
+  priority: number;
+}[] = [
   { path: '', changeFrequency: 'daily', priority: 1 },
   { path: '/about', changeFrequency: 'monthly', priority: 0.5 },
   { path: '/privacy', changeFrequency: 'monthly', priority: 0.3 },
@@ -24,12 +28,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
 
   // Static pages
-  const entries: MetadataRoute.Sitemap = STATIC_PAGES.map(({ path, changeFrequency, priority }) => ({
-    url: `${SITE_URL}${path}`,
-    lastModified: now,
-    changeFrequency,
-    priority,
-  }));
+  const entries: MetadataRoute.Sitemap = STATIC_PAGES.map(
+    ({ path, changeFrequency, priority }) => ({
+      url: `${SITE_URL}${path}`,
+      lastModified: now,
+      changeFrequency,
+      priority,
+    }),
+  );
 
   // Expert topic pages
   for (const topic of BEACHHEAD_TOPICS) {
