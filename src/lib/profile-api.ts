@@ -1,4 +1,4 @@
-import type { ExternalAccount, SkillSuggestion, SkillRef } from '@/lib/types';
+import type { ExternalAccount, ProfilePosition, SkillSuggestion, SkillRef } from '@/lib/types';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3100';
 
@@ -244,23 +244,39 @@ export async function searchSkills(query: string, limit = 10): Promise<SkillSugg
 }
 
 export async function linkSkillToPosition(
-  positionRkey: string,
+  position: ProfilePosition,
   skillRef: SkillRef,
-  currentSkills: SkillRef[],
 ): Promise<WriteResult> {
+  const currentSkills = position.skills ?? [];
   const alreadyLinked = currentSkills.some((s) => s.uri === skillRef.uri);
   if (alreadyLinked) return { success: true };
-  const updatedSkills = [...currentSkills, skillRef];
-  return updatePosition(positionRkey, { skills: updatedSkills });
+  return updatePosition(position.rkey, {
+    companyName: position.companyName,
+    title: position.title,
+    description: position.description,
+    startDate: position.startDate,
+    endDate: position.endDate,
+    location: position.location,
+    current: position.current,
+    skills: [...currentSkills, skillRef],
+  });
 }
 
 export async function unlinkSkillFromPosition(
-  positionRkey: string,
+  position: ProfilePosition,
   skillRef: SkillRef,
-  currentSkills: SkillRef[],
 ): Promise<WriteResult> {
-  const updatedSkills = currentSkills.filter((s) => s.uri !== skillRef.uri);
-  return updatePosition(positionRkey, { skills: updatedSkills });
+  const currentSkills = position.skills ?? [];
+  return updatePosition(position.rkey, {
+    companyName: position.companyName,
+    title: position.title,
+    description: position.description,
+    startDate: position.startDate,
+    endDate: position.endDate,
+    location: position.location,
+    current: position.current,
+    skills: currentSkills.filter((s) => s.uri !== skillRef.uri),
+  });
 }
 
 export async function createEndorsement(data: {

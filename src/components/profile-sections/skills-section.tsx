@@ -62,8 +62,8 @@ export function SkillsSection({ isOwnProfile }: SkillsSectionProps) {
       const currentSkills = position.skills ?? [];
 
       const result = linked
-        ? await linkSkillToPosition(positionRkey, skillRef, currentSkills)
-        : await unlinkSkillFromPosition(positionRkey, skillRef, currentSkills);
+        ? await linkSkillToPosition(position, skillRef)
+        : await unlinkSkillFromPosition(position, skillRef);
 
       if (result.success) {
         const updatedSkills = linked
