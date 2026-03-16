@@ -251,7 +251,9 @@
   "search": {
     "placeholder": "Search by name, headline, or AT Protocol handle",
     "noResults": "No results found for \"{query}\"",
-    "statusTitle": "Search capabilities",
+    "statusTitle": "Search is in alpha",
+    "statusIntro": "We're actively building search. Here's what works today and what's coming next.",
+    "comingSoonLabel": "Coming soon",
     "sifaGroupTitle": "Sifa profiles",
     "sifaGroupDone": {
       "nameHeadline": "Search by name and headline",
@@ -270,8 +272,7 @@
     },
     "globalGroupPlanned": {
       "fullTextGlobal": "Full-text search across the AT Protocol network"
-    },
-    "sifaOnlyNote": "Sifa profile search covers members by name, headline, and bio. Handle lookup works for anyone on the AT Protocol network."
+    }
   },
   "login": {
     "title": "Sign in",

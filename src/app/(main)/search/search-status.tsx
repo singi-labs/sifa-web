@@ -31,7 +31,7 @@ function PlannedItem({ label }: { label: string }) {
   return (
     <li className="flex items-start gap-2 text-muted-foreground">
       <span
-        className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-muted-foreground/20 text-muted-foreground"
+        className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full border border-muted-foreground/30"
         aria-hidden="true"
       >
         <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
@@ -48,8 +48,8 @@ export async function SearchStatus() {
 
   return (
     <aside className="mt-10 rounded-lg border border-border bg-muted/40 p-5">
-      <h2 className="mb-3 text-sm font-semibold text-foreground">{t('statusTitle')}</h2>
-      <p className="mb-4 text-xs text-muted-foreground">{t('sifaOnlyNote')}</p>
+      <h2 className="mb-1 text-sm font-semibold text-foreground">{t('statusTitle')}</h2>
+      <p className="mb-4 text-xs text-muted-foreground">{t('statusIntro')}</p>
 
       <div className="space-y-4">
         <div>
@@ -60,10 +60,19 @@ export async function SearchStatus() {
             {globalDoneKeys.map((key) => (
               <DoneItem key={key} label={t(`globalGroupDone.${key}`)} />
             ))}
-            {globalPlannedKeys.map((key) => (
-              <PlannedItem key={key} label={t(`globalGroupPlanned.${key}`)} />
-            ))}
           </ul>
+          {globalPlannedKeys.length > 0 && (
+            <>
+              <p className="mb-1 mt-2 text-[11px] font-medium uppercase tracking-wider text-muted-foreground/60">
+                {t('comingSoonLabel')}
+              </p>
+              <ul className="space-y-1.5 text-sm">
+                {globalPlannedKeys.map((key) => (
+                  <PlannedItem key={key} label={t(`globalGroupPlanned.${key}`)} />
+                ))}
+              </ul>
+            </>
+          )}
         </div>
 
         <div>
@@ -74,10 +83,19 @@ export async function SearchStatus() {
             {sifaDoneKeys.map((key) => (
               <DoneItem key={key} label={t(`sifaGroupDone.${key}`)} />
             ))}
-            {sifaPlannedKeys.map((key) => (
-              <PlannedItem key={key} label={t(`sifaGroupPlanned.${key}`)} />
-            ))}
           </ul>
+          {sifaPlannedKeys.length > 0 && (
+            <>
+              <p className="mb-1 mt-2 text-[11px] font-medium uppercase tracking-wider text-muted-foreground/60">
+                {t('comingSoonLabel')}
+              </p>
+              <ul className="space-y-1.5 text-sm">
+                {sifaPlannedKeys.map((key) => (
+                  <PlannedItem key={key} label={t(`sifaGroupPlanned.${key}`)} />
+                ))}
+              </ul>
+            </>
+          )}
         </div>
       </div>
     </aside>
