@@ -14,10 +14,6 @@ interface EventPageProps {
   params: Promise<{ slug: string }>;
 }
 
-export async function generateStaticParams() {
-  return [{ slug: event.slug }];
-}
-
 export async function generateMetadata({ params }: EventPageProps): Promise<Metadata> {
   const { slug } = await params;
   if (slug !== event.slug) return { title: 'Event Not Found' };
