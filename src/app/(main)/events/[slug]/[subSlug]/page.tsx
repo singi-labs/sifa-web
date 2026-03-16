@@ -47,7 +47,7 @@ export async function generateMetadata({ params }: SideEventPageProps): Promise<
 
 async function fetchProfileSafe(handle: string) {
   try {
-    return await fetchProfile(handle);
+    return await fetchProfile(handle, { cache: 'no-store' });
   } catch {
     return null;
   }

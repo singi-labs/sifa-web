@@ -12,9 +12,11 @@ export interface ProfileSearchResult {
   claimed?: boolean;
 }
 
-export async function fetchProfile(handleOrDid: string) {
+export async function fetchProfile(handleOrDid: string, options?: { cache?: RequestCache }) {
   const res = await fetch(`${API_URL}/api/profile/${encodeURIComponent(handleOrDid)}`, {
-    next: { revalidate: 300, tags: [`profile-${handleOrDid}`] },
+    ...(options?.cache
+      ? { cache: options.cache }
+      : { next: { revalidate: 300, tags: [`profile-${handleOrDid}`] } }),
   });
   if (!res.ok) return null;
   return res.json();
