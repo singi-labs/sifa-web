@@ -61,6 +61,46 @@ export default async function Home() {
       {stats && stats.avatars.length > 0 && (
         <AvatarReel avatars={stats.avatars} caption={t('avatarReelCaption')} />
       )}
+
+      {/* ATmosphereConf 2026 promo -- remove after mid-April 2026 */}
+      <div className="mt-20 w-full max-w-lg rounded-xl border border-border bg-card p-6">
+        <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-start sm:text-left">
+          <Image
+            src="/atmosphereconf-goose.webp"
+            alt="Goodstuff the goose, ATmosphereConf mascot"
+            width={120}
+            height={150}
+            className="h-auto w-24 shrink-0 sm:w-28"
+          />
+          <div>
+            <h2 className="text-lg font-bold">
+              <span style={{ color: '#0085ff' }}>AT</span>mosphereConf 2026
+            </h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              March 26&ndash;29 &middot; Vancouver, BC
+            </p>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Sifa will be at the global AT Protocol community conference. Come say hi!
+            </p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <Link
+                href="/events/atmosphereconf-2026"
+                className="inline-flex h-8 items-center rounded-md bg-primary px-3 text-xs font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+              >
+                See who&apos;s going
+              </Link>
+              <a
+                href="https://atmosphereconf.org/#tickets"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-8 items-center rounded-md border border-border px-3 text-xs font-medium transition-colors hover:bg-accent hover:text-foreground"
+              >
+                Get tickets
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
