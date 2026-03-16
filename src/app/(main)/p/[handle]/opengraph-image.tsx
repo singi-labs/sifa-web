@@ -78,12 +78,6 @@ export default async function ProfileOgImage({ params }: { params: Promise<{ han
       ? `${current.title} at ${current.companyName}`
       : null;
   const headline = profile.headline ?? '';
-  const location = [profile.locationCity, profile.locationRegion, profile.locationCountry]
-    .filter(Boolean)
-    .join(', ');
-  const website = profile.website
-    ? profile.website.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '')
-    : null;
   const avatarDataUrl = profile.avatar ? await fetchAvatarDataUrl(profile.avatar) : null;
 
   return new ImageResponse(
@@ -94,128 +88,176 @@ export default async function ProfileOgImage({ params }: { params: Promise<{ han
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'space-between',
           backgroundColor: '#1a1a1a',
           color: '#fafafa',
           fontFamily: 'system-ui, sans-serif',
-          padding: 60,
         }}
       >
-        {/* Top section: profile info */}
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          {/* Avatar + name/handle */}
-          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+        {/* Top accent stripe */}
+        <div style={{ display: 'flex', width: '100%', height: 6, backgroundColor: '#4385BE' }} />
+
+        {/* Main content: two-column layout */}
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            flexGrow: 1,
+            padding: '0 60px',
+          }}
+        >
+          {/* Left column: avatar + brand */}
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: 320,
+              paddingRight: 48,
+            }}
+          >
+            {/* Avatar with brand ring */}
             {avatarDataUrl ? (
-              // eslint-disable-next-line jsx-a11y/alt-text -- rendered to PNG by Satori
-              <img
-                src={avatarDataUrl}
-                width={96}
-                height={96}
-                style={{ borderRadius: 48, marginRight: 28 }}
-              />
+              <div
+                style={{
+                  display: 'flex',
+                  width: 224,
+                  height: 224,
+                  borderRadius: 112,
+                  border: '4px solid #4385BE',
+                  overflow: 'hidden',
+                }}
+              >
+                {/* eslint-disable-next-line jsx-a11y/alt-text -- rendered to PNG by Satori */}
+                <img
+                  src={avatarDataUrl}
+                  width={216}
+                  height={216}
+                  style={{ borderRadius: 108 }}
+                />
+              </div>
             ) : (
               <div
                 style={{
-                  width: 96,
-                  height: 96,
-                  borderRadius: 48,
-                  backgroundColor: '#333',
+                  width: 224,
+                  height: 224,
+                  borderRadius: 112,
+                  border: '4px solid #4385BE',
+                  backgroundColor: '#2a2a2a',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontSize: 40,
+                  fontSize: 80,
                   fontWeight: 700,
-                  color: '#a3a3a3',
-                  marginRight: 28,
+                  color: '#b0b0b0',
                 }}
               >
                 {displayName.charAt(0).toUpperCase()}
               </div>
             )}
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <div style={{ display: 'flex', fontSize: 44, fontWeight: 700 }}>
-                {displayName.length > 30 ? displayName.slice(0, 30) + '\u2026' : displayName}
-              </div>
-              <div style={{ display: 'flex', fontSize: 22, color: '#a3a3a3', marginTop: 4 }}>
-                {'@' + profile.handle}
-              </div>
-            </div>
-          </div>
-          {/* Role at Company */}
-          {roleAtCompany && (
-            <div style={{ display: 'flex', fontSize: 24, color: '#d4d4d4', marginTop: 24 }}>
-              {roleAtCompany.length > 80 ? roleAtCompany.slice(0, 80) + '\u2026' : roleAtCompany}
-            </div>
-          )}
-          {/* Headline */}
-          <div
-            style={{
-              display: 'flex',
-              fontSize: 22,
-              color: '#a3a3a3',
-              marginTop: roleAtCompany ? 8 : 24,
-            }}
-          >
-            {headline
-              ? headline.length > 120
-                ? headline.slice(0, 120) + '\u2026'
-                : headline
-              : '\u00A0'}
-          </div>
-          {/* Location + Website */}
-          <div style={{ display: 'flex', flexDirection: 'row', marginTop: 8 }}>
-            {location && (
-              <div style={{ display: 'flex', fontSize: 20, color: '#737373', marginRight: 24 }}>
-                {location}
-              </div>
-            )}
-            {website && (
-              <div style={{ display: 'flex', fontSize: 20, color: '#737373' }}>{website}</div>
-            )}
-          </div>
-        </div>
 
-        {/* Bottom section: CTA with Sifa branding */}
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}
-        >
-          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-            {/* Sifa brand mark */}
-            <div
-              style={{
-                width: 36,
-                height: 36,
-                borderRadius: 18,
-                backgroundColor: '#4385BE',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: 20,
-                fontWeight: 700,
-                color: '#ffffff',
-                marginRight: 14,
-              }}
-            >
-              S
-            </div>
-            <div style={{ display: 'flex', fontSize: 22, color: '#a3a3a3' }}>
-              Visit my profile on
-            </div>
+            {/* Brand wordmark below avatar */}
             <div
               style={{
                 display: 'flex',
                 fontSize: 22,
                 fontWeight: 600,
-                color: '#d4d4d4',
-                marginLeft: 6,
+                color: '#4385BE',
+                marginTop: 24,
+                letterSpacing: 1,
               }}
             >
               sifa.id
+            </div>
+          </div>
+
+          {/* Right column: text content */}
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              flexGrow: 1,
+              paddingTop: 20,
+              paddingBottom: 20,
+            }}
+          >
+            {/* Display name */}
+            <div style={{ display: 'flex', fontSize: 52, fontWeight: 700, color: '#eeeeee' }}>
+              {displayName.length > 26 ? displayName.slice(0, 26) + '\u2026' : displayName}
+            </div>
+
+            {/* Handle */}
+            <div
+              style={{
+                display: 'flex',
+                fontSize: 26,
+                color: '#a0a0a0',
+                marginTop: 6,
+              }}
+            >
+              {'@' + profile.handle}
+            </div>
+
+            {/* Accent separator line */}
+            <div
+              style={{
+                display: 'flex',
+                width: 80,
+                height: 3,
+                backgroundColor: '#4385BE',
+                marginTop: 28,
+                marginBottom: 28,
+              }}
+            />
+
+            {/* Role at Company */}
+            {roleAtCompany && (
+              <div
+                style={{
+                  display: 'flex',
+                  fontSize: 30,
+                  fontWeight: 600,
+                  color: '#d4d4d4',
+                }}
+              >
+                {roleAtCompany.length > 50
+                  ? roleAtCompany.slice(0, 50) + '\u2026'
+                  : roleAtCompany}
+              </div>
+            )}
+
+            {/* Headline */}
+            {headline && (
+              <div
+                style={{
+                  display: 'flex',
+                  fontSize: 26,
+                  color: '#b0b0b0',
+                  marginTop: roleAtCompany ? 12 : 0,
+                  lineHeight: 1.4,
+                }}
+              >
+                {headline.length > 100 ? headline.slice(0, 100) + '\u2026' : headline}
+              </div>
+            )}
+
+            {/* CTA pill */}
+            <div style={{ display: 'flex', marginTop: 32 }}>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  backgroundColor: '#4385BE',
+                  borderRadius: 24,
+                  padding: '10px 28px',
+                  fontSize: 20,
+                  fontWeight: 600,
+                  color: '#ffffff',
+                }}
+              >
+                View profile
+              </div>
             </div>
           </div>
         </div>
