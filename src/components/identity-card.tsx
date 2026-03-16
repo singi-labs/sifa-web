@@ -45,6 +45,7 @@ interface IdentityCardProps {
   isOwnProfile?: boolean;
   isFollowing?: boolean;
   variant?: 'page' | 'embed';
+  badge?: string;
   className?: string;
 }
 
@@ -66,6 +67,7 @@ export function IdentityCard({
   isOwnProfile,
   isFollowing,
   variant = 'page',
+  badge,
   className,
 }: IdentityCardProps) {
   const t = useTranslations('identityCard');
@@ -111,6 +113,14 @@ export function IdentityCard({
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-1.5">
                 <h1 className="truncate text-base font-bold">{displayName ?? handle}</h1>
+                {badge && (
+                  <Badge
+                    variant="secondary"
+                    className="shrink-0 px-1.5 py-0 text-[10px] font-medium"
+                  >
+                    {badge}
+                  </Badge>
+                )}
                 {verifiedAccounts.length > 0 && (
                   <CheckCircle
                     className="h-4 w-4 shrink-0 text-primary"
