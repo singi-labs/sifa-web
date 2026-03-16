@@ -120,7 +120,7 @@ describe('IdentityCard (default / page variant)', () => {
     const { displayName: _, ...propsWithoutName } = baseProps;
     render(<IdentityCard {...propsWithoutName} />);
     // The h1 should show the handle as fallback
-    expect(screen.getByRole('heading', { level: 1 }).textContent).toBe('alice.bsky.social');
+    expect(screen.getByRole('heading', { level: 1 }).textContent).toBe('alice');
   });
 
   it('renders headline', () => {
