@@ -92,7 +92,7 @@ describe('embed.js', function () {
     expect(html).toContain('Profile not found');
   });
 
-  it('renders trust stats', async function () {
+  it('renders activity data (followers, PDS, app badges)', async function () {
     const script = document.createElement('script');
     script.setAttribute('src', 'https://sifa.id/embed.js');
     script.setAttribute('data-did', 'did:plc:test');
@@ -103,15 +103,15 @@ describe('embed.js', function () {
       json: function () {
         return Promise.resolve({
           did: 'did:plc:test',
-          handle: 'test',
+          handle: 'test.bsky.social',
           displayName: 'Test',
-          profileUrl: 'https://sifa.id/p/test',
-          trustStats: [
-            { key: 'connections', label: 'Connections', value: 42 },
-            { key: 'endorsements', label: 'Endorsements', value: 7 },
-          ],
+          profileUrl: 'https://sifa.id/p/test.bsky.social',
+          trustStats: [],
           verifiedAccounts: [],
           openTo: [],
+          followersCount: 1234,
+          pdsProvider: 'Bluesky',
+          activeApps: [{ id: 'bluesky', name: 'Bluesky' }],
           claimed: true,
         });
       },
@@ -120,8 +120,9 @@ describe('embed.js', function () {
     await initSifaEmbeds();
 
     const html = document.querySelector('.sifa-embed')?.shadowRoot?.innerHTML ?? '';
-    expect(html).toContain('42');
-    expect(html).toContain('Connections');
+    expect(html).toContain('1.2K followers');
+    expect(html).toContain('Bluesky');
+    expect(html).toContain('app-badge');
   });
 
   it('renders open-to pills', async function () {
