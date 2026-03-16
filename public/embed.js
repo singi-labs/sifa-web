@@ -125,7 +125,8 @@
     var activityHtml = '';
     var activityItems = '';
     if (data.followersCount && data.followersCount > 0) {
-      activityItems += '<span>' + escapeHtml(formatCompact(data.followersCount)) + ' followers</span>';
+      activityItems +=
+        '<span>' + escapeHtml(formatCompact(data.followersCount)) + ' followers</span>';
     }
     if (data.pdsProvider) {
       activityItems += '<span>on ' + escapeHtml(data.pdsProvider.name) + '</span>';
