@@ -58,9 +58,7 @@ export function AtprotoCounter({
     <div className="mt-6 max-w-lg text-center">
       <p className="text-sm text-muted-foreground">
         {prefix}{' '}
-        <span className="font-mono text-base font-semibold tabular-nums text-foreground">
-          {formatted}
-        </span>{' '}
+        <span className="text-base font-semibold tabular-nums text-foreground">{formatted}</span>{' '}
         {suffix}{' '}
         <a href="/search" className="font-medium text-primary hover:underline">
           {cta}
