@@ -6,6 +6,7 @@ import { X } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { sanitize } from '@/lib/sanitize';
+import { getDisplayLabel } from '@/lib/pds-utils';
 
 interface SuggestionCardProps {
   did: string;
@@ -36,7 +37,8 @@ export function SuggestionCard({
   onInvite,
   onUndismiss,
 }: SuggestionCardProps) {
-  const initial = (displayName ?? handle).charAt(0).toUpperCase();
+  const label = getDisplayLabel(displayName, handle);
+  const initial = label.charAt(0).toUpperCase();
 
   return (
     <div className="flex items-center gap-4 rounded-lg border border-border p-4">
@@ -63,10 +65,10 @@ export function SuggestionCard({
               href={`/p/${encodeURIComponent(handle)}`}
               className="truncate font-medium hover:underline"
             >
-              {sanitize(displayName ?? handle)}
+              {sanitize(label)}
             </Link>
           ) : (
-            <span className="truncate font-medium">{sanitize(displayName ?? handle)}</span>
+            <span className="truncate font-medium">{sanitize(label)}</span>
           )}
           <Badge variant="secondary" className="shrink-0 text-xs">
             {source}

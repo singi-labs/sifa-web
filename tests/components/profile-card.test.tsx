@@ -16,7 +16,7 @@ import { vi } from 'vitest';
 describe('ProfileCard', () => {
   it('renders handle and headline', () => {
     render(<ProfileCard handle="alice.bsky.social" headline="Software Engineer" />);
-    expect(screen.getByText('alice.bsky.social')).toBeDefined();
+    expect(screen.getByText('alice')).toBeDefined();
     expect(screen.getByText('Software Engineer')).toBeDefined();
   });
 

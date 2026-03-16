@@ -15,7 +15,7 @@ import { ProfileEditDialog } from '@/components/profile-edit-dialog';
 import { useAuth } from '@/components/auth-provider';
 import type { LocationValue, TrustStat, VerifiedAccount } from '@/lib/types';
 import { formatLocation, countryCodeToFlag } from '@/lib/location-utils';
-import { detectPdsProvider } from '@/lib/pds-utils';
+import { detectPdsProvider, getDisplayLabel } from '@/lib/pds-utils';
 import { cn } from '@/lib/utils';
 
 const OPEN_TO_LABEL_KEYS: Record<string, string> = {
@@ -78,6 +78,7 @@ export function IdentityCard({
   const [editing, setEditing] = useState(false);
   const [copied, setCopied] = useState(false);
   const pdsProvider = detectPdsProvider(handle);
+  const label = getDisplayLabel(displayName, handle);
 
   const displayTrustStats =
     trustStats.length > 0
@@ -101,18 +102,18 @@ export function IdentityCard({
               {avatar ? (
                 <Image
                   src={avatar}
-                  alt={t('avatarAlt', { name: displayName ?? handle })}
+                  alt={t('avatarAlt', { name: label })}
                   width={56}
                   height={56}
                   className="h-14 w-14 rounded-full object-cover"
                 />
               ) : (
-                <span aria-hidden="true">{(displayName ?? handle).charAt(0).toUpperCase()}</span>
+                <span aria-hidden="true">{(label).charAt(0).toUpperCase()}</span>
               )}
             </div>
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-1.5">
-                <h1 className="truncate text-base font-bold">{displayName ?? handle}</h1>
+                <h1 className="truncate text-base font-bold">{label}</h1>
                 {badge && (
                   <Badge
                     variant="secondary"
@@ -218,18 +219,18 @@ export function IdentityCard({
               {avatar ? (
                 <Image
                   src={avatar}
-                  alt={t('avatarAlt', { name: displayName ?? handle })}
+                  alt={t('avatarAlt', { name: label })}
                   width={64}
                   height={64}
                   className="h-16 w-16 rounded-full object-cover"
                 />
               ) : (
-                <span aria-hidden="true">{(displayName ?? handle).charAt(0).toUpperCase()}</span>
+                <span aria-hidden="true">{(label).charAt(0).toUpperCase()}</span>
               )}
             </div>
             <div className="min-w-0">
               <div className="flex items-center gap-2">
-                <h1 className="truncate text-xl font-bold">{displayName ?? handle}</h1>
+                <h1 className="truncate text-xl font-bold">{label}</h1>
                 {verifiedAccounts.length > 0 && (
                   <CheckCircle
                     className="h-5 w-5 shrink-0 text-primary"
@@ -263,7 +264,7 @@ export function IdentityCard({
                         <Popover.Popup className="z-50 w-64 rounded-lg border border-border bg-popover p-3 text-sm text-popover-foreground shadow-md">
                           <Popover.Arrow className="fill-popover stroke-border" />
                           <p className="text-muted-foreground">
-                            {t('unclaimedPopupText', { name: displayName ?? handle })}
+                            {t('unclaimedPopupText', { name: label })}
                           </p>
                           {!session && (
                             <Link
