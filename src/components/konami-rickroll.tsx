@@ -46,13 +46,8 @@ export function KonamiRickroll() {
         >
           &times;
         </button>
-{/* eslint-disable-next-line jsx-a11y/media-has-caption -- easter egg, no captions needed */}
-        <video
-          className="max-h-[80vh] max-w-full rounded-lg"
-          src={src}
-          autoPlay
-          controls
-        />
+        {/* eslint-disable-next-line jsx-a11y/media-has-caption -- easter egg, no captions needed */}
+        <video className="max-h-[80vh] max-w-full rounded-lg" src={src} autoPlay controls />
       </div>
     </div>
   );
