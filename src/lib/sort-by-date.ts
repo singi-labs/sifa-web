@@ -49,9 +49,9 @@ export function sortByDateDesc<T>(items: T[], extract: DateExtractor<T>): T[] {
 /**
  * Convenience extractor for items that use `startDate` / `endDate` fields directly.
  */
-export function dateRangeExtractor<T extends { startDate?: string; endDate?: string; current?: boolean }>(
-  item: T,
-): DateRange {
+export function dateRangeExtractor<
+  T extends { startDate?: string; endDate?: string; current?: boolean },
+>(item: T): DateRange {
   return { startDate: item.startDate, endDate: item.endDate, current: item.current };
 }
 
