@@ -70,7 +70,7 @@ export default async function Home() {
             height={150}
             className="h-auto w-24 shrink-0 sm:w-28"
           />
-          <div>
+          <div className="text-center sm:text-left">
             <h2 className="text-lg font-bold">
               <span style={{ color: '#0085ff' }}>AT</span>mosphereConf 2026
             </h2>
@@ -80,7 +80,7 @@ export default async function Home() {
             <p className="mt-2 text-sm text-muted-foreground">
               Sifa will be at the global AT Protocol community conference. Come say hi!
             </p>
-            <div className="mt-3 flex flex-wrap gap-2">
+            <div className="mt-3 flex flex-wrap justify-center gap-2 sm:justify-start">
               <Link
                 href="/events/atmosphereconf-2026"
                 className="inline-flex h-8 items-center rounded-md bg-primary px-3 text-xs font-medium text-primary-foreground transition-colors hover:bg-primary/90"
