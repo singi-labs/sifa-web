@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { IdentityCard } from '@/components/identity-card';
 import { Badge } from '@/components/ui/badge';
-import type { LocationValue, ProfilePosition, TrustStat, VerifiedAccount } from '@/lib/types';
+import type { ActiveApp, LocationValue, ProfilePosition, TrustStat, VerifiedAccount } from '@/lib/types';
 
 export type FilterGroup = 'presentation' | 'lightning' | 'panel' | 'workshop' | 'attendee';
 
@@ -23,8 +23,10 @@ export interface EventEntry {
     locationCity?: string;
     website?: string;
     openTo?: string[];
+    followersCount?: number;
     trustStats?: TrustStat[];
     verifiedAccounts?: VerifiedAccount[];
+    activeApps?: ActiveApp[];
     claimed: boolean;
   };
   badge?: string;
@@ -163,11 +165,14 @@ export function EventCardGrid({ entries, speakerCount, attendeeCount }: EventCar
                 location={location}
                 website={profile.website}
                 openTo={profile.openTo}
+                followersCount={profile.followersCount}
                 trustStats={profile.trustStats}
                 verifiedAccounts={profile.verifiedAccounts}
+                activeApps={profile.activeApps}
                 claimed={profile.claimed}
                 variant="embed"
                 badge={badge}
+                hideFooter
               />
             </Link>
           );

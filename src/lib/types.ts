@@ -134,6 +134,11 @@ export interface TrustStat {
   value: number;
 }
 
+export interface ActiveApp {
+  id: string;
+  name: string;
+}
+
 export interface VerifiedAccount {
   platform: string;
   identifier: string;

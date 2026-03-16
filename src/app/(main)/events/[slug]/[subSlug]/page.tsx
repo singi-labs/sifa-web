@@ -212,11 +212,14 @@ export default async function SideEventPage({ params }: SideEventPageProps) {
                     location={location}
                     website={profile.website}
                     openTo={profile.openTo}
+                    followersCount={profile.followersCount}
                     trustStats={profile.trustStats}
                     verifiedAccounts={profile.verifiedAccounts}
+                    activeApps={profile.activeApps}
                     claimed={profile.claimed}
                     variant="embed"
                     badge={badge}
+                    hideFooter
                   />
                 </Link>
               );

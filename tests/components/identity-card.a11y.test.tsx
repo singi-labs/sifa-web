@@ -39,4 +39,24 @@ describe('IdentityCard accessibility', () => {
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
+
+  it('has no a11y violations for embed with activity data', async () => {
+    const { container } = render(
+      <IdentityCard
+        did="did:plc:abc123"
+        handle="alice.bsky.social"
+        displayName="Alice Smith"
+        headline="Senior Engineer"
+        claimed={true}
+        variant="embed"
+        followersCount={1500}
+        activeApps={[
+          { id: 'bluesky', name: 'Bluesky' },
+          { id: 'whitewind', name: 'Whitewind' },
+        ]}
+      />,
+    );
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
 });

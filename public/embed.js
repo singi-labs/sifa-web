@@ -17,6 +17,23 @@
     }
   }
 
+  function formatCompact(n) {
+    if (n >= 1000000) return (n / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+    if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+    return String(n);
+  }
+
+  var APP_COLORS = {
+    bluesky: { bg: '#e0f2fe', text: '#075985' },
+    whitewind: { bg: '#f1f5f9', text: '#334155' },
+    smokesignal: { bg: '#ffedd5', text: '#9a3412' },
+    frontpage: { bg: '#ede9fe', text: '#5b21b6' },
+    picosky: { bg: '#fce7f3', text: '#9d174d' },
+    linkat: { bg: '#d1fae5', text: '#065f46' },
+    pastesphere: { bg: '#fef3c7', text: '#92400e' },
+  };
+  var FALLBACK_COLOR = { bg: '#f3f4f6', text: '#374151' };
+
   var sifaIconSvg =
     '<svg viewBox="0 0 256 256" class="sifa-icon" role="img" aria-label="Sifa">' +
     '<g transform="matrix(0.333333,0,0,0.333333,37.583333,37.083333)">' +
@@ -62,10 +79,9 @@
       '.location{font-size:12px;color:var(--sifa-muted);margin:4px 0 0;}' +
       '.open-to{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0 0;}' +
       '.pill{font-size:11px;padding:2px 8px;border-radius:10px;background:var(--sifa-primary);color:#fff;}' +
-      '.stats{display:flex;gap:16px;margin-top:10px;}' +
-      '.stat{text-align:center;}' +
-      '.stat-value{font-size:14px;font-weight:700;display:block;}' +
-      '.stat-label{font-size:10px;color:var(--sifa-muted);}' +
+      '.activity-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;font-size:12px;color:var(--sifa-muted);}' +
+      '.app-badges{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;}' +
+      '.app-badge{font-size:10px;font-weight:500;padding:2px 8px;border-radius:10px;}' +
       '.footer{margin-top:12px;padding-top:10px;border-top:1px solid var(--sifa-border);display:flex;align-items:center;justify-content:space-between;}' +
       '.cta{display:inline-block;font-size:13px;color:var(--sifa-primary);text-decoration:none;font-weight:500;}' +
       '.cta:hover{text-decoration:underline;}' +
@@ -105,23 +121,36 @@
       openToHtml = '<div class="open-to">' + pills + '</div>';
     }
 
-    var statsHtml = '';
-    if (data.trustStats && data.trustStats.length > 0) {
-      var items = '';
-      var max = Math.min(data.trustStats.length, 3);
-      for (var j = 0; j < max; j++) {
-        var s = data.trustStats[j];
-        items +=
-          '<div class="stat">' +
-          '<span class="stat-value">' +
-          escapeHtml(String(s.value)) +
-          '</span>' +
-          '<span class="stat-label">' +
-          escapeHtml(s.label) +
-          '</span>' +
-          '</div>';
+    // Activity row: follower count + PDS provider
+    var activityHtml = '';
+    var activityItems = '';
+    if (data.followersCount && data.followersCount > 0) {
+      activityItems += '<span>' + escapeHtml(formatCompact(data.followersCount)) + ' followers</span>';
+    }
+    if (data.pdsProvider) {
+      activityItems += '<span>on ' + escapeHtml(data.pdsProvider.name) + '</span>';
+    }
+    if (activityItems) {
+      activityHtml = '<div class="activity-row">' + activityItems + '</div>';
+    }
+
+    // Active apps badges
+    var appsHtml = '';
+    if (data.activeApps && data.activeApps.length > 0) {
+      var badges = '';
+      for (var k = 0; k < data.activeApps.length; k++) {
+        var app = data.activeApps[k];
+        var colors = APP_COLORS[app.id] || FALLBACK_COLOR;
+        badges +=
+          '<span class="app-badge" style="background:' +
+          colors.bg +
+          ';color:' +
+          colors.text +
+          '">' +
+          escapeHtml(app.name) +
+          '</span>';
       }
-      statsHtml = '<div class="stats">' + items + '</div>';
+      appsHtml = '<div class="app-badges">' + badges + '</div>';
     }
 
     var footerHtml =
@@ -155,7 +184,8 @@
       headlineHtml +
       locationHtml +
       openToHtml +
-      statsHtml +
+      activityHtml +
+      appsHtml +
       footerHtml +
       '</div>'
     );
