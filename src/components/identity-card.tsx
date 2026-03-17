@@ -142,14 +142,6 @@ export function IdentityCard({
                   />
                 )}
               </div>
-              {badge && (
-                <Badge
-                  variant="secondary"
-                  className="mt-0.5 w-fit px-1.5 py-0 text-[10px] font-medium"
-                >
-                  {badge}
-                </Badge>
-              )}
               <div className="flex items-center gap-2">
                 {pdsProvider?.profileUrl ? (
                   <a
@@ -178,6 +170,14 @@ export function IdentityCard({
                   <p className="truncate text-xs text-muted-foreground">@{handle}</p>
                 )}
               </div>
+              {badge && (
+                <Badge
+                  variant="secondary"
+                  className="mt-0.5 w-fit px-1.5 py-0 text-[10px] font-medium"
+                >
+                  {badge}
+                </Badge>
+              )}
 
               {currentRole && currentCompany && (
                 <p className="mt-1 text-xs text-muted-foreground">
