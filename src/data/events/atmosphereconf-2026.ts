@@ -139,6 +139,7 @@ export const event: EventConfig = {
       slug: 'atscience',
       name: 'ATScience 2026',
       dates: 'March 27, 2026',
+      smokesignalUrl: 'https://smokesignal.events/did:plc:nncebyouba4ex3775syiyvjy/3mfscvdtbb2ql',
       speakers: [],
     },
   ],
