@@ -252,7 +252,7 @@ export function IdentityCard({
                 <Badge
                   key={item}
                   variant="outline"
-                  className="border-muted-foreground/30 px-2 py-0 text-xs text-muted-foreground"
+                  className="border-primary/30 px-2 py-0 text-xs text-primary"
                 >
                   {PREFERRED_WORKPLACE_LABEL_KEYS[item]
                     ? tEdit(PREFERRED_WORKPLACE_LABEL_KEYS[item]!)
@@ -461,11 +461,7 @@ export function IdentityCard({
                     {tEdit('preferredWorkplace')}:
                   </span>
                   {preferredWorkplace.map((item) => (
-                    <Badge
-                      key={item}
-                      variant="outline"
-                      className="border-muted-foreground/30 text-muted-foreground"
-                    >
+                    <Badge key={item} variant="outline" className="border-primary/30 text-primary">
                       {PREFERRED_WORKPLACE_LABEL_KEYS[item]
                         ? tEdit(PREFERRED_WORKPLACE_LABEL_KEYS[item]!)
                         : item}
