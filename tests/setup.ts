@@ -190,6 +190,8 @@ const translations: Record<string, Record<string, string>> = {
     linkCopied: 'Link copied',
     embed: 'Embed',
     viewOnSifa: 'View on Sifa',
+    followers: '{count} followers',
+    followersOnBluesky: '{count} followers on Bluesky',
   },
   home: {
     title: 'Sifa',

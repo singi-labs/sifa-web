@@ -13,8 +13,15 @@ interface ProfileHeaderProps {
 }
 
 export function ProfileHeader({ profile }: ProfileHeaderProps) {
-  const displayFollowers =
-    resolveDisplayFollowers(profile.atprotoFollowersCount, profile.followersCount) ?? 0;
+  const resolved = resolveDisplayFollowers(
+    profile.atprotoFollowersCount,
+    profile.followersCount,
+  );
+  const displayFollowers = resolved?.count ?? 0;
+  const followerLabel =
+    resolved?.source === 'atproto'
+      ? `${displayFollowers} followers on Bluesky`
+      : `${displayFollowers} followers`;
 
   return (
     <div>
@@ -23,7 +30,7 @@ export function ProfileHeader({ profile }: ProfileHeaderProps) {
         <p className="mt-1 text-lg text-muted-foreground">{sanitize(profile.headline)}</p>
       )}
       <div className="mt-2 flex gap-4 text-sm text-muted-foreground">
-        <span>{displayFollowers} followers</span>
+        <span>{followerLabel}</span>
         <span>{profile.followingCount} following</span>
         <span>{profile.connectionsCount} connections</span>
       </div>

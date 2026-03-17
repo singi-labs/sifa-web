@@ -241,6 +241,7 @@
     "roleAt": "at",
     "viewOnSifa": "View on Sifa",
     "followers": "{count} followers",
+    "followersOnBluesky": "{count} followers on Bluesky",
     "pdsProvider": "on {provider}",
     "activeAppsLabel": "Active on",
     "activeOn": "Active on {app}"

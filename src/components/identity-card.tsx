@@ -223,7 +223,11 @@ export function IdentityCard({
           {/* Activity indicators: follower count */}
           {displayFollowers ? (
             <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
-              <span>{t('followers', { count: formatCompactNumber(displayFollowers, 'en') })}</span>
+              <span>
+                {displayFollowers.source === 'atproto'
+                  ? t('followersOnBluesky', { count: formatCompactNumber(displayFollowers.count, 'en') })
+                  : t('followers', { count: formatCompactNumber(displayFollowers.count, 'en') })}
+              </span>
             </div>
           ) : null}
 
@@ -369,7 +373,11 @@ export function IdentityCard({
           {/* Row 5b: Follower count */}
           {displayFollowers ? (
             <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
-              <span>{t('followers', { count: formatCompactNumber(displayFollowers, 'en') })}</span>
+              <span>
+                {displayFollowers.source === 'atproto'
+                  ? t('followersOnBluesky', { count: formatCompactNumber(displayFollowers.count, 'en') })
+                  : t('followers', { count: formatCompactNumber(displayFollowers.count, 'en') })}
+              </span>
             </div>
           ) : null}
 
