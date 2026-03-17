@@ -146,6 +146,25 @@ describe('IdentityCard (default / page variant)', () => {
     expect(screen.getByText('Freelance')).toBeDefined();
   });
 
+  it('renders preferredWorkplace pills', () => {
+    render(
+      <IdentityCard
+        {...baseProps}
+        preferredWorkplace={['id.sifa.defs#remote', 'id.sifa.defs#hybrid']}
+      />,
+    );
+    // Translation mock returns the key; production renders the translated label
+    expect(screen.getByText('remote')).toBeDefined();
+    expect(screen.getByText('hybrid')).toBeDefined();
+  });
+
+  it('does not render preferredWorkplace section when empty', () => {
+    render(<IdentityCard {...baseProps} preferredWorkplace={[]} />);
+    expect(screen.queryByText('remote')).toBeNull();
+    expect(screen.queryByText('hybrid')).toBeNull();
+    expect(screen.queryByText('onSite')).toBeNull();
+  });
+
   it('renders default trust stats with zeros for new users', () => {
     render(<IdentityCard {...baseProps} trustStats={[]} />);
     const items = screen.getAllByRole('listitem');

@@ -36,6 +36,12 @@ const OPEN_TO_LABEL_KEYS: Record<string, string> = {
   'id.sifa.defs#collaborations': 'collaborations',
 };
 
+const PREFERRED_WORKPLACE_LABEL_KEYS: Record<string, string> = {
+  'id.sifa.defs#onSite': 'onSite',
+  'id.sifa.defs#remote': 'remote',
+  'id.sifa.defs#hybrid': 'hybrid',
+};
+
 interface IdentityCardProps {
   did: string;
   handle: string;
@@ -236,6 +242,26 @@ export function IdentityCard({
             </div>
           )}
 
+          {/* Preferred workplace pills */}
+          {preferredWorkplace && preferredWorkplace.length > 0 && (
+            <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
+              <span className="text-xs font-medium text-muted-foreground">
+                {tEdit('preferredWorkplace')}:
+              </span>
+              {preferredWorkplace.map((item) => (
+                <Badge
+                  key={item}
+                  variant="outline"
+                  className="border-muted-foreground/30 px-2 py-0 text-xs text-muted-foreground"
+                >
+                  {PREFERRED_WORKPLACE_LABEL_KEYS[item]
+                    ? tEdit(PREFERRED_WORKPLACE_LABEL_KEYS[item]!)
+                    : item}
+                </Badge>
+              ))}
+            </div>
+          )}
+
           {/* Activity indicators: follower count */}
           {displayFollowers ? (
             <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
@@ -423,6 +449,26 @@ export function IdentityCard({
                   {openTo.map((item) => (
                     <Badge key={item} variant="outline" className="border-primary/30 text-primary">
                       {OPEN_TO_LABEL_KEYS[item] ? tEdit(OPEN_TO_LABEL_KEYS[item]!) : item}
+                    </Badge>
+                  ))}
+                </div>
+              )}
+
+              {/* Preferred workplace pills */}
+              {preferredWorkplace && preferredWorkplace.length > 0 && (
+                <div className="mt-1.5 flex flex-wrap items-center gap-2">
+                  <span className="text-sm font-medium text-muted-foreground">
+                    {tEdit('preferredWorkplace')}:
+                  </span>
+                  {preferredWorkplace.map((item) => (
+                    <Badge
+                      key={item}
+                      variant="outline"
+                      className="border-muted-foreground/30 text-muted-foreground"
+                    >
+                      {PREFERRED_WORKPLACE_LABEL_KEYS[item]
+                        ? tEdit(PREFERRED_WORKPLACE_LABEL_KEYS[item]!)
+                        : item}
                     </Badge>
                   ))}
                 </div>
