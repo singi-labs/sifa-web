@@ -24,6 +24,12 @@ const OPEN_TO_OPTIONS = [
   { value: 'id.sifa.defs#collaborations', labelKey: 'collaborations' },
 ] as const;
 
+const PREFERRED_WORKPLACE_OPTIONS = [
+  { value: 'id.sifa.defs#onSite', labelKey: 'onSite' },
+  { value: 'id.sifa.defs#remote', labelKey: 'remote' },
+  { value: 'id.sifa.defs#hybrid', labelKey: 'hybrid' },
+] as const;
+
 interface ProfileEditDialogProps {
   handle: string;
   did?: string;
@@ -33,6 +39,7 @@ interface ProfileEditDialogProps {
   about?: string;
   location?: LocationValue | null;
   openTo?: string[];
+  preferredWorkplace?: string[];
   onClose: () => void;
 }
 
@@ -45,6 +52,7 @@ export function ProfileEditDialog({
   about: initialAbout,
   location: initialLocation,
   openTo: initialOpenTo,
+  preferredWorkplace: initialPreferredWorkplace,
   onClose,
 }: ProfileEditDialogProps) {
   const t = useTranslations('profileEdit');
@@ -55,6 +63,9 @@ export function ProfileEditDialog({
   const [about, setAbout] = useState(initialAbout ?? '');
   const [locationValue, setLocationValue] = useState<LocationValue | null>(initialLocation ?? null);
   const [openTo, setOpenTo] = useState<Set<string>>(new Set(initialOpenTo ?? []));
+  const [preferredWorkplace, setPreferredWorkplace] = useState<Set<string>>(
+    new Set(initialPreferredWorkplace ?? []),
+  );
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
@@ -93,6 +104,18 @@ export function ProfileEditDialog({
     });
   };
 
+  const togglePreferredWorkplace = (value: string) => {
+    setPreferredWorkplace((prev) => {
+      const next = new Set(prev);
+      if (next.has(value)) {
+        next.delete(value);
+      } else {
+        next.add(value);
+      }
+      return next;
+    });
+  };
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setSaving(true);
@@ -110,6 +133,7 @@ export function ProfileEditDialog({
           }
         : undefined,
       openTo: [...openTo],
+      preferredWorkplace: [...preferredWorkplace],
     });
 
     setSaving(false);
@@ -270,6 +294,24 @@ export function ProfileEditDialog({
                     className="h-4 w-4 rounded border-border"
                     checked={openTo.has(option.value)}
                     onChange={() => toggleOpenTo(option.value)}
+                  />
+                  {t(option.labelKey)}
+                </label>
+              ))}
+            </div>
+          </fieldset>
+
+          {/* Preferred Workplace */}
+          <fieldset>
+            <legend className="mb-2 text-sm font-medium">{t('preferredWorkplace')}</legend>
+            <div className="flex gap-4">
+              {PREFERRED_WORKPLACE_OPTIONS.map((option) => (
+                <label key={option.value} className="flex items-center gap-2 text-sm">
+                  <input
+                    type="checkbox"
+                    className="h-4 w-4 rounded border-border"
+                    checked={preferredWorkplace.has(option.value)}
+                    onChange={() => togglePreferredWorkplace(option.value)}
                   />
                   {t(option.labelKey)}
                 </label>

@@ -48,6 +48,7 @@ export function AboutSection({ about, isOwnProfile }: AboutSectionProps) {
             about={profile.about}
             location={profile.location}
             openTo={profile.openTo}
+            preferredWorkplace={profile.preferredWorkplace}
             onClose={() => setEditing(false)}
           />
         )}

@@ -48,6 +48,7 @@ interface IdentityCardProps {
   location?: LocationValue | null;
   website?: string;
   openTo?: string[];
+  preferredWorkplace?: string[];
   followersCount?: number;
   atprotoFollowersCount?: number;
   trustStats?: TrustStat[];
@@ -75,6 +76,7 @@ export function IdentityCard({
   location,
   website,
   openTo,
+  preferredWorkplace,
   followersCount,
   atprotoFollowersCount,
   trustStats = [],
@@ -550,6 +552,7 @@ export function IdentityCard({
           about={about}
           location={location}
           openTo={openTo}
+          preferredWorkplace={preferredWorkplace}
           onClose={() => setEditing(false)}
         />
       )}

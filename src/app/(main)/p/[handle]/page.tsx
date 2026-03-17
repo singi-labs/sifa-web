@@ -98,6 +98,7 @@ export default async function ProfilePage({
           location={location}
           website={profile.website}
           openTo={profile.openTo}
+          preferredWorkplace={profile.preferredWorkplace}
           followersCount={profile.followersCount}
           atprotoFollowersCount={profile.atprotoFollowersCount}
           trustStats={profile.trustStats}

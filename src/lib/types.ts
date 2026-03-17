@@ -187,6 +187,7 @@ export interface Profile {
   location?: LocationValue | null;
   website?: string;
   openTo?: string[];
+  preferredWorkplace?: string[];
   pdsProvider?: PdsProviderInfo | null;
   claimed: boolean;
   isOwnProfile?: boolean;
