@@ -98,6 +98,8 @@ export default async function ProfilePage({
           location={location}
           website={profile.website}
           openTo={profile.openTo}
+          followersCount={profile.followersCount}
+          atprotoFollowersCount={profile.atprotoFollowersCount}
           trustStats={profile.trustStats}
           verifiedAccounts={profile.verifiedAccounts}
           pdsProviderInfo={profile.pdsProvider}

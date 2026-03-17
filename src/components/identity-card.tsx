@@ -374,6 +374,21 @@ export function IdentityCard({
             </div>
           )}
 
+          {/* Row 5b: Follower count + PDS provider */}
+          {displayFollowers || pdsProvider ? (
+            <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
+              {displayFollowers && (
+                <span>{t('followers', { count: formatCompactNumber(displayFollowers, 'en') })}</span>
+              )}
+              {pdsProvider && (
+                <span className="inline-flex items-center gap-1">
+                  <PdsIcon provider={pdsProvider.name} className="h-3.5 w-3.5 shrink-0" />
+                  {t('pdsProvider', { provider: pdsProvider.name })}
+                </span>
+              )}
+            </div>
+          ) : null}
+
           {/* Row 6: Open to pills */}
           {openTo && openTo.length > 0 && (
             <div className="mt-3 flex flex-wrap items-center gap-2">
