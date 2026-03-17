@@ -287,10 +287,12 @@ describe('IdentityCard (embed variant)', () => {
     expect(screen.getByText(/followers/)).toBeDefined();
   });
 
-  it('shows PDS provider label for bsky.social handles', () => {
+  it('shows PDS icon next to handle but no separate provider tagline', () => {
     render(<IdentityCard {...baseProps} variant="embed" />);
-    // Activity row with PDS provider info is rendered (next-intl mock returns key for parameterized strings)
-    expect(screen.getByText('pdsProvider')).toBeDefined();
+    // PDS icon is shown next to handle (via the link with provider profileUrl)
+    expect(screen.getByRole('link', { name: /@alice\.bsky\.social/ })).toBeDefined();
+    // No separate "on bluesky" tagline in activity indicators
+    expect(screen.queryByText('pdsProvider')).toBeNull();
   });
 
   it('renders active app badges', () => {
