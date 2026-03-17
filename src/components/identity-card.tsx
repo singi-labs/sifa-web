@@ -158,11 +158,11 @@ export function IdentityCard({
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1 truncate text-xs text-muted-foreground hover:text-foreground"
                   >
-                    <PdsIcon provider={pdsProvider.name} className="h-3 w-3 shrink-0" />@{handle}
+                    <PdsIcon provider={pdsProvider.name} host={pdsProvider.host} className="h-3 w-3 shrink-0" />@{handle}
                   </a>
                 ) : pdsProvider ? (
                   <p className="inline-flex items-center gap-1 truncate text-xs text-muted-foreground">
-                    <PdsIcon provider={pdsProvider.name} className="h-3 w-3 shrink-0" />@{handle}
+                    <PdsIcon provider={pdsProvider.name} host={pdsProvider.host} className="h-3 w-3 shrink-0" />@{handle}
                   </p>
                 ) : (
                   <p className="truncate text-xs text-muted-foreground">@{handle}</p>
@@ -301,12 +301,12 @@ export function IdentityCard({
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1 truncate text-sm text-muted-foreground hover:text-foreground"
                   >
-                    <PdsIcon provider={pdsProvider.name} className="h-3.5 w-3.5 shrink-0" />@
+                    <PdsIcon provider={pdsProvider.name} host={pdsProvider.host} className="h-3.5 w-3.5 shrink-0" />@
                     {handle}
                   </a>
                 ) : pdsProvider ? (
                   <p className="inline-flex items-center gap-1 truncate text-sm text-muted-foreground">
-                    <PdsIcon provider={pdsProvider.name} className="h-3.5 w-3.5 shrink-0" />@
+                    <PdsIcon provider={pdsProvider.name} host={pdsProvider.host} className="h-3.5 w-3.5 shrink-0" />@
                     {handle}
                   </p>
                 ) : (

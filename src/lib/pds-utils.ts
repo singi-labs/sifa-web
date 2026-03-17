@@ -3,6 +3,7 @@ import type { PdsProviderInfo } from './types';
 export interface PdsProvider {
   name: string;
   profileUrl: string;
+  host?: string;
 }
 
 const PDS_PROVIDERS: { suffix: string; name: string; profileBase: string }[] = [
@@ -24,11 +25,11 @@ export function pdsProviderFromApi(
 ): PdsProvider | null {
   if (!apiProvider) return null;
   if (ICON_ONLY_PROVIDERS.has(apiProvider.name)) {
-    return { name: apiProvider.name, profileUrl: '' };
+    return { name: apiProvider.name, profileUrl: '', host: apiProvider.host };
   }
   const profileBase = PROVIDER_PROFILE_BASES[apiProvider.name];
   if (!profileBase) return null;
-  return { name: apiProvider.name, profileUrl: `${profileBase}${handle}` };
+  return { name: apiProvider.name, profileUrl: `${profileBase}${handle}`, host: apiProvider.host };
 }
 
 export function getHandleStem(handle: string): string {

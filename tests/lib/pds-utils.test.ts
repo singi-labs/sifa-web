@@ -67,6 +67,7 @@ describe('pdsProviderFromApi', () => {
     expect(result).toEqual({
       name: 'bluesky',
       profileUrl: 'https://bsky.app/profile/pfrazee.com',
+      host: 'morel.us-east.host.bsky.network',
     });
   });
 
@@ -78,6 +79,7 @@ describe('pdsProviderFromApi', () => {
     expect(result).toEqual({
       name: 'blacksky',
       profileUrl: 'https://blacksky.app/profile/alice.blacksky.app',
+      host: 'pds.blacksky.app',
     });
   });
 
@@ -89,6 +91,7 @@ describe('pdsProviderFromApi', () => {
     expect(result).toEqual({
       name: 'eurosky',
       profileUrl: 'https://eurosky.tech/profile/bob.eurosky.social',
+      host: 'pds.eurosky.social',
     });
   });
 
@@ -102,7 +105,7 @@ describe('pdsProviderFromApi', () => {
 
   it('returns icon-only provider for selfhosted', () => {
     const result = pdsProviderFromApi({ name: 'selfhosted', host: 'pds.alice.dev' }, 'alice.dev');
-    expect(result).toEqual({ name: 'selfhosted', profileUrl: '' });
+    expect(result).toEqual({ name: 'selfhosted', profileUrl: '', host: 'pds.alice.dev' });
   });
 
   it('returns icon-only provider for selfhosted-social', () => {
@@ -110,7 +113,11 @@ describe('pdsProviderFromApi', () => {
       { name: 'selfhosted-social', host: 'pds.selfhosted.social' },
       'user.selfhosted.social',
     );
-    expect(result).toEqual({ name: 'selfhosted-social', profileUrl: '' });
+    expect(result).toEqual({
+      name: 'selfhosted-social',
+      profileUrl: '',
+      host: 'pds.selfhosted.social',
+    });
   });
 
   it('returns null for truly unknown provider name', () => {
@@ -128,7 +135,11 @@ describe('pdsProviderFromApi ?? detectPdsProvider fallback', () => {
     );
     const handleResult = detectPdsProvider('pfrazee.com');
     const result = apiResult ?? handleResult;
-    expect(result).toEqual({ name: 'bluesky', profileUrl: 'https://bsky.app/profile/pfrazee.com' });
+    expect(result).toEqual({
+      name: 'bluesky',
+      profileUrl: 'https://bsky.app/profile/pfrazee.com',
+      host: 'morel.us-east.host.bsky.network',
+    });
     expect(handleResult).toBeNull(); // handle detection would miss this
   });
 
