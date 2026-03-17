@@ -11,11 +11,9 @@ const PDS_PROVIDERS: { suffix: string; name: string; profileBase: string }[] = [
   { suffix: '.eurosky.social', name: 'eurosky', profileBase: 'https://eurosky.tech/profile/' },
 ];
 
-const PROVIDER_PROFILE_BASES: Record<string, string> = {
-  bluesky: 'https://bsky.app/profile/',
-  blacksky: 'https://blacksky.app/profile/',
-  eurosky: 'https://eurosky.tech/profile/',
-};
+const PROVIDER_PROFILE_BASES = Object.fromEntries(
+  PDS_PROVIDERS.map((p) => [p.name, p.profileBase]),
+);
 
 export function pdsProviderFromApi(
   apiProvider: PdsProviderInfo | null | undefined,
