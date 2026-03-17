@@ -1,0 +1,63 @@
+name: E2E Nightly (all viewports)
+
+on:
+  schedule:
+    - cron: '0 3 * * *' # 03:00 UTC daily
+  workflow_dispatch: # manual trigger
+
+jobs:
+  e2e-nightly:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 25
+
+      - name: Install pnpm
+        run: corepack enable && corepack prepare pnpm@10 --activate
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps chromium webkit
+
+      - name: Build application
+        run: pnpm build
+
+      - name: Run E2E tests (all 5 viewports)
+        run: QA_SCREENSHOTS=1 E2E_NIGHTLY=1 pnpm exec playwright test --grep-invert "Visual regression"
+        env:
+          PLAYWRIGHT_BASE_URL: http://localhost:3000
+
+      - name: Run visual regression (all viewports)
+        run: E2E_NIGHTLY=1 pnpm exec playwright test e2e/visual-regression.spec.ts --update-snapshots --reporter=line
+        env:
+          PLAYWRIGHT_BASE_URL: http://localhost:3000
+
+      - name: Upload test report
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: nightly-playwright-report
+          path: e2e/playwright-report/
+          retention-days: 7
+
+      - name: Upload QA screenshots
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: nightly-qa-screenshots
+          path: e2e/qa-screenshots/
+          retention-days: 7
+
+      - name: Upload test traces
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: nightly-playwright-traces
+          path: e2e/test-results/
+          retention-days: 7
