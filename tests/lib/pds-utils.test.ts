@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { getHandleStem, getDisplayLabel, detectPdsProvider, pdsProviderFromApi } from '@/lib/pds-utils';
+import {
+  getHandleStem,
+  getDisplayLabel,
+  detectPdsProvider,
+  pdsProviderFromApi,
+} from '@/lib/pds-utils';
 
 describe('getHandleStem', () => {
   it('strips .bsky.social suffix', () => {
@@ -55,7 +60,10 @@ describe('getDisplayLabel', () => {
 
 describe('pdsProviderFromApi', () => {
   it('converts bluesky API provider to PdsProvider with profile URL', () => {
-    const result = pdsProviderFromApi({ name: 'bluesky', host: 'morel.us-east.host.bsky.network' }, 'pfrazee.com');
+    const result = pdsProviderFromApi(
+      { name: 'bluesky', host: 'morel.us-east.host.bsky.network' },
+      'pfrazee.com',
+    );
     expect(result).toEqual({
       name: 'bluesky',
       profileUrl: 'https://bsky.app/profile/pfrazee.com',
@@ -63,7 +71,10 @@ describe('pdsProviderFromApi', () => {
   });
 
   it('converts blacksky API provider to PdsProvider', () => {
-    const result = pdsProviderFromApi({ name: 'blacksky', host: 'pds.blacksky.app' }, 'alice.blacksky.app');
+    const result = pdsProviderFromApi(
+      { name: 'blacksky', host: 'pds.blacksky.app' },
+      'alice.blacksky.app',
+    );
     expect(result).toEqual({
       name: 'blacksky',
       profileUrl: 'https://blacksky.app/profile/alice.blacksky.app',
@@ -71,7 +82,10 @@ describe('pdsProviderFromApi', () => {
   });
 
   it('converts eurosky API provider to PdsProvider', () => {
-    const result = pdsProviderFromApi({ name: 'eurosky', host: 'pds.eurosky.social' }, 'bob.eurosky.social');
+    const result = pdsProviderFromApi(
+      { name: 'eurosky', host: 'pds.eurosky.social' },
+      'bob.eurosky.social',
+    );
     expect(result).toEqual({
       name: 'eurosky',
       profileUrl: 'https://eurosky.tech/profile/bob.eurosky.social',
@@ -87,13 +101,18 @@ describe('pdsProviderFromApi', () => {
   });
 
   it('returns null for unknown provider name', () => {
-    expect(pdsProviderFromApi({ name: 'selfhosted', host: 'pds.alice.dev' }, 'alice.dev')).toBeNull();
+    expect(
+      pdsProviderFromApi({ name: 'selfhosted', host: 'pds.alice.dev' }, 'alice.dev'),
+    ).toBeNull();
   });
 });
 
 describe('pdsProviderFromApi ?? detectPdsProvider fallback', () => {
   it('uses API provider when available (custom domain on known PDS)', () => {
-    const apiResult = pdsProviderFromApi({ name: 'bluesky', host: 'morel.us-east.host.bsky.network' }, 'pfrazee.com');
+    const apiResult = pdsProviderFromApi(
+      { name: 'bluesky', host: 'morel.us-east.host.bsky.network' },
+      'pfrazee.com',
+    );
     const handleResult = detectPdsProvider('pfrazee.com');
     const result = apiResult ?? handleResult;
     expect(result).toEqual({ name: 'bluesky', profileUrl: 'https://bsky.app/profile/pfrazee.com' });
@@ -104,7 +123,10 @@ describe('pdsProviderFromApi ?? detectPdsProvider fallback', () => {
     const apiResult = pdsProviderFromApi(null, 'alice.bsky.social');
     const handleResult = detectPdsProvider('alice.bsky.social');
     const result = apiResult ?? handleResult;
-    expect(result).toEqual({ name: 'bluesky', profileUrl: 'https://bsky.app/profile/alice.bsky.social' });
+    expect(result).toEqual({
+      name: 'bluesky',
+      profileUrl: 'https://bsky.app/profile/alice.bsky.social',
+    });
   });
 
   it('returns null when both API and handle detection fail', () => {

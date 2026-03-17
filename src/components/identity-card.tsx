@@ -13,7 +13,13 @@ import { FollowButton } from '@/components/follow-button';
 import { PdsIcon } from '@/components/pds-icon';
 import { ProfileEditDialog } from '@/components/profile-edit-dialog';
 import { useAuth } from '@/components/auth-provider';
-import type { ActiveApp, LocationValue, PdsProviderInfo, TrustStat, VerifiedAccount } from '@/lib/types';
+import type {
+  ActiveApp,
+  LocationValue,
+  PdsProviderInfo,
+  TrustStat,
+  VerifiedAccount,
+} from '@/lib/types';
 import { formatLocation, countryCodeToFlag } from '@/lib/location-utils';
 import { detectPdsProvider, getDisplayLabel, pdsProviderFromApi } from '@/lib/pds-utils';
 import { getAppMeta } from '@/lib/atproto-apps';

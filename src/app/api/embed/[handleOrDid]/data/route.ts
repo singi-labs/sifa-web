@@ -41,7 +41,8 @@ export async function GET(
       }),
     ),
     followersCount: profile.followersCount ?? 0,
-    pdsProvider: pdsProviderFromApi(profile.pdsProvider, profile.handle) ?? detectPdsProvider(profile.handle),
+    pdsProvider:
+      pdsProviderFromApi(profile.pdsProvider, profile.handle) ?? detectPdsProvider(profile.handle),
     activeApps: profile.activeApps ?? [],
     claimed: profile.claimed,
     profileUrl: `https://sifa.id/p/${profile.handle}`,
