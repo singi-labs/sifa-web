@@ -7,6 +7,7 @@ import { toast } from 'sonner';
 import { processLinkedInExport, type ImportPreview } from '@/lib/import/orchestrator';
 import { useAuth } from '@/components/auth-provider';
 import { fetchProfile } from '@/lib/api';
+import { revalidateProfileCache } from '@/app/actions';
 import { UploadStep } from './components/upload-step';
 import { PreviewStep } from './components/preview-step';
 import { ConfirmStep } from './components/confirm-step';
@@ -73,7 +74,9 @@ export default function ImportPage() {
     setStep('confirm');
   }, []);
 
-  const handleDone = useCallback(() => {
+  const handleDone = useCallback(async () => {
+    if (session?.handle) await revalidateProfileCache(session.handle);
+    if (session?.did) await revalidateProfileCache(session.did);
     router.push(session?.handle ? `/p/${session.handle}` : '/');
   }, [router, session]);
 
