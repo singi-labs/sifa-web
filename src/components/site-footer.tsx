@@ -65,7 +65,7 @@ export function SiteFooter() {
             </svg>
           </a>
           <a
-            href="https://tangled.org/did:plc:45uheisi25szrjvjurfpritx?tab=repos"
+            href="https://tangled.org/gui.do?tab=repos"
             className="text-muted-foreground hover:text-foreground"
             target="_blank"
             rel="noopener noreferrer"
