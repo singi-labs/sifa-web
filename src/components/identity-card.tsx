@@ -24,6 +24,7 @@ import { formatLocation, countryCodeToFlag } from '@/lib/location-utils';
 import { detectPdsProvider, getDisplayLabel, pdsProviderFromApi } from '@/lib/pds-utils';
 import { getAppMeta } from '@/lib/atproto-apps';
 import { formatCompactNumber } from '@/i18n/format';
+import { resolveDisplayFollowers } from '@/lib/follower-utils';
 import { cn } from '@/lib/utils';
 
 const OPEN_TO_LABEL_KEYS: Record<string, string> = {
@@ -48,6 +49,7 @@ interface IdentityCardProps {
   website?: string;
   openTo?: string[];
   followersCount?: number;
+  atprotoFollowersCount?: number;
   trustStats?: TrustStat[];
   verifiedAccounts?: VerifiedAccount[];
   activeApps?: ActiveApp[];
@@ -74,6 +76,7 @@ export function IdentityCard({
   website,
   openTo,
   followersCount,
+  atprotoFollowersCount,
   trustStats = [],
   verifiedAccounts = [],
   activeApps = [],
@@ -95,6 +98,7 @@ export function IdentityCard({
   const [copied, setCopied] = useState(false);
   const pdsProvider = pdsProviderFromApi(pdsProviderInfo, handle) ?? detectPdsProvider(handle);
   const label = getDisplayLabel(displayName, handle);
+  const displayFollowers = resolveDisplayFollowers(atprotoFollowersCount, followersCount);
 
   const displayTrustStats =
     trustStats.length > 0
@@ -217,10 +221,10 @@ export function IdentityCard({
           )}
 
           {/* Activity indicators: follower count, PDS provider */}
-          {(followersCount != null && followersCount > 0) || pdsProvider ? (
+          {displayFollowers || pdsProvider ? (
             <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
-              {followersCount != null && followersCount > 0 && (
-                <span>{t('followers', { count: formatCompactNumber(followersCount, 'en') })}</span>
+              {displayFollowers && (
+                <span>{t('followers', { count: formatCompactNumber(displayFollowers, 'en') })}</span>
               )}
               {pdsProvider && (
                 <span className="inline-flex items-center gap-1">

@@ -263,6 +263,30 @@ describe('IdentityCard (embed variant)', () => {
     expect(screen.queryByText(/follower/)).toBeNull();
   });
 
+  it('prefers atprotoFollowersCount over followersCount', () => {
+    render(
+      <IdentityCard
+        {...baseProps}
+        variant="embed"
+        followersCount={5}
+        atprotoFollowersCount={9999}
+      />,
+    );
+    expect(screen.getByText(/followers/)).toBeDefined();
+  });
+
+  it('falls back to followersCount when atprotoFollowersCount is zero', () => {
+    render(
+      <IdentityCard
+        {...baseProps}
+        variant="embed"
+        followersCount={100}
+        atprotoFollowersCount={0}
+      />,
+    );
+    expect(screen.getByText(/followers/)).toBeDefined();
+  });
+
   it('shows PDS provider label for bsky.social handles', () => {
     render(<IdentityCard {...baseProps} variant="embed" />);
     // Activity row with PDS provider info is rendered (next-intl mock returns key for parameterized strings)

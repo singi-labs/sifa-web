@@ -41,6 +41,7 @@ export async function GET(
       }),
     ),
     followersCount: profile.followersCount ?? 0,
+    atprotoFollowersCount: profile.atprotoFollowersCount ?? 0,
     pdsProvider:
       pdsProviderFromApi(profile.pdsProvider, profile.handle) ?? detectPdsProvider(profile.handle),
     activeApps: profile.activeApps ?? [],
