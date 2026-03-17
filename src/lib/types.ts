@@ -203,6 +203,7 @@ export interface Profile {
   followersCount: number;
   followingCount: number;
   connectionsCount: number;
+  atprotoFollowersCount?: number;
 
   // Professional history
   positions: ProfilePosition[];

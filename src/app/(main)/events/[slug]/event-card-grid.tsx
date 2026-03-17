@@ -31,6 +31,7 @@ export interface EventEntry {
     website?: string;
     openTo?: string[];
     followersCount?: number;
+    atprotoFollowersCount?: number;
     trustStats?: TrustStat[];
     verifiedAccounts?: VerifiedAccount[];
     activeApps?: ActiveApp[];
@@ -175,6 +176,7 @@ export function EventCardGrid({ entries, speakerCount, attendeeCount }: EventCar
                 website={profile.website}
                 openTo={profile.openTo}
                 followersCount={profile.followersCount}
+                atprotoFollowersCount={profile.atprotoFollowersCount}
                 trustStats={profile.trustStats}
                 verifiedAccounts={profile.verifiedAccounts}
                 activeApps={profile.activeApps}

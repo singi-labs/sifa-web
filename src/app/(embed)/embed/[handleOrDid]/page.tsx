@@ -52,6 +52,7 @@ export default async function EmbedPage({ params }: EmbedPageProps) {
         website={profile.website}
         openTo={profile.openTo}
         followersCount={profile.followersCount}
+        atprotoFollowersCount={profile.atprotoFollowersCount}
         trustStats={profile.trustStats}
         verifiedAccounts={profile.verifiedAccounts}
         activeApps={profile.activeApps}

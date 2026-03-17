@@ -125,6 +125,37 @@ describe('embed.js', function () {
     expect(html).toContain('app-badge');
   });
 
+  it('prefers atprotoFollowersCount over followersCount', async function () {
+    const script = document.createElement('script');
+    script.setAttribute('src', 'https://sifa.id/embed.js');
+    script.setAttribute('data-did', 'did:plc:test');
+    document.body.appendChild(script);
+
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: true,
+      json: function () {
+        return Promise.resolve({
+          did: 'did:plc:test',
+          handle: 'test.bsky.social',
+          displayName: 'Test',
+          profileUrl: 'https://sifa.id/p/test.bsky.social',
+          trustStats: [],
+          verifiedAccounts: [],
+          openTo: [],
+          followersCount: 5,
+          atprotoFollowersCount: 5678,
+          claimed: true,
+        });
+      },
+    });
+
+    await initSifaEmbeds();
+
+    const html = document.querySelector('.sifa-embed')?.shadowRoot?.innerHTML ?? '';
+    expect(html).toContain('5.7K followers');
+    expect(html).not.toContain('5 followers');
+  });
+
   it('renders open-to pills', async function () {
     const script = document.createElement('script');
     script.setAttribute('src', 'https://sifa.id/embed.js');
