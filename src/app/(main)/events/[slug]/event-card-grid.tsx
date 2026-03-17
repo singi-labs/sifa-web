@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { IdentityCard } from '@/components/identity-card';
 import { Badge } from '@/components/ui/badge';
+import { resolveDisplayFollowers } from '@/lib/follower-utils';
 import type {
   ActiveApp,
   LocationValue,
@@ -57,8 +58,11 @@ interface EventCardGridProps {
   attendeeCount: number;
 }
 
+type SortOption = 'default' | 'followers';
+
 export function EventCardGrid({ entries, speakerCount, attendeeCount }: EventCardGridProps) {
   const [activeFilters, setActiveFilters] = useState<Set<FilterGroup>>(new Set());
+  const [sortBy, setSortBy] = useState<SortOption>('default');
 
   const groupCounts = new Map<FilterGroup, number>();
   for (const entry of entries) {
@@ -83,6 +87,14 @@ export function EventCardGrid({ entries, speakerCount, attendeeCount }: EventCar
 
   const filtered =
     activeFilters.size === 0 ? entries : entries.filter((e) => activeFilters.has(e.group));
+
+  const sorted = sortBy === 'followers'
+    ? [...filtered].sort((a, b) => {
+        const aCount = resolveDisplayFollowers(a.profile.atprotoFollowersCount, a.profile.followersCount) ?? 0;
+        const bCount = resolveDisplayFollowers(b.profile.atprotoFollowersCount, b.profile.followersCount) ?? 0;
+        return bCount - aCount;
+      })
+    : filtered;
 
   return (
     <>
@@ -133,16 +145,36 @@ export function EventCardGrid({ entries, speakerCount, attendeeCount }: EventCar
         )}
       </div>
 
-      {/* Showing count when filtered */}
-      {activeFilters.size > 0 && (
-        <p className="mb-4 text-center text-sm text-muted-foreground">
-          Showing {filtered.length} of {entries.length}
-        </p>
-      )}
+      {/* Sort + showing count */}
+      <div className="mb-4 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
+        <span className="inline-flex items-center gap-1.5">
+          Sort:
+          <button
+            type="button"
+            onClick={() => setSortBy('default')}
+            className={`underline-offset-4 ${sortBy === 'default' ? 'font-medium text-foreground' : 'hover:text-foreground hover:underline'}`}
+          >
+            Default
+          </button>
+          <span aria-hidden="true">|</span>
+          <button
+            type="button"
+            onClick={() => setSortBy('followers')}
+            className={`underline-offset-4 ${sortBy === 'followers' ? 'font-medium text-foreground' : 'hover:text-foreground hover:underline'}`}
+          >
+            Followers
+          </button>
+        </span>
+        {activeFilters.size > 0 && (
+          <span>
+            Showing {filtered.length} of {entries.length}
+          </span>
+        )}
+      </div>
 
       {/* Card grid */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {filtered.map(({ profile, badge }) => {
+        {sorted.map(({ profile, badge }) => {
           const location: LocationValue | null = profile.locationCountry
             ? {
                 country: profile.locationCountry,
