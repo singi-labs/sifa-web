@@ -178,7 +178,7 @@ export function EventCardGrid({ entries, speakerCount, attendeeCount }: EventCar
         <span>
           <strong className="text-foreground">{attendeeCount}</strong>{' '}
           <abbr title="RSVPs via Smoke Signal" className="no-underline">
-            attendees
+            RSVPed attendees
           </abbr>
         </span>
         <span>
