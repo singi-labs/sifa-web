@@ -8,6 +8,7 @@ import { IdentityCard } from '@/components/identity-card';
 import { event, SPEAKER_TYPE_LABELS } from '@/data/events/atmosphereconf-2026';
 import type { LocationValue, ProfilePosition } from '@/lib/types';
 
+export const dynamic = 'force-static';
 export const revalidate = 3600;
 
 export function generateStaticParams() {
