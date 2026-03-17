@@ -100,9 +100,22 @@ describe('pdsProviderFromApi', () => {
     expect(pdsProviderFromApi(undefined, 'user.bsky.social')).toBeNull();
   });
 
-  it('returns null for unknown provider name', () => {
+  it('returns icon-only provider for selfhosted', () => {
+    const result = pdsProviderFromApi({ name: 'selfhosted', host: 'pds.alice.dev' }, 'alice.dev');
+    expect(result).toEqual({ name: 'selfhosted', profileUrl: '' });
+  });
+
+  it('returns icon-only provider for selfhosted-social', () => {
+    const result = pdsProviderFromApi(
+      { name: 'selfhosted-social', host: 'pds.selfhosted.social' },
+      'user.selfhosted.social',
+    );
+    expect(result).toEqual({ name: 'selfhosted-social', profileUrl: '' });
+  });
+
+  it('returns null for truly unknown provider name', () => {
     expect(
-      pdsProviderFromApi({ name: 'selfhosted', host: 'pds.alice.dev' }, 'alice.dev'),
+      pdsProviderFromApi({ name: 'nonexistent-provider', host: 'pds.example.com' }, 'user.com'),
     ).toBeNull();
   });
 });

@@ -9,17 +9,23 @@ const PDS_PROVIDERS: { suffix: string; name: string; profileBase: string }[] = [
   { suffix: '.bsky.social', name: 'bluesky', profileBase: 'https://bsky.app/profile/' },
   { suffix: '.blacksky.app', name: 'blacksky', profileBase: 'https://blacksky.app/profile/' },
   { suffix: '.eurosky.social', name: 'eurosky', profileBase: 'https://eurosky.tech/profile/' },
+  { suffix: '.northsky.social', name: 'northsky', profileBase: 'https://northsky.social/profile/' },
 ];
 
 const PROVIDER_PROFILE_BASES = Object.fromEntries(
   PDS_PROVIDERS.map((p) => [p.name, p.profileBase]),
 );
 
+const ICON_ONLY_PROVIDERS = new Set(['selfhosted-social', 'selfhosted']);
+
 export function pdsProviderFromApi(
   apiProvider: PdsProviderInfo | null | undefined,
   handle: string,
 ): PdsProvider | null {
   if (!apiProvider) return null;
+  if (ICON_ONLY_PROVIDERS.has(apiProvider.name)) {
+    return { name: apiProvider.name, profileUrl: '' };
+  }
   const profileBase = PROVIDER_PROFILE_BASES[apiProvider.name];
   if (!profileBase) return null;
   return { name: apiProvider.name, profileUrl: `${profileBase}${handle}` };
