@@ -1,6 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 
 const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? 'http://localhost:3000';
+const isNightly = process.env.E2E_NIGHTLY === '1';
 
 export default defineConfig({
   testDir: './e2e',
@@ -30,6 +31,7 @@ export default defineConfig({
   },
 
   projects: [
+    // CI baseline: 3 viewports (desktop, mobile, tablet)
     {
       name: 'desktop-chrome',
       use: { ...devices['Desktop Chrome'] },
@@ -39,17 +41,22 @@ export default defineConfig({
       use: { ...devices['iPhone 14'] },
     },
     {
-      name: 'mobile-chrome',
-      use: { ...devices['Pixel 7'] },
-    },
-    {
-      name: 'mobile-small',
-      use: { ...devices['iPhone SE'] },
-    },
-    {
       name: 'tablet',
       use: { ...devices['iPad Mini'] },
     },
+    // Nightly only: additional mobile viewports
+    ...(isNightly
+      ? [
+          {
+            name: 'mobile-chrome',
+            use: { ...devices['Pixel 7'] },
+          },
+          {
+            name: 'mobile-small',
+            use: { ...devices['iPhone SE'] },
+          },
+        ]
+      : []),
   ],
 
   webServer: {
