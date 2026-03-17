@@ -1,0 +1,45 @@
+import { test as base } from './base';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const AUTH_DIR = path.join(__dirname, '..', '.auth');
+
+/**
+ * Authentication fixture for Sifa E2E tests.
+ *
+ * Currently provides an unauthenticated base. When OAuth test accounts are
+ * configured, implement the login flow in the workerStorageState fixture.
+ */
+
+export const test = base.extend<{}, { workerStorageState: string }>({
+  storageState: ({ workerStorageState }, use) => use(workerStorageState),
+
+  workerStorageState: [
+    async ({ browser }, use) => {
+      if (process.env.PLAYWRIGHT_TEST_USER_HANDLE) {
+        throw new Error(
+          'Authenticated E2E tests are not yet implemented. ' +
+            'Remove PLAYWRIGHT_TEST_USER_HANDLE or implement the OAuth login flow in e2e/fixtures/auth.ts.',
+        );
+      }
+
+      const id = test.info().parallelIndex;
+      const fileName = path.resolve(AUTH_DIR, `${id}.json`);
+
+      if (fs.existsSync(fileName)) {
+        await use(fileName);
+        return;
+      }
+
+      fs.mkdirSync(AUTH_DIR, { recursive: true });
+
+      const context = await browser.newContext({ storageState: undefined });
+      await context.storageState({ path: fileName });
+      await context.close();
+      await use(fileName);
+    },
+    { scope: 'worker' },
+  ],
+});
+
+export { expect } from './base';

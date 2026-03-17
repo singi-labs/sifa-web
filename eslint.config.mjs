@@ -11,6 +11,13 @@ const eslintConfig = defineConfig([
       ...jsxA11y.configs.strict.rules,
     },
   },
+  {
+    files: ['e2e/**/*.ts'],
+    rules: {
+      'react-hooks/rules-of-hooks': 'off',
+      '@typescript-eslint/no-empty-object-type': 'off',
+    },
+  },
   globalIgnores(['.next/**', 'out/**', 'build/**', 'next-env.d.ts']),
 ]);
 
