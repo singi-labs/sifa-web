@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { fetchProfile } from '@/lib/api';
 import { sanitize } from '@/lib/sanitize';
-import { detectPdsProvider } from '@/lib/pds-utils';
+import { detectPdsProvider, pdsProviderFromApi } from '@/lib/pds-utils';
 import type { LocationValue } from '@/lib/types';
 
 export async function GET(
@@ -41,7 +41,7 @@ export async function GET(
       }),
     ),
     followersCount: profile.followersCount ?? 0,
-    pdsProvider: detectPdsProvider(profile.handle),
+    pdsProvider: pdsProviderFromApi(profile.pdsProvider, profile.handle) ?? detectPdsProvider(profile.handle),
     activeApps: profile.activeApps ?? [],
     claimed: profile.claimed,
     profileUrl: `https://sifa.id/p/${profile.handle}`,

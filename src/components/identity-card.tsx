@@ -13,9 +13,9 @@ import { FollowButton } from '@/components/follow-button';
 import { PdsIcon } from '@/components/pds-icon';
 import { ProfileEditDialog } from '@/components/profile-edit-dialog';
 import { useAuth } from '@/components/auth-provider';
-import type { ActiveApp, LocationValue, TrustStat, VerifiedAccount } from '@/lib/types';
+import type { ActiveApp, LocationValue, PdsProviderInfo, TrustStat, VerifiedAccount } from '@/lib/types';
 import { formatLocation, countryCodeToFlag } from '@/lib/location-utils';
-import { detectPdsProvider, getDisplayLabel } from '@/lib/pds-utils';
+import { detectPdsProvider, getDisplayLabel, pdsProviderFromApi } from '@/lib/pds-utils';
 import { getAppMeta } from '@/lib/atproto-apps';
 import { formatCompactNumber } from '@/i18n/format';
 import { cn } from '@/lib/utils';
@@ -45,6 +45,7 @@ interface IdentityCardProps {
   trustStats?: TrustStat[];
   verifiedAccounts?: VerifiedAccount[];
   activeApps?: ActiveApp[];
+  pdsProviderInfo?: PdsProviderInfo | null;
   claimed: boolean;
   isOwnProfile?: boolean;
   isFollowing?: boolean;
@@ -70,6 +71,7 @@ export function IdentityCard({
   trustStats = [],
   verifiedAccounts = [],
   activeApps = [],
+  pdsProviderInfo,
   claimed,
   isOwnProfile,
   isFollowing,
@@ -85,7 +87,7 @@ export function IdentityCard({
   const isOwn = isOwnProfile || Boolean(session?.did && session.did === did);
   const [editing, setEditing] = useState(false);
   const [copied, setCopied] = useState(false);
-  const pdsProvider = detectPdsProvider(handle);
+  const pdsProvider = pdsProviderFromApi(pdsProviderInfo, handle) ?? detectPdsProvider(handle);
   const label = getDisplayLabel(displayName, handle);
 
   const displayTrustStats =
