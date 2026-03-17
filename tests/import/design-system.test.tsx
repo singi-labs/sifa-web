@@ -36,6 +36,9 @@ vi.mock('@phosphor-icons/react', () => ({
   X: (props: Record<string, unknown>) => (
     <span data-testid="x-icon" className={props.className as string} />
   ),
+  Eye: (props: Record<string, unknown>) => (
+    <span data-testid="eye-icon" className={props.className as string} />
+  ),
   CheckCircle: (props: Record<string, unknown>) => (
     <span data-testid="check-circle-icon" className={props.className as string} />
   ),

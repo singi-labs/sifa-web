@@ -9,6 +9,7 @@ import { PreviewStep } from '@/app/(main)/import/components/preview-step';
 vi.mock('@phosphor-icons/react', () => ({
   Info: (props: Record<string, unknown>) => <span data-testid="icon-info" {...props} />,
   X: (props: Record<string, unknown>) => <span data-testid="icon-x" {...props} />,
+  Eye: (props: Record<string, unknown>) => <span data-testid="icon-eye" {...props} />,
 }));
 
 const fullPreview: ImportPreview = {
