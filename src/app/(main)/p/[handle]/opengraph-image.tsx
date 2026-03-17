@@ -175,6 +175,7 @@ export default async function ProfileOgImage({ params }: { params: Promise<{ han
               flexGrow: 1,
               paddingTop: 20,
               paddingBottom: 20,
+              paddingRight: 20,
             }}
           >
             {/* Display name */}
