@@ -59,11 +59,15 @@
     "eslint-plugin-jsx-a11y": "6.10.2",
     "husky": "9.1.7",
     "jsdom": "28.1.0",
+    "lint-staged": "16.4.0",
     "prettier": "3.5.3",
     "tailwindcss": "4.2.1",
     "typescript": "5.9.3",
     "vitest": "4.0.18",
     "vitest-axe": "1.0.0-pre.5"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,json,css,md}": "prettier --write"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
