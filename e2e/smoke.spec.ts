@@ -14,7 +14,7 @@ function isExpectedConsoleError(message: string): boolean {
 }
 
 test.describe('Smoke tests', () => {
-  test('homepage loads and renders key elements', async ({ page, axeScan }) => {
+  test('homepage loads and renders key elements', async ({ page, axeScan, qaScreenshot }) => {
     const nav = new NavigationPage(page);
     await nav.goto('/');
     await nav.waitForPageLoad();
@@ -42,6 +42,8 @@ test.describe('Smoke tests', () => {
       expect(naturalWidth, `Image ${src} should load`).toBeGreaterThan(0);
     }
 
+    await qaScreenshot(page, 'homepage');
+
     // Accessibility scan -- log violations but don't fail on pre-existing issues.
     // TODO: fix color-contrast violations (see #213) and switch to strict assertion.
     const a11y = await axeScan(page);
@@ -49,7 +51,7 @@ test.describe('Smoke tests', () => {
     expect(critical, 'Critical accessibility violations found').toEqual([]);
   });
 
-  test('static pages render without errors', async ({ page }) => {
+  test('static pages render without errors', async ({ page, qaScreenshot }) => {
     const staticPages = ['/about', '/privacy', '/terms'];
 
     const errors: string[] = [];
@@ -67,6 +69,8 @@ test.describe('Smoke tests', () => {
 
       const body = page.locator('body');
       await expect(body).not.toBeEmpty();
+
+      await qaScreenshot(page, pagePath.slice(1));
 
       const realErrors = errors.filter((e) => !isExpectedConsoleError(e));
       expect(realErrors, `${pagePath} should have no console errors`).toHaveLength(0);
