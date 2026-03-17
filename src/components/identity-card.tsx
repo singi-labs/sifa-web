@@ -122,14 +122,6 @@ export function IdentityCard({
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-1.5">
                 <h1 className="truncate text-base font-bold">{label}</h1>
-                {badge && (
-                  <Badge
-                    variant="secondary"
-                    className="shrink-0 px-1.5 py-0 text-[10px] font-medium"
-                  >
-                    {badge}
-                  </Badge>
-                )}
                 {verifiedAccounts.length > 0 && (
                   <CheckCircle
                     className="h-4 w-4 shrink-0 text-primary"
@@ -138,6 +130,14 @@ export function IdentityCard({
                   />
                 )}
               </div>
+              {badge && (
+                <Badge
+                  variant="secondary"
+                  className="mt-0.5 w-fit px-1.5 py-0 text-[10px] font-medium"
+                >
+                  {badge}
+                </Badge>
+              )}
               <div className="flex items-center gap-2">
                 {pdsProvider ? (
                   <a
