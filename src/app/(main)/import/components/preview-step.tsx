@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Info } from '@phosphor-icons/react';
+import { Info, Eye } from '@phosphor-icons/react';
 import { PositionsTable } from './positions-table';
 import { EducationTable } from './education-table';
 import { SkillsList } from './skills-list';
@@ -164,7 +164,7 @@ export function PreviewStep({ preview, existingData, onConfirm, onBack }: Previe
         )}
 
         <Tabs defaultValue={tabs[0]?.key ?? 'positions'}>
-          <TabsList className="flex flex-wrap h-auto gap-1">
+          <TabsList className="flex flex-wrap !h-auto gap-1 mb-3">
             {tabs.map((tab) => (
               <TabsTrigger key={tab.key} value={tab.key}>
                 {tab.label}{' '}
@@ -270,7 +270,19 @@ export function PreviewStep({ preview, existingData, onConfirm, onBack }: Previe
           </TabsContent>
         </Tabs>
 
-        <div className="mt-6 flex items-center justify-between">
+        <div
+          className="mt-6 flex gap-3 rounded-lg border border-amber-200 bg-amber-50 p-4 dark:border-amber-800 dark:bg-amber-950/30"
+          role="note"
+        >
+          <Eye
+            className="mt-0.5 size-5 shrink-0 text-amber-600 dark:text-amber-400"
+            weight="fill"
+            aria-hidden="true"
+          />
+          <p className="text-sm text-amber-800 dark:text-amber-300">{t('publicDataNotice')}</p>
+        </div>
+
+        <div className="mt-4 flex items-center justify-between">
           <Button variant="outline" onClick={onBack}>
             {t('back')}
           </Button>
