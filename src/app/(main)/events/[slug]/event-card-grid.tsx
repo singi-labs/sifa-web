@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { IdentityCard } from '@/components/identity-card';
 import { Badge } from '@/components/ui/badge';
@@ -58,11 +58,23 @@ interface EventCardGridProps {
   attendeeCount: number;
 }
 
-type SortOption = 'default' | 'followers';
+type SortOption = 'random' | 'followers';
+
+function shuffle<T>(arr: readonly T[]): T[] {
+  const copy = [...arr];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j]!, copy[i]!];
+  }
+  return copy;
+}
 
 export function EventCardGrid({ entries, speakerCount, attendeeCount }: EventCardGridProps) {
   const [activeFilters, setActiveFilters] = useState<Set<FilterGroup>>(new Set());
-  const [sortBy, setSortBy] = useState<SortOption>('default');
+  const [sortBy, setSortBy] = useState<SortOption>('random');
+
+  // Shuffle once on mount so the order is stable during the session
+  const shuffled = useMemo(() => shuffle(entries), [entries]);
 
   const groupCounts = new Map<FilterGroup, number>();
   for (const entry of entries) {
@@ -85,8 +97,9 @@ export function EventCardGrid({ entries, speakerCount, attendeeCount }: EventCar
     });
   };
 
+  const base = sortBy === 'random' ? shuffled : entries;
   const filtered =
-    activeFilters.size === 0 ? entries : entries.filter((e) => activeFilters.has(e.group));
+    activeFilters.size === 0 ? base : base.filter((e) => activeFilters.has(e.group));
 
   const sorted =
     sortBy === 'followers'
@@ -156,10 +169,10 @@ export function EventCardGrid({ entries, speakerCount, attendeeCount }: EventCar
           Sort:
           <button
             type="button"
-            onClick={() => setSortBy('default')}
-            className={`underline-offset-4 ${sortBy === 'default' ? 'font-medium text-foreground' : 'hover:text-foreground hover:underline'}`}
+            onClick={() => setSortBy('random')}
+            className={`underline-offset-4 ${sortBy === 'random' ? 'font-medium text-foreground' : 'hover:text-foreground hover:underline'}`}
           >
-            Default
+            Random
           </button>
           <span aria-hidden="true">|</span>
           <button
