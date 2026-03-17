@@ -12,19 +12,23 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 25
-          cache: npm
 
-      - run: npm ci
+      - name: Install pnpm
+        run: corepack enable && corepack prepare pnpm@10 --activate
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
       - name: Lint
-        run: npm run lint
+        run: pnpm lint
       - name: Type Check
-        run: npm run typecheck
+        run: pnpm typecheck
       - name: Format Check
-        run: npm run format:check
+        run: pnpm format:check
       - name: Test
-        run: npm test
+        run: pnpm test
       - name: Build
-        run: npm run build
+        run: pnpm build
 
   security:
     runs-on: ubuntu-latest
