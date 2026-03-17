@@ -124,14 +124,16 @@
     // Activity row: follower count + PDS provider
     // Prefer AT Protocol follower count over Sifa-internal count
     // (mirrors src/lib/follower-utils.ts resolveDisplayFollowers)
-    var displayFollowers =
-      data.atprotoFollowersCount != null && data.atprotoFollowersCount > 0
-        ? data.atprotoFollowersCount
-        : data.followersCount;
+    var isAtproto = data.atprotoFollowersCount != null && data.atprotoFollowersCount > 0;
+    var displayFollowers = isAtproto
+      ? data.atprotoFollowersCount
+      : data.followersCount;
     var activityHtml = '';
     var activityItems = '';
     if (displayFollowers && displayFollowers > 0) {
-      activityItems += '<span>' + escapeHtml(formatCompact(displayFollowers)) + ' followers</span>';
+      var followerSuffix = isAtproto ? ' followers on Bluesky' : ' followers';
+      activityItems +=
+        '<span>' + escapeHtml(formatCompact(displayFollowers)) + followerSuffix + '</span>';
     }
     if (data.pdsProvider) {
       activityItems += '<span>on ' + escapeHtml(data.pdsProvider.name) + '</span>';

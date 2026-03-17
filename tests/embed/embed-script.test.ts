@@ -152,7 +152,7 @@ describe('embed.js', function () {
     await initSifaEmbeds();
 
     const html = document.querySelector('.sifa-embed')?.shadowRoot?.innerHTML ?? '';
-    expect(html).toContain('5.7K followers');
+    expect(html).toContain('5.7K followers on Bluesky');
     expect(html).not.toContain('5 followers');
   });
 

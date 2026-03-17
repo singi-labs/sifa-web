@@ -92,9 +92,9 @@ export function EventCardGrid({ entries, speakerCount, attendeeCount }: EventCar
     sortBy === 'followers'
       ? [...filtered].sort((a, b) => {
           const aCount =
-            resolveDisplayFollowers(a.profile.atprotoFollowersCount, a.profile.followersCount) ?? 0;
+            resolveDisplayFollowers(a.profile.atprotoFollowersCount, a.profile.followersCount)?.count ?? 0;
           const bCount =
-            resolveDisplayFollowers(b.profile.atprotoFollowersCount, b.profile.followersCount) ?? 0;
+            resolveDisplayFollowers(b.profile.atprotoFollowersCount, b.profile.followersCount)?.count ?? 0;
           return bCount - aCount;
         })
       : filtered;
