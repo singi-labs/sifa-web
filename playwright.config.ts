@@ -1,4 +1,10 @@
 import { defineConfig, devices } from '@playwright/test';
+import { config as loadDotenv } from 'dotenv';
+
+// Load .env.local so E2E_SESSION_COOKIE and other local-only vars are available.
+// Playwright auto-loads .env but not .env.local (a Next.js convention).
+// { override: false } means shell env vars take precedence.
+loadDotenv({ path: '.env.local', override: false });
 
 const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? 'http://localhost:3000';
 const isNightly = process.env.E2E_NIGHTLY === '1';
