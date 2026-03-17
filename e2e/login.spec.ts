@@ -1,5 +1,7 @@
 import { test, expect } from './fixtures/base';
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3100';
+
 test.describe('Login page', () => {
   test('renders login form with handle input', async ({ page, qaScreenshot }) => {
     await page.goto('/login');
@@ -41,5 +43,31 @@ test.describe('Login page', () => {
     const accountLinks = page.locator('a[target="_blank"]');
     const count = await accountLinks.count();
     expect(count, 'Should have external account creation links').toBeGreaterThanOrEqual(3);
+  });
+});
+
+test.describe('OAuth backend health', () => {
+  test('OAuth metadata endpoint returns valid configuration', async ({ request }) => {
+    // If OAuth keys are missing, this endpoint won't be registered (404)
+    // or the API won't start at all (after the startup guard fix).
+    const res = await request.get(`${API_URL}/oauth/client-metadata.json`);
+    expect(res.status(), 'OAuth metadata should be accessible').toBe(200);
+
+    const metadata = await res.json();
+    expect(metadata.client_id).toContain('/oauth/client-metadata.json');
+    expect(metadata.token_endpoint_auth_method).toBe('private_key_jwt');
+    expect(metadata.dpop_bound_access_tokens).toBe(true);
+    expect(metadata.redirect_uris).toBeDefined();
+    expect(metadata.redirect_uris.length).toBeGreaterThan(0);
+  });
+
+  test('API readiness endpoint confirms all backends', async ({ request }) => {
+    const res = await request.get(`${API_URL}/api/health/ready`);
+    expect(res.status(), 'API readiness check should pass').toBe(200);
+
+    const data = await res.json();
+    expect(data.status).toBe('ok');
+    expect(data.components.postgresql.status).toBe('ok');
+    expect(data.components.valkey.status).toBe('ok');
   });
 });
