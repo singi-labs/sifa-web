@@ -100,6 +100,7 @@ export default async function ProfilePage({
           openTo={profile.openTo}
           trustStats={profile.trustStats}
           verifiedAccounts={profile.verifiedAccounts}
+          pdsProviderInfo={profile.pdsProvider}
           claimed={profile.claimed}
           isOwnProfile={profile.isOwnProfile}
           isFollowing={profile.isFollowing}

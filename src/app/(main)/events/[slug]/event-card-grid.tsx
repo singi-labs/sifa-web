@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import type {
   ActiveApp,
   LocationValue,
+  PdsProviderInfo,
   ProfilePosition,
   TrustStat,
   VerifiedAccount,
@@ -33,6 +34,7 @@ export interface EventEntry {
     trustStats?: TrustStat[];
     verifiedAccounts?: VerifiedAccount[];
     activeApps?: ActiveApp[];
+    pdsProvider?: PdsProviderInfo | null;
     claimed: boolean;
   };
   badge?: string;
@@ -176,6 +178,7 @@ export function EventCardGrid({ entries, speakerCount, attendeeCount }: EventCar
                 trustStats={profile.trustStats}
                 verifiedAccounts={profile.verifiedAccounts}
                 activeApps={profile.activeApps}
+                pdsProviderInfo={profile.pdsProvider}
                 claimed={profile.claimed}
                 variant="embed"
                 badge={badge}

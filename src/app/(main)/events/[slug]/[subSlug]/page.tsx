@@ -224,6 +224,7 @@ export default async function SideEventPage({ params }: SideEventPageProps) {
                     trustStats={profile.trustStats}
                     verifiedAccounts={profile.verifiedAccounts}
                     activeApps={profile.activeApps}
+                    pdsProviderInfo={profile.pdsProvider}
                     claimed={profile.claimed}
                     variant="embed"
                     badge={badge}

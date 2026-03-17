@@ -165,6 +165,11 @@ export interface FeedItem {
   source: string;
 }
 
+export interface PdsProviderInfo {
+  name: string;
+  host: string;
+}
+
 export interface Profile {
   did: string;
   handle: string;
@@ -182,6 +187,7 @@ export interface Profile {
   location?: LocationValue | null;
   website?: string;
   openTo?: string[];
+  pdsProvider?: PdsProviderInfo | null;
   claimed: boolean;
   isOwnProfile?: boolean;
   isFollowing?: boolean;

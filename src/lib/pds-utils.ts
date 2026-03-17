@@ -1,3 +1,5 @@
+import type { PdsProviderInfo } from './types';
+
 export interface PdsProvider {
   name: string;
   profileUrl: string;
@@ -8,6 +10,20 @@ const PDS_PROVIDERS: { suffix: string; name: string; profileBase: string }[] = [
   { suffix: '.blacksky.app', name: 'blacksky', profileBase: 'https://blacksky.app/profile/' },
   { suffix: '.eurosky.social', name: 'eurosky', profileBase: 'https://eurosky.tech/profile/' },
 ];
+
+const PROVIDER_PROFILE_BASES = Object.fromEntries(
+  PDS_PROVIDERS.map((p) => [p.name, p.profileBase]),
+);
+
+export function pdsProviderFromApi(
+  apiProvider: PdsProviderInfo | null | undefined,
+  handle: string,
+): PdsProvider | null {
+  if (!apiProvider) return null;
+  const profileBase = PROVIDER_PROFILE_BASES[apiProvider.name];
+  if (!profileBase) return null;
+  return { name: apiProvider.name, profileUrl: `${profileBase}${handle}` };
+}
 
 export function getHandleStem(handle: string): string {
   const lower = handle.toLowerCase();

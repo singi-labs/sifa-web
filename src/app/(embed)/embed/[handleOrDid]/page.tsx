@@ -55,6 +55,7 @@ export default async function EmbedPage({ params }: EmbedPageProps) {
         trustStats={profile.trustStats}
         verifiedAccounts={profile.verifiedAccounts}
         activeApps={profile.activeApps}
+        pdsProviderInfo={profile.pdsProvider}
         claimed={profile.claimed}
       />
     </div>
