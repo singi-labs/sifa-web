@@ -1,3 +1,4 @@
+// test: verify E2E screenshot flow (will be reverted after test)
 /**
  * Sanitize raw user input into a valid AT Protocol identifier (handle or DID).
  *
