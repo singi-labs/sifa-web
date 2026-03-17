@@ -12,7 +12,7 @@
     try {
       var url = new URL(src);
       return url.origin;
-    } catch (e) {
+    } catch {
       return 'https://sifa.id';
     }
   }

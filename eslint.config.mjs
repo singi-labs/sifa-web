@@ -9,6 +9,14 @@ const eslintConfig = defineConfig([
   {
     rules: {
       ...jsxA11y.configs.strict.rules,
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+        },
+      ],
     },
   },
   {
@@ -18,7 +26,7 @@ const eslintConfig = defineConfig([
       '@typescript-eslint/no-empty-object-type': 'off',
     },
   },
-  globalIgnores(['.next/**', 'out/**', 'build/**', 'next-env.d.ts']),
+  globalIgnores(['.next/**', '.worktrees/**', 'out/**', 'build/**', 'next-env.d.ts']),
 ]);
 
 export default eslintConfig;

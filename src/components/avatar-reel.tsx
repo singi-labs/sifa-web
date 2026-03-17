@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 interface AvatarReelProps {
   avatars: string[];
   caption: string;
@@ -17,7 +19,7 @@ export function AvatarReel({ avatars, caption }: AvatarReelProps) {
       <div className="relative overflow-hidden" aria-hidden="true">
         <div className="flex animate-marquee gap-3">
           {repeated.map((url, i) => (
-            <img
+            <Image
               key={i}
               src={url}
               alt=""
@@ -25,6 +27,7 @@ export function AvatarReel({ avatars, caption }: AvatarReelProps) {
               height={40}
               className="size-10 shrink-0 rounded-full bg-muted object-cover"
               loading="lazy"
+              unoptimized
             />
           ))}
         </div>

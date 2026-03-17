@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { fetchProfile } from '@/lib/api';
@@ -209,7 +210,7 @@ export default async function EventPage({ params }: EventPageProps) {
           rel="noopener noreferrer"
           className="mt-3 inline-flex h-9 items-center justify-center gap-2 rounded-md border border-border bg-background px-4 text-sm font-medium transition-colors hover:bg-accent hover:text-foreground"
         >
-          <img
+          <Image
             src="/assets/smoke-signal-logo.png"
             alt=""
             width={20}
