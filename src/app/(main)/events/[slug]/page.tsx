@@ -220,24 +220,6 @@ export default async function EventPage({ params }: EventPageProps) {
         </a>
       </div>
 
-      {/* Side events */}
-      {event.sideEvents.length > 0 && (
-        <div className="mt-12">
-          <h2 className="text-xl font-bold">Side Events</h2>
-          <div className="mt-4 grid gap-4 sm:grid-cols-2">
-            {event.sideEvents.map((sideEvent) => (
-              <Link
-                key={sideEvent.slug}
-                href={`/events/${event.slug}/${sideEvent.slug}`}
-                className="rounded-lg border border-border p-4 transition-colors hover:bg-muted/50"
-              >
-                <h3 className="font-semibold">{sideEvent.name}</h3>
-                <p className="mt-1 text-sm text-muted-foreground">{sideEvent.dates}</p>
-              </Link>
-            ))}
-          </div>
-        </div>
-      )}
 
       {/* Footer CTAs */}
       <div className="mt-12 flex flex-col items-center gap-3 border-t border-border pt-8 text-center">
