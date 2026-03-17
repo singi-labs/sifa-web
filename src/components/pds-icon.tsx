@@ -1,9 +1,53 @@
+'use client';
+
+import { useState } from 'react';
+
 interface PdsIconProps {
   provider: string;
+  host?: string;
   className?: string;
 }
 
-export function PdsIcon({ provider, className = 'h-3.5 w-3.5 shrink-0' }: PdsIconProps) {
+function ServerIcon({ className }: { className: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <rect x="2" y="2" width="20" height="8" rx="2" />
+      <rect x="2" y="14" width="20" height="8" rx="2" />
+      <circle cx="6" cy="6" r="1" fill="currentColor" stroke="none" />
+      <circle cx="6" cy="18" r="1" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+function SelfHostedIcon({ host, className }: { host?: string; className: string }) {
+  const [faviconFailed, setFaviconFailed] = useState(false);
+
+  if (!host || faviconFailed) {
+    return <ServerIcon className={className} />;
+  }
+
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={`https://${host}/favicon.ico`}
+      alt=""
+      className={className}
+      aria-hidden="true"
+      onError={() => setFaviconFailed(true)}
+    />
+  );
+}
+
+export function PdsIcon({ provider, host, className = 'h-3.5 w-3.5 shrink-0' }: PdsIconProps) {
   switch (provider) {
     case 'bluesky':
       return (
@@ -25,6 +69,14 @@ export function PdsIcon({ provider, className = 'h-3.5 w-3.5 shrink-0' }: PdsIco
         // eslint-disable-next-line @next/next/no-img-element
         <img src="/eurosky-logo.png" alt="" className={className} aria-hidden="true" />
       );
+    case 'northsky':
+      return (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src="/northsky-logo.png" alt="" className={className} aria-hidden="true" />
+      );
+    case 'selfhosted-social':
+    case 'selfhosted':
+      return <SelfHostedIcon host={host} className={className} />;
     default:
       return null;
   }
