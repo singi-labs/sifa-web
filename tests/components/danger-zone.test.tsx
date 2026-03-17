@@ -40,10 +40,10 @@ const dangerZoneTranslations: Record<string, string> = {
   title: 'Danger Zone',
   resetTitle: 'Reset Profile',
   resetDescription:
-    'Deletes all Sifa profile data (positions, education, skills, and all other sections) from Sifa and your Personal Data Server, then takes you to the import page to start over. Your AT Protocol account, Bluesky profile, posts, follows, and data from other apps are not affected.',
+    'Deletes all Sifa profile data (positions, education, skills, and all other sections) from Sifa and your Personal Data Server, then takes you to the import page to start over. Your Sifa settings, AT Protocol account, Bluesky profile, posts, follows, and data from other apps are not affected.',
   deleteTitle: 'Delete Account',
   deleteDescription:
-    "Removes the same Sifa profile data as Reset Profile, then signs you out. Your AT Protocol account, Bluesky profile, posts, follows, and data from other apps are not affected. To delete your AT Protocol account entirely, visit your PDS provider's settings.",
+    "Removes the same Sifa profile data as Reset Profile, plus your Sifa settings (notifications, content filters, and similar preferences), then signs you out. Your AT Protocol account, Bluesky profile, posts, follows, and data from other apps are not affected. To delete your AT Protocol account entirely, visit your PDS provider's settings.",
   handleConfirmLabel: 'Type your handle to confirm',
   handlePlaceholder: 'your.handle',
   resetButton: 'Reset Profile',
