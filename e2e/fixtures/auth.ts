@@ -1,6 +1,6 @@
 import { test as base } from './base';
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 
 const AUTH_DIR = path.join(__dirname, '..', '.auth');
 
