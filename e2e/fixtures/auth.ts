@@ -11,7 +11,6 @@ const AUTH_DIR = path.join(__dirname, '..', '.auth');
  * configured, implement the login flow in the workerStorageState fixture.
  */
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- Playwright's extend API requires {} for "no test fixtures"
 export const test = base.extend<{}, { workerStorageState: string }>({
   storageState: ({ workerStorageState }, use) => use(workerStorageState),
 
