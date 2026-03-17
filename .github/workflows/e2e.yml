@@ -4,6 +4,17 @@ on:
   push:
     branches: [main]
   pull_request:
+    paths:
+      - 'src/**'
+      - 'e2e/**'
+      - 'public/**'
+      - 'playwright.config.ts'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'next.config.*'
+      - 'tailwind.config.*'
+      - 'tsconfig.json'
+      - '.github/workflows/e2e.yml'
 
 jobs:
   e2e:
