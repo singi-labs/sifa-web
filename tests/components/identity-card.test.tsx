@@ -117,7 +117,7 @@ describe('IdentityCard (default / page variant)', () => {
   });
 
   it('falls back to handle when no display name', () => {
-    const { displayName: _, ...propsWithoutName } = baseProps;
+    const { displayName: _displayName, ...propsWithoutName } = baseProps;
     render(<IdentityCard {...propsWithoutName} />);
     // The h1 should show the handle as fallback
     expect(screen.getByRole('heading', { level: 1 }).textContent).toBe('alice');
