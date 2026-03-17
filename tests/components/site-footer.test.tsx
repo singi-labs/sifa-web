@@ -57,9 +57,7 @@ describe('SiteFooter', () => {
     render(<SiteFooter />);
 
     const tangledLink = screen.getByRole('link', { name: 'Tangled' });
-    expect(tangledLink.getAttribute('href')).toBe(
-      'https://tangled.org/did:plc:45uheisi25szrjvjurfpritx?tab=repos',
-    );
+    expect(tangledLink.getAttribute('href')).toBe('https://tangled.org/gui.do?tab=repos');
     expect(tangledLink.getAttribute('target')).toBe('_blank');
   });
 });
