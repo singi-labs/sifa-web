@@ -125,9 +125,7 @@
     // Prefer AT Protocol follower count over Sifa-internal count
     // (mirrors src/lib/follower-utils.ts resolveDisplayFollowers)
     var isAtproto = data.atprotoFollowersCount != null && data.atprotoFollowersCount > 0;
-    var displayFollowers = isAtproto
-      ? data.atprotoFollowersCount
-      : data.followersCount;
+    var displayFollowers = isAtproto ? data.atprotoFollowersCount : data.followersCount;
     var activityHtml = '';
     var activityItems = '';
     if (displayFollowers && displayFollowers > 0) {
