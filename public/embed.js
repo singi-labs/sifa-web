@@ -124,14 +124,14 @@
     // Activity row: follower count + PDS provider
     // Prefer AT Protocol follower count over Sifa-internal count
     // (mirrors src/lib/follower-utils.ts resolveDisplayFollowers)
-    var displayFollowers = (data.atprotoFollowersCount != null && data.atprotoFollowersCount > 0)
-      ? data.atprotoFollowersCount
-      : data.followersCount;
+    var displayFollowers =
+      data.atprotoFollowersCount != null && data.atprotoFollowersCount > 0
+        ? data.atprotoFollowersCount
+        : data.followersCount;
     var activityHtml = '';
     var activityItems = '';
     if (displayFollowers && displayFollowers > 0) {
-      activityItems +=
-        '<span>' + escapeHtml(formatCompact(displayFollowers)) + ' followers</span>';
+      activityItems += '<span>' + escapeHtml(formatCompact(displayFollowers)) + ' followers</span>';
     }
     if (data.pdsProvider) {
       activityItems += '<span>on ' + escapeHtml(data.pdsProvider.name) + '</span>';
