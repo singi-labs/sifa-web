@@ -9,6 +9,10 @@ import { EventCardGrid, type EventEntry, type FilterGroup } from './event-card-g
 
 export const revalidate = 3600;
 
+export function generateStaticParams() {
+  return [{ slug: event.slug }];
+}
+
 interface EventPageProps {
   params: Promise<{ slug: string }>;
 }
@@ -50,7 +54,7 @@ async function fetchProfileSafe(handle: string) {
 }
 
 async function fetchAllProfiles(handles: string[]) {
-  const concurrency = 10;
+  const concurrency = 25;
   const results: Array<Awaited<ReturnType<typeof fetchProfile>>> = [];
 
   for (let i = 0; i < handles.length; i += concurrency) {
