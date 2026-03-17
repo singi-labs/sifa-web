@@ -40,9 +40,40 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
             cd /opt/sifa
-            docker compose pull
-            docker compose up -d
+            docker compose pull sifa-web
+            docker compose up -d --force-recreate --no-deps sifa-web
             docker image prune -af
-            # Warm ISR cache for heavy pages so the first real visitor gets instant response
-            sleep 5
-            curl -sf -o /dev/null http://localhost:3000/events/atmosphereconf-2026 || true
+
+      - name: Verify deployment health
+        if: env.VPS_HOST != ''
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            # Wait for web container to be reachable
+            for i in $(seq 1 10); do
+              status=$(curl -sf -o /dev/null -w '%{http_code}' http://127.0.0.1:3000/ 2>/dev/null || echo "000")
+              if [ "$status" = "200" ]; then
+                echo "Web healthy after $((i * 3))s"
+                break
+              fi
+              echo "Waiting for web... (attempt $i, status: $status)"
+              sleep 3
+            done
+            if [ "$status" != "200" ]; then
+              echo "FATAL: Web did not become healthy within 30s"
+              exit 1
+            fi
+            # Verify API is reachable from web's perspective
+            api_status=$(curl -sf -o /dev/null -w '%{http_code}' http://127.0.0.1:3100/api/health/ready 2>/dev/null || echo "000")
+            if [ "$api_status" != "200" ]; then
+              echo "WARNING: API readiness check failed (status: $api_status)"
+              exit 1
+            fi
+            echo "API readiness confirmed"
+            # Warm ISR cache for heavy pages
+            curl -sf -o /dev/null http://127.0.0.1:3000/events/atmosphereconf-2026 || true
