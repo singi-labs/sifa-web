@@ -13,6 +13,16 @@ export default defineConfig({
     ? [['html', { outputFolder: './e2e/playwright-report' }], ['github']]
     : [['html', { outputFolder: './e2e/playwright-report', open: 'never' }]],
 
+  snapshotPathTemplate:
+    '{snapshotDir}/{testFileDir}/__snapshots__/{testFileName}/{arg}-{projectName}{ext}',
+
+  expect: {
+    toHaveScreenshot: {
+      maxDiffPixelRatio: 0.01,
+      animations: 'disabled',
+    },
+  },
+
   use: {
     baseURL,
     trace: 'on-first-retry',
@@ -31,6 +41,14 @@ export default defineConfig({
     {
       name: 'mobile-chrome',
       use: { ...devices['Pixel 7'] },
+    },
+    {
+      name: 'mobile-small',
+      use: { ...devices['iPhone SE'] },
+    },
+    {
+      name: 'tablet',
+      use: { ...devices['iPad Mini'] },
     },
   ],
 

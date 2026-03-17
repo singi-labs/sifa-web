@@ -29,7 +29,12 @@ jobs:
         run: pnpm build
 
       - name: Run E2E tests with screenshots
-        run: pnpm test:e2e:screenshots
+        run: QA_SCREENSHOTS=1 pnpm exec playwright test --grep-invert "Visual regression"
+        env:
+          PLAYWRIGHT_BASE_URL: http://localhost:3000
+
+      - name: Run visual regression (update baselines if missing)
+        run: pnpm exec playwright test e2e/visual-regression.spec.ts --update-snapshots --reporter=line
         env:
           PLAYWRIGHT_BASE_URL: http://localhost:3000
 
@@ -56,3 +61,19 @@ jobs:
           name: playwright-traces
           path: e2e/test-results/
           retention-days: 7
+
+      - name: Upload visual regression snapshots
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: visual-regression-snapshots
+          path: e2e/visual-regression.spec.ts-snapshots/
+          retention-days: 14
+
+      - name: Upload visual regression diffs
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: visual-regression-diffs
+          path: e2e/test-results/**/*-diff.png
+          retention-days: 14
