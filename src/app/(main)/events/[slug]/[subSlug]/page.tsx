@@ -10,6 +10,13 @@ import type { LocationValue, ProfilePosition } from '@/lib/types';
 
 export const revalidate = 3600;
 
+export function generateStaticParams() {
+  return event.sideEvents.map((se) => ({
+    slug: event.slug,
+    subSlug: se.slug,
+  }));
+}
+
 interface SideEventPageProps {
   params: Promise<{ slug: string; subSlug: string }>;
 }
@@ -54,7 +61,7 @@ async function fetchProfileSafe(handle: string) {
 }
 
 async function fetchAllProfiles(handles: string[]) {
-  const concurrency = 10;
+  const concurrency = 25;
   const results: Array<Awaited<ReturnType<typeof fetchProfile>>> = [];
 
   for (let i = 0; i < handles.length; i += concurrency) {
