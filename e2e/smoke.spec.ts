@@ -38,18 +38,14 @@ test.describe('Smoke tests', () => {
         await expect(img).toBeVisible();
         continue;
       }
-      const naturalWidth = await img.evaluate(
-        (el: HTMLImageElement) => el.naturalWidth,
-      );
+      const naturalWidth = await img.evaluate((el: HTMLImageElement) => el.naturalWidth);
       expect(naturalWidth, `Image ${src} should load`).toBeGreaterThan(0);
     }
 
     // Accessibility scan -- log violations but don't fail on pre-existing issues.
     // TODO: fix color-contrast violations (see #213) and switch to strict assertion.
     const a11y = await axeScan(page);
-    const critical = a11y.violations.filter(
-      (v) => v.impact === 'critical',
-    );
+    const critical = a11y.violations.filter((v) => v.impact === 'critical');
     expect(critical, 'Critical accessibility violations found').toEqual([]);
   });
 
@@ -66,20 +62,14 @@ test.describe('Smoke tests', () => {
       errors.length = 0;
 
       const response = await page.goto(pagePath);
-      expect(
-        response,
-        `Navigation to ${pagePath} should not be aborted`,
-      ).not.toBeNull();
+      expect(response, `Navigation to ${pagePath} should not be aborted`).not.toBeNull();
       expect(response!.status(), `${pagePath} should return 200`).toBe(200);
 
       const body = page.locator('body');
       await expect(body).not.toBeEmpty();
 
       const realErrors = errors.filter((e) => !isExpectedConsoleError(e));
-      expect(
-        realErrors,
-        `${pagePath} should have no console errors`,
-      ).toHaveLength(0);
+      expect(realErrors, `${pagePath} should have no console errors`).toHaveLength(0);
     }
 
     page.off('console', listener);
