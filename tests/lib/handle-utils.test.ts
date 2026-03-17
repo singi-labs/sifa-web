@@ -25,15 +25,11 @@ describe('sanitizeHandleInput', () => {
   });
 
   it('strips http:// URL prefix', () => {
-    expect(sanitizeHandleInput('http://alice.custom-pds.example')).toBe(
-      'alice.custom-pds.example',
-    );
+    expect(sanitizeHandleInput('http://alice.custom-pds.example')).toBe('alice.custom-pds.example');
   });
 
   it('strips Bluesky profile URL', () => {
-    expect(sanitizeHandleInput('https://bsky.app/profile/jay.bsky.social')).toBe(
-      'jay.bsky.social',
-    );
+    expect(sanitizeHandleInput('https://bsky.app/profile/jay.bsky.social')).toBe('jay.bsky.social');
   });
 
   it('strips at:// URI', () => {

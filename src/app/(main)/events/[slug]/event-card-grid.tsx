@@ -88,13 +88,16 @@ export function EventCardGrid({ entries, speakerCount, attendeeCount }: EventCar
   const filtered =
     activeFilters.size === 0 ? entries : entries.filter((e) => activeFilters.has(e.group));
 
-  const sorted = sortBy === 'followers'
-    ? [...filtered].sort((a, b) => {
-        const aCount = resolveDisplayFollowers(a.profile.atprotoFollowersCount, a.profile.followersCount) ?? 0;
-        const bCount = resolveDisplayFollowers(b.profile.atprotoFollowersCount, b.profile.followersCount) ?? 0;
-        return bCount - aCount;
-      })
-    : filtered;
+  const sorted =
+    sortBy === 'followers'
+      ? [...filtered].sort((a, b) => {
+          const aCount =
+            resolveDisplayFollowers(a.profile.atprotoFollowersCount, a.profile.followersCount) ?? 0;
+          const bCount =
+            resolveDisplayFollowers(b.profile.atprotoFollowersCount, b.profile.followersCount) ?? 0;
+          return bCount - aCount;
+        })
+      : filtered;
 
   return (
     <>
