@@ -46,7 +46,11 @@ test.describe('Login page', () => {
   });
 });
 
+// These tests require a running sifa-api on localhost:3100.
+// CI only starts the Next.js frontend, so skip when no API is available.
 test.describe('OAuth backend health', () => {
+  test.skip(!!process.env.CI, 'Requires sifa-api — not available in CI');
+
   test('OAuth metadata endpoint returns valid configuration', async ({ request }) => {
     // If OAuth keys are missing, this endpoint won't be registered (404)
     // or the API won't start at all (after the startup guard fix).
