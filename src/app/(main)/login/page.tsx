@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useAuth } from '@/components/auth-provider';
 import { getOAuthLoginUrl } from '@/lib/auth';
+import { sanitizeHandleInput } from '@/lib/handle-utils';
 
 function LoginContent() {
   const t = useTranslations('login');
@@ -29,18 +30,7 @@ function LoginContent() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    let identifier = handle
-      .trim()
-      .replace(/^https?:\/\/bsky\.app\/profile\//i, '')
-      .replace(/^at:\/\//i, '')
-      .replace(/^@/, '');
-    if (!identifier.startsWith('did:')) {
-      identifier = identifier.split('/')[0] ?? identifier;
-    }
-    identifier = identifier.replace(/\.$/, '');
-    if (!identifier.startsWith('did:')) {
-      identifier = identifier.toLowerCase();
-    }
+    const identifier = sanitizeHandleInput(handle);
 
     if (!identifier) return;
 
@@ -57,7 +47,11 @@ function LoginContent() {
 
       if (!res.ok) {
         const data = await res.json().catch(() => null);
-        setError(data?.message ?? 'Failed to sign in. Please check your handle and try again.');
+        if (data?.error === 'HandleNotFound') {
+          setError(t('errorHandleNotFound', { handle: identifier }));
+        } else {
+          setError(data?.message ?? t('errorGeneric'));
+        }
         setIsSubmitting(false);
         return;
       }
@@ -68,7 +62,7 @@ function LoginContent() {
         window.location.href = data.redirectUrl;
       }
     } catch {
-      setError('Network error. Please try again.');
+      setError(t('errorNetwork'));
       setIsSubmitting(false);
     }
   };
