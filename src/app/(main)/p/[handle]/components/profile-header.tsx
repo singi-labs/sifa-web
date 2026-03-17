@@ -13,10 +13,7 @@ interface ProfileHeaderProps {
 }
 
 export function ProfileHeader({ profile }: ProfileHeaderProps) {
-  const resolved = resolveDisplayFollowers(
-    profile.atprotoFollowersCount,
-    profile.followersCount,
-  );
+  const resolved = resolveDisplayFollowers(profile.atprotoFollowersCount, profile.followersCount);
   const displayFollowers = resolved?.count ?? 0;
   const followerLabel =
     resolved?.source === 'atproto'

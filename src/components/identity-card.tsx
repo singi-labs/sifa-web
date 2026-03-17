@@ -225,7 +225,9 @@ export function IdentityCard({
             <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
               <span>
                 {displayFollowers.source === 'atproto'
-                  ? t('followersOnBluesky', { count: formatCompactNumber(displayFollowers.count, 'en') })
+                  ? t('followersOnBluesky', {
+                      count: formatCompactNumber(displayFollowers.count, 'en'),
+                    })
                   : t('followers', { count: formatCompactNumber(displayFollowers.count, 'en') })}
               </span>
             </div>
@@ -375,7 +377,9 @@ export function IdentityCard({
             <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
               <span>
                 {displayFollowers.source === 'atproto'
-                  ? t('followersOnBluesky', { count: formatCompactNumber(displayFollowers.count, 'en') })
+                  ? t('followersOnBluesky', {
+                      count: formatCompactNumber(displayFollowers.count, 'en'),
+                    })
                   : t('followers', { count: formatCompactNumber(displayFollowers.count, 'en') })}
               </span>
             </div>
