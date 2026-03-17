@@ -45,6 +45,23 @@ export const test = base.extend<BaseFixtures>({
     const capture = async (page: Page, name: string): Promise<string | null> => {
       if (!enabled) return null;
 
+      // Wait for all in-flight network requests to finish so server-rendered
+      // dynamic content (AT Protocol stats, avatar reel) has loaded.
+      await page.waitForLoadState('networkidle');
+
+      // Freeze CSS animations so the marquee and other animated elements
+      // render as a stable frame rather than a mid-animation blur.
+      await page.addStyleTag({
+        content:
+          '*, *::before, *::after { animation-play-state: paused !important; transition: none !important; }',
+      });
+
+      // Trigger lazy-loaded images by scrolling to the bottom of the page,
+      // then back to top so the screenshot starts from the top.
+      await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+      await page.waitForLoadState('networkidle');
+      await page.evaluate(() => window.scrollTo(0, 0));
+
       const project = test.info().project.name;
       const fileName = `${name}-${project}.png`;
       const filePath = path.join(QA_SCREENSHOTS_DIR, fileName);

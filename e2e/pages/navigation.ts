@@ -21,6 +21,6 @@ export class NavigationPage {
   }
 
   async waitForPageLoad() {
-    await this.page.waitForLoadState('domcontentloaded');
+    await this.page.waitForLoadState('networkidle');
   }
 }
