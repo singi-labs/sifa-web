@@ -263,7 +263,7 @@ describe('IdentityCard (embed variant)', () => {
     expect(screen.queryByText(/follower/)).toBeNull();
   });
 
-  it('prefers atprotoFollowersCount over followersCount', () => {
+  it('shows "on Bluesky" when atprotoFollowersCount is used', () => {
     render(
       <IdentityCard
         {...baseProps}
@@ -272,10 +272,10 @@ describe('IdentityCard (embed variant)', () => {
         atprotoFollowersCount={9999}
       />,
     );
-    expect(screen.getByText(/followers/)).toBeDefined();
+    expect(screen.getByText(/followers on Bluesky/)).toBeDefined();
   });
 
-  it('falls back to followersCount when atprotoFollowersCount is zero', () => {
+  it('falls back to followersCount without Bluesky label when atprotoFollowersCount is zero', () => {
     render(
       <IdentityCard
         {...baseProps}
@@ -284,7 +284,9 @@ describe('IdentityCard (embed variant)', () => {
         atprotoFollowersCount={0}
       />,
     );
-    expect(screen.getByText(/followers/)).toBeDefined();
+    const el = screen.getByText(/followers/);
+    expect(el).toBeDefined();
+    expect(el.textContent).not.toContain('Bluesky');
   });
 
   it('shows PDS icon next to handle but no separate provider tagline', () => {
