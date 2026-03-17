@@ -101,7 +101,8 @@
       "profile": "Profile",
       "noPositions": "No positions found in export.",
       "noEducation": "No education found in export.",
-      "noSkills": "No skills found in export."
+      "noSkills": "No skills found in export.",
+      "publicDataNotice": "Everything you import will be publicly visible to anyone, including people without a Sifa account. Unlike LinkedIn (where some data is hidden from logged-out visitors), Sifa profiles are fully public. Review your data before importing."
     },
     "confirm": {
       "importing": "Importing your data...",
