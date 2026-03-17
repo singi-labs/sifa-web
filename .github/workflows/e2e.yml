@@ -65,6 +65,41 @@ jobs:
           path: e2e/qa-screenshots/
           retention-days: 14
 
+      - name: Publish screenshots to VPS
+        if: ${{ !cancelled() && hashFiles('e2e/qa-screenshots/**') != '' }}
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          RUN_ID: ${{ github.run_id }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Set up SSH
+          mkdir -p ~/.ssh
+          echo "$VPS_SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H "$VPS_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+
+          # Upload to VPS: /var/www/screenshots/pr-<number>-run-<id>/
+          DEST="pr-${PR_NUMBER}-run-${RUN_ID}"
+          ssh -i ~/.ssh/deploy_key "$VPS_USER@$VPS_HOST" "mkdir -p /var/www/screenshots/$DEST"
+          scp -i ~/.ssh/deploy_key -r e2e/qa-screenshots/. "$VPS_USER@$VPS_HOST:/var/www/screenshots/$DEST/"
+
+          # Build markdown comment body
+          BASE_URL="https://sifa.id/screenshots/$DEST"
+          BODY="## E2E Screenshots\n\nViewports tested: desktop-chrome, mobile-safari (iPhone 14), tablet (iPad Mini)\n\n"
+          for f in $(ssh -i ~/.ssh/deploy_key "$VPS_USER@$VPS_HOST" "find /var/www/screenshots/$DEST -name '*.png' | sort"); do
+            FILENAME=$(basename "$f")
+            LABEL="${FILENAME%.png}"
+            BODY+="### $LABEL\n![$LABEL]($BASE_URL/$FILENAME)\n\n"
+          done
+
+          # Post comment on the PR
+          if [ -n "$PR_NUMBER" ]; then
+            printf "%b" "$BODY" | gh pr comment "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --body-file -
+          fi
+
       - name: Upload test traces
         uses: actions/upload-artifact@v4
         if: failure()
