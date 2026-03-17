@@ -116,16 +116,16 @@ export function IdentityCard({
     >
       {isEmbed ? (
         <>
-          {/* Embed layout: avatar-left, compact */}
-          <div className="flex items-start gap-3">
-            <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-full bg-muted text-lg font-semibold text-muted-foreground">
+          {/* Embed layout: two-column with avatar left */}
+          <div className="flex items-start gap-4">
+            <div className="flex h-[72px] w-[72px] shrink-0 items-center justify-center overflow-hidden rounded-full bg-muted text-xl font-semibold text-muted-foreground">
               {avatar ? (
                 <Image
                   src={avatar}
                   alt={t('avatarAlt', { name: label })}
-                  width={56}
-                  height={56}
-                  className="h-14 w-14 rounded-full object-cover"
+                  width={72}
+                  height={72}
+                  className="h-[72px] w-[72px] rounded-full object-cover"
                 />
               ) : (
                 <span aria-hidden="true">{label.charAt(0).toUpperCase()}</span>
@@ -178,44 +178,44 @@ export function IdentityCard({
                   <p className="truncate text-xs text-muted-foreground">@{handle}</p>
                 )}
               </div>
+
+              {currentRole && currentCompany && (
+                <p className="mt-1 text-xs text-muted-foreground">
+                  {currentRole} {t('roleAt')} {currentCompany}
+                </p>
+              )}
+
+              {(location || website) && (
+                <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-xs text-muted-foreground">
+                  {location && (
+                    <span>
+                      {formatLocation(location)}
+                      {location.countryCode && (
+                        <span className="ml-1" role="img" aria-label={location.countryCode}>
+                          {countryCodeToFlag(location.countryCode)}
+                        </span>
+                      )}
+                    </span>
+                  )}
+                  {website && (
+                    <a
+                      href={website.startsWith('http') ? website : `https://${website}`}
+                      className="underline-offset-4 hover:text-foreground hover:underline"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {website.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '')}
+                    </a>
+                  )}
+                </div>
+              )}
             </div>
           </div>
 
           {(headline || about) && (
-            <p className="mt-2 line-clamp-2 text-sm text-foreground">
+            <p className="mt-3 line-clamp-2 text-sm text-foreground">
               {headline ?? (about && about.length > 120 ? about.slice(0, 120) + '\u2026' : about)}
             </p>
-          )}
-
-          {currentRole && currentCompany && (
-            <p className="mt-1 text-xs text-muted-foreground">
-              {currentRole} {t('roleAt')} {currentCompany}
-            </p>
-          )}
-
-          {(location || website) && (
-            <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-xs text-muted-foreground">
-              {location && (
-                <span>
-                  {formatLocation(location)}
-                  {location.countryCode && (
-                    <span className="ml-1" role="img" aria-label={location.countryCode}>
-                      {countryCodeToFlag(location.countryCode)}
-                    </span>
-                  )}
-                </span>
-              )}
-              {website && (
-                <a
-                  href={website.startsWith('http') ? website : `https://${website}`}
-                  className="underline-offset-4 hover:text-foreground hover:underline"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {website.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '')}
-                </a>
-              )}
-            </div>
           )}
 
           {/* Open to pills */}
@@ -275,23 +275,25 @@ export function IdentityCard({
         </>
       ) : (
         <>
-          {/* Page layout: original horizontal avatar + text */}
-          {/* Row 1: Avatar, name, badges */}
-          <div className="flex items-center gap-4">
-            <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full bg-muted text-xl font-semibold text-muted-foreground">
+          {/* Page layout: two-column with avatar left, text right */}
+          <div className="flex items-start gap-6">
+            {/* Left column: avatar */}
+            <div className="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-full bg-muted text-2xl font-semibold text-muted-foreground">
               {avatar ? (
                 <Image
                   src={avatar}
                   alt={t('avatarAlt', { name: label })}
-                  width={64}
-                  height={64}
-                  className="h-16 w-16 rounded-full object-cover"
+                  width={96}
+                  height={96}
+                  className="h-24 w-24 rounded-full object-cover"
                 />
               ) : (
                 <span aria-hidden="true">{label.charAt(0).toUpperCase()}</span>
               )}
             </div>
-            <div className="min-w-0">
+
+            {/* Right column: all text content */}
+            <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2">
                 <h1 className="truncate text-xl font-bold">{label}</h1>
                 {verifiedAccounts.length > 0 && (
@@ -302,7 +304,8 @@ export function IdentityCard({
                   />
                 )}
               </div>
-              {/* Row 2: Handle + unclaimed badge */}
+
+              {/* Handle + unclaimed badge */}
               <div className="flex items-center gap-2">
                 {pdsProvider?.profileUrl ? (
                   <a
@@ -356,75 +359,76 @@ export function IdentityCard({
                   </Popover.Root>
                 )}
               </div>
+
+              {/* Headline (falls back to truncated about when no headline) */}
+              {(headline || about) && (
+                <p className="mt-2 text-base text-foreground">
+                  {headline ??
+                    (about && about.length > 120 ? about.slice(0, 120) + '\u2026' : about)}
+                </p>
+              )}
+
+              {/* Current role */}
+              {currentRole && currentCompany && (
+                <p className="mt-1 text-sm text-muted-foreground">
+                  {currentRole} {t('roleAt')} {currentCompany}
+                </p>
+              )}
+
+              {/* Location + Website + Followers */}
+              {(location || website || displayFollowers) && (
+                <div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
+                  {location && (
+                    <span>
+                      {formatLocation(location)}
+                      {location.countryCode && (
+                        <span className="ml-1" role="img" aria-label={location.countryCode}>
+                          {countryCodeToFlag(location.countryCode)}
+                        </span>
+                      )}
+                    </span>
+                  )}
+                  {website && (
+                    <a
+                      href={website.startsWith('http') ? website : `https://${website}`}
+                      className="underline-offset-4 hover:text-foreground hover:underline"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {website.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '')}
+                    </a>
+                  )}
+                  {displayFollowers && (
+                    <span>
+                      {displayFollowers.source === 'atproto'
+                        ? t('followersOnBluesky', {
+                            count: formatCompactNumber(displayFollowers.count, 'en'),
+                          })
+                        : t('followers', {
+                            count: formatCompactNumber(displayFollowers.count, 'en'),
+                          })}
+                    </span>
+                  )}
+                </div>
+              )}
+
+              {/* Open to pills */}
+              {openTo && openTo.length > 0 && (
+                <div className="mt-2 flex flex-wrap items-center gap-2">
+                  <span className="text-sm font-medium text-muted-foreground">
+                    {tEdit('openTo')}:
+                  </span>
+                  {openTo.map((item) => (
+                    <Badge key={item} variant="outline" className="border-primary/30 text-primary">
+                      {OPEN_TO_LABEL_KEYS[item] ? tEdit(OPEN_TO_LABEL_KEYS[item]!) : item}
+                    </Badge>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 
-          {/* Row 3: Headline (falls back to truncated about when no headline) */}
-          {(headline || about) && (
-            <p className="mt-3 text-base text-foreground">
-              {headline ?? (about && about.length > 120 ? about.slice(0, 120) + '\u2026' : about)}
-            </p>
-          )}
-
-          {/* Row 4: Current role */}
-          {currentRole && currentCompany && (
-            <p className="mt-2 text-sm text-muted-foreground">
-              {currentRole} {t('roleAt')} {currentCompany}
-            </p>
-          )}
-
-          {/* Row 5: Location + Website */}
-          {(location || website) && (
-            <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
-              {location && (
-                <span>
-                  {formatLocation(location)}
-                  {location.countryCode && (
-                    <span className="ml-1" role="img" aria-label={location.countryCode}>
-                      {countryCodeToFlag(location.countryCode)}
-                    </span>
-                  )}
-                </span>
-              )}
-              {website && (
-                <a
-                  href={website.startsWith('http') ? website : `https://${website}`}
-                  className="underline-offset-4 hover:text-foreground hover:underline"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {website.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '')}
-                </a>
-              )}
-            </div>
-          )}
-
-          {/* Row 5b: Follower count */}
-          {displayFollowers ? (
-            <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
-              <span>
-                {displayFollowers.source === 'atproto'
-                  ? t('followersOnBluesky', {
-                      count: formatCompactNumber(displayFollowers.count, 'en'),
-                    })
-                  : t('followers', { count: formatCompactNumber(displayFollowers.count, 'en') })}
-              </span>
-            </div>
-          ) : null}
-
-          {/* Row 6: Open to pills */}
-          {openTo && openTo.length > 0 && (
-            <div className="mt-3 flex flex-wrap items-center gap-2">
-              <span className="text-sm font-medium text-muted-foreground">{tEdit('openTo')}:</span>
-              {openTo.map((item) => (
-                <Badge key={item} variant="outline" className="border-primary/30 text-primary">
-                  {OPEN_TO_LABEL_KEYS[item] ? tEdit(OPEN_TO_LABEL_KEYS[item]!) : item}
-                </Badge>
-              ))}
-            </div>
-          )}
-
-          {/* Row 7: Trust stats */}
+          {/* Trust stats — full width below the two columns */}
           <div className="mt-4 flex gap-6" role="list" aria-label={t('trustStatsLabel')}>
             {displayTrustStats.map((stat) => (
               <div key={stat.key} className="text-center" role="listitem">
