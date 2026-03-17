@@ -8,6 +8,15 @@ import { sanitize } from '@/lib/sanitize';
 import { event, SPEAKER_TYPE_LABELS } from '@/data/events/atmosphereconf-2026';
 import { EventCardGrid, type EventEntry, type FilterGroup } from './event-card-grid';
 
+function shuffle<T>(arr: T[]): T[] {
+  const copy = [...arr];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j]!, copy[i]!];
+  }
+  return copy;
+}
+
 export const dynamic = 'force-static';
 export const revalidate = 3600;
 
@@ -114,8 +123,12 @@ export default async function EventPage({ params }: EventPageProps) {
     return nameA.localeCompare(nameB);
   });
 
-  const speakerCount = entries.filter((e) => e.isSpeaker).length;
-  const attendeeCount = entries.length - speakerCount;
+  // Shuffle server-side so all users see the same non-alphabetical order per
+  // revalidation window. Avoids client/server hydration mismatch from Math.random().
+  const shuffledEntries = shuffle(entries);
+
+  const speakerCount = shuffledEntries.filter((e) => e.isSpeaker).length;
+  const attendeeCount = shuffledEntries.length - speakerCount;
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -186,7 +199,11 @@ export default async function EventPage({ params }: EventPageProps) {
         </div>
       </div>
 
-      <EventCardGrid entries={entries} speakerCount={speakerCount} attendeeCount={attendeeCount} />
+      <EventCardGrid
+        entries={shuffledEntries}
+        speakerCount={speakerCount}
+        attendeeCount={attendeeCount}
+      />
 
       {/* RSVP CTA */}
       <div className="mt-12 rounded-lg border border-border bg-muted/30 p-6 text-center">

@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { IdentityCard } from '@/components/identity-card';
 import { Badge } from '@/components/ui/badge';
@@ -88,22 +88,10 @@ interface EventCardGridProps {
 
 type SortOption = 'random' | 'followers';
 
-function shuffle<T>(arr: readonly T[]): T[] {
-  const copy = [...arr];
-  for (let i = copy.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [copy[i], copy[j]] = [copy[j]!, copy[i]!];
-  }
-  return copy;
-}
-
 export function EventCardGrid({ entries, speakerCount, attendeeCount }: EventCardGridProps) {
   const [activeFilters, setActiveFilters] = useState<Set<FilterGroup>>(new Set());
   const [activePdsFilters, setActivePdsFilters] = useState<Set<string>>(new Set());
   const [sortBy, setSortBy] = useState<SortOption>('random');
-
-  // Shuffle once on mount so the order is stable during the session
-  const shuffled = useMemo(() => shuffle(entries), [entries]);
 
   const groupCounts = new Map<FilterGroup, number>();
   for (const entry of entries) {
@@ -148,7 +136,8 @@ export function EventCardGrid({ entries, speakerCount, attendeeCount }: EventCar
     });
   };
 
-  const base = sortBy === 'random' ? shuffled : entries;
+  // entries are pre-shuffled by the server; followers sort overrides that order
+  const base = entries;
   const filtered = base.filter((e) => {
     if (activeFilters.size > 0 && !activeFilters.has(e.group)) return false;
     if (activePdsFilters.size > 0 && !activePdsFilters.has(getPdsCategory(e))) return false;
