@@ -24,6 +24,8 @@ describe('SiteFooter', () => {
     expect(screen.getByRole('link', { name: 'Privacy' })).toBeDefined();
     expect(screen.getByRole('link', { name: 'Terms' })).toBeDefined();
     expect(screen.getByRole('link', { name: 'GitHub' })).toBeDefined();
+    expect(screen.getByRole('link', { name: 'Bluesky' })).toBeDefined();
+    expect(screen.getByRole('link', { name: 'Tangled' })).toBeDefined();
   });
 
   it('links to singi.dev', () => {
@@ -41,5 +43,23 @@ describe('SiteFooter', () => {
     const ghLink = screen.getByRole('link', { name: 'GitHub' });
     expect(ghLink.getAttribute('href')).toBe('https://github.com/singi-labs');
     expect(ghLink.getAttribute('target')).toBe('_blank');
+  });
+
+  it('links to Bluesky externally', () => {
+    render(<SiteFooter />);
+
+    const bskyLink = screen.getByRole('link', { name: 'Bluesky' });
+    expect(bskyLink.getAttribute('href')).toBe('https://bsky.app/profile/sifa.id');
+    expect(bskyLink.getAttribute('target')).toBe('_blank');
+  });
+
+  it('links to Tangled externally', () => {
+    render(<SiteFooter />);
+
+    const tangledLink = screen.getByRole('link', { name: 'Tangled' });
+    expect(tangledLink.getAttribute('href')).toBe(
+      'https://tangled.org/did:plc:45uheisi25szrjvjurfpritx?tab=repos',
+    );
+    expect(tangledLink.getAttribute('target')).toBe('_blank');
   });
 });
