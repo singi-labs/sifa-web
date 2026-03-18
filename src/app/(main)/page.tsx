@@ -72,7 +72,7 @@ export default async function Home() {
           />
           <div className="text-center sm:text-left">
             <h2 className="text-lg font-bold">
-              <span style={{ color: '#0085ff' }}>AT</span>mosphereConf 2026
+              <span style={{ color: '#006AD5' }}>AT</span>mosphereConf 2026
             </h2>
             <p className="mt-1 text-sm text-muted-foreground">
               March 26&ndash;29 &middot; Vancouver, BC
