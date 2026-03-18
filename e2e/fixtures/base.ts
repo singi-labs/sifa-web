@@ -29,7 +29,7 @@ export const test = base.extend<BaseFixtures>({
   axeScan: async ({}, use) => {
     const scan = async (page: Page) => {
       const results = await new AxeBuilder({ page })
-        .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+        .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
         .analyze();
       return results;
     };

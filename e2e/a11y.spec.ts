@@ -1,5 +1,40 @@
 import { test, expect } from './fixtures/base';
 
+test.describe('Axe accessibility scans (WCAG 2.2 AA)', () => {
+  const pages = [
+    { name: 'homepage', path: '/' },
+    { name: 'about', path: '/about' },
+    { name: 'privacy', path: '/privacy' },
+    { name: 'terms', path: '/terms' },
+    { name: 'login', path: '/login' },
+    { name: 'search', path: '/search' },
+    { name: 'experts directory', path: '/experts' },
+    { name: 'embed', path: '/embed' },
+  ];
+
+  for (const { name, path } of pages) {
+    test(`${name} (${path}) has no serious or critical a11y violations`, async ({
+      page,
+      axeScan,
+    }) => {
+      await page.goto(path);
+      await page.waitForLoadState('domcontentloaded');
+
+      const results = await axeScan(page);
+      const serious = results.violations.filter(
+        (v) => v.impact === 'critical' || v.impact === 'serious',
+      );
+
+      if (serious.length > 0) {
+        const summary = serious
+          .map((v) => `[${v.impact}] ${v.id}: ${v.help} (${v.nodes.length} instances)`)
+          .join('\n');
+        expect(serious, `A11y violations on ${path}:\n${summary}`).toEqual([]);
+      }
+    });
+  }
+});
+
 test.describe('Accessibility features', () => {
   test('skip link becomes visible on Tab and targets main content', async ({ page }) => {
     // Skip link + Tab behavior is unreliable on mobile WebKit
