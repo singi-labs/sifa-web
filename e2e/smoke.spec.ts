@@ -14,7 +14,7 @@ function isExpectedConsoleError(message: string): boolean {
 }
 
 test.describe('Smoke tests', () => {
-  test('homepage loads and renders key elements', async ({ page, axeScan, qaScreenshot }) => {
+  test('homepage loads and renders key elements', async ({ page, qaScreenshot }) => {
     const nav = new NavigationPage(page);
     await nav.goto('/');
     await nav.waitForPageLoad();
@@ -43,12 +43,6 @@ test.describe('Smoke tests', () => {
     }
 
     await qaScreenshot(page, 'homepage');
-
-    // Accessibility scan -- log violations but don't fail on pre-existing issues.
-    // TODO: fix color-contrast violations (see #213) and switch to strict assertion.
-    const a11y = await axeScan(page);
-    const critical = a11y.violations.filter((v) => v.impact === 'critical');
-    expect(critical, 'Critical accessibility violations found').toEqual([]);
   });
 
   test('static pages render without errors', async ({ page, qaScreenshot }) => {

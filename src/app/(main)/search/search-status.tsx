@@ -63,7 +63,7 @@ export async function SearchStatus() {
           </ul>
           {globalPlannedKeys.length > 0 && (
             <>
-              <p className="mb-1 mt-2 text-[11px] font-medium uppercase tracking-wider text-muted-foreground/60">
+              <p className="mb-1 mt-2 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
                 {t('comingSoonLabel')}
               </p>
               <ul className="space-y-1.5 text-sm">
@@ -86,7 +86,7 @@ export async function SearchStatus() {
           </ul>
           {sifaPlannedKeys.length > 0 && (
             <>
-              <p className="mb-1 mt-2 text-[11px] font-medium uppercase tracking-wider text-muted-foreground/60">
+              <p className="mb-1 mt-2 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
                 {t('comingSoonLabel')}
               </p>
               <ul className="space-y-1.5 text-sm">
