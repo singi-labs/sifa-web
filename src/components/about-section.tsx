@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { PencilSimple } from '@phosphor-icons/react';
 import { sanitize } from '@/lib/sanitize';
+import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { ProfileEditDialog } from '@/components/profile-edit-dialog';
 import { useProfileEdit } from '@/components/profile-edit-provider';
@@ -58,15 +59,19 @@ export function AboutSection({ about, isOwnProfile }: AboutSectionProps) {
 
   const sanitized = sanitize(about);
   const isLong = sanitized.length > COLLAPSE_THRESHOLD;
-  const displayText =
-    isLong && !expanded ? sanitized.slice(0, COLLAPSE_THRESHOLD) + '...' : sanitized;
 
   return (
     <section className="mt-6" aria-label={t('about')}>
       <div className="group/about relative">
-        <p className="whitespace-pre-wrap text-base leading-relaxed text-foreground">
-          {displayText}
-        </p>
+        <div
+          className={cn(
+            'overflow-hidden whitespace-pre-wrap text-base leading-relaxed text-foreground transition-[max-height] duration-200 ease-in-out',
+            isLong && !expanded && 'max-h-[4.5rem]',
+            isLong && expanded && 'max-h-[200rem]',
+          )}
+        >
+          {sanitized}
+        </div>
         {isOwnProfile && (
           <Button
             variant="ghost"

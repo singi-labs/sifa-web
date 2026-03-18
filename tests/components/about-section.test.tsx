@@ -43,7 +43,8 @@ describe('AboutSection', () => {
     const longText = 'A'.repeat(400);
     withProvider(<AboutSection about={longText} />, { about: longText });
 
-    expect(screen.getByText(/A{100,}\.\.\.$/)).toBeDefined();
+    // Full text is in the DOM but visually clipped via max-height
+    expect(screen.getByText(longText)).toBeDefined();
     expect(screen.getByRole('button', { name: 'Read more' })).toBeDefined();
   });
 

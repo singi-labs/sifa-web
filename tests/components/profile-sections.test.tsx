@@ -51,8 +51,10 @@ describe('TimelineEntry', () => {
       />,
     );
 
-    expect(screen.queryByText('Did great work')).toBeNull();
+    // Content is in the DOM but visually hidden (inside collapsed Collapsible)
+    expect(screen.getByRole('button').getAttribute('aria-expanded')).toBe('false');
     await user.click(screen.getByRole('button'));
+    expect(screen.getByRole('button').getAttribute('aria-expanded')).toBe('true');
     expect(screen.getByText('Did great work')).toBeDefined();
   });
 });

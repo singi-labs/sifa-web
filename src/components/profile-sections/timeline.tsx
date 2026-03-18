@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { CaretDown, CaretUp } from '@phosphor-icons/react';
 import { cn } from '@/lib/utils';
+import { Collapsible } from '@/components/ui/collapsible';
 
 interface TimelineEntryProps {
   title: string;
@@ -70,11 +71,13 @@ export function TimelineEntry({
         ) : (
           <div className="flex flex-col gap-0.5">{content}</div>
         )}
-        {expanded && (description || children) && (
-          <div className="mt-2 text-sm text-muted-foreground">
-            {description && <p className="whitespace-pre-wrap">{description}</p>}
-            {children}
-          </div>
+        {hasExpandable && (
+          <Collapsible open={expanded}>
+            <div className="mt-2 text-sm text-muted-foreground">
+              {description && <p className="whitespace-pre-wrap">{description}</p>}
+              {children}
+            </div>
+          </Collapsible>
         )}
       </div>
     </div>

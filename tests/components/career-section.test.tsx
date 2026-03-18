@@ -130,8 +130,10 @@ describe('CareerSection', () => {
     // Junior Developer has no linkedSkills, so no chips appear
     const juniorText = screen.getByText('Junior Developer');
     expect(juniorText).toBeDefined();
-    // TypeScript chip is inside collapsed entry -- not visible when collapsed
-    expect(screen.queryByText('TypeScript')).toBeNull();
+    // TypeScript chip is inside collapsed Collapsible -- in DOM but visually hidden
+    // Verify the Senior Developer entry is collapsed by default
+    const buttons = screen.getAllByRole('button', { expanded: false });
+    expect(buttons.length).toBeGreaterThan(0);
   });
 
   it('opens position edit dialog with skill combobox when editing', async () => {
