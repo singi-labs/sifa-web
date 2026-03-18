@@ -1,6 +1,26 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { ProfileEditDialog } from '@/components/profile-edit-dialog';
+import { ProfileEditProvider } from '@/components/profile-edit-provider';
+import type { Profile } from '@/lib/types';
+
+const baseProfile: Profile = {
+  did: 'did:plc:test',
+  handle: 'test.bsky.social',
+  claimed: true,
+  followersCount: 0,
+  followingCount: 0,
+  connectionsCount: 0,
+  positions: [],
+  education: [],
+  skills: [],
+};
+
+function renderWithProvider(ui: React.ReactElement, profile: Partial<Profile> = {}) {
+  return render(
+    <ProfileEditProvider initialProfile={{ ...baseProfile, ...profile }}>{ui}</ProfileEditProvider>,
+  );
+}
 
 /**
  * Regression test: @base-ui/react v1.2.0 requires Popover.Positioner to be
@@ -15,7 +35,7 @@ import { ProfileEditDialog } from '@/components/profile-edit-dialog';
 describe('ProfileEditDialog', () => {
   it('renders without Popover.Portal error', () => {
     expect(() => {
-      render(
+      renderWithProvider(
         <ProfileEditDialog
           handle="test.bsky.social"
           displayName="Test User"
@@ -31,7 +51,7 @@ describe('ProfileEditDialog', () => {
   });
 
   it('renders the dialog with correct role', () => {
-    const { container } = render(
+    const { container } = renderWithProvider(
       <ProfileEditDialog
         handle="test.bsky.social"
         displayName="Test User"
@@ -49,7 +69,7 @@ describe('ProfileEditDialog', () => {
   });
 
   it('renders the preferredWorkplace fieldset', () => {
-    render(
+    renderWithProvider(
       <ProfileEditDialog
         handle="test.bsky.social"
         displayName="Test User"
@@ -63,7 +83,7 @@ describe('ProfileEditDialog', () => {
   });
 
   it('renders on-site, remote, and hybrid options', () => {
-    render(
+    renderWithProvider(
       <ProfileEditDialog
         handle="test.bsky.social"
         displayName="Test User"
@@ -79,7 +99,7 @@ describe('ProfileEditDialog', () => {
   });
 
   it('pre-checks options matching initial preferredWorkplace', () => {
-    render(
+    renderWithProvider(
       <ProfileEditDialog
         handle="test.bsky.social"
         displayName="Test User"

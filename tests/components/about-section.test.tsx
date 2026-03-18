@@ -29,6 +29,24 @@ describe('AboutSection', () => {
     expect(screen.getByText('Hello world')).toBeDefined();
   });
 
+  it('renders markdown formatting', () => {
+    withProvider(<AboutSection about="This is **bold** text" />, {
+      about: 'This is **bold** text',
+    });
+    const bold = screen.getByText('bold');
+    expect(bold.tagName).toBe('STRONG');
+  });
+
+  it('renders markdown links with safe attributes', () => {
+    withProvider(<AboutSection about="Visit [example](https://example.com)" />, {
+      about: 'Visit [example](https://example.com)',
+    });
+    const link = screen.getByRole('link', { name: 'example' });
+    expect(link.getAttribute('href')).toBe('https://example.com');
+    expect(link.getAttribute('target')).toBe('_blank');
+    expect(link.getAttribute('rel')).toBe('noopener noreferrer');
+  });
+
   it('returns null when no about and not own profile', () => {
     const { container } = withProvider(<AboutSection about="" />);
     expect(container.innerHTML).toBe('');
@@ -56,12 +74,20 @@ describe('AboutSection', () => {
     await user.click(screen.getByRole('button', { name: 'Read more' }));
 
     expect(screen.getByRole('button', { name: 'Read less' })).toBeDefined();
-    // Full text should not end with ...
+    // Full text should be present (400 A's without ellipsis)
     expect(screen.getByText(longText)).toBeDefined();
   });
 
   it('does not show read more for short text', () => {
     withProvider(<AboutSection about="Short text" />, { about: 'Short text' });
     expect(screen.queryByRole('button', { name: 'Read more' })).toBeNull();
+  });
+
+  it('sanitizes HTML in about text', () => {
+    withProvider(<AboutSection about='<script>alert("xss")</script>Safe text' />, {
+      about: '<script>alert("xss")</script>Safe text',
+    });
+    expect(screen.getByText(/Safe text/)).toBeDefined();
+    expect(document.querySelector('script')).toBeNull();
   });
 });

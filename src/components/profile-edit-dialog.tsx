@@ -10,6 +10,7 @@ import { Popover } from '@base-ui/react/popover';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useProfileEdit } from '@/components/profile-edit-provider';
 import { updateProfileSelf, refreshPds } from '@/lib/profile-api';
 import { revalidateProfileCache } from '@/app/actions';
 import { LocationSearch } from '@/components/location-search';
@@ -58,6 +59,7 @@ export function ProfileEditDialog({
   const t = useTranslations('profileEdit');
   const tEditor = useTranslations('editor');
   const router = useRouter();
+  const { updateProfile } = useProfileEdit();
 
   const [headline, setHeadline] = useState(initialHeadline ?? '');
   const [about, setAbout] = useState(initialAbout ?? '');
@@ -138,9 +140,14 @@ export function ProfileEditDialog({
 
     setSaving(false);
     if (result.success) {
+      updateProfile({
+        headline: headline || undefined,
+        about: about || undefined,
+        location: locationValue ?? undefined,
+        openTo: [...openTo],
+        preferredWorkplace: [...preferredWorkplace],
+      });
       toast.success(t('saved'));
-      void revalidateProfileCache(handle);
-      if (did) void revalidateProfileCache(did);
       router.refresh();
       onClose();
     } else {
