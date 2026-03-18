@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { ArrowSquareIn, List, SignOut, User, X } from '@phosphor-icons/react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
@@ -14,6 +14,19 @@ export function MobileNav() {
   const t = useTranslations('common');
   const { session, isLoading, refresh } = useAuth();
   const [open, setOpen] = useState(false);
+  const navRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (navRef.current && !navRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    if (open) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [open]);
 
   const handleLogout = async () => {
     setOpen(false);
@@ -22,7 +35,7 @@ export function MobileNav() {
   };
 
   return (
-    <>
+    <div ref={navRef}>
       <button
         type="button"
         onClick={() => setOpen(!open)}
@@ -138,6 +151,6 @@ export function MobileNav() {
           </div>
         </nav>
       )}
-    </>
+    </div>
   );
 }
