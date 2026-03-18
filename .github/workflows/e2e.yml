@@ -39,13 +39,27 @@ jobs:
       - name: Install Playwright browsers
         run: pnpm exec playwright install --with-deps chromium webkit
 
+      - name: Detect frontend changes
+        id: frontend
+        if: github.event_name == 'pull_request'
+        run: |
+          CHANGED=$(gh pr diff "${{ github.event.pull_request.number }}" --name-only)
+          if echo "$CHANGED" | grep -qE '^(src/app/|src/components/|src/styles/|public/|tailwind\.config|src/app/globals\.css)'; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}
+
       - name: Build application
         run: pnpm build
 
-      - name: Run E2E tests with screenshots
-        run: QA_SCREENSHOTS=1 pnpm exec playwright test --grep-invert "Visual regression"
+      - name: Run E2E tests
+        run: pnpm exec playwright test --grep-invert "Visual regression"
         env:
           PLAYWRIGHT_BASE_URL: http://localhost:3000
+          QA_SCREENSHOTS: ${{ (github.event_name == 'push' || steps.frontend.outputs.changed == 'true') && '1' || '0' }}
 
       - name: Run visual regression (update baselines if missing)
         run: pnpm exec playwright test e2e/visual-regression.spec.ts --update-snapshots --reporter=line
