@@ -1,7 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, type ComponentProps } from 'react';
 import { useTranslations } from 'next-intl';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { PencilSimple } from '@phosphor-icons/react';
 import { sanitize } from '@/lib/sanitize';
 import { cn } from '@/lib/utils';
@@ -14,6 +16,12 @@ const COLLAPSE_THRESHOLD = 300;
 interface AboutSectionProps {
   about: string;
   isOwnProfile?: boolean;
+}
+
+/** Open links in new tab with safe rel attributes. */
+function MarkdownLink(props: ComponentProps<'a'>) {
+  // eslint-disable-next-line jsx-a11y/anchor-has-content -- children are passed via spread props from react-markdown
+  return <a {...props} target="_blank" rel="noopener noreferrer" />;
 }
 
 export function AboutSection({ about, isOwnProfile }: AboutSectionProps) {
@@ -57,20 +65,23 @@ export function AboutSection({ about, isOwnProfile }: AboutSectionProps) {
     );
   }
 
-  const sanitized = sanitize(about);
-  const isLong = sanitized.length > COLLAPSE_THRESHOLD;
+  // Strip any raw HTML from the source before markdown rendering
+  const cleaned = sanitize(about);
+  const isLong = cleaned.length > COLLAPSE_THRESHOLD;
 
   return (
     <section className="mt-6" aria-label={t('about')}>
       <div className="group/about relative">
         <div
           className={cn(
-            'overflow-hidden whitespace-pre-wrap text-base leading-relaxed text-foreground transition-[max-height] duration-200 ease-in-out',
+            'prose prose-sm dark:prose-invert max-w-none overflow-hidden text-base leading-relaxed text-foreground transition-[max-height] duration-200 ease-in-out prose-a:text-primary prose-a:underline prose-a:underline-offset-4',
             isLong && !expanded && 'max-h-[4.5rem]',
             isLong && expanded && 'max-h-[200rem]',
           )}
         >
-          {sanitized}
+          <ReactMarkdown remarkPlugins={[remarkGfm]} components={{ a: MarkdownLink }}>
+            {cleaned}
+          </ReactMarkdown>
         </div>
         {isOwnProfile && (
           <Button
