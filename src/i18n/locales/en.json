@@ -417,6 +417,8 @@
       "profileEnhancements": "Profile enhancements",
       "endorsementsAttestations": "Endorsements and attestations",
       "activityIntegration": "Profile activity timeline",
+      "jobProfiles": "Job profiles (atwork.place integration)",
+      "eventRsvp": "Event RSVP integration (Smoke Signals / atmo.rsvp)",
       "companyPages": "Company pages",
       "advancedSearch": "Advanced search and discovery",
       "atmosphereStream": "ATmosphere Stream (cross-app activity feed)",

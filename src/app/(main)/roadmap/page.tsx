@@ -24,6 +24,8 @@ const roadmapItems: RoadmapItem[] = [
   { key: 'atmosphereStream', done: false },
   { key: 'endorsementsAttestations', done: false },
   { key: 'activityIntegration', done: false },
+  { key: 'jobProfiles', done: false },
+  { key: 'eventRsvp', done: false },
   { key: 'companyPages', done: false },
   { key: 'advancedSearch', done: false },
   { key: 'multiAccountLinking', done: false },
