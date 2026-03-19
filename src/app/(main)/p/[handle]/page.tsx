@@ -1,6 +1,6 @@
 import { fetchProfile } from '@/lib/api';
 import { notFound } from 'next/navigation';
-import { buildPersonJsonLd, buildMetaDescription } from '@/lib/jsonld';
+import { buildProfilePageJsonLd, buildMetaDescription } from '@/lib/jsonld';
 import { sanitize } from '@/lib/sanitize';
 import { IdentityCard } from '@/components/identity-card';
 import type { LocationValue, ProfilePosition } from '@/lib/types';
@@ -84,7 +84,7 @@ export default async function ProfilePage({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(buildPersonJsonLd(profile, sanitize)),
+            __html: JSON.stringify(buildProfilePageJsonLd(profile, sanitize)),
           }}
         />
         <ProfileEditProvider initialProfile={profile}>
