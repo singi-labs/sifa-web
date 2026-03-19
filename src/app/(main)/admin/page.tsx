@@ -7,6 +7,7 @@ import { LatestSignups } from './_components/latest-signups';
 import { DauChart } from './_components/dau-chart';
 import { MauChart } from './_components/mau-chart';
 import { LinkedinImportsChart } from './_components/linkedin-imports-chart';
+import { PdsDistributionChart } from './_components/pds-distribution-chart';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3100';
 
@@ -55,6 +56,15 @@ interface ImportsResponse {
   summary: ImportSummary;
 }
 
+interface PdsSlice {
+  name: string;
+  value: number;
+}
+
+interface PdsResponse {
+  slices: PdsSlice[];
+}
+
 interface SignupUser {
   did: string;
   handle: string;
@@ -80,6 +90,8 @@ export default function AdminPage() {
   const [activeLoading, setActiveLoading] = useState(true);
   const [imports, setImports] = useState<ImportsResponse | null>(null);
   const [importsLoading, setImportsLoading] = useState(true);
+  const [pdsData, setPdsData] = useState<PdsResponse | null>(null);
+  const [pdsLoading, setPdsLoading] = useState(true);
 
   const fetchStats = useCallback(async (daysParam: string) => {
     setLoading(true);
@@ -135,6 +147,25 @@ export default function AdminPage() {
     void fetchActiveUsers(days);
     void fetchImports(days);
   }, [days, fetchStats, fetchActiveUsers, fetchImports]);
+
+  useEffect(() => {
+    async function fetchPds() {
+      setPdsLoading(true);
+      try {
+        const res = await fetch(`${API_URL}/api/admin/stats/pds-distribution`, {
+          credentials: 'include',
+        });
+        if (!res.ok) throw new Error(`Failed: ${res.status}`);
+        const json: PdsResponse = await res.json();
+        setPdsData(json);
+      } catch (err) {
+        console.error('Failed to fetch PDS distribution:', err);
+      } finally {
+        setPdsLoading(false);
+      }
+    }
+    void fetchPds();
+  }, []);
 
   useEffect(() => {
     async function fetchLatest() {
@@ -248,6 +279,18 @@ export default function AdminPage() {
           <LinkedinImportsChart data={imports.daily} summary={imports.summary} />
         ) : (
           <p className="text-muted-foreground">Failed to load import stats.</p>
+        )}
+      </div>
+
+      {/* PDS Distribution */}
+      <h2 className="mt-10 text-xl font-semibold">PDS Distribution</h2>
+      <div className="mt-4 max-w-lg">
+        {pdsLoading ? (
+          <div className="h-80 animate-pulse rounded-lg bg-muted" />
+        ) : pdsData ? (
+          <PdsDistributionChart data={pdsData.slices} />
+        ) : (
+          <p className="text-muted-foreground">Failed to load PDS distribution.</p>
         )}
       </div>
 
