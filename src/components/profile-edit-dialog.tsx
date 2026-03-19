@@ -147,7 +147,7 @@ export function ProfileEditDialog({
 
     setSaving(false);
     if (result.success) {
-      trackEvent('profile-edit');
+      trackEvent('profile-edit', { section: 'profile' });
       updateProfile({
         headline: headline || undefined,
         about: about || undefined,

@@ -9,6 +9,7 @@ import { PositionSkillEditor } from '@/components/position-skill-editor';
 import { useProfileEdit } from '@/components/profile-edit-provider';
 import { createSkill } from '@/lib/profile-api';
 import type { ProfilePosition, ProfileSkill, SkillRef } from '@/lib/types';
+import { trackEvent } from '@/lib/analytics';
 import { formatLocation, parseLocationString } from '@/lib/location-utils';
 
 /** Normalise a partial date to YYYY-MM for the month input. */
@@ -106,7 +107,9 @@ export function PositionEditDialog({ title, position, onSave, onCancel }: Positi
     setError(null);
     const result = await onSave(values, skillRefs, linkedSkills);
     setSaving(false);
-    if (!result.success) {
+    if (result.success) {
+      trackEvent('profile-edit', { section: 'position' });
+    } else {
       setError(result.error ?? t('failedToSave'));
     }
   };
