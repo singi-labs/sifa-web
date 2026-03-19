@@ -86,6 +86,24 @@ export default async function AboutPage() {
           >
             Singi Labs
           </a>
+          {' · '}
+          <a
+            href="https://singi.dev/press/kit/"
+            className="font-medium text-foreground underline-offset-4 hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {t('pressKit')}
+          </a>
+          {' · '}
+          <a
+            href="https://singi.dev/press/sifa-launch/"
+            className="font-medium text-foreground underline-offset-4 hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {t('launchAnnouncement')}
+          </a>
         </p>
       </div>
     </div>

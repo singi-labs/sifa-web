@@ -1,7 +1,16 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
+import { ProfileEditProvider } from '@/components/profile-edit-provider';
 import { ProfileBody } from '@/components/profile-body';
 import type { Profile } from '@/lib/types';
+
+function renderWithProvider(profile: Profile) {
+  return render(
+    <ProfileEditProvider initialProfile={profile}>
+      <ProfileBody />
+    </ProfileEditProvider>,
+  );
+}
 
 beforeEach(() => {
   vi.stubGlobal(
@@ -28,21 +37,21 @@ const baseProfile: Profile = {
 
 describe('ProfileBody', () => {
   it('renders about section when profile has about text', () => {
-    render(
-      <ProfileBody
-        profile={{ ...baseProfile, headline: 'Software Engineer', about: 'I am a developer' }}
-      />,
-    );
+    renderWithProvider({
+      ...baseProfile,
+      headline: 'Software Engineer',
+      about: 'I am a developer',
+    });
     expect(screen.getByText('I am a developer')).toBeDefined();
   });
 
   it('renders activity overview', () => {
-    render(<ProfileBody profile={baseProfile} />);
+    renderWithProvider(baseProfile);
     expect(screen.getByText('Activity')).toBeDefined();
   });
 
   it('renders track record section', () => {
-    render(<ProfileBody profile={baseProfile} />);
+    renderWithProvider(baseProfile);
     expect(screen.getByText('Track Record')).toBeDefined();
   });
 
@@ -53,7 +62,7 @@ describe('ProfileBody', () => {
         { rkey: '1', companyName: 'Acme', title: 'Engineer', startDate: '2020', current: true },
       ],
     };
-    render(<ProfileBody profile={profile} />);
+    renderWithProvider(profile);
     expect(screen.getByText('Career')).toBeDefined();
     expect(screen.getByText('Engineer')).toBeDefined();
   });
@@ -68,7 +77,7 @@ describe('ProfileBody', () => {
       ],
       education: [{ rkey: '1', institution: 'MIT', startDate: '2016' }],
     };
-    render(<ProfileBody profile={profile} />);
+    renderWithProvider(profile);
     const navs = screen.getAllByRole('navigation', { name: 'Profile sections' });
     expect(navs.length).toBe(2); // desktop + mobile
   });
@@ -80,7 +89,7 @@ describe('ProfileBody', () => {
         { rkey: '1', companyName: 'Acme', title: 'Engineer', startDate: '2020', current: true },
       ],
     };
-    render(<ProfileBody profile={profile} />);
+    renderWithProvider(profile);
     expect(screen.queryByRole('navigation', { name: 'Profile sections' })).toBeNull();
   });
 
@@ -91,7 +100,7 @@ describe('ProfileBody', () => {
       projects: [{ rkey: '1', name: 'My Project', startDate: '2023' }],
       languages: [{ rkey: '1', language: 'English', proficiency: 'native' }],
     };
-    render(<ProfileBody profile={profile} />);
+    renderWithProvider(profile);
     expect(screen.getByText('TypeScript')).toBeDefined();
     expect(screen.getByText('My Project')).toBeDefined();
     expect(screen.getByText('English')).toBeDefined();

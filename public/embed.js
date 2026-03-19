@@ -231,6 +231,26 @@
             var wrapper = document.createElement('div');
             wrapper.innerHTML = renderCard(data);
             shadow.appendChild(wrapper);
+
+            // Track embed load (excluding sifa.id itself)
+            try {
+              if (window.location.hostname !== 'sifa.id') {
+                fetch(baseUrl + '/u/api/send', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    type: 'event',
+                    payload: {
+                      website: '7f659ec9-5d5f-4ee4-96e0-10d8bcefd69d',
+                      url: window.location.pathname,
+                      name: 'embed-load',
+                      hostname: window.location.hostname,
+                      data: { handle: identifier, host: window.location.hostname },
+                    },
+                  }),
+                }).catch(function () {});
+              }
+            } catch (_e) {}
           })
           .catch(function () {
             var styleEl = document.createElement('style');

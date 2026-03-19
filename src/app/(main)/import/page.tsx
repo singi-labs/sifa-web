@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 import { processLinkedInExport, type ImportPreview } from '@/lib/import/orchestrator';
+import { trackEvent } from '@/lib/analytics';
 import { useAuth } from '@/components/auth-provider';
 import { fetchProfile } from '@/lib/api';
 import { revalidateProfileCache } from '@/app/actions';
@@ -58,8 +59,10 @@ export default function ImportPage() {
     setIsProcessing(true);
     setExtractionError(null);
     try {
+      trackEvent('import-upload');
       const result = await processLinkedInExport(file);
       setPreview(result);
+      trackEvent('import-preview');
       setStep('preview');
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Could not read ZIP file';

@@ -311,7 +311,9 @@
     "openSource": "Sifa's professional profile lexicons and import tools are open source under the MIT license. The application code is source-available on GitHub. Professional identity standards should be open to everyone, even our competitors.",
     "ctaTitle": "Claim your profile",
     "cta": "If you have a Bluesky or AT Protocol account, you already have a Sifa profile waiting. Sign in, import your LinkedIn data, and own your professional identity.",
-    "builtBy": "Built by"
+    "builtBy": "Built by",
+    "pressKit": "Press Kit",
+    "launchAnnouncement": "Launch Announcement"
   },
   "privacy": {
     "title": "Privacy Policy",
@@ -326,11 +328,13 @@
     "hostingTitle": "Hosting and jurisdiction",
     "hostingBody": "All Sifa infrastructure runs in the EU. Our servers are hosted by Hetzner in Germany. Your PDS may be hosted anywhere you choose. Because profile data lives in your PDS, Sifa doesn't determine where your data is stored. You do.",
     "euCommitmentTitle": "EU-first services",
-    "euCommitmentBody": "When we add services like analytics or a CDN, we'll pick EU-based providers (such as Bunny.net) or self-host open source tools on our own EU infrastructure rather than route your traffic through US companies like Google or Cloudflare.",
+    "euCommitmentBody": "We pick EU-based providers or self-host open source tools on our own EU infrastructure rather than route your traffic through US companies like Google or Cloudflare. Our analytics run on Umami, self-hosted in the Netherlands. Our website production servers are hosted by Hetzner in Germany.",
+    "analyticsTitle": "Analytics",
+    "analyticsBody": "We use Umami for website analytics. Umami is open source, cookieless, and fully GDPR-compliant. We self-host it on our own infrastructure in the Netherlands — no data is sent to third parties. Umami collects only aggregate, anonymous usage data such as page views, referrer URLs, browser type, and country. It does not track individual users, use cookies, or collect any personal information. You can verify this yourself: Umami's source code is public at github.com/umami-software/umami.",
     "cookiesTitle": "Cookies and sessions",
-    "cookiesBody": "Sifa uses a session cookie for authentication and a preference cookie for dark/light mode. That's the complete list. No tracking cookies, no analytics cookies, no third-party advertising cookies.",
+    "cookiesBody": "Sifa uses a session cookie for authentication and a preference cookie for dark/light mode. That's the complete list. No tracking cookies, no analytics cookies, no third-party advertising cookies. Our analytics tool (Umami) is fully cookieless.",
     "loggingTitle": "Logging",
-    "loggingBody": "We log server errors and API request metadata (timestamps, response codes) for debugging. Logs don't contain profile data and are rotated automatically. We don't use any third-party analytics or tracking services.",
+    "loggingBody": "We log server errors and API request metadata (timestamps, response codes) for debugging. Logs don't contain profile data and are rotated automatically.",
     "contactTitle": "Contact",
     "contactBody": "For privacy questions, reach us at privacy@sifa.id."
   },

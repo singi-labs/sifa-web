@@ -5,6 +5,7 @@ import { sanitize } from '@/lib/sanitize';
 import { IdentityCard } from '@/components/identity-card';
 import type { LocationValue, ProfilePosition } from '@/lib/types';
 import { DataTransparencyCard } from '@/components/data-transparency-card';
+import { ProfileEditProvider } from '@/components/profile-edit-provider';
 import { ProfileBody } from '@/components/profile-body';
 import { UnclaimedBanner } from '@/components/unclaimed-banner';
 import { DeletedAccountModal } from '@/components/deleted-account-modal';
@@ -86,30 +87,32 @@ export default async function ProfilePage({
             __html: JSON.stringify(buildProfilePageJsonLd(profile, sanitize)),
           }}
         />
-        <IdentityCard
-          did={profile.did}
-          handle={profile.handle}
-          displayName={profile.displayName}
-          avatar={profile.avatar}
-          headline={profile.headline}
-          about={profile.about}
-          currentRole={currentPosition?.title}
-          currentCompany={currentPosition?.companyName}
-          location={location}
-          website={profile.website}
-          openTo={profile.openTo}
-          preferredWorkplace={profile.preferredWorkplace}
-          followersCount={profile.followersCount}
-          atprotoFollowersCount={profile.atprotoFollowersCount}
-          trustStats={profile.trustStats}
-          verifiedAccounts={profile.verifiedAccounts}
-          pdsProviderInfo={profile.pdsProvider}
-          claimed={profile.claimed}
-          isOwnProfile={profile.isOwnProfile}
-          isFollowing={profile.isFollowing}
-        />
-        {profile.isOwnProfile && <DataTransparencyCard did={profile.did} />}
-        <ProfileBody profile={profile} />
+        <ProfileEditProvider initialProfile={profile}>
+          <IdentityCard
+            did={profile.did}
+            handle={profile.handle}
+            displayName={profile.displayName}
+            avatar={profile.avatar}
+            headline={profile.headline}
+            about={profile.about}
+            currentRole={currentPosition?.title}
+            currentCompany={currentPosition?.companyName}
+            location={location}
+            website={profile.website}
+            openTo={profile.openTo}
+            preferredWorkplace={profile.preferredWorkplace}
+            followersCount={profile.followersCount}
+            atprotoFollowersCount={profile.atprotoFollowersCount}
+            trustStats={profile.trustStats}
+            verifiedAccounts={profile.verifiedAccounts}
+            pdsProviderInfo={profile.pdsProvider}
+            claimed={profile.claimed}
+            isOwnProfile={profile.isOwnProfile}
+            isFollowing={profile.isFollowing}
+          />
+          {profile.isOwnProfile && <DataTransparencyCard did={profile.did} />}
+          <ProfileBody />
+        </ProfileEditProvider>
       </div>
     </>
   );

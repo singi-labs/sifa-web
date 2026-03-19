@@ -4,6 +4,10 @@ import { useCallback, useEffect, useState } from 'react';
 import { DailySignupsChart } from './_components/daily-signups-chart';
 import { CumulativeUsersChart } from './_components/cumulative-users-chart';
 import { LatestSignups } from './_components/latest-signups';
+import { DauChart } from './_components/dau-chart';
+import { MauChart } from './_components/mau-chart';
+import { LinkedinImportsChart } from './_components/linkedin-imports-chart';
+import { PdsDistributionChart } from './_components/pds-distribution-chart';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3100';
 
@@ -16,6 +20,49 @@ interface SignupEntry {
 interface StatsResponse {
   totalUsers: number;
   signups: SignupEntry[];
+}
+
+interface DauEntry {
+  date: string;
+  count: number;
+}
+
+interface MauEntry {
+  month: string;
+  count: number;
+}
+
+interface ActiveUsersResponse {
+  daily: DauEntry[];
+  monthly: MauEntry[];
+}
+
+interface ImportEntry {
+  date: string;
+  successCount: number;
+  failureCount: number;
+  totalItems: number;
+}
+
+interface ImportSummary {
+  totalImports: number;
+  totalSuccess: number;
+  totalItems: number;
+  successRate: number;
+}
+
+interface ImportsResponse {
+  daily: ImportEntry[];
+  summary: ImportSummary;
+}
+
+interface PdsSlice {
+  name: string;
+  value: number;
+}
+
+interface PdsResponse {
+  slices: PdsSlice[];
 }
 
 interface SignupUser {
@@ -39,6 +86,12 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(true);
   const [latestUsers, setLatestUsers] = useState<SignupUser[]>([]);
   const [latestLoading, setLatestLoading] = useState(true);
+  const [activeUsers, setActiveUsers] = useState<ActiveUsersResponse | null>(null);
+  const [activeLoading, setActiveLoading] = useState(true);
+  const [imports, setImports] = useState<ImportsResponse | null>(null);
+  const [importsLoading, setImportsLoading] = useState(true);
+  const [pdsData, setPdsData] = useState<PdsResponse | null>(null);
+  const [pdsLoading, setPdsLoading] = useState(true);
 
   const fetchStats = useCallback(async (daysParam: string) => {
     setLoading(true);
@@ -57,9 +110,62 @@ export default function AdminPage() {
     }
   }, []);
 
+  const fetchActiveUsers = useCallback(async (daysParam: string) => {
+    setActiveLoading(true);
+    try {
+      const res = await fetch(`${API_URL}/api/admin/stats/active-users?days=${daysParam}`, {
+        credentials: 'include',
+      });
+      if (!res.ok) throw new Error(`Failed: ${res.status}`);
+      const json: ActiveUsersResponse = await res.json();
+      setActiveUsers(json);
+    } catch (err) {
+      console.error('Failed to fetch active users:', err);
+    } finally {
+      setActiveLoading(false);
+    }
+  }, []);
+
+  const fetchImports = useCallback(async (daysParam: string) => {
+    setImportsLoading(true);
+    try {
+      const res = await fetch(`${API_URL}/api/admin/stats/linkedin-imports?days=${daysParam}`, {
+        credentials: 'include',
+      });
+      if (!res.ok) throw new Error(`Failed: ${res.status}`);
+      const json: ImportsResponse = await res.json();
+      setImports(json);
+    } catch (err) {
+      console.error('Failed to fetch LinkedIn imports:', err);
+    } finally {
+      setImportsLoading(false);
+    }
+  }, []);
+
   useEffect(() => {
     void fetchStats(days);
-  }, [days, fetchStats]);
+    void fetchActiveUsers(days);
+    void fetchImports(days);
+  }, [days, fetchStats, fetchActiveUsers, fetchImports]);
+
+  useEffect(() => {
+    async function fetchPds() {
+      setPdsLoading(true);
+      try {
+        const res = await fetch(`${API_URL}/api/admin/stats/pds-distribution`, {
+          credentials: 'include',
+        });
+        if (!res.ok) throw new Error(`Failed: ${res.status}`);
+        const json: PdsResponse = await res.json();
+        setPdsData(json);
+      } catch (err) {
+        console.error('Failed to fetch PDS distribution:', err);
+      } finally {
+        setPdsLoading(false);
+      }
+    }
+    void fetchPds();
+  }, []);
 
   useEffect(() => {
     async function fetchLatest() {
@@ -82,7 +188,17 @@ export default function AdminPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
-      <h1 className="text-3xl font-bold tracking-tight">Admin</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-3xl font-bold tracking-tight">Admin</h1>
+        <a
+          href="https://u.a11y.nl/websites/7f659ec9-5d5f-4ee4-96e0-10d8bcefd69d"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="rounded-md bg-muted px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+        >
+          Umami Analytics
+        </a>
+      </div>
 
       {/* Total users */}
       <div className="mt-6">
@@ -130,6 +246,51 @@ export default function AdminPage() {
           </>
         ) : (
           <p className="text-muted-foreground">Failed to load stats.</p>
+        )}
+      </div>
+
+      {/* Active Users */}
+      <h2 className="mt-10 text-xl font-semibold">Active Users</h2>
+      <p className="mt-1 text-sm text-muted-foreground">
+        Tracking since deployment. Users with no activity show as zero.
+      </p>
+      <div className="mt-4 grid grid-cols-1 gap-6 lg:grid-cols-2">
+        {activeLoading ? (
+          <>
+            <div className="h-80 animate-pulse rounded-lg bg-muted" />
+            <div className="h-80 animate-pulse rounded-lg bg-muted" />
+          </>
+        ) : activeUsers ? (
+          <>
+            <DauChart data={activeUsers.daily} />
+            <MauChart data={activeUsers.monthly} />
+          </>
+        ) : (
+          <p className="text-muted-foreground">Failed to load active user stats.</p>
+        )}
+      </div>
+
+      {/* LinkedIn Imports */}
+      <h2 className="mt-10 text-xl font-semibold">LinkedIn Imports</h2>
+      <div className="mt-4">
+        {importsLoading ? (
+          <div className="h-96 animate-pulse rounded-lg bg-muted" />
+        ) : imports ? (
+          <LinkedinImportsChart data={imports.daily} summary={imports.summary} />
+        ) : (
+          <p className="text-muted-foreground">Failed to load import stats.</p>
+        )}
+      </div>
+
+      {/* PDS Distribution */}
+      <h2 className="mt-10 text-xl font-semibold">PDS Distribution</h2>
+      <div className="mt-4 max-w-lg">
+        {pdsLoading ? (
+          <div className="h-80 animate-pulse rounded-lg bg-muted" />
+        ) : pdsData ? (
+          <PdsDistributionChart data={pdsData.slices} />
+        ) : (
+          <p className="text-muted-foreground">Failed to load PDS distribution.</p>
         )}
       </div>
 

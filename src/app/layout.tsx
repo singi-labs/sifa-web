@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Script from 'next/script';
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getMessages } from 'next-intl/server';
 import { ThemeProvider } from '@/components/theme-provider';
@@ -32,6 +33,13 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} suppressHydrationWarning>
+      <head>
+        <Script
+          src="/u/script.js"
+          data-website-id="7f659ec9-5d5f-4ee4-96e0-10d8bcefd69d"
+          strategy="afterInteractive"
+        />
+      </head>
       <body className="antialiased">
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ThemeProvider

@@ -68,8 +68,8 @@ function LoginContent() {
   };
 
   return (
-    <div className="flex items-center justify-center px-4 py-24">
-      <div className="w-full max-w-sm space-y-8">
+    <div className="mx-auto max-w-sm px-4 py-12">
+      <div className="space-y-8">
         <div className="space-y-2">
           <h1 className="text-2xl font-bold tracking-tight">{t('title')}</h1>
           <p className="text-sm text-muted-foreground">{t('description')}</p>
@@ -212,7 +212,7 @@ export default function LoginPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex items-center justify-center px-4 py-24">
+        <div className="mx-auto max-w-sm px-4 py-12">
           <div className="h-8 w-8 animate-pulse rounded-full bg-muted" />
         </div>
       }
