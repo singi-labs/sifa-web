@@ -65,13 +65,26 @@ interface PdsResponse {
   slices: PdsSlice[];
 }
 
+interface ProfileCompletion {
+  hasHeadline: boolean;
+  hasAbout: boolean;
+  positionCount: number;
+  educationCount: number;
+  skillCount: number;
+  certificationCount: number;
+}
+
 interface SignupUser {
   did: string;
   handle: string;
   displayName: string | null;
   avatarUrl: string | null;
   createdAt: string;
+  hasImported: boolean;
+  profileCompletion: ProfileCompletion;
 }
+
+type SignupFilter = 'all' | 'no-import';
 
 const TIME_RANGES = [
   { label: '7d', value: '7' },
@@ -86,6 +99,7 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(true);
   const [latestUsers, setLatestUsers] = useState<SignupUser[]>([]);
   const [latestLoading, setLatestLoading] = useState(true);
+  const [signupFilter, setSignupFilter] = useState<SignupFilter>('all');
   const [activeUsers, setActiveUsers] = useState<ActiveUsersResponse | null>(null);
   const [activeLoading, setActiveLoading] = useState(true);
   const [imports, setImports] = useState<ImportsResponse | null>(null);
@@ -171,7 +185,8 @@ export default function AdminPage() {
     async function fetchLatest() {
       setLatestLoading(true);
       try {
-        const res = await fetch(`${API_URL}/api/admin/stats/latest-signups`, {
+        const params = new URLSearchParams({ filter: signupFilter });
+        const res = await fetch(`${API_URL}/api/admin/stats/latest-signups?${params}`, {
           credentials: 'include',
         });
         if (!res.ok) throw new Error(`Failed: ${res.status}`);
@@ -184,7 +199,7 @@ export default function AdminPage() {
       }
     }
     void fetchLatest();
-  }, []);
+  }, [signupFilter]);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
@@ -298,9 +313,13 @@ export default function AdminPage() {
       <div className="mt-8">
         {latestLoading ? (
           <div className="h-96 animate-pulse rounded-lg bg-muted" />
-        ) : latestUsers.length > 0 ? (
-          <LatestSignups users={latestUsers} />
-        ) : null}
+        ) : (
+          <LatestSignups
+            users={latestUsers}
+            filter={signupFilter}
+            onFilterChange={setSignupFilter}
+          />
+        )}
       </div>
     </div>
   );
