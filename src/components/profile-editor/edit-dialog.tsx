@@ -1,15 +1,21 @@
 'use client';
 
-import { useState, type FormEvent } from 'react';
+import { useState, lazy, Suspense, type FormEvent } from 'react';
 import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { X, Copy, Check } from '@phosphor-icons/react';
 
+const PlateMarkdownEditor = lazy(() =>
+  import('@/components/plate-editor/plate-markdown-editor').then((mod) => ({
+    default: mod.PlateMarkdownEditor,
+  })),
+);
+
 export interface FieldDef {
   name: string;
   label: string;
-  type?: 'text' | 'textarea' | 'month' | 'url' | 'checkbox' | 'select' | 'hint';
+  type?: 'text' | 'textarea' | 'markdown' | 'month' | 'url' | 'checkbox' | 'select' | 'hint';
   required?: boolean;
   placeholder?: string;
   description?: string;
@@ -191,7 +197,26 @@ export function EditDialog({
                 {field.description && (
                   <p className="mb-1 text-xs text-muted-foreground">{field.description}</p>
                 )}
-                {field.type === 'textarea' ? (
+                {field.type === 'markdown' ? (
+                  <Suspense
+                    fallback={
+                      <textarea
+                        className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
+                        rows={4}
+                        disabled
+                        placeholder="Loading editor..."
+                      />
+                    }
+                  >
+                    <PlateMarkdownEditor
+                      id={`edit-${field.name}`}
+                      value={values[field.name] as string}
+                      onChange={(md) => updateValue(field.name, md)}
+                      placeholder={field.placeholder}
+                      aria-label={field.label}
+                    />
+                  </Suspense>
+                ) : field.type === 'textarea' ? (
                   <textarea
                     id={`edit-${field.name}`}
                     className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
