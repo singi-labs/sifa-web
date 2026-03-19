@@ -311,7 +311,9 @@
     "openSource": "Sifa's professional profile lexicons and import tools are open source under the MIT license. The application code is source-available on GitHub. Professional identity standards should be open to everyone, even our competitors.",
     "ctaTitle": "Claim your profile",
     "cta": "If you have a Bluesky or AT Protocol account, you already have a Sifa profile waiting. Sign in, import your LinkedIn data, and own your professional identity.",
-    "builtBy": "Built by"
+    "builtBy": "Built by",
+    "pressKit": "Press Kit",
+    "launchAnnouncement": "Launch Announcement"
   },
   "privacy": {
     "title": "Privacy Policy",
