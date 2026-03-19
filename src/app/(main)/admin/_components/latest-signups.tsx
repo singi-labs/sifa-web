@@ -2,16 +2,31 @@
 
 import Image from 'next/image';
 
-interface SignupUser {
+interface ProfileCompletion {
+  hasHeadline: boolean;
+  hasAbout: boolean;
+  positionCount: number;
+  educationCount: number;
+  skillCount: number;
+  certificationCount: number;
+}
+
+export interface SignupUser {
   did: string;
   handle: string;
   displayName: string | null;
   avatarUrl: string | null;
   createdAt: string;
+  hasImported: boolean;
+  profileCompletion: ProfileCompletion;
 }
+
+type FilterValue = 'all' | 'no-import';
 
 interface LatestSignupsProps {
   users: SignupUser[];
+  filter: FilterValue;
+  onFilterChange: (filter: FilterValue) => void;
 }
 
 function timeAgo(dateStr: string): string {
@@ -28,10 +43,77 @@ function timeAgo(dateStr: string): string {
   return `${days}d ago`;
 }
 
-export function LatestSignups({ users }: LatestSignupsProps) {
+function completionPercent(c: ProfileCompletion): number {
+  // 6 signals, each worth equal weight
+  let filled = 0;
+  if (c.hasHeadline) filled++;
+  if (c.hasAbout) filled++;
+  if (c.positionCount > 0) filled++;
+  if (c.educationCount > 0) filled++;
+  if (c.skillCount > 0) filled++;
+  if (c.certificationCount > 0) filled++;
+  return Math.round((filled / 6) * 100);
+}
+
+function completionColor(pct: number): string {
+  if (pct >= 80) return 'bg-green-500';
+  if (pct >= 50) return 'bg-yellow-500';
+  return 'bg-red-400';
+}
+
+function CompletionBar({ completion }: { completion: ProfileCompletion }) {
+  const pct = completionPercent(completion);
+  const parts: string[] = [];
+  if (completion.hasHeadline) parts.push('Headline');
+  if (completion.hasAbout) parts.push('About');
+  if (completion.positionCount > 0) parts.push(`${completion.positionCount} pos`);
+  if (completion.educationCount > 0) parts.push(`${completion.educationCount} edu`);
+  if (completion.skillCount > 0) parts.push(`${completion.skillCount} skills`);
+  if (completion.certificationCount > 0) parts.push(`${completion.certificationCount} certs`);
+
+  return (
+    <div
+      className="flex items-center gap-2"
+      title={parts.length > 0 ? parts.join(', ') : 'Empty profile'}
+    >
+      <div className="h-1.5 w-16 overflow-hidden rounded-full bg-muted">
+        <div
+          className={`h-full rounded-full transition-all ${completionColor(pct)}`}
+          style={{ width: `${pct}%` }}
+        />
+      </div>
+      <span className="text-xs tabular-nums text-muted-foreground">{pct}%</span>
+    </div>
+  );
+}
+
+const FILTERS: { label: string; value: FilterValue }[] = [
+  { label: 'All', value: 'all' },
+  { label: 'No import', value: 'no-import' },
+];
+
+export function LatestSignups({ users, filter, onFilterChange }: LatestSignupsProps) {
   return (
     <div className="rounded-lg border border-border bg-card p-4">
-      <h2 className="mb-4 text-lg font-semibold">Latest Signups</h2>
+      <div className="mb-4 flex items-center justify-between">
+        <h2 className="text-lg font-semibold">Latest Signups</h2>
+        <div className="flex gap-1" role="group" aria-label="Filter signups">
+          {FILTERS.map((f) => (
+            <button
+              key={f.value}
+              type="button"
+              onClick={() => onFilterChange(f.value)}
+              className={`rounded-md px-3 py-1 text-xs font-medium transition-colors ${
+                filter === f.value
+                  ? 'bg-primary text-primary-foreground'
+                  : 'bg-muted text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              {f.label}
+            </button>
+          ))}
+        </div>
+      </div>
       <div className="divide-y divide-border">
         {users.map((user) => (
           <div key={user.did} className="flex items-center gap-3 py-3 first:pt-0 last:pb-0">
@@ -47,9 +129,17 @@ export function LatestSignups({ users }: LatestSignupsProps) {
               <div className="h-9 w-9 rounded-full bg-muted" />
             )}
             <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-medium">{user.displayName || user.handle}</p>
+              <div className="flex items-center gap-2">
+                <p className="truncate text-sm font-medium">{user.displayName || user.handle}</p>
+                {!user.hasImported && (
+                  <span className="shrink-0 rounded bg-amber-100 px-1.5 py-0.5 text-[10px] font-medium text-amber-800 dark:bg-amber-900/30 dark:text-amber-400">
+                    No import
+                  </span>
+                )}
+              </div>
               <p className="truncate text-xs text-muted-foreground">@{user.handle}</p>
             </div>
+            <CompletionBar completion={user.profileCompletion} />
             <span className="shrink-0 text-xs text-muted-foreground">
               {timeAgo(user.createdAt)}
             </span>
@@ -71,6 +161,11 @@ export function LatestSignups({ users }: LatestSignupsProps) {
             </div>
           </div>
         ))}
+        {users.length === 0 && (
+          <p className="py-4 text-center text-sm text-muted-foreground">
+            No users match this filter.
+          </p>
+        )}
       </div>
     </div>
   );
