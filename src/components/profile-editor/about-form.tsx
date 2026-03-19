@@ -9,7 +9,7 @@ export const ABOUT_FIELDS: FieldDef[] = [
   {
     name: 'about',
     label: 'About',
-    type: 'textarea',
+    type: 'markdown',
     placeholder: 'Tell your professional story...',
   },
   { name: 'location', label: 'Location', placeholder: 'City, Country' },
