@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, type FormEvent } from 'react';
+import { useState, lazy, Suspense, type FormEvent } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
@@ -15,6 +15,12 @@ import { updateProfileSelf, refreshPds } from '@/lib/profile-api';
 import { revalidateProfileCache } from '@/app/actions';
 import { LocationSearch } from '@/components/location-search';
 import type { LocationValue } from '@/lib/types';
+
+const PlateMarkdownEditor = lazy(() =>
+  import('@/components/plate-editor/plate-markdown-editor').then((mod) => ({
+    default: mod.PlateMarkdownEditor,
+  })),
+);
 
 const OPEN_TO_OPTIONS = [
   { value: 'id.sifa.defs#fullTimeRoles', labelKey: 'fullTimeRoles' },
@@ -274,14 +280,24 @@ export function ProfileEditDialog({
             <label htmlFor="edit-about" className="mb-1 block text-sm font-medium">
               {t('about')}
             </label>
-            <textarea
-              id="edit-about"
-              className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              rows={8}
-              value={about}
-              onChange={(e) => setAbout(e.target.value)}
-              placeholder={t('aboutPlaceholder')}
-            />
+            <Suspense
+              fallback={
+                <textarea
+                  className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
+                  rows={8}
+                  disabled
+                  placeholder="Loading editor..."
+                />
+              }
+            >
+              <PlateMarkdownEditor
+                id="edit-about"
+                value={about}
+                onChange={setAbout}
+                placeholder={t('aboutPlaceholder')}
+                aria-label={t('about')}
+              />
+            </Suspense>
           </div>
 
           {/* Location */}
