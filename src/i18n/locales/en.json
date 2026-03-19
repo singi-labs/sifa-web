@@ -16,6 +16,7 @@
     "about": "About",
     "privacy": "Privacy",
     "terms": "Terms",
+    "roadmap": "Roadmap",
     "builtBy": "Built by",
     "poweredByAtproto": "Powered by the AT Protocol",
     "switchToLight": "Switch to light mode",
@@ -311,6 +312,7 @@
     "openSource": "Sifa's professional profile lexicons and import tools are open source under the MIT license. The application code is source-available on GitHub. Professional identity standards should be open to everyone, even our competitors.",
     "ctaTitle": "Claim your profile",
     "cta": "If you have a Bluesky or AT Protocol account, you already have a Sifa profile waiting. Sign in, import your LinkedIn data, and own your professional identity.",
+    "roadmapLink": "View our roadmap",
     "builtBy": "Built by",
     "pressKit": "Press Kit",
     "launchAnnouncement": "Launch Announcement"
@@ -401,6 +403,32 @@
     "relationshipSupervisedBy": "Supervised / was supervised by",
     "relationshipCoAuthored": "Co-authored",
     "relationshipOther": "{detail}"
+  },
+  "roadmap": {
+    "title": "Roadmap",
+    "subtitle": "What we've built so far and where Sifa is headed next.",
+    "items": {
+      "profilePage": "Personal profile page",
+      "linkedinImport": "LinkedIn data import",
+      "profileEditing": "Profile editing",
+      "searchFindPeople": "Search and find people",
+      "profileEmbeds": "Embeddable profile cards",
+      "endorsements": "Skill endorsements",
+      "profileEnhancements": "Profile enhancements",
+      "endorsementsAttestations": "Endorsements and attestations",
+      "activityIntegration": "Profile activity timeline",
+      "companyPages": "Company pages",
+      "advancedSearch": "Advanced search and discovery",
+      "atmosphereStream": "ATmosphere Stream (cross-app activity feed)",
+      "multiAccountLinking": "Multi-account linking"
+    },
+    "disclaimer": "This roadmap reflects our current thinking and priorities. Items may shift in order, change scope, or be replaced as we learn more. No dates are promised.",
+    "contributeTitle": "Help shape Sifa",
+    "contributeBody": "Sifa is built in the open. If you have an idea, ran into a bug, or want to contribute code, we'd love to hear from you.",
+    "suggestIdea": "Suggest an idea",
+    "reportBug": "Report a bug",
+    "prWelcome": "Pull requests are welcome too.",
+    "viewOnGithub": "View our repos on GitHub"
   },
   "dangerZone": {
     "title": "Danger Zone",
