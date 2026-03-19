@@ -54,7 +54,7 @@ export function PlateMarkdownEditor({
           id={id}
           aria-label={ariaLabel}
           placeholder={placeholder}
-          className="min-h-[120px] px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 [&_[data-slate-node=element]:not(:last-child)]:mb-4"
+          className="min-h-[120px] px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 [&_[data-slate-node=element]:not(:last-child)]:mb-4 [&_[data-slate-node=element][style*=list-style-type]:not(:last-child)]:mb-1"
         />
       </Plate>
     </div>
