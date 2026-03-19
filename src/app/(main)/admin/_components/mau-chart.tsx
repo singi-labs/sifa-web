@@ -1,5 +1,6 @@
 'use client';
 
+import type { ReactNode } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 
 interface MauEntry {
@@ -11,8 +12,8 @@ interface MauChartProps {
   data: MauEntry[];
 }
 
-function formatMonth(value: string | number): string {
-  if (typeof value !== 'string') return String(value);
+function formatMonth(value: ReactNode): string {
+  if (typeof value !== 'string') return String(value ?? '');
   const [year, month] = value.split('-');
   const date = new Date(Number(year), Number(month) - 1);
   return date.toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
