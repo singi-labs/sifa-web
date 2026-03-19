@@ -12,7 +12,7 @@ import { test, expect } from './fixtures/base';
  * creates them (first run) and subsequent runs compare against them.
  */
 
-const PAGES = [
+const ALL_PAGES = [
   { path: '/', name: 'homepage' },
   { path: '/about', name: 'about' },
   { path: '/privacy', name: 'privacy' },
@@ -22,6 +22,14 @@ const PAGES = [
   { path: '/search', name: 'search' },
   { path: '/experts', name: 'experts' },
 ];
+
+// AFFECTED_PAGES env var (comma-separated page names, e.g. "homepage,about")
+// filters which pages get screenshotted. "all" or unset = screenshot everything.
+const affected = process.env.AFFECTED_PAGES;
+const PAGES =
+  affected && affected !== 'all'
+    ? ALL_PAGES.filter(({ name }) => affected.split(',').includes(name))
+    : ALL_PAGES;
 
 test.describe('Visual regression', () => {
   for (const { path, name } of PAGES) {

@@ -42,8 +42,13 @@ export const test = base.extend<BaseFixtures>({
       fs.mkdirSync(QA_SCREENSHOTS_DIR, { recursive: true });
     }
 
+    // AFFECTED_PAGES env var limits which pages get screenshotted in CI.
+    const affected = process.env.AFFECTED_PAGES;
+    const affectedSet = affected && affected !== 'all' ? new Set(affected.split(',')) : null;
+
     const capture = async (page: Page, name: string): Promise<string | null> => {
       if (!enabled) return null;
+      if (affectedSet && !affectedSet.has(name)) return null;
 
       // Wait for all in-flight network requests to finish so server-rendered
       // dynamic content (AT Protocol stats, avatar reel) has loaded.

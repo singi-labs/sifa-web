@@ -39,15 +39,45 @@ jobs:
       - name: Install Playwright browsers
         run: pnpm exec playwright install --with-deps chromium webkit
 
-      - name: Detect frontend changes
-        id: frontend
+      - name: Detect affected pages
+        id: affected
         if: github.event_name == 'pull_request'
         run: |
           CHANGED=$(gh pr diff "${{ github.event.pull_request.number }}" --name-only)
-          if echo "$CHANGED" | grep -qE '^(src/app/|src/components/|src/styles/|public/|tailwind\.config|src/app/globals\.css)'; then
-            echo "changed=true" >> "$GITHUB_OUTPUT"
+
+          # Shared files that affect ALL pages (layouts, components, styles, config, public assets)
+          if echo "$CHANGED" | grep -qE '^(src/app/layout\.tsx|src/app/\(main\)/layout\.tsx|src/components/|src/styles/|src/lib/|src/i18n/|public/|tailwind\.config|next\.config|src/app/globals\.css)'; then
+            echo "pages=all" >> "$GITHUB_OUTPUT"
+            echo "frontend_changed=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Map route-specific files to page names
+          PAGES=""
+          while IFS= read -r file; do
+            case "$file" in
+              src/app/\(main\)/page.tsx)              PAGES="$PAGES,homepage" ;;
+              src/app/\(main\)/about/*)               PAGES="$PAGES,about" ;;
+              src/app/\(main\)/privacy/*)             PAGES="$PAGES,privacy" ;;
+              src/app/\(main\)/terms/*)               PAGES="$PAGES,terms" ;;
+              src/app/\(main\)/login/*)               PAGES="$PAGES,login" ;;
+              src/app/\(main\)/embed/*)               PAGES="$PAGES,embed" ;;
+              src/app/\(embed\)/*)                    PAGES="$PAGES,embed" ;;
+              src/app/\(main\)/search/*)              PAGES="$PAGES,search" ;;
+              src/app/\(main\)/experts/*)             PAGES="$PAGES,experts" ;;
+              src/app/\(main\)/find-people/*)         PAGES="$PAGES,search" ;;
+            esac
+          done <<< "$CHANGED"
+
+          # Deduplicate and trim leading comma
+          PAGES=$(echo "$PAGES" | tr ',' '\n' | sort -u | paste -sd ',' - | sed 's/^,//')
+
+          if [ -z "$PAGES" ]; then
+            echo "pages=none" >> "$GITHUB_OUTPUT"
+            echo "frontend_changed=false" >> "$GITHUB_OUTPUT"
           else
-            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "pages=$PAGES" >> "$GITHUB_OUTPUT"
+            echo "frontend_changed=true" >> "$GITHUB_OUTPUT"
           fi
         env:
           GH_TOKEN: ${{ github.token }}
@@ -59,12 +89,15 @@ jobs:
         run: pnpm exec playwright test --grep-invert "Visual regression"
         env:
           PLAYWRIGHT_BASE_URL: http://localhost:3000
-          QA_SCREENSHOTS: ${{ (github.event_name == 'push' || steps.frontend.outputs.changed == 'true') && '1' || '0' }}
+          QA_SCREENSHOTS: ${{ (github.event_name == 'push' || steps.affected.outputs.frontend_changed == 'true') && '1' || '0' }}
+          AFFECTED_PAGES: ${{ steps.affected.outputs.pages || 'all' }}
 
       - name: Run visual regression (update baselines if missing)
+        if: ${{ github.event_name == 'push' || steps.affected.outputs.pages != 'none' }}
         run: pnpm exec playwright test e2e/visual-regression.spec.ts --update-snapshots --reporter=line
         env:
           PLAYWRIGHT_BASE_URL: http://localhost:3000
+          AFFECTED_PAGES: ${{ steps.affected.outputs.pages || 'all' }}
 
       - name: Upload test report
         uses: actions/upload-artifact@v4
