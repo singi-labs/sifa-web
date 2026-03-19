@@ -15,6 +15,7 @@ import { updateProfileSelf, refreshPds } from '@/lib/profile-api';
 import { revalidateProfileCache } from '@/app/actions';
 import { LocationSearch } from '@/components/location-search';
 import type { LocationValue } from '@/lib/types';
+import { trackEvent } from '@/lib/analytics';
 
 const PlateMarkdownEditor = lazy(() =>
   import('@/components/plate-editor/plate-markdown-editor').then((mod) => ({
@@ -146,6 +147,7 @@ export function ProfileEditDialog({
 
     setSaving(false);
     if (result.success) {
+      trackEvent('profile-edit');
       updateProfile({
         headline: headline || undefined,
         about: about || undefined,

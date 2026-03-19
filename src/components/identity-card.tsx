@@ -26,6 +26,7 @@ import { getAppMeta } from '@/lib/atproto-apps';
 import { formatCompactNumber } from '@/i18n/format';
 import { resolveDisplayFollowers } from '@/lib/follower-utils';
 import { cn } from '@/lib/utils';
+import { trackEvent } from '@/lib/analytics';
 
 const OPEN_TO_LABEL_KEYS: Record<string, string> = {
   'id.sifa.defs#fullTimeRoles': 'fullTimeRoles',
@@ -553,6 +554,7 @@ export function IdentityCard({
             variant="ghost"
             size="sm"
             onClick={() => {
+              trackEvent('share-click', { handle });
               void navigator.clipboard.writeText(`https://sifa.id/p/${handle}`).then(() => {
                 setCopied(true);
                 toast.success(t('linkCopied'));

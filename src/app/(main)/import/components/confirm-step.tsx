@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, XCircle, ArrowRight } from '@phosphor-icons/react';
+import { trackEvent } from '@/lib/analytics';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3100';
 
@@ -133,9 +134,11 @@ export function ConfirmStep({ preview, onDone }: ConfirmStepProps) {
         setStatus('partial');
       } else {
         setStatus('success');
+        trackEvent('import-complete', { items: totalItems });
       }
     } catch (err) {
       setStatus('error');
+      trackEvent('import-failed');
       setErrorMessage(err instanceof Error ? err.message : 'An unexpected error occurred');
     }
   }, [preview, totalItems]);

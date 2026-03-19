@@ -1,7 +1,10 @@
+'use client';
+
 import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import { sanitize } from '@/lib/sanitize';
 import { getDisplayLabel } from '@/lib/pds-utils';
+import { trackEvent } from '@/lib/analytics';
 
 interface ProfileCardProps {
   handle: string;
@@ -24,7 +27,11 @@ export function ProfileCard({
 }: ProfileCardProps) {
   const label = getDisplayLabel(displayName, handle);
   return (
-    <Link href={`/p/${encodeURIComponent(handle)}`} className="block">
+    <Link
+      href={`/p/${encodeURIComponent(handle)}`}
+      className="block"
+      onClick={() => trackEvent('expert-click', { handle })}
+    >
       <Card className="transition-colors hover:bg-muted/50">
         <CardContent className="flex items-center gap-4 p-4">
           <div className="flex size-12 shrink-0 items-center justify-center rounded-full bg-muted text-lg font-semibold text-muted-foreground">
