@@ -58,7 +58,7 @@ export default async function AboutPage() {
         <section>
           <h2 className="text-xl font-semibold">{t('ctaTitle')}</h2>
           <p className="mt-2 text-muted-foreground">{t('cta')}</p>
-          <div className="mt-4 flex gap-3">
+          <div className="mt-4 flex flex-wrap gap-3">
             <Link
               href="/login"
               className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
@@ -70,6 +70,12 @@ export default async function AboutPage() {
               className="rounded-md border border-border px-4 py-2 text-sm font-medium text-foreground hover:bg-accent"
             >
               Import from LinkedIn
+            </Link>
+            <Link
+              href="/roadmap"
+              className="rounded-md border border-border px-4 py-2 text-sm font-medium text-foreground hover:bg-accent"
+            >
+              {t('roadmapLink')}
             </Link>
           </div>
         </section>

@@ -44,6 +44,12 @@ export function SiteFooter() {
           >
             {t('terms')}
           </Link>
+          <Link
+            href="/roadmap"
+            className="text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+          >
+            {t('roadmap')}
+          </Link>
           <a
             href="https://github.com/singi-labs"
             className="text-muted-foreground hover:text-foreground"
