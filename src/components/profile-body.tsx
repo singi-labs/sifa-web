@@ -8,7 +8,7 @@ import { AboutSection } from '@/components/about-section';
 import { ActivityOverview } from '@/components/activity-overview';
 import { TrackRecord } from '@/components/track-record';
 import { TrustStatsHints } from '@/components/trust-stats-hints';
-import { ProfileEditProvider, useProfileEdit } from '@/components/profile-edit-provider';
+import { useProfileEdit } from '@/components/profile-edit-provider';
 import {
   CareerSection,
   EducationSection,
@@ -24,16 +24,8 @@ import {
 import { DangerZone } from '@/components/danger-zone';
 import type { Profile } from '@/lib/types';
 
-interface ProfileBodyProps {
-  profile: Profile;
-}
-
-export function ProfileBody({ profile: initialProfile }: ProfileBodyProps) {
-  return (
-    <ProfileEditProvider initialProfile={initialProfile}>
-      <ProfileBodyContent />
-    </ProfileEditProvider>
-  );
+export function ProfileBody() {
+  return <ProfileBodyContent />;
 }
 
 const ALL_SECTIONS = [
