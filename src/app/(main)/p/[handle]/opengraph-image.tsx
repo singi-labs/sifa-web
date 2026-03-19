@@ -113,6 +113,7 @@ export default async function ProfileOgImage({ params }: { params: Promise<{ han
               alignItems: 'center',
               justifyContent: 'center',
               width: 320,
+              flexShrink: 0,
               paddingRight: 48,
             }}
           >
@@ -173,6 +174,7 @@ export default async function ProfileOgImage({ params }: { params: Promise<{ han
               flexDirection: 'column',
               justifyContent: 'center',
               flexGrow: 1,
+              overflow: 'hidden',
               paddingTop: 20,
               paddingBottom: 20,
               paddingRight: 20,
@@ -230,9 +232,10 @@ export default async function ProfileOgImage({ params }: { params: Promise<{ han
                   color: '#b0b0b0',
                   marginTop: roleAtCompany ? 12 : 0,
                   lineHeight: 1.4,
+                  overflow: 'hidden',
                 }}
               >
-                {headline.length > 100 ? headline.slice(0, 100) + '\u2026' : headline}
+                {headline.length > 90 ? headline.slice(0, 90) + '\u2026' : headline}
               </div>
             )}
 
