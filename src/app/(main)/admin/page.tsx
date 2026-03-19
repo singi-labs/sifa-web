@@ -157,7 +157,17 @@ export default function AdminPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
-      <h1 className="text-3xl font-bold tracking-tight">Admin</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-3xl font-bold tracking-tight">Admin</h1>
+        <a
+          href="https://u.a11y.nl/websites/7f659ec9-5d5f-4ee4-96e0-10d8bcefd69d"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="rounded-md bg-muted px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+        >
+          Umami Analytics
+        </a>
+      </div>
 
       {/* Total users */}
       <div className="mt-6">
