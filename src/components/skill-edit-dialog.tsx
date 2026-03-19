@@ -8,6 +8,7 @@ import { SkillCombobox } from '@/components/skill-combobox';
 import { SKILL_CATEGORIES } from '@/lib/skill-categories';
 import { PositionLinkList } from '@/components/position-link-list';
 import type { ProfilePosition, ProfileSkill } from '@/lib/types';
+import { trackEvent } from '@/lib/analytics';
 
 interface SkillEditDialogProps {
   title: string;
@@ -63,7 +64,9 @@ export function SkillEditDialog({
     setError(null);
     const result = await onSave({ skillName: skillName.trim(), category });
     setSaving(false);
-    if (!result.success) {
+    if (result.success) {
+      trackEvent('profile-edit', { section: 'skill' });
+    } else {
       setError(result.error ?? t('failedToSave'));
     }
   };

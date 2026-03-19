@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { X, Copy, Check } from '@phosphor-icons/react';
+import { trackEvent } from '@/lib/analytics';
 
 const PlateMarkdownEditor = lazy(() =>
   import('@/components/plate-editor/plate-markdown-editor').then((mod) => ({
@@ -76,7 +77,9 @@ export function EditDialog({
     setError(null);
     const result = await onSave(values);
     setSaving(false);
-    if (!result.success) {
+    if (result.success) {
+      trackEvent('profile-edit', { section: title.toLowerCase() });
+    } else {
       setError(result.error ?? t('failedToSave'));
     }
   };
