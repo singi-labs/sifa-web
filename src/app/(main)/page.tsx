@@ -92,6 +92,8 @@ export default async function Home() {
                   website={featuredProfile.website}
                   openTo={featuredProfile.openTo}
                   followersCount={featuredProfile.followersCount}
+                  atprotoFollowersCount={featuredProfile.atprotoFollowersCount}
+                  pdsProviderInfo={featuredProfile.pdsProvider}
                   claimed={featuredProfile.claimed}
                   variant="embed"
                   hideFooter

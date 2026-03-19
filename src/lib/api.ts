@@ -157,6 +157,8 @@ export interface FeaturedProfile {
   openTo?: string[];
   preferredWorkplace?: string[];
   followersCount?: number;
+  atprotoFollowersCount?: number;
+  pdsProvider?: { name: string; host: string } | null;
   claimed: boolean;
   featuredDate: string;
 }
