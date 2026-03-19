@@ -6,6 +6,7 @@ import { X, Info } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 import { EndorsementContextSelector } from '@/components/endorsement-context-selector';
 import type { EndorsementData } from '@/lib/types';
+import { trackEvent } from '@/lib/analytics';
 
 export interface EndorsementDialogProps {
   skillName: string;
@@ -45,6 +46,7 @@ export function EndorsementDialog({
         comment: buildComment(),
         relationshipContext: relationshipContext || undefined,
       });
+      trackEvent('endorsement-sent');
       onClose();
     } catch {
       setError(tEditor('failedToSave'));
