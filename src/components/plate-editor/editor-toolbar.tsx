@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useRef, type KeyboardEvent } from 'react';
+import { useCallback, useState, useRef, type KeyboardEvent } from 'react';
 
 import type { Icon } from '@phosphor-icons/react';
 import {
@@ -35,7 +35,6 @@ function ToolbarButton({
   return (
     <button
       type="button"
-      role="button"
       aria-label={ariaLabel}
       aria-pressed={pressed}
       tabIndex={tabIndex}
@@ -121,7 +120,7 @@ export function EditorToolbar() {
     },
   ];
 
-  const focusedIndexRef = useRef(0);
+  const [focusedIndex, setFocusedIndex] = useState(0);
 
   const handleKeyDown = useCallback((e: KeyboardEvent<HTMLDivElement>) => {
     const toolbar = toolbarRef.current;
@@ -131,15 +130,26 @@ export function EditorToolbar() {
     const count = focusableButtons.length;
     if (count === 0) return;
 
-    let nextIndex = focusedIndexRef.current;
+    let nextIndex: number | undefined;
 
     switch (e.key) {
       case 'ArrowRight':
-        nextIndex = (focusedIndexRef.current + 1) % count;
+        nextIndex =
+          ((document.activeElement
+            ? Array.from(focusableButtons).indexOf(document.activeElement as HTMLButtonElement)
+            : 0) +
+            1) %
+          count;
         e.preventDefault();
         break;
       case 'ArrowLeft':
-        nextIndex = (focusedIndexRef.current - 1 + count) % count;
+        nextIndex =
+          ((document.activeElement
+            ? Array.from(focusableButtons).indexOf(document.activeElement as HTMLButtonElement)
+            : 0) -
+            1 +
+            count) %
+          count;
         e.preventDefault();
         break;
       case 'Home':
@@ -154,7 +164,7 @@ export function EditorToolbar() {
         return;
     }
 
-    focusedIndexRef.current = nextIndex;
+    setFocusedIndex(nextIndex);
     focusableButtons[nextIndex]?.focus();
   }, []);
 
@@ -179,7 +189,7 @@ export function EditorToolbar() {
             icon={button.icon}
             pressed={button.pressed}
             onClick={button.onClick}
-            tabIndex={index === focusedIndexRef.current ? 0 : -1}
+            tabIndex={index === focusedIndex ? 0 : -1}
           />
         </span>
       ))}
