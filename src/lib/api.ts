@@ -138,3 +138,37 @@ export async function fetchStats(): Promise<StatsResponse | null> {
     return null;
   }
 }
+
+export interface FeaturedProfile {
+  did: string;
+  handle: string;
+  displayName?: string;
+  avatar?: string;
+  headline?: string;
+  about?: string;
+  currentRole?: string;
+  currentCompany?: string;
+  locationCountry?: string;
+  locationRegion?: string;
+  locationCity?: string;
+  countryCode?: string;
+  location?: string;
+  website?: string;
+  openTo?: string[];
+  preferredWorkplace?: string[];
+  followersCount?: number;
+  claimed: boolean;
+  featuredDate: string;
+}
+
+export async function fetchFeaturedProfile(): Promise<FeaturedProfile | null> {
+  try {
+    const res = await fetch(`${API_URL}/api/featured-profile`, {
+      next: { revalidate: 900 },
+    });
+    if (res.status === 204 || !res.ok) return null;
+    return res.json();
+  } catch {
+    return null;
+  }
+}
