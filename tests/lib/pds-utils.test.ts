@@ -71,26 +71,38 @@ describe('pdsProviderFromApi', () => {
     });
   });
 
-  it('converts blacksky API provider to PdsProvider', () => {
+  it('converts blacksky API provider to PdsProvider with bsky.app URL', () => {
     const result = pdsProviderFromApi(
       { name: 'blacksky', host: 'pds.blacksky.app' },
       'alice.blacksky.app',
     );
     expect(result).toEqual({
       name: 'blacksky',
-      profileUrl: 'https://blacksky.app/profile/alice.blacksky.app',
+      profileUrl: 'https://bsky.app/profile/alice.blacksky.app',
       host: 'pds.blacksky.app',
     });
   });
 
-  it('converts eurosky API provider to PdsProvider', () => {
+  it('converts eurosky API provider to PdsProvider with bsky.app URL', () => {
     const result = pdsProviderFromApi(
       { name: 'eurosky', host: 'pds.eurosky.social' },
       'bob.eurosky.social',
     );
     expect(result).toEqual({
       name: 'eurosky',
-      profileUrl: 'https://eurosky.tech/profile/bob.eurosky.social',
+      profileUrl: 'https://bsky.app/profile/bob.eurosky.social',
+      host: 'pds.eurosky.social',
+    });
+  });
+
+  it('links eurosky user with custom handle to bsky.app (not eurosky.tech)', () => {
+    const result = pdsProviderFromApi(
+      { name: 'eurosky', host: 'pds.eurosky.social' },
+      'pixeline.be',
+    );
+    expect(result).toEqual({
+      name: 'eurosky',
+      profileUrl: 'https://bsky.app/profile/pixeline.be',
       host: 'pds.eurosky.social',
     });
   });
