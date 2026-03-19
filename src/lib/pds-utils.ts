@@ -47,6 +47,19 @@ export function getDisplayLabel(displayName: string | undefined, handle: string)
   return getHandleStem(handle);
 }
 
+const PDS_DISPLAY_NAMES: Record<string, string> = {
+  bluesky: 'Bluesky',
+  blacksky: 'BlackSky',
+  eurosky: 'EuroSky',
+  northsky: 'NorthSky',
+  'selfhosted-social': 'Self-hosted',
+  selfhosted: 'Self-hosted',
+};
+
+export function getPdsDisplayName(providerName: string): string {
+  return PDS_DISPLAY_NAMES[providerName] ?? providerName;
+}
+
 export function detectPdsProvider(handle: string): PdsProvider | null {
   const lower = handle.toLowerCase();
   for (const provider of PDS_PROVIDERS) {
