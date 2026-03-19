@@ -18,6 +18,18 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async rewrites() {
+    return [
+      {
+        source: '/u/script.js',
+        destination: 'https://u.a11y.nl/script.js',
+      },
+      {
+        source: '/u/api/send',
+        destination: 'https://u.a11y.nl/api/send',
+      },
+    ];
+  },
   async redirects() {
     return [
       {

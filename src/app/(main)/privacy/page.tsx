@@ -52,6 +52,11 @@ export default async function PrivacyPage() {
         </section>
 
         <section>
+          <h2 className="text-xl font-semibold">{t('analyticsTitle')}</h2>
+          <p className="mt-2 text-muted-foreground">{t('analyticsBody')}</p>
+        </section>
+
+        <section>
           <h2 className="text-xl font-semibold">{t('cookiesTitle')}</h2>
           <p className="mt-2 text-muted-foreground">{t('cookiesBody')}</p>
         </section>
