@@ -27,6 +27,10 @@ interface LatestSignupsProps {
   users: SignupUser[];
   filter: FilterValue;
   onFilterChange: (filter: FilterValue) => void;
+  total: number;
+  page: number;
+  pageSize: number;
+  onPageChange: (page: number) => void;
 }
 
 function timeAgo(dateStr: string): string {
@@ -92,11 +96,21 @@ const FILTERS: { label: string; value: FilterValue }[] = [
   { label: 'No import', value: 'no-import' },
 ];
 
-export function LatestSignups({ users, filter, onFilterChange }: LatestSignupsProps) {
+export function LatestSignups({
+  users,
+  filter,
+  onFilterChange,
+  total,
+  page,
+  pageSize,
+  onPageChange,
+}: LatestSignupsProps) {
+  const totalPages = Math.max(1, Math.ceil(total / pageSize));
+
   return (
     <div className="rounded-lg border border-border bg-card p-4">
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-lg font-semibold">Latest Signups</h2>
+        <h2 className="text-lg font-semibold">Latest Signups ({total})</h2>
         <div className="flex gap-1" role="group" aria-label="Filter signups">
           {FILTERS.map((f) => (
             <button
@@ -167,6 +181,31 @@ export function LatestSignups({ users, filter, onFilterChange }: LatestSignupsPr
           </p>
         )}
       </div>
+      {totalPages > 1 && (
+        <div className="mt-4 flex items-center justify-between border-t border-border pt-4">
+          <p className="text-xs text-muted-foreground">
+            Page {page + 1} of {totalPages}
+          </p>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              disabled={page === 0}
+              onClick={() => onPageChange(page - 1)}
+              className="rounded-md px-3 py-1 text-xs font-medium transition-colors bg-muted text-muted-foreground hover:text-foreground disabled:opacity-40 disabled:pointer-events-none"
+            >
+              Previous
+            </button>
+            <button
+              type="button"
+              disabled={page >= totalPages - 1}
+              onClick={() => onPageChange(page + 1)}
+              className="rounded-md px-3 py-1 text-xs font-medium transition-colors bg-muted text-muted-foreground hover:text-foreground disabled:opacity-40 disabled:pointer-events-none"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
