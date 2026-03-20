@@ -135,7 +135,7 @@ export default function MyNetworkPage() {
                     handle={f.handle}
                     displayName={f.displayName}
                     headline={f.headline}
-                    avatarUrl={f.avatar}
+                    avatarUrl={f.avatarUrl}
                     source={f.source}
                     claimed={true}
                     onUnfollow={f.source === 'sifa' ? handleUnfollow : undefined}
@@ -158,7 +158,7 @@ export default function MyNetworkPage() {
                     did={f.did}
                     handle={f.handle}
                     displayName={f.displayName}
-                    avatarUrl={f.avatar}
+                    avatarUrl={f.avatarUrl}
                     source={f.source}
                     claimed={false}
                   />

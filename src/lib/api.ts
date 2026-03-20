@@ -194,7 +194,7 @@ export interface FollowProfile {
   handle: string;
   displayName?: string;
   headline?: string;
-  avatar?: string;
+  avatarUrl?: string;
   source: string;
   claimed: boolean;
   followedAt: string;
