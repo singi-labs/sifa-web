@@ -33,11 +33,12 @@ export function ActivityFeed({ handle, initialData }: ActivityFeedProps) {
   const [isPending, startTransition] = useTransition();
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
-  const availableCategories = initialData?.availableCategories ?? [];
-  const showCategoryTabs = availableCategories.length > 1;
-  const visibleCategories = showCategoryTabs
+  const availableCategories = initialData?.availableCategories;
+  const hasMultipleCategories = availableCategories && availableCategories.length > 1;
+  const showCategoryTabs = !availableCategories || hasMultipleCategories;
+  const visibleCategories = hasMultipleCategories
     ? CATEGORIES.filter((c) => c.key === 'all' || availableCategories.includes(c.key))
-    : [];
+    : CATEGORIES;
 
   const selectCategory = useCallback(
     (category: string) => {
