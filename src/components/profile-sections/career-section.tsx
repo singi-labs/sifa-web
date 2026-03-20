@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 import { TimelineSection, TimelineEntry, formatTimelineDate } from './timeline';
 import { SectionEditor, EditableEntry } from '@/components/profile-editor';
+import { SectionOverflow } from '@/components/ui/section-overflow';
 import { PositionEditDialog, positionFormToData } from '@/components/position-edit-dialog';
 import { useProfileEdit } from '@/components/profile-edit-provider';
 import { createPosition, updatePosition, deletePosition } from '@/lib/profile-api';
@@ -79,39 +80,41 @@ export function CareerSection({ isOwnProfile }: CareerSectionProps) {
   if (!positions.length && !isOwnProfile) return null;
 
   return (
-    <TimelineSection title={t('career')}>
+    <TimelineSection title={t('career')} itemCount={positions.length}>
       <SectionEditor
         sectionTitle={t('career')}
         isOwnProfile={isOwnProfile}
         onAdd={() => setDialog({ mode: 'add' })}
       >
-        {positions.map((pos) => {
-          const controls = isOwnProfile
-            ? {
-                onEdit: () => setDialog({ mode: 'edit', item: pos }),
-                onDelete: () => handleDelete(pos.rkey),
-              }
-            : undefined;
-          return (
-            <EditableEntry
-              key={pos.rkey}
-              isOwnProfile={isOwnProfile}
-              onEdit={controls?.onEdit ?? (() => {})}
-              onDelete={controls?.onDelete ?? (() => {})}
-              entryLabel={`${pos.title} at ${pos.companyName}`}
-            >
-              <TimelineEntry
-                title={pos.title}
-                subtitle={pos.companyName}
-                dateRange={formatDateRange(pos.startDate, pos.endDate, pos.current)}
-                description={pos.description}
-                isLast={false}
+        <SectionOverflow maxVisible={3} disableOverflow={isOwnProfile}>
+          {positions.map((pos) => {
+            const controls = isOwnProfile
+              ? {
+                  onEdit: () => setDialog({ mode: 'edit', item: pos }),
+                  onDelete: () => handleDelete(pos.rkey),
+                }
+              : undefined;
+            return (
+              <EditableEntry
+                key={pos.rkey}
+                isOwnProfile={isOwnProfile}
+                onEdit={controls?.onEdit ?? (() => {})}
+                onDelete={controls?.onDelete ?? (() => {})}
+                entryLabel={`${pos.title} at ${pos.companyName}`}
               >
-                <PositionSkillChips skills={pos.linkedSkills} />
-              </TimelineEntry>
-            </EditableEntry>
-          );
-        })}
+                <TimelineEntry
+                  title={pos.title}
+                  subtitle={pos.companyName}
+                  dateRange={formatDateRange(pos.startDate, pos.endDate, pos.current)}
+                  description={pos.description}
+                  isLast={false}
+                >
+                  <PositionSkillChips skills={pos.linkedSkills} />
+                </TimelineEntry>
+              </EditableEntry>
+            );
+          })}
+        </SectionOverflow>
       </SectionEditor>
 
       {dialog && (
