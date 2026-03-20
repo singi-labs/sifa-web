@@ -138,13 +138,15 @@ describe('groupSkillsByCategory', () => {
 });
 
 describe('CATEGORY_ORDER', () => {
-  it('contains exactly the 5 valid categories', () => {
+  it('contains exactly the 7 valid categories', () => {
     expect(CATEGORY_ORDER).toEqual([
       'technical',
       'business',
       'creative',
       'interpersonal',
       'industry',
+      'community',
+      'security',
     ]);
   });
 });
