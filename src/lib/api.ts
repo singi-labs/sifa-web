@@ -211,6 +211,21 @@ export async function fetchAppsRegistry(): Promise<AppRegistryEntry[]> {
   }
 }
 
+// --- Privacy / GDPR ---
+
+export async function requestProfileRemoval(handleOrDid: string): Promise<boolean> {
+  try {
+    const res = await fetch(`${API_URL}/api/privacy/suppress`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ handleOrDid }),
+    });
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
+
 // --- Activity Visibility ---
 
 export async function updateActivityVisibility(appId: string, visible: boolean): Promise<boolean> {
