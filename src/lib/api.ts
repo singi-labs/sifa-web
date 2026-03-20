@@ -318,6 +318,7 @@ export interface ActivityFeedResponse {
   items: ActivityItem[];
   cursor: string | null;
   hasMore: boolean;
+  availableCategories?: string[];
 }
 
 export async function fetchActivityFeed(
