@@ -205,7 +205,13 @@
     "locationCountryPlaceholder": "Country",
     "locationClear": "Clear location",
     "locationApiFailed": "Location search is temporarily unavailable. Enter your location manually.",
-    "locationApiFailedWithFallback": "City and postal code search is temporarily unavailable. You can still select your country using the Country tab."
+    "locationApiFailedWithFallback": "City and postal code search is temporarily unavailable. You can still select your country using the Country tab.",
+    "overrideNotice": "Changes here only apply to your Sifa profile. They won't update your Bluesky account or other AT Protocol services.",
+    "avatarUpload": "Upload avatar",
+    "avatarRemove": "Remove custom avatar",
+    "avatarUploading": "Uploading...",
+    "avatarFormats": "JPEG, PNG, WebP or GIF. Max 5 MB.",
+    "displayNamePlaceholder": "Your display name on Sifa"
   },
   "editor": {
     "save": "Save",

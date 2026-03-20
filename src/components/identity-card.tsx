@@ -75,6 +75,10 @@ interface IdentityCardProps {
   badge?: string;
   hideFooter?: boolean;
   className?: string;
+  hasDisplayNameOverride?: boolean;
+  hasAvatarUrlOverride?: boolean;
+  sourceDisplayName?: string;
+  sourceAvatar?: string;
 }
 
 export function IdentityCard({
@@ -104,6 +108,10 @@ export function IdentityCard({
   badge,
   hideFooter,
   className,
+  hasDisplayNameOverride,
+  hasAvatarUrlOverride,
+  sourceDisplayName,
+  sourceAvatar,
 }: IdentityCardProps) {
   const t = useTranslations('identityCard');
   const tEdit = useTranslations('profileEdit');
@@ -600,6 +608,10 @@ export function IdentityCard({
           location={location}
           openTo={openTo}
           preferredWorkplace={preferredWorkplace}
+          hasDisplayNameOverride={hasDisplayNameOverride}
+          hasAvatarUrlOverride={hasAvatarUrlOverride}
+          sourceDisplayName={sourceDisplayName}
+          sourceAvatar={sourceAvatar}
           onClose={() => setEditing(false)}
         />
       )}

@@ -4,14 +4,18 @@ import { useState, lazy, Suspense, type FormEvent } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { X, Info, ArrowsClockwise, Eye } from '@phosphor-icons/react';
-// @base-ui/react v1.2.0: Popover.Positioner MUST be inside Popover.Portal or it throws at runtime
-import { Popover } from '@base-ui/react/popover';
+import { X, Info, ArrowsClockwise, Eye, Camera } from '@phosphor-icons/react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useProfileEdit } from '@/components/profile-edit-provider';
-import { updateProfileSelf, refreshPds } from '@/lib/profile-api';
+import {
+  updateProfileSelf,
+  refreshPds,
+  uploadAvatar,
+  deleteAvatarOverride,
+  updateProfileOverride,
+} from '@/lib/profile-api';
 import { revalidateProfileCache } from '@/app/actions';
 import { LocationSearch } from '@/components/location-search';
 import type { LocationValue } from '@/lib/types';
@@ -48,6 +52,10 @@ interface ProfileEditDialogProps {
   location?: LocationValue | null;
   openTo?: string[];
   preferredWorkplace?: string[];
+  hasDisplayNameOverride?: boolean;
+  hasAvatarUrlOverride?: boolean;
+  sourceDisplayName?: string;
+  sourceAvatar?: string;
   onClose: () => void;
 }
 
@@ -61,6 +69,10 @@ export function ProfileEditDialog({
   location: initialLocation,
   openTo: initialOpenTo,
   preferredWorkplace: initialPreferredWorkplace,
+  hasDisplayNameOverride: initialHasDisplayNameOverride,
+  hasAvatarUrlOverride: initialHasAvatarUrlOverride,
+  sourceDisplayName: _sourceDisplayName,
+  sourceAvatar,
   onClose,
 }: ProfileEditDialogProps) {
   const t = useTranslations('profileEdit');
@@ -78,17 +90,19 @@ export function ProfileEditDialog({
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
-  const [currentDisplayName, setCurrentDisplayName] = useState(displayName);
   const [currentAvatar, setCurrentAvatar] = useState(avatar);
+  const [editDisplayName, setEditDisplayName] = useState(displayName ?? '');
+  const [avatarUploading, setAvatarUploading] = useState(false);
+  const [hasAvatarOverride, setHasAvatarOverride] = useState(initialHasAvatarUrlOverride ?? false);
+  const [hasDisplayNameOvr, setHasDisplayNameOvr] = useState(
+    initialHasDisplayNameOverride ?? false,
+  );
 
   const handleRefreshPds = async () => {
     setRefreshing(true);
     try {
       const result = await refreshPds();
       if (result.success) {
-        if (result.displayName !== undefined)
-          setCurrentDisplayName(result.displayName ?? undefined);
-        if (result.avatar !== undefined) setCurrentAvatar(result.avatar ?? undefined);
         toast.success(t('refreshPdsSuccess'));
         void revalidateProfileCache(handle);
         if (did) void revalidateProfileCache(did);
@@ -101,14 +115,47 @@ export function ProfileEditDialog({
     }
   };
 
+  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setAvatarUploading(true);
+    try {
+      const result = await uploadAvatar(file);
+      if (result.success && result.url) {
+        setCurrentAvatar(result.url);
+        setHasAvatarOverride(true);
+        updateProfile({ avatar: result.url, hasAvatarUrlOverride: true });
+        toast.success(t('saved'));
+        void revalidateProfileCache(handle);
+        if (did) void revalidateProfileCache(did);
+      } else {
+        toast.error(result.error ?? 'Upload failed');
+      }
+    } finally {
+      setAvatarUploading(false);
+      e.target.value = '';
+    }
+  };
+
+  const handleRemoveAvatar = async () => {
+    const result = await deleteAvatarOverride();
+    if (result.success) {
+      setCurrentAvatar(sourceAvatar);
+      setHasAvatarOverride(false);
+      updateProfile({ avatar: sourceAvatar, hasAvatarUrlOverride: false });
+      toast.success(t('saved'));
+      void revalidateProfileCache(handle);
+      if (did) void revalidateProfileCache(did);
+    } else {
+      toast.error(result.error ?? 'Failed to remove avatar');
+    }
+  };
+
   const toggleOpenTo = (value: string) => {
     setOpenTo((prev) => {
       const next = new Set(prev);
-      if (next.has(value)) {
-        next.delete(value);
-      } else {
-        next.add(value);
-      }
+      if (next.has(value)) next.delete(value);
+      else next.add(value);
       return next;
     });
   };
@@ -116,11 +163,8 @@ export function ProfileEditDialog({
   const togglePreferredWorkplace = (value: string) => {
     setPreferredWorkplace((prev) => {
       const next = new Set(prev);
-      if (next.has(value)) {
-        next.delete(value);
-      } else {
-        next.add(value);
-      }
+      if (next.has(value)) next.delete(value);
+      else next.add(value);
       return next;
     });
   };
@@ -130,6 +174,7 @@ export function ProfileEditDialog({
     setSaving(true);
     setError(null);
 
+    // Save profile self fields (headline, about, location, etc.)
     const result = await updateProfileSelf({
       headline: headline || undefined,
       about: about || undefined,
@@ -145,22 +190,40 @@ export function ProfileEditDialog({
       preferredWorkplace: [...preferredWorkplace],
     });
 
-    setSaving(false);
-    if (result.success) {
-      trackEvent('profile-edit', { section: 'profile' });
-      updateProfile({
-        headline: headline || undefined,
-        about: about || undefined,
-        location: locationValue ?? undefined,
-        openTo: [...openTo],
-        preferredWorkplace: [...preferredWorkplace],
-      });
-      toast.success(t('saved'));
-      router.refresh();
-      onClose();
-    } else {
+    if (!result.success) {
+      setSaving(false);
       setError(result.error ?? tEditor('failedToSave'));
+      return;
     }
+
+    // Save displayName override if changed
+    const displayNameChanged = editDisplayName !== (displayName ?? '');
+    if (displayNameChanged) {
+      const overrideResult = await updateProfileOverride({
+        displayName: editDisplayName || null,
+      });
+      if (!overrideResult.success) {
+        setSaving(false);
+        setError(overrideResult.error ?? tEditor('failedToSave'));
+        return;
+      }
+      setHasDisplayNameOvr(!!editDisplayName);
+    }
+
+    setSaving(false);
+    trackEvent('profile-edit', { section: 'profile' });
+    updateProfile({
+      displayName: editDisplayName || undefined,
+      headline: headline || undefined,
+      about: about || undefined,
+      location: locationValue ?? undefined,
+      openTo: [...openTo],
+      preferredWorkplace: [...preferredWorkplace],
+      hasDisplayNameOverride: hasDisplayNameOvr,
+    });
+    toast.success(t('saved'));
+    router.refresh();
+    onClose();
   };
 
   return (
@@ -185,6 +248,7 @@ export function ProfileEditDialog({
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Public data notice */}
           <div
             className="flex gap-3 rounded-lg border border-amber-200 bg-amber-50 p-3 dark:border-amber-800 dark:bg-amber-950/30"
             role="note"
@@ -197,29 +261,24 @@ export function ProfileEditDialog({
             <p className="text-xs text-amber-800 dark:text-amber-300">{t('publicDataNotice')}</p>
           </div>
 
-          {/* Avatar & Display Name — read-only, synced from AT Protocol profile */}
+          {/* Override scope notice */}
+          <div
+            className="flex gap-3 rounded-lg border border-blue-200 bg-blue-50 p-3 dark:border-blue-800 dark:bg-blue-950/30"
+            role="note"
+          >
+            <Info
+              className="mt-0.5 size-4 shrink-0 text-blue-600 dark:text-blue-400"
+              weight="fill"
+              aria-hidden="true"
+            />
+            <p className="text-xs text-blue-800 dark:text-blue-300">{t('overrideNotice')}</p>
+          </div>
+
+          {/* Avatar & Display Name */}
           <div>
-            <div className="mb-2 flex items-center gap-1.5">
-              <span className="block text-sm font-medium">{t('avatarAndName')}</span>
-              <Popover.Root>
-                <Popover.Trigger
-                  className="inline-flex h-4 w-4 cursor-pointer items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-foreground"
-                  aria-label={t('pdsFieldInfo')}
-                >
-                  <Info className="h-3.5 w-3.5" weight="bold" />
-                </Popover.Trigger>
-                <Popover.Portal>
-                  <Popover.Positioner sideOffset={8}>
-                    <Popover.Popup className="z-[9999] w-72 rounded-lg border border-border bg-popover p-3 text-sm text-popover-foreground shadow-md">
-                      <Popover.Arrow className="fill-popover stroke-border" />
-                      <p className="text-muted-foreground">{t('pdsExplanation')}</p>
-                    </Popover.Popup>
-                  </Popover.Positioner>
-                </Popover.Portal>
-              </Popover.Root>
-            </div>
+            <span className="mb-2 block text-sm font-medium">{t('avatarAndName')}</span>
             <div className="flex items-center gap-4">
-              <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full bg-muted text-xl font-semibold text-muted-foreground">
+              <div className="relative flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full bg-muted text-xl font-semibold text-muted-foreground">
                 {currentAvatar ? (
                   <Image
                     src={currentAvatar}
@@ -229,21 +288,49 @@ export function ProfileEditDialog({
                     className="h-16 w-16 rounded-full object-cover"
                   />
                 ) : (
-                  <span aria-hidden="true">
-                    {(currentDisplayName ?? '?').charAt(0).toUpperCase()}
-                  </span>
+                  <span aria-hidden="true">{(editDisplayName || '?').charAt(0).toUpperCase()}</span>
                 )}
+                <label
+                  htmlFor="avatar-upload"
+                  className="absolute inset-0 flex cursor-pointer items-center justify-center rounded-full bg-black/40 opacity-0 transition-opacity hover:opacity-100"
+                >
+                  <Camera className="h-5 w-5 text-white" weight="fill" aria-hidden="true" />
+                  <span className="sr-only">{t('avatarUpload')}</span>
+                </label>
+                <input
+                  id="avatar-upload"
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp,image/gif"
+                  className="hidden"
+                  onChange={handleAvatarUpload}
+                  disabled={avatarUploading}
+                />
               </div>
-              <Input
-                id="edit-displayName"
-                type="text"
-                value={currentDisplayName ?? ''}
-                disabled
-                className="bg-muted text-muted-foreground"
-                aria-label={t('displayName')}
-              />
+              <div className="flex-1 space-y-1">
+                <Input
+                  id="edit-displayName"
+                  type="text"
+                  value={editDisplayName}
+                  onChange={(e) => setEditDisplayName(e.target.value)}
+                  placeholder={t('displayNamePlaceholder')}
+                  maxLength={256}
+                  aria-label={t('displayName')}
+                />
+                <p className="text-xs text-muted-foreground">{t('avatarFormats')}</p>
+              </div>
             </div>
-            <div className="mt-2">
+            <div className="mt-2 flex gap-2">
+              {hasAvatarOverride && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  className="h-7 gap-1.5 text-xs text-muted-foreground"
+                  onClick={handleRemoveAvatar}
+                >
+                  {t('avatarRemove')}
+                </Button>
+              )}
               <Button
                 type="button"
                 variant="ghost"
