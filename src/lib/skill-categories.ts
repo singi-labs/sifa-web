@@ -4,6 +4,8 @@ export const SKILL_CATEGORIES = [
   { value: 'creative', label: 'Creative' },
   { value: 'interpersonal', label: 'Interpersonal' },
   { value: 'industry', label: 'Industry' },
+  { value: 'community', label: 'Community' },
+  { value: 'security', label: 'Security' },
 ] as const;
 
 export type SkillCategory = (typeof SKILL_CATEGORIES)[number]['value'];

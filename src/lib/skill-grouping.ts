@@ -6,6 +6,8 @@ export const CATEGORY_ORDER = [
   'creative',
   'interpersonal',
   'industry',
+  'community',
+  'security',
 ] as const;
 
 export type SkillCategory = (typeof CATEGORY_ORDER)[number];
@@ -16,6 +18,8 @@ export const CATEGORY_LABELS: Record<string, string> = {
   creative: 'Creative',
   interpersonal: 'Interpersonal',
   industry: 'Industry',
+  community: 'Community',
+  security: 'Security',
   other: 'Other',
 };
 
