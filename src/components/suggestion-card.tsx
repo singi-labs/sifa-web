@@ -66,7 +66,14 @@ export function SuggestionCard({
               {sanitize(label)}
             </Link>
           ) : (
-            <span className="truncate font-medium">{sanitize(label)}</span>
+            <a
+              href={`https://bsky.app/profile/${encodeURIComponent(handle)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="truncate font-medium hover:underline"
+            >
+              {sanitize(label)}
+            </a>
           )}
           <Badge variant="secondary" className="shrink-0 text-xs">
             {source}
