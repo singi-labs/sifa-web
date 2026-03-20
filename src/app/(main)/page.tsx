@@ -90,6 +90,7 @@ export default async function Home() {
                       handle={featuredProfile.handle}
                       displayName={featuredProfile.displayName}
                       avatar={featuredProfile.avatar}
+                      pronouns={featuredProfile.pronouns}
                       headline={featuredProfile.headline}
                       about={featuredProfile.about}
                       currentRole={currentPosition?.title}

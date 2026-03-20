@@ -29,6 +29,7 @@ export async function GET(
     handle: sanitize(profile.handle),
     displayName: profile.displayName ? sanitize(profile.displayName) : null,
     avatar: profile.avatar ?? null,
+    pronouns: profile.pronouns ? sanitize(profile.pronouns) : null,
     headline: profile.headline ? sanitize(profile.headline) : null,
     location,
     website: profile.website ?? null,
