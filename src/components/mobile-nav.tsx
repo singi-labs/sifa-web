@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { ArrowSquareIn, List, SignOut, User, X } from '@phosphor-icons/react';
+import { ArrowSquareIn, List, SignOut, User, Users, X } from '@phosphor-icons/react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -117,6 +117,14 @@ export function MobileNav() {
                 >
                   <User className="h-4 w-4" weight="bold" aria-hidden="true" />
                   {t('viewProfile')}
+                </Link>
+                <Link
+                  href="/my-network"
+                  onClick={() => setOpen(false)}
+                  className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+                >
+                  <Users className="h-4 w-4" weight="bold" aria-hidden="true" />
+                  {t('myNetwork')}
                 </Link>
                 <Link
                   href="/import"

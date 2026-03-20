@@ -17,9 +17,10 @@ interface SuggestionCardProps {
   source: string;
   claimed: boolean;
   dismissed?: boolean;
-  onDismiss: (did: string) => void;
+  onDismiss?: (did: string) => void;
   onFollow?: (did: string) => void;
   onUndismiss?: (did: string) => void;
+  onUnfollow?: (did: string) => void;
 }
 
 export function SuggestionCard({
@@ -34,6 +35,7 @@ export function SuggestionCard({
   onDismiss,
   onFollow,
   onUndismiss,
+  onUnfollow,
 }: SuggestionCardProps) {
   const label = getDisplayLabel(displayName, handle);
   const initial = label.charAt(0).toUpperCase();
@@ -85,7 +87,11 @@ export function SuggestionCard({
 
       {/* Actions */}
       <div className="flex shrink-0 items-center gap-2">
-        {dismissed && onUndismiss ? (
+        {onUnfollow ? (
+          <Button variant="outline" size="sm" onClick={() => onUnfollow(did)}>
+            Unfollow
+          </Button>
+        ) : dismissed && onUndismiss ? (
           <Button variant="outline" size="sm" onClick={() => onUndismiss(did)}>
             Unhide
           </Button>
@@ -94,7 +100,7 @@ export function SuggestionCard({
             Follow
           </Button>
         ) : null}
-        {!dismissed && (
+        {!dismissed && onDismiss && (
           <button
             type="button"
             onClick={() => onDismiss(did)}
