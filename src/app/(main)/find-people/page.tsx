@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { ArrowsClockwise } from '@phosphor-icons/react';
 import { useAuth } from '@/components/auth-provider';
 import { useRequireAuth } from '@/hooks/use-require-auth';
 import { SuggestionCard } from '@/components/suggestion-card';
@@ -10,7 +11,6 @@ import {
   syncSuggestions,
   dismissSuggestion,
   undismissSuggestion,
-  createInvite,
   type SuggestionProfile,
 } from '@/lib/api';
 import { toast } from 'sonner';
@@ -29,25 +29,6 @@ export default function FindPeoplePage() {
   const [cursor, setCursor] = useState<string | undefined>();
   const autoSynced = useRef(false);
 
-  const loadSuggestions = useCallback(
-    async (opts?: { resetCursor?: boolean }) => {
-      if (!session) return;
-      setLoading(true);
-      const src = source === 'all' ? undefined : source;
-      const data = await fetchSuggestions({
-        source: src,
-        includeDismissed: showHidden,
-        cursor: opts?.resetCursor ? undefined : undefined,
-      });
-      setOnSifa(data.onSifa);
-      setNotOnSifa(data.notOnSifa);
-      setCursor(data.cursor);
-      setLoading(false);
-      return data;
-    },
-    [session, source, showHidden],
-  );
-
   const handleSync = useCallback(async () => {
     setSyncing(true);
     try {
@@ -58,13 +39,17 @@ export default function FindPeoplePage() {
       } else {
         toast.success('Already up to date');
       }
-      await loadSuggestions({ resetCursor: true });
+      const src = source === 'all' ? undefined : source;
+      const data = await fetchSuggestions({ source: src, includeDismissed: showHidden });
+      setOnSifa(data.onSifa);
+      setNotOnSifa(data.notOnSifa);
+      setCursor(data.cursor);
     } catch {
       toast.error('Failed to sync follows');
     } finally {
       setSyncing(false);
     }
-  }, [loadSuggestions]);
+  }, [source, showHidden]);
 
   const loadMore = useCallback(() => {
     if (!session || !cursor) return;
@@ -153,16 +138,6 @@ export default function FindPeoplePage() {
     [requireAuth],
   );
 
-  const handleInvite = useCallback(async (did: string) => {
-    try {
-      const url = await createInvite(did);
-      await navigator.clipboard.writeText(url);
-      toast.success('Invite link copied to clipboard');
-    } catch {
-      toast.error('Failed to create invite');
-    }
-  }, []);
-
   if (authLoading) return null;
 
   if (!session) {
@@ -186,6 +161,11 @@ export default function FindPeoplePage() {
           </p>
         </div>
         <Button variant="outline" size="sm" onClick={handleSync} disabled={syncing}>
+          <ArrowsClockwise
+            className={`mr-1.5 h-4 w-4${syncing ? ' animate-spin' : ''}`}
+            weight="bold"
+            aria-hidden="true"
+          />
           {syncing ? 'Syncing...' : 'Sync follows'}
         </Button>
       </div>
@@ -224,9 +204,10 @@ export default function FindPeoplePage() {
       {loading && onSifa.length === 0 && notOnSifa.length === 0 ? (
         <p className="mt-8 text-center text-muted-foreground">Loading suggestions...</p>
       ) : syncing && onSifa.length === 0 && notOnSifa.length === 0 ? (
-        <p className="mt-8 text-center text-muted-foreground">
-          Syncing your follows from your PDS...
-        </p>
+        <div className="mt-8 flex flex-col items-center gap-2 text-muted-foreground">
+          <ArrowsClockwise className="h-6 w-6 animate-spin" weight="bold" aria-hidden="true" />
+          <p>Syncing your follows from your PDS...</p>
+        </div>
       ) : onSifa.length === 0 && notOnSifa.length === 0 ? (
         <p className="mt-8 text-center text-muted-foreground">
           No suggestions found. Follow people on Bluesky or Tangled, and they will appear here when
@@ -254,7 +235,6 @@ export default function FindPeoplePage() {
                     dismissed={s.dismissed}
                     onDismiss={handleDismiss}
                     onFollow={handleFollow}
-                    onInvite={handleInvite}
                     onUndismiss={handleUndismiss}
                   />
                 ))}
@@ -279,8 +259,6 @@ export default function FindPeoplePage() {
                     claimed={false}
                     dismissed={s.dismissed}
                     onDismiss={handleDismiss}
-                    onFollow={handleFollow}
-                    onInvite={handleInvite}
                     onUndismiss={handleUndismiss}
                   />
                 ))}

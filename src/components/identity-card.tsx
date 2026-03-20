@@ -53,6 +53,7 @@ interface IdentityCardProps {
   handle: string;
   displayName?: string;
   avatar?: string;
+  pronouns?: string;
   headline?: string;
   about?: string;
   currentRole?: string;
@@ -85,6 +86,7 @@ export function IdentityCard({
   handle,
   displayName,
   avatar,
+  pronouns,
   headline,
   about,
   currentRole,
@@ -156,6 +158,9 @@ export function IdentityCard({
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-1.5">
                 <h1 className="truncate text-base font-bold">{label}</h1>
+                {pronouns && (
+                  <span className="text-xs font-normal text-muted-foreground">({pronouns})</span>
+                )}
                 {verifiedAccounts.length > 0 && (
                   <CheckCircle
                     className="h-4 w-4 shrink-0 text-primary"
@@ -333,6 +338,9 @@ export function IdentityCard({
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2">
                 <h1 className="truncate text-xl font-bold">{label}</h1>
+                {pronouns && (
+                  <span className="text-sm font-normal text-muted-foreground">({pronouns})</span>
+                )}
                 {verifiedAccounts.length > 0 && (
                   <CheckCircle
                     className="h-5 w-5 shrink-0 text-primary"

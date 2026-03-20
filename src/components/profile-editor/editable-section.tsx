@@ -163,15 +163,17 @@ export function EditableSection<T extends { rkey: string }>({
         isOwnProfile={isOwnProfile}
         onAdd={() => setDialog({ mode: 'add' })}
       >
-        {items.map((item) => {
-          const controls = isOwnProfile
-            ? {
-                onEdit: () => setDialog({ mode: 'edit', item }),
-                onDelete: () => handleDelete(item.rkey),
-              }
-            : undefined;
-          return <div key={item.rkey}>{renderEntry(item, controls)}</div>;
-        })}
+        <div className="space-y-4">
+          {items.map((item) => {
+            const controls = isOwnProfile
+              ? {
+                  onEdit: () => setDialog({ mode: 'edit', item }),
+                  onDelete: () => handleDelete(item.rkey),
+                }
+              : undefined;
+            return <div key={item.rkey}>{renderEntry(item, controls)}</div>;
+          })}
+        </div>
       </SectionEditor>
 
       {dialog && (

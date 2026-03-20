@@ -24,6 +24,7 @@ export interface EventEntry {
     handle: string;
     displayName?: string;
     avatar?: string;
+    pronouns?: string;
     headline?: string;
     about?: string;
     positions?: ProfilePosition[];
@@ -298,6 +299,7 @@ export function EventCardGrid({ entries, speakerCount, attendeeCount }: EventCar
                 handle={profile.handle}
                 displayName={profile.displayName}
                 avatar={profile.avatar}
+                pronouns={profile.pronouns}
                 headline={profile.headline}
                 about={profile.about}
                 currentRole={currentPosition?.title}

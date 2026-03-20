@@ -155,6 +155,7 @@ export interface FeaturedProfile {
   handle: string;
   displayName?: string;
   avatar?: string;
+  pronouns?: string;
   headline?: string;
   about?: string;
   currentRole?: string;

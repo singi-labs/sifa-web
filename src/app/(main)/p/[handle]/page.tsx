@@ -93,6 +93,7 @@ export default async function ProfilePage({
             handle={profile.handle}
             displayName={profile.displayName}
             avatar={profile.avatar}
+            pronouns={profile.pronouns}
             headline={profile.headline}
             about={profile.about}
             currentRole={currentPosition?.title}
