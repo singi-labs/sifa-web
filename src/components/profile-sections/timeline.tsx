@@ -22,7 +22,7 @@ export function TimelineEntry({
   children,
   isLast,
 }: TimelineEntryProps) {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(true);
   const hasExpandable = Boolean(description || children);
 
   const content = (
@@ -73,7 +73,7 @@ export function TimelineEntry({
         )}
         {hasExpandable && (
           <Collapsible open={expanded}>
-            <div className="mt-2 text-sm text-muted-foreground">
+            <div className="mt-2 text-sm text-foreground/80">
               {description && <p className="whitespace-pre-wrap">{description}</p>}
               {children}
             </div>
