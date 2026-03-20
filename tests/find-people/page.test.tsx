@@ -25,6 +25,7 @@ vi.mock('@/lib/api', () => ({
       },
     ],
   }),
+  syncSuggestions: vi.fn().mockResolvedValue({ imported: { bluesky: 0, tangled: 0 } }),
   fetchSuggestionCount: vi.fn().mockResolvedValue(3),
   dismissSuggestion: vi.fn(),
   undismissSuggestion: vi.fn(),

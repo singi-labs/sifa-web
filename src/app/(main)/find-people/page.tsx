@@ -1,12 +1,13 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useAuth } from '@/components/auth-provider';
 import { useRequireAuth } from '@/hooks/use-require-auth';
 import { SuggestionCard } from '@/components/suggestion-card';
 import { Button } from '@/components/ui/button';
 import {
   fetchSuggestions,
+  syncSuggestions,
   dismissSuggestion,
   undismissSuggestion,
   createInvite,
@@ -24,7 +25,46 @@ export default function FindPeoplePage() {
   const [onSifa, setOnSifa] = useState<SuggestionProfile[]>([]);
   const [notOnSifa, setNotOnSifa] = useState<SuggestionProfile[]>([]);
   const [loading, setLoading] = useState(true);
+  const [syncing, setSyncing] = useState(false);
   const [cursor, setCursor] = useState<string | undefined>();
+  const autoSynced = useRef(false);
+
+  const loadSuggestions = useCallback(
+    async (opts?: { resetCursor?: boolean }) => {
+      if (!session) return;
+      setLoading(true);
+      const src = source === 'all' ? undefined : source;
+      const data = await fetchSuggestions({
+        source: src,
+        includeDismissed: showHidden,
+        cursor: opts?.resetCursor ? undefined : undefined,
+      });
+      setOnSifa(data.onSifa);
+      setNotOnSifa(data.notOnSifa);
+      setCursor(data.cursor);
+      setLoading(false);
+      return data;
+    },
+    [session, source, showHidden],
+  );
+
+  const handleSync = useCallback(async () => {
+    setSyncing(true);
+    try {
+      const result = await syncSuggestions();
+      const total = result.imported.bluesky + result.imported.tangled;
+      if (total > 0) {
+        toast.success(`Synced ${total} follows from your PDS`);
+      } else {
+        toast.success('Already up to date');
+      }
+      await loadSuggestions({ resetCursor: true });
+    } catch {
+      toast.error('Failed to sync follows');
+    } finally {
+      setSyncing(false);
+    }
+  }, [loadSuggestions]);
 
   const loadMore = useCallback(() => {
     if (!session || !cursor) return;
@@ -45,20 +85,39 @@ export default function FindPeoplePage() {
     if (!session) return;
     let cancelled = false;
     const src = source === 'all' ? undefined : source;
-    fetchSuggestions({ source: src, includeDismissed: showHidden }).then((data) => {
+    fetchSuggestions({ source: src, includeDismissed: showHidden }).then(async (data) => {
       if (cancelled) return;
       setOnSifa(data.onSifa);
       setNotOnSifa(data.notOnSifa);
       setCursor(data.cursor);
       setLoading(false);
+
+      // Auto-sync on first visit if no suggestions found
+      if (data.onSifa.length === 0 && data.notOnSifa.length === 0 && !autoSynced.current) {
+        autoSynced.current = true;
+        setSyncing(true);
+        try {
+          await syncSuggestions();
+          if (cancelled) return;
+          const refreshed = await fetchSuggestions({ source: src, includeDismissed: showHidden });
+          if (cancelled) return;
+          setOnSifa(refreshed.onSifa);
+          setNotOnSifa(refreshed.notOnSifa);
+          setCursor(refreshed.cursor);
+        } catch {
+          // Sync failed silently — user can retry manually
+        } finally {
+          if (!cancelled) setSyncing(false);
+        }
+      }
     });
-    return () => {
-      cancelled = true;
-    };
     // Record last visit for badge calculation
     if (typeof window !== 'undefined' && window.localStorage) {
       window.localStorage.setItem('sifa:suggestions-last-visited', new Date().toISOString());
     }
+    return () => {
+      cancelled = true;
+    };
   }, [session, source, showHidden]);
 
   const handleDismiss = useCallback(async (did: string) => {
@@ -119,10 +178,17 @@ export default function FindPeoplePage() {
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-8">
-      <h1 className="text-2xl font-bold">Find People</h1>
-      <p className="mt-1 text-muted-foreground">
-        Discover people you know from other AT Protocol services
-      </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold">Find People</h1>
+          <p className="mt-1 text-muted-foreground">
+            Discover people you know from other AT Protocol services
+          </p>
+        </div>
+        <Button variant="outline" size="sm" onClick={handleSync} disabled={syncing}>
+          {syncing ? 'Syncing...' : 'Sync follows'}
+        </Button>
+      </div>
 
       {/* Filters */}
       <div className="mt-4 flex items-center justify-between">
@@ -157,6 +223,10 @@ export default function FindPeoplePage() {
 
       {loading && onSifa.length === 0 && notOnSifa.length === 0 ? (
         <p className="mt-8 text-center text-muted-foreground">Loading suggestions...</p>
+      ) : syncing && onSifa.length === 0 && notOnSifa.length === 0 ? (
+        <p className="mt-8 text-center text-muted-foreground">
+          Syncing your follows from your PDS...
+        </p>
       ) : onSifa.length === 0 && notOnSifa.length === 0 ? (
         <p className="mt-8 text-center text-muted-foreground">
           No suggestions found. Follow people on Bluesky or Tangled, and they will appear here when
