@@ -60,7 +60,10 @@
     "usingCustomValue": "Using custom value",
     "usingAtprotoValue": "Using AT Protocol profile value",
     "customizeHeadline": "Customize headline",
-    "customizeAbout": "Customize about"
+    "customizeAbout": "Customize about",
+    "previewPublic": "View as others",
+    "previewBanner": "Viewing your profile as others see it",
+    "exitPreview": "Exit preview"
   },
   "activity": {
     "title": "Activity for {handle}",

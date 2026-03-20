@@ -1,6 +1,19 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { DataTransparencyCard } from '@/components/data-transparency-card';
+
+vi.mock('@/components/profile-edit-provider', () => ({
+  useProfileEdit: () => ({
+    profile: { isOwnProfile: true },
+    isActualOwner: true,
+    previewMode: false,
+    togglePreview: vi.fn(),
+    updateProfile: vi.fn(),
+    addItem: vi.fn(),
+    updateItem: vi.fn(),
+    removeItem: vi.fn(),
+  }),
+}));
 
 describe('DataTransparencyCard', () => {
   it('renders explainer text and link with correct DID', () => {

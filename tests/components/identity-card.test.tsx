@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { afterEach, describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { IdentityCard } from '@/components/identity-card';
 
@@ -49,6 +49,25 @@ vi.mock('@base-ui/react/popover', () => {
   };
 });
 
+// Mock profile-edit-provider with mutable state so tests can override
+let mockIsActualOwner = false;
+vi.mock('@/components/profile-edit-provider', () => ({
+  useProfileEdit: () => ({
+    profile: { isOwnProfile: mockIsActualOwner },
+    isActualOwner: mockIsActualOwner,
+    previewMode: false,
+    togglePreview: vi.fn(),
+    updateProfile: vi.fn(),
+    addItem: vi.fn(),
+    updateItem: vi.fn(),
+    removeItem: vi.fn(),
+  }),
+}));
+
+afterEach(() => {
+  mockIsActualOwner = false;
+});
+
 // Mock phosphor icons
 vi.mock('@phosphor-icons/react', () => ({
   ShareNetwork: (props: Record<string, unknown>) => <span data-testid="icon-share" {...props} />,
@@ -56,6 +75,7 @@ vi.mock('@phosphor-icons/react', () => ({
   CheckCircle: (props: Record<string, unknown>) => <span data-testid="icon-check" {...props} />,
   Check: (props: Record<string, unknown>) => <span data-testid="icon-check-inline" {...props} />,
   Code: (props: Record<string, unknown>) => <span data-testid="icon-code" {...props} />,
+  Eye: (props: Record<string, unknown>) => <span data-testid="icon-eye" {...props} />,
   X: (props: Record<string, unknown>) => <span data-testid="icon-x" {...props} />,
   Info: (props: Record<string, unknown>) => <span data-testid="icon-info" {...props} />,
 }));
@@ -218,6 +238,7 @@ describe('IdentityCard (default / page variant)', () => {
   });
 
   it('renders Edit button for own profile', () => {
+    mockIsActualOwner = true;
     render(<IdentityCard {...baseProps} isOwnProfile={true} />);
     const editButton = screen.getByRole('button', { name: /Edit profile/ });
     expect(editButton).toBeDefined();
