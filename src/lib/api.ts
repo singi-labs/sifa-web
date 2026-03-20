@@ -281,6 +281,38 @@ export async function requestProfileRemoval(handleOrDid: string): Promise<boolea
   }
 }
 
+// --- Activity Heatmap ---
+
+export interface HeatmapDay {
+  date: string;
+  total: number;
+  apps: { appId: string; count: number }[];
+}
+
+export interface HeatmapResponse {
+  days: HeatmapDay[];
+  appTotals: { appId: string; appName: string; total: number }[];
+  thresholds: [number, number, number, number];
+}
+
+export async function fetchHeatmapData(
+  handleOrDid: string,
+  days: number,
+): Promise<HeatmapResponse | null> {
+  try {
+    const res = await fetch(
+      `${API_URL}/api/activity/${encodeURIComponent(handleOrDid)}/heatmap?days=${days}`,
+      {
+        next: { revalidate: 900, tags: [`heatmap-${handleOrDid}`] },
+      },
+    );
+    if (!res.ok) return null;
+    return (await res.json()) as HeatmapResponse;
+  } catch {
+    return null;
+  }
+}
+
 // --- Activity Teaser ---
 
 export interface ActivityItem {
