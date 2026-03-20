@@ -24,6 +24,7 @@ export interface EventEntry {
     handle: string;
     displayName?: string;
     avatar?: string;
+    pronouns?: string;
     headline?: string;
     about?: string;
     positions?: ProfilePosition[];
