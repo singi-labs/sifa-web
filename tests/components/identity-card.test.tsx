@@ -337,8 +337,20 @@ describe('IdentityCard (embed variant)', () => {
         {...baseProps}
         variant="embed"
         activeApps={[
-          { id: 'smokesignal', name: 'Smoke Signal' },
-          { id: 'whitewind', name: 'Whitewind' },
+          {
+            id: 'smokesignal',
+            name: 'Smoke Signal',
+            category: 'Posts',
+            recentCount: 10,
+            latestRecordAt: null,
+          },
+          {
+            id: 'whitewind',
+            name: 'Whitewind',
+            category: 'Posts',
+            recentCount: 5,
+            latestRecordAt: null,
+          },
         ]}
       />,
     );
