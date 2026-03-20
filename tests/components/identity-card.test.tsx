@@ -128,6 +128,16 @@ describe('IdentityCard (default / page variant)', () => {
     expect(screen.getByText('Senior Engineer')).toBeDefined();
   });
 
+  it('renders pronouns when provided', () => {
+    render(<IdentityCard {...baseProps} pronouns="she/her" />);
+    expect(screen.getByText('(she/her)')).toBeDefined();
+  });
+
+  it('does not render pronouns when not provided', () => {
+    render(<IdentityCard {...baseProps} />);
+    expect(screen.queryByText(/^\(.*\)$/)).toBeNull();
+  });
+
   it('renders location and website', () => {
     render(
       <IdentityCard
@@ -265,6 +275,11 @@ describe('IdentityCard (embed variant)', () => {
   it('still shows headline', () => {
     render(<IdentityCard {...baseProps} variant="embed" />);
     expect(screen.getByText('Senior Engineer')).toBeDefined();
+  });
+
+  it('renders pronouns in embed variant', () => {
+    render(<IdentityCard {...baseProps} variant="embed" pronouns="they/them" />);
+    expect(screen.getByText('(they/them)')).toBeDefined();
   });
 
   it('does not show trust stats in embed variant', () => {

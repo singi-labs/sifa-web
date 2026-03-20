@@ -175,6 +175,7 @@ export interface Profile {
   handle: string;
   displayName?: string;
   avatar?: string;
+  pronouns?: string;
   headline?: string;
   about?: string;
   // Override system
