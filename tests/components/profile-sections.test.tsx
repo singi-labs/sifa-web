@@ -40,7 +40,7 @@ describe('TimelineEntry', () => {
     expect(screen.getByText('2020 - Present')).toBeDefined();
   });
 
-  it('expands description on click', async () => {
+  it('starts expanded and collapses on click', async () => {
     const user = userEvent.setup();
     render(
       <TimelineEntry
@@ -51,11 +51,11 @@ describe('TimelineEntry', () => {
       />,
     );
 
-    // Content is in the DOM but visually hidden (inside collapsed Collapsible)
-    expect(screen.getByRole('button').getAttribute('aria-expanded')).toBe('false');
-    await user.click(screen.getByRole('button'));
+    // Descriptions are expanded by default
     expect(screen.getByRole('button').getAttribute('aria-expanded')).toBe('true');
     expect(screen.getByText('Did great work')).toBeDefined();
+    await user.click(screen.getByRole('button'));
+    expect(screen.getByRole('button').getAttribute('aria-expanded')).toBe('false');
   });
 });
 
