@@ -24,6 +24,7 @@ const APP_REGISTRY: Record<string, AppMeta> = {
   pastesphere: { name: 'PasteSphere', className: badgeClass('pastesphere') },
   tangled: { name: 'Tangled', className: badgeClass('tangled') },
   flashes: { name: 'Flashes', className: badgeClass('flashes') },
+  kipclip: { name: 'KipClip', className: badgeClass('kipclip') },
 };
 
 const FALLBACK_CLASS = badgeClass('fallback');
