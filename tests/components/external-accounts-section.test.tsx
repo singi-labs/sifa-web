@@ -32,9 +32,9 @@ describe('ExternalAccountsSection', () => {
     verified: false,
   };
 
-  it('renders Bluesky entry even when accounts array is empty', () => {
+  it('renders ATProto entry even when accounts array is empty', () => {
     withProvider(<ExternalAccountsSection accounts={[]} />);
-    expect(screen.getByRole('link', { name: '@test.bsky.social' })).toBeDefined();
+    expect(screen.getByRole('link', { name: 'Bluesky (@test.bsky.social)' })).toBeDefined();
     expect(screen.getByLabelText('Verified')).toBeDefined();
   });
 
