@@ -23,19 +23,8 @@ import {
 import type { ExternalAccount } from '@/lib/types';
 import { getPlatformInfo, PLATFORM_OPTIONS } from '@/lib/platforms';
 import { Favicon } from '@/components/ui/favicon';
-
-/** Synthetic Bluesky entry derived from the profile's AT Protocol handle. */
-function makeBlueskyEntry(handle: string): ExternalAccount {
-  return {
-    rkey: '__bluesky__',
-    platform: 'bluesky',
-    url: `https://bsky.app/profile/${handle}`,
-    label: `@${handle}`,
-    verifiable: true,
-    verified: true,
-    verifiedVia: 'atproto',
-  };
-}
+import { PdsIcon } from '@/components/pds-icon';
+import { pdsProviderFromApi, detectPdsProvider, getPdsDisplayName } from '@/lib/pds-utils';
 
 interface ExternalAccountsSectionProps {
   accounts: ExternalAccount[];
@@ -101,8 +90,15 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
     }, 2000);
   }, [profile.handle, updateProfile]);
 
-  const blueskyEntry = makeBlueskyEntry(profile.handle);
-  const totalCount = accounts.length + 1; // +1 for Bluesky
+  const pdsProvider =
+    pdsProviderFromApi(profile.pdsProvider, profile.handle) ?? detectPdsProvider(profile.handle);
+  const atprotoUrl = `https://bsky.app/profile/${profile.handle}`;
+  const isSelfHosted =
+    pdsProvider?.name === 'selfhosted' || pdsProvider?.name === 'selfhosted-social';
+  const atprotoLabel = isSelfHosted
+    ? `Self-hosted ATProto (@${profile.handle})`
+    : `${getPdsDisplayName(pdsProvider?.name ?? 'bluesky')} (@${profile.handle})`;
+  const totalCount = accounts.length + 1; // +1 for ATProto entry
 
   return (
     <section className="mt-8" aria-label={t('otherProfiles')}>
@@ -132,31 +128,29 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
           </Popover.Root>
         )}
       </div>
-      {/* Bluesky — always shown, verified via AT Protocol identity */}
+      {/* ATProto identity — always shown, verified via AT Protocol */}
       <div className="mb-4">
-        {(() => {
-          const bskyPlatform = getPlatformInfo(blueskyEntry.platform);
-          const BskyIcon = bskyPlatform.icon;
-          return (
-            <li className="flex items-center gap-3">
-              <BskyIcon size={20} weight="regular" className="shrink-0 text-muted-foreground" />
-              <a
-                href={blueskyEntry.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-medium underline-offset-4 hover:underline"
-              >
-                {blueskyEntry.label}
-              </a>
-              <CheckCircle
-                size={16}
-                weight="fill"
-                className="shrink-0 text-green-600 dark:text-green-400"
-                aria-label={t('verified')}
-              />
-            </li>
-          );
-        })()}
+        <li className="flex items-center gap-3">
+          <PdsIcon
+            provider={pdsProvider?.name ?? 'bluesky'}
+            host={pdsProvider?.host}
+            className="h-5 w-5 shrink-0 text-muted-foreground"
+          />
+          <a
+            href={atprotoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-medium underline-offset-4 hover:underline"
+          >
+            {atprotoLabel}
+          </a>
+          <CheckCircle
+            size={16}
+            weight="fill"
+            className="shrink-0 text-green-600 dark:text-green-400"
+            aria-label={t('verified')}
+          />
+        </li>
       </div>
 
       <EditableSection<ExternalAccount>
