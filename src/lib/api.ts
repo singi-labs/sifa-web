@@ -186,3 +186,39 @@ export async function fetchFeaturedProfile(): Promise<FeaturedProfile | null> {
     return null;
   }
 }
+
+// --- Apps Registry ---
+
+export interface AppRegistryEntry {
+  id: string;
+  name: string;
+  category: string;
+  collectionPrefixes: string[];
+  scanCollections: string[];
+  urlPattern?: string;
+  color: string;
+}
+
+export async function fetchAppsRegistry(): Promise<AppRegistryEntry[]> {
+  try {
+    const res = await fetch(`${API_URL}/api/apps/registry`, {
+      next: { revalidate: 86400 },
+    });
+    if (!res.ok) return [];
+    return res.json();
+  } catch {
+    return [];
+  }
+}
+
+// --- Activity Visibility ---
+
+export async function updateActivityVisibility(appId: string, visible: boolean): Promise<boolean> {
+  const res = await fetch(`${API_URL}/api/profile/activity-visibility`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify({ appId, visible }),
+  });
+  return res.ok;
+}
