@@ -27,7 +27,7 @@ export function TimelineEntry({
 
   const content = (
     <>
-      <div className="flex items-baseline justify-between gap-2">
+      <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-2">
         <div className="min-w-0">
           <h3 className="font-medium">{title}</h3>
           <p className="text-sm text-muted-foreground">{subtitle}</p>
