@@ -7,12 +7,10 @@ import { useAuth } from '@/components/auth-provider';
 import { useRequireAuth } from '@/hooks/use-require-auth';
 import { SuggestionCard } from '@/components/suggestion-card';
 import { Button, buttonVariants } from '@/components/ui/button';
-import { fetchFollowing, type FollowProfile } from '@/lib/api';
+import { fetchFollowing, unfollowUser, type FollowProfile } from '@/lib/api';
 import { toast } from 'sonner';
 
 const SOURCES = ['all', 'sifa', 'bluesky', 'tangled'] as const;
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3100';
 
 export default function MyNetworkPage() {
   const { session, isLoading: authLoading } = useAuth();
@@ -51,11 +49,8 @@ export default function MyNetworkPage() {
   const handleUnfollow = useCallback(
     (did: string) => {
       requireAuth(async () => {
-        const res = await fetch(`${API_URL}/api/follow/${encodeURIComponent(did)}`, {
-          method: 'DELETE',
-          credentials: 'include',
-        });
-        if (res.ok) {
+        const ok = await unfollowUser(did);
+        if (ok) {
           setFollows((prev) => prev.filter((f) => f.did !== did));
           toast.success('Unfollowed');
         } else {

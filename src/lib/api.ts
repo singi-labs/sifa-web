@@ -224,6 +224,24 @@ export async function fetchFollowing(opts?: {
   return res.json();
 }
 
+export async function followUser(subjectDid: string): Promise<boolean> {
+  const res = await fetch(`${API_URL}/api/follow`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify({ subjectDid }),
+  });
+  return res.ok;
+}
+
+export async function unfollowUser(subjectDid: string): Promise<boolean> {
+  const res = await fetch(`${API_URL}/api/follow/${encodeURIComponent(subjectDid)}`, {
+    method: 'DELETE',
+    credentials: 'include',
+  });
+  return res.ok;
+}
+
 // --- Apps Registry ---
 
 export interface AppRegistryEntry {
