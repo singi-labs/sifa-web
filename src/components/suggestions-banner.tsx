@@ -47,7 +47,7 @@ export function SuggestionsBanner() {
       </p>
       <div className="flex items-center gap-2">
         <Link href="/find-people" className="text-sm font-medium text-primary hover:underline">
-          Find people
+          Show me who
         </Link>
         <button
           type="button"
