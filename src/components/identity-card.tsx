@@ -304,10 +304,10 @@ export function IdentityCard({
         </>
       ) : (
         <>
-          {/* Page layout: two-column with avatar left, text right */}
-          <div className="flex items-start gap-6">
+          {/* Page layout: avatar stacked on mobile, side-by-side on sm+ */}
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:gap-6">
             {/* Left column: avatar */}
-            <div className="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-full bg-muted text-2xl font-semibold text-muted-foreground">
+            <div className="flex h-24 w-24 shrink-0 self-center items-center justify-center overflow-hidden rounded-full bg-muted text-2xl font-semibold text-muted-foreground sm:self-auto">
               {avatar ? (
                 <Image
                   src={avatar}
