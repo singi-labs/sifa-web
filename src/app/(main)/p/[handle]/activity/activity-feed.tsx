@@ -33,6 +33,12 @@ export function ActivityFeed({ handle, initialData }: ActivityFeedProps) {
   const [isPending, startTransition] = useTransition();
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
+  const availableCategories = initialData?.availableCategories ?? [];
+  const showCategoryTabs = availableCategories.length > 1;
+  const visibleCategories = showCategoryTabs
+    ? CATEGORIES.filter((c) => c.key === 'all' || availableCategories.includes(c.key))
+    : [];
+
   const selectCategory = useCallback(
     (category: string) => {
       if (category === activeCategory) return;
@@ -82,32 +88,34 @@ export function ActivityFeed({ handle, initialData }: ActivityFeedProps) {
 
   return (
     <div>
-      {/* Category tabs */}
-      <div
-        className="mb-6 flex gap-2 overflow-x-auto"
-        role="tablist"
-        aria-label={t('categoryTabsLabel')}
-      >
-        {CATEGORIES.map(({ key, labelKey }) => {
-          const isActive = activeCategory === key;
-          return (
-            <button
-              key={key}
-              role="tab"
-              aria-selected={isActive}
-              aria-controls="activity-feed-panel"
-              onClick={() => selectCategory(key)}
-              className={`shrink-0 rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
-                isActive
-                  ? 'bg-primary text-primary-foreground'
-                  : 'bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground'
-              }`}
-            >
-              {t(labelKey)}
-            </button>
-          );
-        })}
-      </div>
+      {/* Category tabs — hidden when user has content in only one category */}
+      {showCategoryTabs && (
+        <div
+          className="mb-6 flex gap-2 overflow-x-auto"
+          role="tablist"
+          aria-label={t('categoryTabsLabel')}
+        >
+          {visibleCategories.map(({ key, labelKey }) => {
+            const isActive = activeCategory === key;
+            return (
+              <button
+                key={key}
+                role="tab"
+                aria-selected={isActive}
+                aria-controls="activity-feed-panel"
+                onClick={() => selectCategory(key)}
+                className={`shrink-0 rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+                  isActive
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground'
+                }`}
+              >
+                {t(labelKey)}
+              </button>
+            );
+          })}
+        </div>
+      )}
 
       {/* Feed panel */}
       <div id="activity-feed-panel" role="tabpanel" aria-live="polite">
