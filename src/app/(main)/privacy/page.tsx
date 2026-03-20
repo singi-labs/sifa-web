@@ -62,6 +62,37 @@ export default async function PrivacyPage() {
         </section>
 
         <section>
+          <h2 className="text-xl font-semibold">{t('activityTitle')}</h2>
+          <p className="mt-2 text-muted-foreground">{t('activityBody')}</p>
+          <p className="mt-2 text-sm text-muted-foreground">{t('activityLegalBasis')}</p>
+        </section>
+
+        <section>
+          <h3 className="text-lg font-semibold">{t('activityUnclaimedTitle')}</h3>
+          <p className="mt-2 text-muted-foreground">{t('activityUnclaimedBody')}</p>
+        </section>
+
+        <section>
+          <h3 className="text-lg font-semibold">{t('activityVisibilityTitle')}</h3>
+          <p className="mt-2 text-muted-foreground">{t('activityVisibilityBody')}</p>
+        </section>
+
+        <section>
+          <h2 className="text-xl font-semibold">{t('removalTitle')}</h2>
+          <p className="mt-2 text-muted-foreground">
+            {t('removalBody')}{' '}
+            <Link href="/privacy/removal" className={linkClass}>
+              Request removal
+            </Link>
+          </p>
+        </section>
+
+        <section>
+          <h2 className="text-xl font-semibold">{t('rightsTitle')}</h2>
+          <p className="mt-2 text-muted-foreground">{t('rightsBody')}</p>
+        </section>
+
+        <section>
           <h2 className="text-xl font-semibold">{t('loggingTitle')}</h2>
           <p className="mt-2 text-muted-foreground">{t('loggingBody')}</p>
         </section>
