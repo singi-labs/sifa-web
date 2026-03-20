@@ -83,7 +83,7 @@ export default async function Home() {
                 return (
                   <Link
                     href={`/p/${featuredProfile.handle}`}
-                    className="block rounded-xl transition-transform hover:scale-[1.01] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                    className="block rounded-xl text-left transition-transform hover:scale-[1.01] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                   >
                     <IdentityCard
                       did={featuredProfile.did}
