@@ -104,6 +104,7 @@
       "new": "New",
       "itemCount": "{count} {count, plural, one {item} other {items}} to import",
       "confirmButton": "Confirm & Import",
+      "confirming": "Importing…",
       "back": "Back",
       "profile": "Profile",
       "noPositions": "No positions found in export.",

@@ -59,7 +59,7 @@ function getCompletionItems(profile: Profile): CompletionItem[] {
     {
       key: 'website',
       label: 'Add a website or verification',
-      completed: Boolean(profile.website) || (profile.verifiedAccounts ?? []).length > 0,
+      completed: Boolean(profile.website) || (profile.externalAccounts ?? []).length > 0,
       action: '#edit-about',
     },
   ];
