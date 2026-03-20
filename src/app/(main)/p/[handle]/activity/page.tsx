@@ -1,8 +1,10 @@
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 import { ArrowLeft } from '@phosphor-icons/react/dist/ssr';
 import { fetchActivityFeed } from '@/lib/api';
+import { ActivityHeatmap } from '@/components/activity-heatmap/activity-heatmap';
 import { ActivityFeed } from './activity-feed';
 
 export async function generateMetadata({
@@ -39,6 +41,12 @@ export default async function ActivityPage({ params }: { params: Promise<{ handl
       </nav>
 
       <h1 className="mb-6 text-2xl font-bold">{t('title', { handle })}</h1>
+
+      <div className="mb-6">
+        <Suspense fallback={<div className="h-[136px] w-full animate-pulse rounded-lg bg-muted" />}>
+          <ActivityHeatmap handle={handle} days={180} variant="full" />
+        </Suspense>
+      </div>
 
       <ActivityFeed handle={handle} initialData={initialData} />
     </div>
