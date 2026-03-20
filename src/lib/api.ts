@@ -187,6 +187,43 @@ export async function fetchFeaturedProfile(): Promise<FeaturedProfile | null> {
   }
 }
 
+// --- Following (My Network) ---
+
+export interface FollowProfile {
+  did: string;
+  handle: string;
+  displayName?: string;
+  headline?: string;
+  avatar?: string;
+  source: string;
+  claimed: boolean;
+  followedAt: string;
+}
+
+export interface FollowingResponse {
+  follows: FollowProfile[];
+  cursor?: string;
+}
+
+export async function fetchFollowing(opts?: {
+  source?: string;
+  cursor?: string;
+  limit?: number;
+}): Promise<FollowingResponse> {
+  const params = new URLSearchParams();
+  if (opts?.source) params.set('source', opts.source);
+  if (opts?.cursor) params.set('cursor', opts.cursor);
+  if (opts?.limit) params.set('limit', String(opts.limit));
+
+  const qs = params.toString();
+  const res = await fetch(`${API_URL}/api/following${qs ? `?${qs}` : ''}`, {
+    credentials: 'include',
+    cache: 'no-store',
+  });
+  if (!res.ok) return { follows: [] };
+  return res.json();
+}
+
 // --- Apps Registry ---
 
 export interface AppRegistryEntry {

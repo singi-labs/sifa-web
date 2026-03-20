@@ -131,7 +131,14 @@ export default function FindPeoplePage() {
         );
         if (res.ok) {
           setOnSifa((prev) => prev.filter((s) => s.did !== did));
-          toast.success('Followed successfully');
+          toast.success('Followed! View in My Network', {
+            action: {
+              label: 'View',
+              onClick: () => {
+                window.location.href = '/my-network';
+              },
+            },
+          });
         }
       });
     },
