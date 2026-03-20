@@ -124,9 +124,9 @@ describe('ProfileEditProvider', () => {
     expect(result.current.profile.education[0]?.institution).toBe('Stanford');
   });
 
-  it('throws when useProfileEdit is used outside provider', () => {
-    expect(() => {
-      renderHook(() => useProfileEdit());
-    }).toThrow('useProfileEdit must be used within a ProfileEditProvider');
+  it('returns safe defaults when useProfileEdit is used outside provider', () => {
+    const { result } = renderHook(() => useProfileEdit());
+    expect(result.current.isActualOwner).toBe(false);
+    expect(result.current.previewMode).toBe(false);
   });
 });
