@@ -10,15 +10,21 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Upload, Eye, Info } from '@phosphor-icons/react';
+import { Upload, Eye, Info, ArrowsClockwise } from '@phosphor-icons/react';
 
 interface UploadStepProps {
   onFileSelected: (file: File) => void;
   isProcessing: boolean;
   extractionError?: string | null;
+  hasExistingData?: boolean;
 }
 
-export function UploadStep({ onFileSelected, isProcessing, extractionError }: UploadStepProps) {
+export function UploadStep({
+  onFileSelected,
+  isProcessing,
+  extractionError,
+  hasExistingData,
+}: UploadStepProps) {
   const t = useTranslations('import.upload');
   const [dragActive, setDragActive] = useState(false);
   const [fileName, setFileName] = useState<string | null>(null);
@@ -95,6 +101,22 @@ export function UploadStep({ onFileSelected, isProcessing, extractionError }: Up
         </CardDescription>
       </CardHeader>
       <CardContent>
+        {hasExistingData && (
+          <div
+            className="mb-4 flex gap-3 rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-800 dark:bg-blue-950/30"
+            role="status"
+          >
+            <ArrowsClockwise
+              className="mt-0.5 size-5 shrink-0 text-blue-600 dark:text-blue-400"
+              weight="fill"
+              aria-hidden="true"
+            />
+            <div className="text-sm">
+              <p className="font-medium text-blue-900 dark:text-blue-200">{t('reimportTitle')}</p>
+              <p className="mt-1 text-blue-800 dark:text-blue-300">{t('reimportBody')}</p>
+            </div>
+          </div>
+        )}
         <div
           role="button"
           tabIndex={0}

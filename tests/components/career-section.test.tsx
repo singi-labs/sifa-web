@@ -130,9 +130,9 @@ describe('CareerSection', () => {
     // Junior Developer has no linkedSkills, so no chips appear
     const juniorText = screen.getByText('Junior Developer');
     expect(juniorText).toBeDefined();
-    // TypeScript chip is inside collapsed Collapsible -- in DOM but visually hidden
-    // Verify the Senior Developer entry is collapsed by default
-    const buttons = screen.getAllByRole('button', { expanded: false });
+    // Descriptions are expanded by default — TypeScript chip should be visible
+    // under Senior Developer but not under Junior Developer
+    const buttons = screen.getAllByRole('button', { expanded: true });
     expect(buttons.length).toBeGreaterThan(0);
   });
 

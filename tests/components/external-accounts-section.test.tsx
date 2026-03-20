@@ -32,9 +32,10 @@ describe('ExternalAccountsSection', () => {
     verified: false,
   };
 
-  it('renders nothing when accounts array is empty', () => {
-    const { container } = withProvider(<ExternalAccountsSection accounts={[]} />);
-    expect(container.innerHTML).toBe('');
+  it('renders Bluesky entry even when accounts array is empty', () => {
+    withProvider(<ExternalAccountsSection accounts={[]} />);
+    expect(screen.getByRole('link', { name: '@test.bsky.social' })).toBeDefined();
+    expect(screen.getByLabelText('Verified')).toBeDefined();
   });
 
   it('renders section with accounts', () => {
@@ -54,21 +55,24 @@ describe('ExternalAccountsSection', () => {
   it('shows verified checkmark for verified accounts', () => {
     const acc = { ...baseAccount, verified: true };
     withProvider(<ExternalAccountsSection accounts={[acc]} />, { externalAccounts: [acc] });
-    expect(screen.getByLabelText('Verified')).toBeDefined();
+    // Bluesky entry + the verified GitHub account = 2 verified badges
+    expect(screen.getAllByLabelText('Verified').length).toBe(2);
   });
 
   it('shows no badge for verifiable but unverified accounts', () => {
     const acc = { ...baseAccount, verifiable: true, verified: false };
     withProvider(<ExternalAccountsSection accounts={[acc]} />, { externalAccounts: [acc] });
     expect(screen.queryByText('Unverified')).toBeNull();
-    expect(screen.queryByLabelText('Verified')).toBeNull();
+    // Only the synthetic Bluesky entry has a verified badge
+    expect(screen.getAllByLabelText('Verified').length).toBe(1);
   });
 
   it('shows no badge for non-verifiable accounts', () => {
     const acc = { ...baseAccount, platform: 'instagram', verifiable: false, verified: false };
     withProvider(<ExternalAccountsSection accounts={[acc]} />, { externalAccounts: [acc] });
     expect(screen.queryByText('Unverified')).toBeNull();
-    expect(screen.queryByLabelText('Verified')).toBeNull();
+    // Only the synthetic Bluesky entry has a verified badge
+    expect(screen.getAllByLabelText('Verified').length).toBe(1);
   });
 
   it('shows verification hint when selecting a verifiable platform', async () => {
