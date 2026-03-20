@@ -119,6 +119,10 @@
   --app-pastesphere-badge-bg: oklch(0.93 0.03 75);
   --app-pastesphere-badge-text: oklch(0.38 0.1 75);
 
+  --app-kipclip-stripe: oklch(0.55 0.12 180);
+  --app-kipclip-badge-bg: oklch(0.93 0.03 180);
+  --app-kipclip-badge-text: oklch(0.35 0.1 180);
+
   --app-fallback-stripe: oklch(0.5 0.01 260);
   --app-fallback-badge-bg: oklch(0.93 0.01 260);
   --app-fallback-badge-text: oklch(0.35 0.02 260);
@@ -193,6 +197,10 @@
   --app-pastesphere-stripe: oklch(0.63 0.16 75);
   --app-pastesphere-badge-bg: oklch(0.25 0.05 75 / 40%);
   --app-pastesphere-badge-text: oklch(0.78 0.1 75);
+
+  --app-kipclip-stripe: oklch(0.6 0.12 180);
+  --app-kipclip-badge-bg: oklch(0.25 0.06 180 / 40%);
+  --app-kipclip-badge-text: oklch(0.78 0.1 180);
 
   --app-fallback-stripe: oklch(0.55 0.01 260);
   --app-fallback-badge-bg: oklch(0.25 0.01 260 / 40%);
