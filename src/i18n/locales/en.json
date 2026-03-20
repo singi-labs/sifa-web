@@ -60,7 +60,10 @@
     "usingCustomValue": "Using custom value",
     "usingAtprotoValue": "Using AT Protocol profile value",
     "customizeHeadline": "Customize headline",
-    "customizeAbout": "Customize about"
+    "customizeAbout": "Customize about",
+    "previewPublic": "View as others",
+    "previewBanner": "Viewing your profile as others see it",
+    "exitPreview": "Exit preview"
   },
   "activity": {
     "title": "Activity for {handle}",
@@ -99,7 +102,9 @@
       "fileTypeError": "Please select a ZIP file (.zip). LinkedIn exports are delivered as ZIP archives.",
       "fileSizeError": "File is too large (max 500 MB). Try re-downloading your LinkedIn export.",
       "privacyNote": "Your LinkedIn ZIP is extracted in your browser and never leaves your device. The structured profile data is then written directly to your Personal Data Server through our API.",
-      "publicDataNotice": "Everything you import will be publicly visible to anyone, including people without a Sifa account. Unlike LinkedIn (where some data is hidden from logged-out visitors), Sifa profiles are fully public. Review your data before importing."
+      "publicDataNotice": "Everything you import will be publicly visible to anyone, including people without a Sifa account. Unlike LinkedIn (where some data is hidden from logged-out visitors), Sifa profiles are fully public. Review your data before importing.",
+      "reimportTitle": "You already have profile data",
+      "reimportBody": "Importing again will fully replace your existing positions, education, skills, and other LinkedIn-imported data with the contents of this new export. Items you removed from LinkedIn will also be removed from Sifa. Items you added or edited directly on Sifa will be overwritten. You can review and remove individual items before confirming in the next step."
     },
     "preview": {
       "heading": "Review imported data",
@@ -113,6 +118,7 @@
       "new": "New",
       "itemCount": "{count} {count, plural, one {item} other {items}} to import",
       "confirmButton": "Confirm & Import",
+      "confirming": "Importing…",
       "back": "Back",
       "profile": "Profile",
       "noPositions": "No positions found in export.",
@@ -154,7 +160,9 @@
     "verifyHintGithub": "Add your Sifa profile URL in the \"URL\" field or under \"Social accounts\" in your GitHub profile settings. We'll verify the link automatically when you save.",
     "verifyHintWebsite": "Add the following tag to your site's head section. We'll verify the link automatically when you save.",
     "verifyHintFediverse": "Add your Sifa profile URL to one of your Fediverse profile metadata fields. We'll verify the link automatically when you save.",
-    "verifyHintRss": "Add a link with rel=\"me\" pointing to your Sifa profile URL on your feed's HTML page. We'll verify the link automatically when you save."
+    "verifyHintRss": "Add a link with rel=\"me\" pointing to your Sifa profile URL on your feed's HTML page. We'll verify the link automatically when you save.",
+    "showMore": "Show {count} more",
+    "showLess": "Show less"
   },
   "trackRecord": {
     "title": "Track Record",

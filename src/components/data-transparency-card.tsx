@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { ArrowSquareOut } from '@phosphor-icons/react';
+import { useProfileEdit } from '@/components/profile-edit-provider';
 
 interface DataTransparencyCardProps {
   did: string;
@@ -9,6 +10,9 @@ interface DataTransparencyCardProps {
 
 export function DataTransparencyCard({ did }: DataTransparencyCardProps) {
   const t = useTranslations('dataTransparency');
+  const { previewMode } = useProfileEdit();
+
+  if (previewMode) return null;
 
   const viewerUrl = `https://atproto.at/viewer?uri=${did}`;
 

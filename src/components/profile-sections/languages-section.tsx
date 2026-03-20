@@ -25,7 +25,12 @@ export function LanguagesSection({ languages, isOwnProfile }: LanguagesSectionPr
 
   return (
     <section className="mt-8" aria-label={t('languages')}>
-      <h2 className="mb-4 text-xl font-semibold">{t('languages')}</h2>
+      <h2 className="mb-4 text-xl font-semibold">
+        {t('languages')}
+        {languages.length > 0 && (
+          <span className="ml-2 text-sm font-normal text-muted-foreground">{languages.length}</span>
+        )}
+      </h2>
       <EditableSection<ProfileLanguage>
         sectionTitle={t('languages')}
         profileKey="languages"

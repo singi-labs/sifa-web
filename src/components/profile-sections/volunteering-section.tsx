@@ -21,7 +21,7 @@ export function VolunteeringSection({ volunteering, isOwnProfile }: Volunteering
   if (!volunteering.length && !isOwnProfile) return null;
 
   return (
-    <TimelineSection title={t('volunteering')}>
+    <TimelineSection title={t('volunteering')} itemCount={volunteering.length}>
       <EditableSection<ProfileVolunteering>
         sectionTitle={t('volunteering')}
         profileKey="volunteering"
@@ -34,6 +34,7 @@ export function VolunteeringSection({ volunteering, isOwnProfile }: Volunteering
           ) => Omit<ProfileVolunteering, 'rkey'>
         }
         collection="id.sifa.profile.volunteering"
+        maxVisible={3}
         sortItems={(items) => sortByDateDesc(items, dateRangeExtractor)}
         renderEntry={(vol, controls) => (
           <EditableEntry

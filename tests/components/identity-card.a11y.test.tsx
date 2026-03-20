@@ -5,6 +5,19 @@ import { IdentityCard } from '@/components/identity-card';
 
 Object.assign(navigator, { clipboard: { writeText: vi.fn() } });
 
+vi.mock('@/components/profile-edit-provider', () => ({
+  useProfileEdit: () => ({
+    profile: { isOwnProfile: false },
+    isActualOwner: false,
+    previewMode: false,
+    togglePreview: vi.fn(),
+    updateProfile: vi.fn(),
+    addItem: vi.fn(),
+    updateItem: vi.fn(),
+    removeItem: vi.fn(),
+  }),
+}));
+
 describe('IdentityCard accessibility', () => {
   it('has no a11y violations', async () => {
     const { container } = render(

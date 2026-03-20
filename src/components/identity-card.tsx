@@ -6,7 +6,8 @@ import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 import { Popover } from '@base-ui/react/popover';
-import { ShareNetwork, PencilSimple, CheckCircle, Check, Code } from '@phosphor-icons/react';
+import { ShareNetwork, PencilSimple, CheckCircle, Check, Code, Eye } from '@phosphor-icons/react';
+import { useProfileEdit } from '@/components/profile-edit-provider';
 import { Badge } from '@/components/ui/badge';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { FollowButton } from '@/components/follow-button';
@@ -116,7 +117,9 @@ export function IdentityCard({
   const t = useTranslations('identityCard');
   const tEdit = useTranslations('profileEdit');
   const { session } = useAuth();
+  const tProfile = useTranslations('profile');
   const isEmbed = variant === 'embed';
+  const { isActualOwner, previewMode, togglePreview } = useProfileEdit();
   const isOwn = isOwnProfile || Boolean(session?.did && session.did === did);
   const [editing, setEditing] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -496,16 +499,30 @@ export function IdentityCard({
         </>
       )}
 
-      {/* Floating edit button — top-right, own profile only, not in embeds */}
-      {isOwn && !isEmbed && (
-        <button
-          type="button"
-          onClick={() => setEditing(true)}
-          className="absolute right-4 top-4 inline-flex h-8 items-center justify-center gap-1.5 rounded-md border border-border bg-background px-3 text-sm font-medium transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-        >
-          <PencilSimple className="h-4 w-4" weight="bold" aria-hidden="true" />
-          {t('editProfile')}
-        </button>
+      {/* Floating edit/preview buttons — top-right, own profile only, not in embeds */}
+      {isActualOwner && !isEmbed && (
+        <div className="absolute right-4 top-4 flex items-center gap-2">
+          <button
+            type="button"
+            onClick={togglePreview}
+            className="inline-flex h-8 items-center justify-center gap-1.5 rounded-md border border-border bg-background px-3 text-sm font-medium transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            aria-pressed={previewMode}
+            title={tProfile('previewPublic')}
+          >
+            <Eye className="h-4 w-4" weight={previewMode ? 'fill' : 'bold'} aria-hidden="true" />
+            {tProfile('previewPublic')}
+          </button>
+          {!previewMode && (
+            <button
+              type="button"
+              onClick={() => setEditing(true)}
+              className="inline-flex h-8 items-center justify-center gap-1.5 rounded-md border border-border bg-background px-3 text-sm font-medium transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            >
+              <PencilSimple className="h-4 w-4" weight="bold" aria-hidden="true" />
+              {t('editProfile')}
+            </button>
+          )}
+        </div>
       )}
 
       {/* Row 8: Action buttons (page) or "View on Sifa" CTA (embed) */}

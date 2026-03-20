@@ -29,6 +29,7 @@ interface PreviewStepProps {
 export function PreviewStep({ preview, existingData, onConfirm, onBack }: PreviewStepProps) {
   const t = useTranslations('import.preview');
   const [data, setData] = useState<ImportPreview>(preview);
+  const [isConfirming, setIsConfirming] = useState(false);
 
   const removeFrom = (key: keyof ImportPreview, index: number) => {
     setData((prev) => ({
@@ -290,8 +291,14 @@ export function PreviewStep({ preview, existingData, onConfirm, onBack }: Previe
             <span className="text-sm text-muted-foreground">
               {t('itemCount', { count: totalItems })}
             </span>
-            <Button onClick={() => onConfirm(data)} disabled={totalItems === 0}>
-              {t('confirmButton')}
+            <Button
+              onClick={() => {
+                setIsConfirming(true);
+                onConfirm(data);
+              }}
+              disabled={totalItems === 0 || isConfirming}
+            >
+              {isConfirming ? t('confirming') : t('confirmButton')}
             </Button>
           </div>
         </div>

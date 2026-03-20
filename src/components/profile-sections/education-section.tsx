@@ -22,7 +22,7 @@ export function EducationSection({ education, courses = [], isOwnProfile }: Educ
   if (!education.length && !isOwnProfile) return null;
 
   return (
-    <TimelineSection title={t('education')}>
+    <TimelineSection title={t('education')} itemCount={education.length}>
       <EditableSection<ProfileEducation>
         sectionTitle={t('education')}
         profileKey="education"
@@ -35,6 +35,7 @@ export function EducationSection({ education, courses = [], isOwnProfile }: Educ
           ) => Omit<ProfileEducation, 'rkey'>
         }
         collection="id.sifa.profile.education"
+        maxVisible={3}
         sortItems={(items) => sortByDateDesc(items, dateRangeExtractor)}
         renderEntry={(edu, controls) => {
           const subtitle = [edu.degree, edu.fieldOfStudy].filter(Boolean).join(', ');

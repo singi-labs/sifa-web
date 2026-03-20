@@ -24,6 +24,19 @@ import type { ExternalAccount } from '@/lib/types';
 import { getPlatformInfo, PLATFORM_OPTIONS } from '@/lib/platforms';
 import { Favicon } from '@/components/ui/favicon';
 
+/** Synthetic Bluesky entry derived from the profile's AT Protocol handle. */
+function makeBlueskyEntry(handle: string): ExternalAccount {
+  return {
+    rkey: '__bluesky__',
+    platform: 'bluesky',
+    url: `https://bsky.app/profile/${handle}`,
+    label: `@${handle}`,
+    verifiable: true,
+    verified: true,
+    verifiedVia: 'atproto',
+  };
+}
+
 interface ExternalAccountsSectionProps {
   accounts: ExternalAccount[];
   isOwnProfile?: boolean;
@@ -88,12 +101,18 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
     }, 2000);
   }, [profile.handle, updateProfile]);
 
-  if (!accounts.length && !isOwnProfile) return null;
+  const blueskyEntry = makeBlueskyEntry(profile.handle);
+  const totalCount = accounts.length + 1; // +1 for Bluesky
 
   return (
     <section className="mt-8" aria-label={t('otherProfiles')}>
       <div className="mb-4 flex items-center gap-2">
-        <h2 className="text-xl font-semibold">{t('otherProfiles')}</h2>
+        <h2 className="text-xl font-semibold">
+          {t('otherProfiles')}
+          {totalCount > 0 && (
+            <span className="ml-2 text-sm font-normal text-muted-foreground">{totalCount}</span>
+          )}
+        </h2>
         {isOwnProfile && (
           <Popover.Root>
             <Popover.Trigger
@@ -113,6 +132,35 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
           </Popover.Root>
         )}
       </div>
+      {/* Bluesky — always shown, verified via AT Protocol identity */}
+      <ul className="mb-2 space-y-4">
+        <li className="flex items-center gap-3">
+          {(() => {
+            const bskyPlatform = getPlatformInfo(blueskyEntry.platform);
+            const BskyIcon = bskyPlatform.icon;
+            return (
+              <>
+                <BskyIcon size={20} weight="regular" className="shrink-0 text-muted-foreground" />
+                <a
+                  href={blueskyEntry.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium underline-offset-4 hover:underline"
+                >
+                  {blueskyEntry.label}
+                </a>
+                <CheckCircle
+                  size={16}
+                  weight="fill"
+                  className="shrink-0 text-green-600 dark:text-green-400"
+                  aria-label={t('verified')}
+                />
+              </>
+            );
+          })()}
+        </li>
+      </ul>
+
       <EditableSection<ExternalAccount>
         sectionTitle={t('otherProfiles')}
         profileKey="externalAccounts"

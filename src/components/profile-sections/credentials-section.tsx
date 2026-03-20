@@ -22,8 +22,16 @@ export function CredentialsSection({ certifications, isOwnProfile }: Credentials
 
   return (
     <section className="mt-8" aria-label={t('credentials')}>
-      <h2 className="mb-4 text-xl font-semibold">{t('credentials')}</h2>
+      <h2 className="mb-4 text-xl font-semibold">
+        {t('credentials')}
+        {certifications.length > 0 && (
+          <span className="ml-2 text-sm font-normal text-muted-foreground">
+            {certifications.length}
+          </span>
+        )}
+      </h2>
       <EditableSection<ProfileCertification>
+        maxVisible={5}
         sectionTitle={t('credentials')}
         profileKey="certifications"
         isOwnProfile={isOwnProfile}

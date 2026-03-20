@@ -1,5 +1,6 @@
 import type { ComponentType } from 'react';
 import {
+  Butterfly,
   GithubLogo,
   LinkedinLogo,
   YoutubeLogo,
@@ -17,6 +18,7 @@ interface PlatformInfo {
 }
 
 const PLATFORM_MAP: Record<string, PlatformInfo> = {
+  bluesky: { label: 'Bluesky', icon: Butterfly },
   github: { label: 'GitHub', icon: GithubLogo },
   linkedin: { label: 'LinkedIn', icon: LinkedinLogo },
   youtube: { label: 'YouTube', icon: YoutubeLogo },
@@ -31,10 +33,13 @@ export function getPlatformInfo(platform: string): PlatformInfo {
   return PLATFORM_MAP[platform] ?? PLATFORM_MAP.website!;
 }
 
-export const PLATFORM_OPTIONS = Object.entries(PLATFORM_MAP).map(([value, info]) => ({
-  value,
-  label: info.label,
-}));
+/** Platforms available in the "Add Other Profiles" dropdown (excludes Bluesky — auto-derived from AT Protocol identity). */
+export const PLATFORM_OPTIONS = Object.entries(PLATFORM_MAP)
+  .filter(([value]) => value !== 'bluesky')
+  .map(([value, info]) => ({
+    value,
+    label: info.label,
+  }));
 
 /**
  * Build a favicon URL for a given site URL using Google's public favicon service.
