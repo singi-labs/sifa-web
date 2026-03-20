@@ -24,6 +24,7 @@ const COLLECTION_TO_APP: Record<string, string> = {
   'fyi.unravel.frontpage.': 'frontpage',
   'blue.flashes.': 'flashes',
   'com.picosky.': 'picosky',
+  'community.lexicon.': 'smokesignal',
   'link.tangled.': 'tangled',
   'app.linkat.': 'linkat',
   'com.pastesphere.': 'pastesphere',
