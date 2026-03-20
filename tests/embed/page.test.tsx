@@ -59,14 +59,17 @@ describe('EmbedPage', () => {
     expect(mockFetchProfile).toHaveBeenCalledWith('bob.bsky.social');
   });
 
-  it('calls notFound when profile is null', async () => {
+  it('renders inline not-found message when profile is null', async () => {
     mockFetchProfile.mockResolvedValue(null);
 
-    await expect(
-      EmbedPage({
-        params: Promise.resolve({ handleOrDid: 'nonexistent' }),
-      }),
-    ).rejects.toThrow();
+    const page = await EmbedPage({
+      params: Promise.resolve({ handleOrDid: 'nonexistent' }),
+    });
+    render(page as React.ReactElement);
+
+    expect(screen.getByText('nonexistent')).toBeDefined();
+    expect(screen.getByText(/No profile found for/)).toBeDefined();
+    expect(screen.queryByTestId('identity-card')).toBeNull();
   });
 
   it('builds location from city, region, country fields', async () => {

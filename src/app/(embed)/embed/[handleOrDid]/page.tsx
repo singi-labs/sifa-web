@@ -1,4 +1,3 @@
-import { notFound } from 'next/navigation';
 import { fetchProfile } from '@/lib/api';
 import { IdentityCard } from '@/components/identity-card';
 import { EmbedResizeEmitter } from '@/components/embed-resize-emitter';
@@ -20,7 +19,18 @@ export default async function EmbedPage({ params }: EmbedPageProps) {
   const { handleOrDid } = await params;
 
   const profile = await fetchProfile(handleOrDid);
-  if (!profile) notFound();
+  if (!profile) {
+    return (
+      <div className="bg-transparent p-2">
+        <EmbedResizeEmitter />
+        <div className="flex items-center justify-center rounded-lg border border-border bg-card p-6 text-center text-sm text-muted-foreground">
+          <p>
+            No profile found for <span className="font-medium text-foreground">{handleOrDid}</span>
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   const location: LocationValue | null = profile.locationCountry
     ? {
