@@ -1,5 +1,5 @@
-import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { render, screen, fireEvent, act } from '@testing-library/react';
 import { EmbedBuilder } from '@/components/embed-builder';
 
 // Mock auth-provider
@@ -13,6 +13,14 @@ Object.assign(navigator, {
 });
 
 describe('EmbedBuilder', () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   it('renders identifier input field', () => {
     render(<EmbedBuilder />);
     expect(screen.getByLabelText('Handle or DID')).toBeDefined();
@@ -23,6 +31,8 @@ describe('EmbedBuilder', () => {
     fireEvent.change(screen.getByLabelText('Handle or DID'), {
       target: { value: 'alice.bsky.social' },
     });
+
+    act(() => { vi.advanceTimersByTime(500); });
 
     const code = screen.getByTestId('embed-code');
     expect(code.textContent).toContain('data-handle="alice.bsky.social"');
@@ -35,6 +45,8 @@ describe('EmbedBuilder', () => {
       target: { value: 'did:plc:abc123' },
     });
 
+    act(() => { vi.advanceTimersByTime(500); });
+
     const code = screen.getByTestId('embed-code');
     expect(code.textContent).toContain('data-did="did:plc:abc123"');
   });
@@ -45,12 +57,24 @@ describe('EmbedBuilder', () => {
       target: { value: 'alice.bsky.social' },
     });
 
+    act(() => { vi.advanceTimersByTime(500); });
+
     const code = screen.getByTestId('embed-code');
     expect(code.textContent).not.toContain('data-theme');
   });
 
   it('does not show code block when no identifier entered', () => {
     render(<EmbedBuilder />);
+    expect(screen.queryByTestId('embed-code')).toBeNull();
+  });
+
+  it('does not show code block before debounce completes', () => {
+    render(<EmbedBuilder />);
+    fireEvent.change(screen.getByLabelText('Handle or DID'), {
+      target: { value: 'alice.bsky.social' },
+    });
+
+    // Before debounce fires, preview should not appear
     expect(screen.queryByTestId('embed-code')).toBeNull();
   });
 
@@ -69,6 +93,8 @@ describe('EmbedBuilder', () => {
     fireEvent.change(screen.getByLabelText('Handle or DID'), {
       target: { value: 'alice.bsky.social' },
     });
+
+    act(() => { vi.advanceTimersByTime(500); });
 
     fireEvent.click(screen.getByRole('button', { name: 'Copy' }));
     expect(navigator.clipboard.writeText).toHaveBeenCalled();

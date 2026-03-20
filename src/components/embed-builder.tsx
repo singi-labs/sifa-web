@@ -11,15 +11,23 @@ export function EmbedBuilder() {
   const { session } = useAuth();
   const searchParams = useSearchParams();
   const [identifier, setIdentifier] = useState(searchParams.get('handle') ?? session?.handle ?? '');
+  const [debouncedIdentifier, setDebouncedIdentifier] = useState(identifier);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedIdentifier(identifier);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [identifier]);
 
   const embedCode = useMemo(() => {
-    if (!identifier.trim()) return '';
+    if (!debouncedIdentifier.trim()) return '';
 
-    const isDid = identifier.startsWith('did:');
-    const dataAttr = isDid ? `data-did="${identifier}"` : `data-handle="${identifier}"`;
+    const isDid = debouncedIdentifier.startsWith('did:');
+    const dataAttr = isDid ? `data-did="${debouncedIdentifier}"` : `data-handle="${debouncedIdentifier}"`;
 
     return `<script src="https://sifa.id/embed.js" ${dataAttr}></script>`;
-  }, [identifier]);
+  }, [debouncedIdentifier]);
 
   const [iframeHeight, setIframeHeight] = useState(300);
 
@@ -61,7 +69,7 @@ export function EmbedBuilder() {
 
         <p className="text-sm text-muted-foreground">{t('themeNote')}</p>
 
-        {identifier.trim() && (
+        {debouncedIdentifier.trim() && (
           <div>
             <label className="block text-sm font-medium">{t('codeLabel')}</label>
             <pre
@@ -85,9 +93,9 @@ export function EmbedBuilder() {
       <div>
         <p className="text-sm font-medium">{t('previewLabel')}</p>
         <div className="mt-2 rounded-md border border-border">
-          {identifier.trim() ? (
+          {debouncedIdentifier.trim() ? (
             <iframe
-              src={`/embed/${encodeURIComponent(identifier)}`}
+              src={`/embed/${encodeURIComponent(debouncedIdentifier)}`}
               title={t('previewTitle')}
               className="w-full rounded-md"
               style={{ height: `${iframeHeight}px` }}
