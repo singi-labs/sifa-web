@@ -40,14 +40,14 @@ export function SuggestionsBanner() {
   };
 
   return (
-    <div className="mb-6 flex items-center justify-between rounded-lg border border-border bg-muted/50 px-4 py-3">
+    <div className="mb-6 flex items-center justify-between gap-4 rounded-lg border border-border bg-muted/50 px-4 py-3">
       <p className="text-sm">
         <span className="font-medium">{count} people</span> you follow on Bluesky or Tangled are on
-        Sifa
+        Sifa.
       </p>
       <div className="flex items-center gap-2">
         <Link href="/find-people" className="text-sm font-medium text-primary hover:underline">
-          Find people
+          Show me who
         </Link>
         <button
           type="button"
