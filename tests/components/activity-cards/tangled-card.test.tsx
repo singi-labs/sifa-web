@@ -130,6 +130,8 @@ describe('TangledCard', () => {
     render(<TangledCard {...makeProps()} />);
 
     const card = screen.getByTestId('tangled-card-full');
-    expect(card.style.borderLeftColor).toBe('rgb(5, 150, 105)');
+    expect(card.style.borderLeftColor).toBe(
+      'var(--app-tangled-stripe, var(--app-fallback-stripe))',
+    );
   });
 });

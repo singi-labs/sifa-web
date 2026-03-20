@@ -1,17 +1,16 @@
 'use client';
 
 import { GitBranch, Code } from '@phosphor-icons/react';
+import { getAppMeta, getAppStripeColor } from '@/lib/atproto-apps';
 import type { ActivityCardProps } from './types';
 
-/** Emerald accent for Tangled */
-const TANGLED_STRIPE = '#059669';
+const TANGLED_STRIPE = getAppStripeColor('tangled');
+const tangledMeta = getAppMeta('tangled');
+const TANGLED_BADGE_CLASS = tangledMeta.className;
 
-/** Badge styles for Tangled */
-const TANGLED_BADGE_CLASS =
-  'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300';
-
-/** Language badge styling */
-const LANGUAGE_BADGE_CLASS = 'bg-gray-100 text-gray-700 dark:bg-gray-800/40 dark:text-gray-300';
+/** Language badge styling — uses fallback app color tokens */
+const LANGUAGE_BADGE_CLASS =
+  'bg-[var(--app-fallback-badge-bg)] text-[var(--app-fallback-badge-text)]';
 
 /**
  * Derive a human-readable type label from the collection NSID.
