@@ -226,6 +226,66 @@ export async function requestProfileRemoval(handleOrDid: string): Promise<boolea
   }
 }
 
+// --- Activity Teaser ---
+
+export interface ActivityItem {
+  uri: string;
+  collection: string;
+  rkey: string;
+  record: Record<string, unknown>;
+  appId: string;
+  appName: string;
+  category: string;
+  indexedAt: string;
+}
+
+export interface ActivityTeaserResponse {
+  items: ActivityItem[];
+}
+
+export async function fetchActivityTeaser(
+  handleOrDid: string,
+): Promise<ActivityTeaserResponse | null> {
+  try {
+    const res = await fetch(`${API_URL}/api/activity/${encodeURIComponent(handleOrDid)}/teaser`, {
+      next: { revalidate: 300, tags: [`activity-teaser-${handleOrDid}`] },
+    });
+    if (!res.ok) return null;
+    return res.json();
+  } catch {
+    return null;
+  }
+}
+
+// --- Activity Feed ---
+
+export interface ActivityFeedResponse {
+  items: ActivityItem[];
+  cursor: string | null;
+  hasMore: boolean;
+}
+
+export async function fetchActivityFeed(
+  handleOrDid: string,
+  opts?: { category?: string; limit?: number; cursor?: string },
+): Promise<ActivityFeedResponse | null> {
+  try {
+    const params = new URLSearchParams();
+    if (opts?.category) params.set('category', opts.category);
+    if (opts?.limit) params.set('limit', String(opts.limit));
+    if (opts?.cursor) params.set('cursor', opts.cursor);
+    const qs = params.toString();
+    const res = await fetch(
+      `${API_URL}/api/activity/${encodeURIComponent(handleOrDid)}${qs ? `?${qs}` : ''}`,
+      { cache: 'no-store' },
+    );
+    if (!res.ok) return null;
+    return res.json();
+  } catch {
+    return null;
+  }
+}
+
 // --- Activity Visibility ---
 
 export async function updateActivityVisibility(appId: string, visible: boolean): Promise<boolean> {

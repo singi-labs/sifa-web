@@ -64,7 +64,21 @@
   },
   "activity": {
     "title": "Activity for {handle}",
-    "comingSoon": "Activity stream is coming soon. This page will show ATproto activity across the open social web."
+    "breadcrumb": "Activity breadcrumb",
+    "backToProfile": "Back to profile",
+    "categoryTabsLabel": "Activity categories",
+    "categoryAll": "All",
+    "categoryPosts": "Posts",
+    "categoryCode": "Code",
+    "categoryPhotos": "Photos",
+    "categoryArticles": "Articles",
+    "categoryEvents": "Events",
+    "categoryLinks": "Links",
+    "loading": "Loading activity...",
+    "loadMore": "Load more",
+    "loadingMore": "Loading...",
+    "noActivity": "No activity found.",
+    "errorLoading": "Could not load activity."
   },
   "import": {
     "title": "Import from LinkedIn",
