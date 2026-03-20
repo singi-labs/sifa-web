@@ -5,14 +5,16 @@ import { AuthReturnHandler } from '@/components/auth-return-handler';
 import { SuggestionsBanner } from '@/components/suggestions-banner';
 import { AtprotoCounter } from '@/components/atproto-counter';
 import { AvatarReel } from '@/components/avatar-reel';
-import { fetchStats, fetchFeaturedProfile } from '@/lib/api';
+import { fetchStats, fetchFeaturedProfile, fetchProfile } from '@/lib/api';
 import { IdentityCard } from '@/components/identity-card';
+import type { LocationValue, ProfilePosition } from '@/lib/types';
 
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
   const t = await getTranslations('home');
-  const [stats, featuredProfile] = await Promise.all([fetchStats(), fetchFeaturedProfile()]);
+  const [stats, featuredMeta] = await Promise.all([fetchStats(), fetchFeaturedProfile()]);
+  const featuredProfile = featuredMeta ? await fetchProfile(featuredMeta.handle) : null;
 
   return (
     <div className="flex flex-col items-center justify-center px-4 py-12 text-center">
@@ -66,39 +68,48 @@ export default async function Home() {
               <h2 className="mb-3 text-center text-sm font-medium text-muted-foreground">
                 {t('profileOfTheDay')}
               </h2>
-              <Link
-                href={`/p/${featuredProfile.handle}`}
-                className="block rounded-xl transition-transform hover:scale-[1.01] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-              >
-                <IdentityCard
-                  did={featuredProfile.did}
-                  handle={featuredProfile.handle}
-                  displayName={featuredProfile.displayName}
-                  avatar={featuredProfile.avatar}
-                  headline={featuredProfile.headline}
-                  about={featuredProfile.about}
-                  currentRole={featuredProfile.currentRole}
-                  currentCompany={featuredProfile.currentCompany}
-                  location={
-                    featuredProfile.locationCountry
-                      ? {
-                          country: featuredProfile.locationCountry,
-                          countryCode: featuredProfile.countryCode,
-                          region: featuredProfile.locationRegion,
-                          city: featuredProfile.locationCity,
-                        }
-                      : null
-                  }
-                  website={featuredProfile.website}
-                  openTo={featuredProfile.openTo}
-                  followersCount={featuredProfile.followersCount}
-                  atprotoFollowersCount={featuredProfile.atprotoFollowersCount}
-                  pdsProviderInfo={featuredProfile.pdsProvider}
-                  claimed={featuredProfile.claimed}
-                  variant="embed"
-                  hideFooter
-                />
-              </Link>
+              {(() => {
+                const location: LocationValue | null = featuredProfile.locationCountry
+                  ? {
+                      country: featuredProfile.locationCountry,
+                      countryCode: featuredProfile.countryCode ?? undefined,
+                      region: featuredProfile.locationRegion ?? undefined,
+                      city: featuredProfile.locationCity ?? undefined,
+                    }
+                  : null;
+                const currentPosition = (
+                  featuredProfile.positions as ProfilePosition[] | undefined
+                )?.find((p: ProfilePosition) => p.current);
+                return (
+                  <Link
+                    href={`/p/${featuredProfile.handle}`}
+                    className="block rounded-xl transition-transform hover:scale-[1.01] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  >
+                    <IdentityCard
+                      did={featuredProfile.did}
+                      handle={featuredProfile.handle}
+                      displayName={featuredProfile.displayName}
+                      avatar={featuredProfile.avatar}
+                      headline={featuredProfile.headline}
+                      about={featuredProfile.about}
+                      currentRole={currentPosition?.title}
+                      currentCompany={currentPosition?.companyName}
+                      location={location}
+                      website={featuredProfile.website}
+                      openTo={featuredProfile.openTo}
+                      followersCount={featuredProfile.followersCount}
+                      atprotoFollowersCount={featuredProfile.atprotoFollowersCount}
+                      trustStats={featuredProfile.trustStats}
+                      verifiedAccounts={featuredProfile.verifiedAccounts}
+                      activeApps={featuredProfile.activeApps}
+                      pdsProviderInfo={featuredProfile.pdsProvider}
+                      claimed={featuredProfile.claimed}
+                      variant="embed"
+                      hideFooter
+                    />
+                  </Link>
+                );
+              })()}
             </div>
           )}
           {stats && stats.avatars.length > 0 && (
