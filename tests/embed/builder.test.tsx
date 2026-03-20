@@ -32,7 +32,9 @@ describe('EmbedBuilder', () => {
       target: { value: 'alice.bsky.social' },
     });
 
-    act(() => { vi.advanceTimersByTime(500); });
+    act(() => {
+      vi.advanceTimersByTime(500);
+    });
 
     const code = screen.getByTestId('embed-code');
     expect(code.textContent).toContain('data-handle="alice.bsky.social"');
@@ -45,7 +47,9 @@ describe('EmbedBuilder', () => {
       target: { value: 'did:plc:abc123' },
     });
 
-    act(() => { vi.advanceTimersByTime(500); });
+    act(() => {
+      vi.advanceTimersByTime(500);
+    });
 
     const code = screen.getByTestId('embed-code');
     expect(code.textContent).toContain('data-did="did:plc:abc123"');
@@ -57,7 +61,9 @@ describe('EmbedBuilder', () => {
       target: { value: 'alice.bsky.social' },
     });
 
-    act(() => { vi.advanceTimersByTime(500); });
+    act(() => {
+      vi.advanceTimersByTime(500);
+    });
 
     const code = screen.getByTestId('embed-code');
     expect(code.textContent).not.toContain('data-theme');
@@ -94,7 +100,9 @@ describe('EmbedBuilder', () => {
       target: { value: 'alice.bsky.social' },
     });
 
-    act(() => { vi.advanceTimersByTime(500); });
+    act(() => {
+      vi.advanceTimersByTime(500);
+    });
 
     fireEvent.click(screen.getByRole('button', { name: 'Copy' }));
     expect(navigator.clipboard.writeText).toHaveBeenCalled();

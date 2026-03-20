@@ -24,7 +24,9 @@ export function EmbedBuilder() {
     if (!debouncedIdentifier.trim()) return '';
 
     const isDid = debouncedIdentifier.startsWith('did:');
-    const dataAttr = isDid ? `data-did="${debouncedIdentifier}"` : `data-handle="${debouncedIdentifier}"`;
+    const dataAttr = isDid
+      ? `data-did="${debouncedIdentifier}"`
+      : `data-handle="${debouncedIdentifier}"`;
 
     return `<script src="https://sifa.id/embed.js" ${dataAttr}></script>`;
   }, [debouncedIdentifier]);
