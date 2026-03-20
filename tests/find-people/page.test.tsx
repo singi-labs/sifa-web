@@ -29,7 +29,6 @@ vi.mock('@/lib/api', () => ({
   fetchSuggestionCount: vi.fn().mockResolvedValue(3),
   dismissSuggestion: vi.fn(),
   undismissSuggestion: vi.fn(),
-  createInvite: vi.fn().mockResolvedValue('https://sifa.id/claim?ref=did:plc:2'),
 }));
 
 // Mock auth
