@@ -4,6 +4,7 @@ import { BlueskyPostCard } from './bluesky-post-card';
 import { EventRsvpCard } from './event-rsvp-card';
 import { TangledCard } from './tangled-card';
 import { KeytraceCard } from './keytrace-card';
+import { KipClipCard } from './kipclip-card';
 
 const CARD_REGISTRY = new Map<string, ComponentType<ActivityCardProps>>();
 
@@ -28,3 +29,4 @@ registerCard('app.bsky.feed.post', BlueskyPostCard);
 registerCard('sh.tangled.*', TangledCard);
 registerCard('community.lexicon.calendar.rsvp', EventRsvpCard);
 registerCard('dev.keytrace.claim', KeytraceCard);
+registerCard('community.lexicon.bookmarks.bookmark', KipClipCard);
