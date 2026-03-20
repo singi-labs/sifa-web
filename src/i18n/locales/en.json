@@ -459,5 +459,16 @@
     "deleteModalBlueskyLink": "Bluesky: Settings > Account > Delete Account",
     "deleteModalDismiss": "Got it",
     "error": "Something went wrong. Please try again."
+  },
+  "activitySettings": {
+    "title": "Activity Visibility",
+    "description": "Choose which ATproto apps appear on your Sifa profile. Hiding an app removes it from your profile page -- it does not delete the data from the AT Protocol.",
+    "backToProfile": "Back to profile",
+    "toggleLabel": "Show {app} on profile",
+    "updateSuccess": "Visibility updated.",
+    "updateError": "Failed to update visibility. Please try again.",
+    "noApps": "No active apps found on your profile yet.",
+    "hiddenAppsNote": "Only apps you are currently active on are shown here. If you hide an app, it will no longer appear on your profile or in this list. To make a hidden app visible again, use the API endpoint PUT /api/profile/activity-visibility.",
+    "notOwnProfile": "You can only manage activity visibility for your own profile."
   }
 }
