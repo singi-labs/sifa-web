@@ -36,3 +36,12 @@ export function getAppMeta(appId: string): AppMeta {
 export function getAppStripeColor(appId: string): string {
   return `var(--app-${appId}-stripe, var(--app-fallback-stripe))`;
 }
+
+/**
+ * Build a URL to fetch a blob from a user's PDS via the Bluesky relay.
+ * Works for users on Bluesky's PDS. For self-hosted PDS users, the URL
+ * may not resolve — callers should handle fetch failures gracefully.
+ */
+export function buildBlobUrl(did: string, cid: string): string {
+  return `https://bsky.social/xrpc/com.atproto.sync.getBlob?did=${encodeURIComponent(did)}&cid=${encodeURIComponent(cid)}`;
+}
