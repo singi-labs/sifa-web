@@ -93,7 +93,14 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
   return (
     <section className="mt-8" aria-label={t('otherProfiles')}>
       <div className="mb-4 flex items-center gap-2">
-        <h2 className="text-xl font-semibold">{t('otherProfiles')}</h2>
+        <h2 className="text-xl font-semibold">
+          {t('otherProfiles')}
+          {accounts.length > 0 && (
+            <span className="ml-2 text-sm font-normal text-muted-foreground">
+              {accounts.length}
+            </span>
+          )}
+        </h2>
         {isOwnProfile && (
           <Popover.Root>
             <Popover.Trigger

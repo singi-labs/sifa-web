@@ -126,7 +126,12 @@ export function SkillsSection({ isOwnProfile }: SkillsSectionProps) {
   return (
     <section className="mt-8" aria-label={t('skills')}>
       <div className="mb-4">
-        <h2 className="text-xl font-semibold">{t('skills')}</h2>
+        <h2 className="text-xl font-semibold">
+          {t('skills')}
+          {skills.length > 0 && (
+            <span className="ml-2 text-sm font-normal text-muted-foreground">{skills.length}</span>
+          )}
+        </h2>
       </div>
       <SectionEditor
         sectionTitle={t('skills')}
