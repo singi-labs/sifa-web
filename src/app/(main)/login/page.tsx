@@ -15,7 +15,8 @@ function LoginContent() {
 
   const [handle, setHandle] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const upstreamError = searchParams.get('error') === 'upstream' ? t('errorUpstream') : null;
+  const [error, setError] = useState<string | null>(upstreamError);
 
   useEffect(() => {
     if (session && !isLoading) {

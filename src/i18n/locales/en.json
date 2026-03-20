@@ -299,7 +299,8 @@
     "submitting": "Signing in...",
     "errorHandleNotFound": "Could not find an account for \"{handle}\". Enter your full handle including the domain (e.g. \"jay.bsky.social\" or \"alice.custom-pds.example\"). A username alone (e.g. \"jay\") only works for Bluesky accounts.",
     "errorGeneric": "Failed to sign in. Please check your handle and try again.",
-    "errorNetwork": "Network error. Please try again."
+    "errorNetwork": "Network error. Please try again.",
+    "errorUpstream": "Sign-in failed due to a temporary issue with the identity provider. Please try again."
   },
   "about": {
     "title": "About Sifa",
