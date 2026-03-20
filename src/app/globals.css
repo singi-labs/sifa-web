@@ -81,6 +81,47 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  /* ATproto app colors — stripe (saturated accent), badge-bg, badge-text */
+  --app-bluesky-stripe: oklch(0.55 0.17 230);
+  --app-bluesky-badge-bg: oklch(0.93 0.03 230);
+  --app-bluesky-badge-text: oklch(0.35 0.1 230);
+
+  --app-tangled-stripe: oklch(0.55 0.15 160);
+  --app-tangled-badge-bg: oklch(0.93 0.03 160);
+  --app-tangled-badge-text: oklch(0.35 0.1 160);
+
+  --app-smokesignal-stripe: oklch(0.58 0.18 50);
+  --app-smokesignal-badge-bg: oklch(0.93 0.03 50);
+  --app-smokesignal-badge-text: oklch(0.38 0.12 50);
+
+  --app-flashes-stripe: oklch(0.55 0.2 350);
+  --app-flashes-badge-bg: oklch(0.93 0.03 350);
+  --app-flashes-badge-text: oklch(0.38 0.12 350);
+
+  --app-whitewind-stripe: oklch(0.45 0.02 260);
+  --app-whitewind-badge-bg: oklch(0.93 0.01 260);
+  --app-whitewind-badge-text: oklch(0.35 0.03 260);
+
+  --app-frontpage-stripe: oklch(0.5 0.22 290);
+  --app-frontpage-badge-bg: oklch(0.93 0.04 290);
+  --app-frontpage-badge-text: oklch(0.38 0.14 290);
+
+  --app-picosky-stripe: oklch(0.55 0.2 350);
+  --app-picosky-badge-bg: oklch(0.93 0.03 350);
+  --app-picosky-badge-text: oklch(0.38 0.12 350);
+
+  --app-linkat-stripe: oklch(0.55 0.15 160);
+  --app-linkat-badge-bg: oklch(0.93 0.03 160);
+  --app-linkat-badge-text: oklch(0.35 0.1 160);
+
+  --app-pastesphere-stripe: oklch(0.58 0.16 75);
+  --app-pastesphere-badge-bg: oklch(0.93 0.03 75);
+  --app-pastesphere-badge-text: oklch(0.38 0.1 75);
+
+  --app-fallback-stripe: oklch(0.5 0.01 260);
+  --app-fallback-badge-bg: oklch(0.93 0.01 260);
+  --app-fallback-badge-text: oklch(0.35 0.02 260);
 }
 
 .dark {
@@ -115,6 +156,47 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+
+  /* ATproto app colors — dark mode */
+  --app-bluesky-stripe: oklch(0.6 0.17 230);
+  --app-bluesky-badge-bg: oklch(0.25 0.06 230 / 40%);
+  --app-bluesky-badge-text: oklch(0.78 0.1 230);
+
+  --app-tangled-stripe: oklch(0.6 0.15 160);
+  --app-tangled-badge-bg: oklch(0.25 0.06 160 / 40%);
+  --app-tangled-badge-text: oklch(0.78 0.1 160);
+
+  --app-smokesignal-stripe: oklch(0.63 0.18 50);
+  --app-smokesignal-badge-bg: oklch(0.25 0.06 50 / 40%);
+  --app-smokesignal-badge-text: oklch(0.78 0.1 50);
+
+  --app-flashes-stripe: oklch(0.6 0.2 350);
+  --app-flashes-badge-bg: oklch(0.25 0.06 350 / 40%);
+  --app-flashes-badge-text: oklch(0.78 0.1 350);
+
+  --app-whitewind-stripe: oklch(0.5 0.02 260);
+  --app-whitewind-badge-bg: oklch(0.25 0.02 260 / 40%);
+  --app-whitewind-badge-text: oklch(0.75 0.03 260);
+
+  --app-frontpage-stripe: oklch(0.55 0.22 290);
+  --app-frontpage-badge-bg: oklch(0.25 0.07 290 / 40%);
+  --app-frontpage-badge-text: oklch(0.78 0.12 290);
+
+  --app-picosky-stripe: oklch(0.6 0.2 350);
+  --app-picosky-badge-bg: oklch(0.25 0.06 350 / 40%);
+  --app-picosky-badge-text: oklch(0.78 0.1 350);
+
+  --app-linkat-stripe: oklch(0.6 0.15 160);
+  --app-linkat-badge-bg: oklch(0.25 0.06 160 / 40%);
+  --app-linkat-badge-text: oklch(0.78 0.1 160);
+
+  --app-pastesphere-stripe: oklch(0.63 0.16 75);
+  --app-pastesphere-badge-bg: oklch(0.25 0.05 75 / 40%);
+  --app-pastesphere-badge-text: oklch(0.78 0.1 75);
+
+  --app-fallback-stripe: oklch(0.55 0.01 260);
+  --app-fallback-badge-bg: oklch(0.25 0.01 260 / 40%);
+  --app-fallback-badge-text: oklch(0.75 0.02 260);
 }
 
 @layer base {

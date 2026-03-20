@@ -1,10 +1,10 @@
 'use client';
 
 import { Butterfly } from '@phosphor-icons/react';
-import { getAppMeta } from '@/lib/atproto-apps';
+import { getAppMeta, getAppStripeColor } from '@/lib/atproto-apps';
 import type { ActivityCardProps } from './types';
 
-const STRIPE_COLOR = '#0285c7';
+const STRIPE_COLOR = getAppStripeColor('bluesky');
 
 interface Facet {
   index: { byteStart: number; byteEnd: number };

@@ -81,14 +81,18 @@ describe('GenericActivityCard', () => {
     render(<GenericActivityCard {...makeProps()} />);
 
     const card = screen.getByTestId('activity-card-full');
-    expect(card.style.borderLeftColor).toBe('rgb(2, 133, 199)');
+    expect(card.style.borderLeftColor).toBe(
+      'var(--app-bluesky-stripe, var(--app-fallback-stripe))',
+    );
   });
 
   it('uses default stripe color for unknown apps', () => {
     render(<GenericActivityCard {...makeProps({ collection: 'com.unknown.thing' })} />);
 
     const card = screen.getByTestId('activity-card-full');
-    expect(card.style.borderLeftColor).toBe('rgb(107, 114, 128)');
+    expect(card.style.borderLeftColor).toBe(
+      'var(--app-com.unknown-stripe, var(--app-fallback-stripe))',
+    );
   });
 
   it('extracts title field when text is absent', () => {
