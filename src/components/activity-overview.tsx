@@ -8,6 +8,7 @@ import { fetchActivityTeaser } from '@/lib/api';
 import type { ActivityItem } from '@/lib/api';
 import { getCardComponent } from './activity-cards/card-registry';
 import { GenericActivityCard } from './activity-cards/generic-activity-card';
+import { CardErrorBoundary } from './activity-cards/card-error-boundary';
 
 interface ActivityOverviewProps {
   handle: string;
@@ -33,7 +34,8 @@ export function ActivityOverview({ handle }: ActivityOverviewProps) {
   if (!loaded) return null;
   if (!items || items.length === 0) return null;
 
-  const teaserItems = items.slice(0, 5);
+  const validItems = items.filter((item) => item.record != null);
+  const teaserItems = validItems.slice(0, 5);
 
   return (
     <section className="mt-8" aria-label={t('title')} data-testid="activity-overview">
@@ -46,16 +48,17 @@ export function ActivityOverview({ handle }: ActivityOverviewProps) {
           const CardComponent = SpecificCard ?? GenericActivityCard;
           const did = item.uri.split('/')[2] ?? '';
           return (
-            <CardComponent
-              key={item.uri}
-              uri={item.uri}
-              collection={item.collection}
-              rkey={item.rkey}
-              record={item.record}
-              authorDid={did}
-              showAuthor={false}
-              compact={true}
-            />
+            <CardErrorBoundary key={item.uri}>
+              <CardComponent
+                uri={item.uri}
+                collection={item.collection}
+                rkey={item.rkey}
+                record={item.record}
+                authorDid={did}
+                showAuthor={false}
+                compact={true}
+              />
+            </CardErrorBoundary>
           );
         })}
       </div>
