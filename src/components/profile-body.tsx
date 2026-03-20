@@ -9,6 +9,7 @@ import { ActivityOverview } from '@/components/activity-overview';
 import { TrackRecord } from '@/components/track-record';
 import { TrustStatsHints } from '@/components/trust-stats-hints';
 import { useProfileEdit } from '@/components/profile-edit-provider';
+import { PreviewBar } from '@/components/preview-bar';
 import {
   CareerSection,
   EducationSection,
@@ -90,6 +91,7 @@ function ProfileBodyContent() {
 
   const content = (
     <div className="min-w-0 flex-1">
+      <PreviewBar />
       <CompletionBar profile={profile} />
       <TrustStatsHints
         trustStats={profile.trustStats}
