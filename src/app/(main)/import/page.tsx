@@ -114,6 +114,7 @@ export default function ImportPage() {
           onFileSelected={handleFileSelected}
           isProcessing={isProcessing}
           extractionError={extractionError}
+          hasExistingData={existingData !== null}
         />
       )}
 

@@ -88,7 +88,9 @@
       "fileTypeError": "Please select a ZIP file (.zip). LinkedIn exports are delivered as ZIP archives.",
       "fileSizeError": "File is too large (max 500 MB). Try re-downloading your LinkedIn export.",
       "privacyNote": "Your LinkedIn ZIP is extracted in your browser and never leaves your device. The structured profile data is then written directly to your Personal Data Server through our API.",
-      "publicDataNotice": "Everything you import will be publicly visible to anyone, including people without a Sifa account. Unlike LinkedIn (where some data is hidden from logged-out visitors), Sifa profiles are fully public. Review your data before importing."
+      "publicDataNotice": "Everything you import will be publicly visible to anyone, including people without a Sifa account. Unlike LinkedIn (where some data is hidden from logged-out visitors), Sifa profiles are fully public. Review your data before importing.",
+      "reimportTitle": "You already have profile data",
+      "reimportBody": "Importing again will fully replace your existing positions, education, skills, and other LinkedIn-imported data with the contents of this new export. Items you removed from LinkedIn will also be removed from Sifa. Items you added or edited directly on Sifa will be overwritten. You can review and remove individual items before confirming in the next step."
     },
     "preview": {
       "heading": "Review imported data",
