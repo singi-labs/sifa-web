@@ -11,6 +11,7 @@ import {
   syncSuggestions,
   dismissSuggestion,
   undismissSuggestion,
+  followUser,
   type SuggestionProfile,
 } from '@/lib/api';
 import { toast } from 'sonner';
@@ -120,18 +121,17 @@ export default function FindPeoplePage() {
   const handleFollow = useCallback(
     (did: string) => {
       requireAuth(async () => {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3100'}/api/follow`,
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include',
-            body: JSON.stringify({ subjectDid: did }),
-          },
-        );
-        if (res.ok) {
+        const ok = await followUser(did);
+        if (ok) {
           setOnSifa((prev) => prev.filter((s) => s.did !== did));
-          toast.success('Followed successfully');
+          toast.success('Followed! View in My Network', {
+            action: {
+              label: 'View',
+              onClick: () => {
+                window.location.href = '/my-network';
+              },
+            },
+          });
         }
       });
     },
