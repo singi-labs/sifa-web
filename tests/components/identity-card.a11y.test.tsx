@@ -64,8 +64,20 @@ describe('IdentityCard accessibility', () => {
         variant="embed"
         followersCount={1500}
         activeApps={[
-          { id: 'bluesky', name: 'Bluesky' },
-          { id: 'whitewind', name: 'Whitewind' },
+          {
+            id: 'bluesky',
+            name: 'Bluesky',
+            category: 'Posts',
+            recentCount: 10,
+            latestRecordAt: null,
+          },
+          {
+            id: 'whitewind',
+            name: 'Whitewind',
+            category: 'Posts',
+            recentCount: 5,
+            latestRecordAt: null,
+          },
         ]}
       />,
     );

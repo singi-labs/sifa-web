@@ -114,6 +114,7 @@ export default async function ProfilePage({
             hasAvatarUrlOverride={profile.hasAvatarUrlOverride}
             sourceDisplayName={profile.source?.displayName}
             sourceAvatar={profile.source?.avatarUrl}
+            activeApps={profile.activeApps}
           />
           {profile.isOwnProfile && <DataTransparencyCard did={profile.did} />}
           <ProfileBody />

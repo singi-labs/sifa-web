@@ -67,7 +67,21 @@
   },
   "activity": {
     "title": "Activity for {handle}",
-    "comingSoon": "Activity stream is coming soon. This page will show ATproto activity across the open social web."
+    "breadcrumb": "Activity breadcrumb",
+    "backToProfile": "Back to profile",
+    "categoryTabsLabel": "Activity categories",
+    "categoryAll": "All",
+    "categoryPosts": "Posts",
+    "categoryCode": "Code",
+    "categoryPhotos": "Photos",
+    "categoryArticles": "Articles",
+    "categoryEvents": "Events",
+    "categoryLinks": "Links",
+    "loading": "Loading activity...",
+    "loadMore": "Load more",
+    "loadingMore": "Loading...",
+    "noActivity": "No activity found.",
+    "errorLoading": "Could not load activity."
   },
   "import": {
     "title": "Import from LinkedIn",
@@ -88,7 +102,9 @@
       "fileTypeError": "Please select a ZIP file (.zip). LinkedIn exports are delivered as ZIP archives.",
       "fileSizeError": "File is too large (max 500 MB). Try re-downloading your LinkedIn export.",
       "privacyNote": "Your LinkedIn ZIP is extracted in your browser and never leaves your device. The structured profile data is then written directly to your Personal Data Server through our API.",
-      "publicDataNotice": "Everything you import will be publicly visible to anyone, including people without a Sifa account. Unlike LinkedIn (where some data is hidden from logged-out visitors), Sifa profiles are fully public. Review your data before importing."
+      "publicDataNotice": "Everything you import will be publicly visible to anyone, including people without a Sifa account. Unlike LinkedIn (where some data is hidden from logged-out visitors), Sifa profiles are fully public. Review your data before importing.",
+      "reimportTitle": "You already have profile data",
+      "reimportBody": "Importing again will fully replace your existing positions, education, skills, and other LinkedIn-imported data with the contents of this new export. Items you removed from LinkedIn will also be removed from Sifa. Items you added or edited directly on Sifa will be overwritten. You can review and remove individual items before confirming in the next step."
     },
     "preview": {
       "heading": "Review imported data",
@@ -102,6 +118,7 @@
       "new": "New",
       "itemCount": "{count} {count, plural, one {item} other {items}} to import",
       "confirmButton": "Confirm & Import",
+      "confirming": "Importing…",
       "back": "Back",
       "profile": "Profile",
       "noPositions": "No positions found in export.",
@@ -465,5 +482,31 @@
     "deleteModalBlueskyLink": "Bluesky: Settings > Account > Delete Account",
     "deleteModalDismiss": "Got it",
     "error": "Something went wrong. Please try again."
+  },
+  "privacyRemoval": {
+    "title": "Request Profile Removal",
+    "description": "You can request the removal of your profile and activity data from Sifa. This removes your data from our database and prevents Sifa from displaying or scanning your profile in the future. The data itself remains in your AT Protocol account -- Sifa cannot modify or delete your PDS records.",
+    "inputLabel": "Your AT Protocol handle or DID",
+    "inputPlaceholder": "alice.bsky.social or did:plc:...",
+    "submitButton": "Request Removal",
+    "submitting": "Submitting...",
+    "successMessage": "Your removal request has been received. Your profile will be removed within 72 hours.",
+    "errorMessage": "Something went wrong. Please try again or contact privacy@sifa.id.",
+    "whatGetsRemovedTitle": "What gets removed",
+    "whatGetsRemoved": "Your profile page, activity statistics, and cached data on Sifa.",
+    "whatStaysTitle": "What stays",
+    "whatStays": "Your data in your AT Protocol Personal Data Server (PDS). To delete data from the protocol, use the app where you originally posted it.",
+    "privacyPolicyLink": "Read our privacy policy"
+  },
+  "activitySettings": {
+    "title": "Activity Visibility",
+    "description": "Choose which ATproto apps appear on your Sifa profile. Hiding an app removes it from your profile page -- it does not delete the data from the AT Protocol.",
+    "backToProfile": "Back to profile",
+    "toggleLabel": "Show {app} on profile",
+    "updateSuccess": "Visibility updated.",
+    "updateError": "Failed to update visibility. Please try again.",
+    "noApps": "No active apps found on your profile yet.",
+    "hiddenAppsNote": "Only apps you are currently active on are shown here. If you hide an app, it will no longer appear on your profile or in this list. To make a hidden app visible again, use the API endpoint PUT /api/profile/activity-visibility.",
+    "notOwnProfile": "You can only manage activity visibility for your own profile."
   }
 }
