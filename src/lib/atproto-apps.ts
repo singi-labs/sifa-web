@@ -25,6 +25,10 @@ const APP_REGISTRY: Record<string, AppMeta> = {
   tangled: { name: 'Tangled', className: badgeClass('tangled') },
   flashes: { name: 'Flashes', className: badgeClass('flashes') },
   kipclip: { name: 'KipClip', className: badgeClass('kipclip') },
+  standard: { name: 'Standard', className: badgeClass('standard') },
+  aetheros: { name: 'Aetheros', className: badgeClass('aetheros') },
+  roomy: { name: 'Roomy', className: badgeClass('roomy') },
+  keytrace: { name: 'Keytrace', className: badgeClass('keytrace') },
 };
 
 const FALLBACK_CLASS = badgeClass('fallback');
