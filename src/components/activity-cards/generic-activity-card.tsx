@@ -11,7 +11,7 @@ import {
   Clipboard,
   type Icon,
 } from '@phosphor-icons/react';
-import { getAppMeta } from '@/lib/atproto-apps';
+import { getAppMeta, getAppStripeColor } from '@/lib/atproto-apps';
 import type { ActivityCardProps } from './types';
 
 /** Map collection NSID prefixes to app IDs in atproto-apps registry */
@@ -64,20 +64,6 @@ const COLLECTION_CATEGORY: Record<string, string> = {
   paste: 'pastes',
   snippet: 'pastes',
 };
-
-/** Accent stripe colors per app */
-const STRIPE_COLORS: Record<string, string> = {
-  bluesky: '#0285c7',
-  tangled: '#059669',
-  smokesignal: '#ea580c',
-  flashes: '#db2777',
-  whitewind: '#475569',
-  frontpage: '#7c3aed',
-  picosky: '#db2777',
-  linkat: '#059669',
-  pastesphere: '#d97706',
-};
-const DEFAULT_STRIPE = '#6b7280';
 
 function resolveAppId(collection: string): string {
   for (const [prefix, appId] of Object.entries(COLLECTION_TO_APP)) {
@@ -150,7 +136,7 @@ export function GenericActivityCard({
   const appMeta = getAppMeta(appId);
   const category = resolveCategory(collection);
   const IconComponent = CATEGORY_ICONS[category] ?? ChatText;
-  const stripeColor = STRIPE_COLORS[appId] ?? DEFAULT_STRIPE;
+  const stripeColor = getAppStripeColor(appId);
   const contentText = extractContentText(record);
   const displayText = contentText ?? `Activity on ${appMeta.name}`;
   const createdAt = typeof record.createdAt === 'string' ? record.createdAt : null;
