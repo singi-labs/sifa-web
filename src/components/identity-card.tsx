@@ -39,7 +39,9 @@ const OPEN_TO_LABEL_KEYS: Record<string, string> = {
   'id.sifa.defs#partTimeRoles': 'partTimeRoles',
   'id.sifa.defs#contractRoles': 'contractRoles',
   'id.sifa.defs#boardPositions': 'boardPositions',
-  'id.sifa.defs#mentoring': 'mentoring',
+  'id.sifa.defs#mentoringOthers': 'mentoringOthers',
+  'id.sifa.defs#beingMentored': 'beingMentored',
+  'id.sifa.defs#mentoring': 'mentoringOthers', // backwards compat: old value maps to "Mentoring others"
   'id.sifa.defs#collaborations': 'collaborations',
 };
 

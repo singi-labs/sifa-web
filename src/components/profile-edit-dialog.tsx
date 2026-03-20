@@ -32,7 +32,8 @@ const OPEN_TO_OPTIONS = [
   { value: 'id.sifa.defs#partTimeRoles', labelKey: 'partTimeRoles' },
   { value: 'id.sifa.defs#contractRoles', labelKey: 'contractRoles' },
   { value: 'id.sifa.defs#boardPositions', labelKey: 'boardPositions' },
-  { value: 'id.sifa.defs#mentoring', labelKey: 'mentoring' },
+  { value: 'id.sifa.defs#mentoringOthers', labelKey: 'mentoringOthers' },
+  { value: 'id.sifa.defs#beingMentored', labelKey: 'beingMentored' },
   { value: 'id.sifa.defs#collaborations', labelKey: 'collaborations' },
 ] as const;
 
