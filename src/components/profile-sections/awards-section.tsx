@@ -19,8 +19,14 @@ export function AwardsSection({ honors, isOwnProfile }: AwardsSectionProps) {
 
   return (
     <section className="mt-8" aria-label={t('awards')}>
-      <h2 className="mb-4 text-xl font-semibold">{t('awards')}</h2>
+      <h2 className="mb-4 text-xl font-semibold">
+        {t('awards')}
+        {honors.length > 0 && (
+          <span className="ml-2 text-sm font-normal text-muted-foreground">{honors.length}</span>
+        )}
+      </h2>
       <EditableSection<ProfileHonor>
+        maxVisible={5}
         sectionTitle={t('awards')}
         profileKey="honors"
         isOwnProfile={isOwnProfile}

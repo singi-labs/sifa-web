@@ -22,8 +22,16 @@ export function PublicationsSection({ publications, isOwnProfile }: Publications
 
   return (
     <section className="mt-8" aria-label={t('publications')}>
-      <h2 className="mb-4 text-xl font-semibold">{t('publications')}</h2>
+      <h2 className="mb-4 text-xl font-semibold">
+        {t('publications')}
+        {publications.length > 0 && (
+          <span className="ml-2 text-sm font-normal text-muted-foreground">
+            {publications.length}
+          </span>
+        )}
+      </h2>
       <EditableSection<ProfilePublication>
+        maxVisible={5}
         sectionTitle={t('publications')}
         profileKey="publications"
         isOwnProfile={isOwnProfile}

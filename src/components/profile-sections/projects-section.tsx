@@ -18,7 +18,7 @@ export function ProjectsSection({ projects, isOwnProfile }: ProjectsSectionProps
   if (!projects.length && !isOwnProfile) return null;
 
   return (
-    <TimelineSection title={t('projects')}>
+    <TimelineSection title={t('projects')} itemCount={projects.length}>
       <EditableSection<ProfileProject>
         sectionTitle={t('projects')}
         profileKey="projects"
@@ -29,6 +29,7 @@ export function ProjectsSection({ projects, isOwnProfile }: ProjectsSectionProps
           valuesToProject as (v: Record<string, string | boolean>) => Omit<ProfileProject, 'rkey'>
         }
         collection="id.sifa.profile.project"
+        maxVisible={3}
         sortItems={(items) => sortByDateDesc(items, dateRangeExtractor)}
         renderEntry={(proj, controls) => (
           <EditableEntry

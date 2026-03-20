@@ -3,6 +3,7 @@
 import { useState, useCallback } from 'react';
 import { toast } from 'sonner';
 import { useProfileEdit } from '@/components/profile-edit-provider';
+import { SectionOverflow } from '@/components/ui/section-overflow';
 import { SectionEditor } from './section-editor';
 import { EditDialog, type FieldDef } from './edit-dialog';
 import {
@@ -69,6 +70,10 @@ interface EditableSectionProps<T extends { rkey: string }> {
   sortItems?: (items: T[]) => T[];
   /** Called after a successful create or update. */
   onPostSave?: () => void;
+  /** Max items visible before "Show N more" disclosure */
+  maxVisible?: number;
+  /** Override to disable overflow (defaults to isOwnProfile) */
+  disableOverflow?: boolean;
   /** Called when any field value changes in the edit dialog. Return partial values to auto-fill. */
   onFieldChange?: (
     name: string,
@@ -89,6 +94,8 @@ export function EditableSection<T extends { rkey: string }>({
   collection,
   renderEntry,
   sortItems,
+  maxVisible,
+  disableOverflow,
   onPostSave,
   onFieldChange,
 }: EditableSectionProps<T>) {
@@ -164,15 +171,20 @@ export function EditableSection<T extends { rkey: string }>({
         onAdd={() => setDialog({ mode: 'add' })}
       >
         <div className="space-y-4">
-          {items.map((item) => {
-            const controls = isOwnProfile
-              ? {
-                  onEdit: () => setDialog({ mode: 'edit', item }),
-                  onDelete: () => handleDelete(item.rkey),
-                }
-              : undefined;
-            return <div key={item.rkey}>{renderEntry(item, controls)}</div>;
-          })}
+          <SectionOverflow
+            maxVisible={maxVisible ?? Infinity}
+            disableOverflow={disableOverflow ?? isOwnProfile}
+          >
+            {items.map((item) => {
+              const controls = isOwnProfile
+                ? {
+                    onEdit: () => setDialog({ mode: 'edit', item }),
+                    onDelete: () => handleDelete(item.rkey),
+                  }
+                : undefined;
+              return <div key={item.rkey}>{renderEntry(item, controls)}</div>;
+            })}
+          </SectionOverflow>
         </div>
       </SectionEditor>
 
