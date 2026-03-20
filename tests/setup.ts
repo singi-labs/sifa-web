@@ -204,6 +204,9 @@ const translations: Record<string, Record<string, string>> = {
     title: 'Activity for {handle}',
     comingSoon: 'Activity stream is coming soon.',
   },
+  activityCard: {
+    fallback: 'Activity on {appName}',
+  },
   about: {
     title: 'About Sifa',
     mission: 'Sifa is a decentralized professional identity network built on the AT Protocol.',

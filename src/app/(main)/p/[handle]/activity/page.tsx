@@ -1,5 +1,9 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
+import Link from 'next/link';
+import { ArrowLeft } from '@phosphor-icons/react/dist/ssr';
+import { fetchActivityFeed } from '@/lib/api';
+import { ActivityFeed } from './activity-feed';
 
 export async function generateMetadata({
   params,
@@ -9,6 +13,7 @@ export async function generateMetadata({
   const { handle } = await params;
   return {
     title: `Activity - ${handle}`,
+    robots: { index: false, follow: false },
   };
 }
 
@@ -16,10 +21,26 @@ export default async function ActivityPage({ params }: { params: Promise<{ handl
   const { handle } = await params;
   const t = await getTranslations('activity');
 
+  const initialData = await fetchActivityFeed(handle, {
+    category: 'all',
+    limit: 20,
+  });
+
   return (
-    <div className="mx-auto max-w-3xl px-4 py-16 text-center">
-      <h1 className="text-2xl font-bold">{t('title', { handle })}</h1>
-      <p className="mt-4 text-muted-foreground">{t('comingSoon')}</p>
+    <div className="mx-auto max-w-3xl px-4 py-8">
+      <nav className="mb-6" aria-label={t('breadcrumb')}>
+        <Link
+          href={`/p/${handle}`}
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+        >
+          <ArrowLeft className="h-4 w-4" weight="bold" aria-hidden="true" />
+          {t('backToProfile')}
+        </Link>
+      </nav>
+
+      <h1 className="mb-6 text-2xl font-bold">{t('title', { handle })}</h1>
+
+      <ActivityFeed handle={handle} initialData={initialData} />
     </div>
   );
 }

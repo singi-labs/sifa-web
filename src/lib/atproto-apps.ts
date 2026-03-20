@@ -38,6 +38,14 @@ const APP_REGISTRY: Record<string, AppMeta> = {
     name: 'PasteSphere',
     className: 'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300',
   },
+  tangled: {
+    name: 'Tangled',
+    className: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300',
+  },
+  flashes: {
+    name: 'Flashes',
+    className: 'bg-pink-100 text-pink-800 dark:bg-pink-900/40 dark:text-pink-300',
+  },
 };
 
 const FALLBACK_CLASS = 'bg-gray-100 text-gray-800 dark:bg-gray-800/40 dark:text-gray-300';

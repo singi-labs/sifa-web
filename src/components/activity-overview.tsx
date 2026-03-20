@@ -1,8 +1,13 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { ArrowRight } from '@phosphor-icons/react';
+import { fetchActivityTeaser } from '@/lib/api';
+import type { ActivityItem } from '@/lib/api';
+import { getCardComponent } from './activity-cards/card-registry';
+import { GenericActivityCard } from './activity-cards/generic-activity-card';
 
 interface ActivityOverviewProps {
   handle: string;
@@ -10,22 +15,58 @@ interface ActivityOverviewProps {
 
 export function ActivityOverview({ handle }: ActivityOverviewProps) {
   const t = useTranslations('activityOverview');
+  const [items, setItems] = useState<ActivityItem[] | null>(null);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchActivityTeaser(handle).then((data) => {
+      if (cancelled) return;
+      setItems(data?.items ?? null);
+      setLoaded(true);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [handle]);
+
+  if (!loaded) return null;
+  if (!items || items.length === 0) return null;
+
+  const teaserItems = items.slice(0, 5);
 
   return (
-    <section className="mt-8" aria-label={t('title')}>
+    <section className="mt-8" aria-label={t('title')} data-testid="activity-overview">
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold">{t('title')}</h2>
-        <Link
-          href={`/p/${handle}/activity`}
-          className="flex items-center gap-1 text-sm font-medium text-primary underline-offset-4 hover:underline"
-        >
-          {t('viewAll')}
-          <ArrowRight className="h-4 w-4" weight="bold" aria-hidden="true" />
-        </Link>
       </div>
-      <div className="mt-4 rounded-lg border border-dashed border-border p-8 text-center">
-        <p className="text-sm text-muted-foreground">{t('comingSoon')}</p>
+      <div className="mt-4 space-y-2">
+        {teaserItems.map((item) => {
+          const SpecificCard = getCardComponent(item.collection);
+          const CardComponent = SpecificCard ?? GenericActivityCard;
+          const did = item.uri.split('/')[2] ?? '';
+          return (
+            <CardComponent
+              key={item.uri}
+              uri={item.uri}
+              collection={item.collection}
+              rkey={item.rkey}
+              record={item.record}
+              authorDid={did}
+              showAuthor={false}
+              compact={true}
+            />
+          );
+        })}
       </div>
+      <Link
+        href={`/p/${handle}/activity`}
+        className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-muted py-3 text-sm font-medium text-foreground transition-colors hover:bg-muted/80"
+        data-testid="activity-view-all"
+      >
+        {t('viewAll')}
+        <ArrowRight className="h-4 w-4" weight="bold" aria-hidden="true" />
+      </Link>
     </section>
   );
 }

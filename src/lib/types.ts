@@ -137,6 +137,9 @@ export interface TrustStat {
 export interface ActiveApp {
   id: string;
   name: string;
+  category: string;
+  recentCount: number;
+  latestRecordAt?: string | null;
 }
 
 export interface VerifiedAccount {
