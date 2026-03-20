@@ -1,8 +1,29 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { ProfileEditProvider } from '@/components/profile-edit-provider';
 import { ProfileBody } from '@/components/profile-body';
 import type { Profile } from '@/lib/types';
+
+vi.mock('@/lib/api', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@/lib/api')>();
+  return {
+    ...actual,
+    fetchActivityTeaser: vi.fn().mockResolvedValue({
+      items: [
+        {
+          uri: 'at://did:plc:test/app.bsky.feed.post/1',
+          collection: 'app.bsky.feed.post',
+          rkey: '1',
+          record: { text: 'Hello', createdAt: '2026-03-15T10:00:00Z' },
+          appId: 'bluesky',
+          appName: 'Bluesky',
+          category: 'posts',
+          indexedAt: '2026-03-15T10:00:00Z',
+        },
+      ],
+    }),
+  };
+});
 
 function renderWithProvider(profile: Profile) {
   return render(
@@ -45,9 +66,11 @@ describe('ProfileBody', () => {
     expect(screen.getByText('I am a developer')).toBeDefined();
   });
 
-  it('renders activity overview', () => {
+  it('renders activity overview', async () => {
     renderWithProvider(baseProfile);
-    expect(screen.getByText('Activity')).toBeDefined();
+    await waitFor(() => {
+      expect(screen.getByText('Activity')).toBeDefined();
+    });
   });
 
   it('renders track record section', () => {
