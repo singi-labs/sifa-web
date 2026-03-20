@@ -97,13 +97,19 @@ export function formatTimelineDate(dateStr: string): string {
 
 interface TimelineSectionProps {
   title: string;
+  itemCount?: number;
   children: React.ReactNode;
 }
 
-export function TimelineSection({ title, children }: TimelineSectionProps) {
+export function TimelineSection({ title, itemCount, children }: TimelineSectionProps) {
   return (
     <section className="mt-8" aria-label={title}>
-      <h2 className="mb-4 text-xl font-semibold">{title}</h2>
+      <h2 className="mb-4 text-xl font-semibold">
+        {title}
+        {itemCount != null && itemCount > 0 && (
+          <span className="ml-2 text-sm font-normal text-muted-foreground">{itemCount}</span>
+        )}
+      </h2>
       <div>{children}</div>
     </section>
   );
