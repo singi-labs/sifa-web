@@ -1,55 +1,47 @@
 /**
  * ATproto app metadata for display in identity cards.
- * Colors are chosen for readability on both light and dark backgrounds.
+ * Colors are defined as CSS custom properties in globals.css (--app-{id}-*).
  */
 
 interface AppMeta {
   name: string;
-  /** Tailwind classes for badge styling (bg + text) */
+  /** CSS variable-based classes for badge styling (bg + text) */
   className: string;
 }
 
+/** Build badge className from CSS custom properties for a given app id */
+function badgeClass(id: string): string {
+  return `bg-[var(--app-${id}-badge-bg)] text-[var(--app-${id}-badge-text)]`;
+}
+
 const APP_REGISTRY: Record<string, AppMeta> = {
-  bluesky: {
-    name: 'Bluesky',
-    className: 'bg-sky-100 text-sky-800 dark:bg-sky-900/40 dark:text-sky-300',
-  },
-  whitewind: {
-    name: 'Whitewind',
-    className: 'bg-slate-100 text-slate-800 dark:bg-slate-800/40 dark:text-slate-300',
-  },
-  smokesignal: {
-    name: 'Smoke Signal',
-    className: 'bg-orange-100 text-orange-800 dark:bg-orange-900/40 dark:text-orange-300',
-  },
-  frontpage: {
-    name: 'Frontpage',
-    className: 'bg-violet-100 text-violet-800 dark:bg-violet-900/40 dark:text-violet-300',
-  },
-  picosky: {
-    name: 'Picosky',
-    className: 'bg-pink-100 text-pink-800 dark:bg-pink-900/40 dark:text-pink-300',
-  },
-  linkat: {
-    name: 'Linkat',
-    className: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300',
-  },
-  pastesphere: {
-    name: 'PasteSphere',
-    className: 'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300',
-  },
-  tangled: {
-    name: 'Tangled',
-    className: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300',
-  },
-  flashes: {
-    name: 'Flashes',
-    className: 'bg-pink-100 text-pink-800 dark:bg-pink-900/40 dark:text-pink-300',
-  },
+  bluesky: { name: 'Bluesky', className: badgeClass('bluesky') },
+  whitewind: { name: 'Whitewind', className: badgeClass('whitewind') },
+  smokesignal: { name: 'Smoke Signal', className: badgeClass('smokesignal') },
+  frontpage: { name: 'Frontpage', className: badgeClass('frontpage') },
+  picosky: { name: 'Picosky', className: badgeClass('picosky') },
+  linkat: { name: 'Linkat', className: badgeClass('linkat') },
+  pastesphere: { name: 'PasteSphere', className: badgeClass('pastesphere') },
+  tangled: { name: 'Tangled', className: badgeClass('tangled') },
+  flashes: { name: 'Flashes', className: badgeClass('flashes') },
 };
 
-const FALLBACK_CLASS = 'bg-gray-100 text-gray-800 dark:bg-gray-800/40 dark:text-gray-300';
+const FALLBACK_CLASS = badgeClass('fallback');
 
 export function getAppMeta(appId: string): AppMeta {
   return APP_REGISTRY[appId] ?? { name: appId, className: FALLBACK_CLASS };
+}
+
+/** Get the CSS variable reference for an app's stripe (accent border) color */
+export function getAppStripeColor(appId: string): string {
+  return `var(--app-${appId}-stripe, var(--app-fallback-stripe))`;
+}
+
+/**
+ * Build a URL to fetch a blob from a user's PDS via the Bluesky relay.
+ * Works for users on Bluesky's PDS. For self-hosted PDS users, the URL
+ * may not resolve — callers should handle fetch failures gracefully.
+ */
+export function buildBlobUrl(did: string, cid: string): string {
+  return `https://bsky.social/xrpc/com.atproto.sync.getBlob?did=${encodeURIComponent(did)}&cid=${encodeURIComponent(cid)}`;
 }

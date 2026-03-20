@@ -7,6 +7,7 @@ import { fetchActivityFeed } from '@/lib/api';
 import type { ActivityFeedResponse, ActivityItem } from '@/lib/api';
 import { getCardComponent } from '@/components/activity-cards/card-registry';
 import { GenericActivityCard } from '@/components/activity-cards/generic-activity-card';
+import { CardErrorBoundary } from '@/components/activity-cards/card-error-boundary';
 
 const CATEGORIES = [
   { key: 'all', labelKey: 'categoryAll' },
@@ -148,21 +149,24 @@ export function ActivityFeed({ handle, initialData }: ActivityFeedProps) {
         {/* Activity cards */}
         {!isPending && items.length > 0 && (
           <div className="flex flex-col gap-3">
-            {items.map((item) => {
-              const CardComponent = getCardComponent(item.collection) ?? GenericActivityCard;
-              return (
-                <CardComponent
-                  key={item.uri}
-                  uri={item.uri}
-                  collection={item.collection}
-                  rkey={item.rkey}
-                  record={item.record}
-                  authorDid=""
-                  showAuthor={false}
-                  compact={false}
-                />
-              );
-            })}
+            {items
+              .filter((item) => item.record != null)
+              .map((item) => {
+                const CardComponent = getCardComponent(item.collection) ?? GenericActivityCard;
+                return (
+                  <CardErrorBoundary key={item.uri}>
+                    <CardComponent
+                      uri={item.uri}
+                      collection={item.collection}
+                      rkey={item.rkey}
+                      record={item.record}
+                      authorDid=""
+                      showAuthor={false}
+                      compact={false}
+                    />
+                  </CardErrorBoundary>
+                );
+              })}
           </div>
         )}
 

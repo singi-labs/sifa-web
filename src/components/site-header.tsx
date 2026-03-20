@@ -7,9 +7,11 @@ import { ThemeToggle } from '@/components/theme-toggle';
 import { UserMenu } from '@/components/user-menu';
 import { MobileNav } from '@/components/mobile-nav';
 import { SuggestionBadge } from '@/components/suggestion-badge';
+import { useAuth } from '@/components/auth-provider';
 
 export function SiteHeader() {
   const t = useTranslations('common');
+  const { session } = useAuth();
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-sm supports-[backdrop-filter]:bg-background/60">
@@ -47,6 +49,14 @@ export function SiteHeader() {
               {t('findPeople')}
               <SuggestionBadge />
             </Link>
+            {session && (
+              <Link
+                href="/my-network"
+                className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+              >
+                {t('myNetwork')}
+              </Link>
+            )}
           </nav>
         </div>
 
