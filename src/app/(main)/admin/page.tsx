@@ -98,8 +98,11 @@ export default function AdminPage() {
   const [data, setData] = useState<StatsResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [latestUsers, setLatestUsers] = useState<SignupUser[]>([]);
+  const [latestTotal, setLatestTotal] = useState(0);
   const [latestLoading, setLatestLoading] = useState(true);
   const [signupFilter, setSignupFilter] = useState<SignupFilter>('all');
+  const [signupPage, setSignupPage] = useState(0);
+  const signupPageSize = 20;
   const [activeUsers, setActiveUsers] = useState<ActiveUsersResponse | null>(null);
   const [activeLoading, setActiveLoading] = useState(true);
   const [imports, setImports] = useState<ImportsResponse | null>(null);
@@ -185,13 +188,18 @@ export default function AdminPage() {
     async function fetchLatest() {
       setLatestLoading(true);
       try {
-        const params = new URLSearchParams({ filter: signupFilter });
+        const params = new URLSearchParams({
+          filter: signupFilter,
+          limit: String(signupPageSize),
+          offset: String(signupPage * signupPageSize),
+        });
         const res = await fetch(`${API_URL}/api/admin/stats/latest-signups?${params}`, {
           credentials: 'include',
         });
         if (!res.ok) throw new Error(`Failed: ${res.status}`);
         const json = await res.json();
         setLatestUsers(json.users);
+        setLatestTotal(json.total);
       } catch (err) {
         console.error('Failed to fetch latest signups:', err);
       } finally {
@@ -199,7 +207,7 @@ export default function AdminPage() {
       }
     }
     void fetchLatest();
-  }, [signupFilter]);
+  }, [signupFilter, signupPage]);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
@@ -317,7 +325,14 @@ export default function AdminPage() {
           <LatestSignups
             users={latestUsers}
             filter={signupFilter}
-            onFilterChange={setSignupFilter}
+            onFilterChange={(f) => {
+              setSignupFilter(f);
+              setSignupPage(0);
+            }}
+            total={latestTotal}
+            page={signupPage}
+            pageSize={signupPageSize}
+            onPageChange={setSignupPage}
           />
         )}
       </div>
