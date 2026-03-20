@@ -3,6 +3,12 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { ActivityOverview } from '@/components/activity-overview';
 import type { ActivityTeaserResponse } from '@/lib/api';
 
+vi.mock('@/components/activity-heatmap/activity-heatmap', () => ({
+  ActivityHeatmap: () => null,
+}));
+
+vi.mock('react-activity-calendar', () => ({ default: () => null }));
+
 vi.mock('@/lib/api', () => ({
   fetchActivityTeaser: vi.fn(),
 }));
