@@ -133,33 +133,31 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
         )}
       </div>
       {/* Bluesky — always shown, verified via AT Protocol identity */}
-      <ul className="mb-2 space-y-4">
-        <li className="flex items-center gap-3">
-          {(() => {
-            const bskyPlatform = getPlatformInfo(blueskyEntry.platform);
-            const BskyIcon = bskyPlatform.icon;
-            return (
-              <>
-                <BskyIcon size={20} weight="regular" className="shrink-0 text-muted-foreground" />
-                <a
-                  href={blueskyEntry.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-medium underline-offset-4 hover:underline"
-                >
-                  {blueskyEntry.label}
-                </a>
-                <CheckCircle
-                  size={16}
-                  weight="fill"
-                  className="shrink-0 text-green-600 dark:text-green-400"
-                  aria-label={t('verified')}
-                />
-              </>
-            );
-          })()}
-        </li>
-      </ul>
+      <div className="mb-4">
+        {(() => {
+          const bskyPlatform = getPlatformInfo(blueskyEntry.platform);
+          const BskyIcon = bskyPlatform.icon;
+          return (
+            <li className="flex items-center gap-3">
+              <BskyIcon size={20} weight="regular" className="shrink-0 text-muted-foreground" />
+              <a
+                href={blueskyEntry.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium underline-offset-4 hover:underline"
+              >
+                {blueskyEntry.label}
+              </a>
+              <CheckCircle
+                size={16}
+                weight="fill"
+                className="shrink-0 text-green-600 dark:text-green-400"
+                aria-label={t('verified')}
+              />
+            </li>
+          );
+        })()}
+      </div>
 
       <EditableSection<ExternalAccount>
         sectionTitle={t('otherProfiles')}
