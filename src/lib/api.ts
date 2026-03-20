@@ -89,6 +89,17 @@ export async function fetchSuggestionCount(since?: string): Promise<number> {
   return data.count ?? 0;
 }
 
+export async function syncSuggestions(): Promise<{
+  imported: { bluesky: number; tangled: number };
+}> {
+  const res = await fetch(`${API_URL}/api/suggestions/sync`, {
+    method: 'POST',
+    credentials: 'include',
+  });
+  if (!res.ok) throw new Error('Sync failed');
+  return res.json();
+}
+
 export async function dismissSuggestion(subjectDid: string): Promise<void> {
   await fetch(`${API_URL}/api/suggestions/dismiss`, {
     method: 'POST',
