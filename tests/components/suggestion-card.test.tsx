@@ -12,7 +12,6 @@ describe('SuggestionCard', () => {
     claimed: true,
     onDismiss: vi.fn(),
     onFollow: vi.fn(),
-    onInvite: vi.fn(),
   };
 
   it('renders handle and display name', () => {
@@ -26,9 +25,9 @@ describe('SuggestionCard', () => {
     expect(screen.getByRole('button', { name: /follow/i })).toBeDefined();
   });
 
-  it('shows Invite button for unclaimed profiles', () => {
+  it('shows no Follow button for unclaimed profiles', () => {
     render(<SuggestionCard {...defaultProps} claimed={false} />);
-    expect(screen.getByRole('button', { name: /invite/i })).toBeDefined();
+    expect(screen.queryByRole('button', { name: /follow/i })).toBeNull();
   });
 
   it('shows source badge', () => {

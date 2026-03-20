@@ -18,8 +18,7 @@ interface SuggestionCardProps {
   claimed: boolean;
   dismissed?: boolean;
   onDismiss: (did: string) => void;
-  onFollow: (did: string) => void;
-  onInvite: (did: string) => void;
+  onFollow?: (did: string) => void;
   onUndismiss?: (did: string) => void;
 }
 
@@ -34,7 +33,6 @@ export function SuggestionCard({
   dismissed,
   onDismiss,
   onFollow,
-  onInvite,
   onUndismiss,
 }: SuggestionCardProps) {
   const label = getDisplayLabel(displayName, handle);
@@ -75,7 +73,7 @@ export function SuggestionCard({
           </Badge>
         </div>
         {headline && <p className="truncate text-sm text-muted-foreground">{sanitize(headline)}</p>}
-        <p className="truncate text-xs text-muted-foreground">{sanitize(handle)}</p>
+        {handle && <p className="truncate text-xs text-muted-foreground">{sanitize(handle)}</p>}
       </div>
 
       {/* Actions */}
@@ -84,15 +82,11 @@ export function SuggestionCard({
           <Button variant="outline" size="sm" onClick={() => onUndismiss(did)}>
             Unhide
           </Button>
-        ) : claimed ? (
+        ) : claimed && onFollow ? (
           <Button size="sm" onClick={() => onFollow(did)}>
             Follow
           </Button>
-        ) : (
-          <Button variant="outline" size="sm" onClick={() => onInvite(did)}>
-            Invite
-          </Button>
-        )}
+        ) : null}
         {!dismissed && (
           <button
             type="button"
