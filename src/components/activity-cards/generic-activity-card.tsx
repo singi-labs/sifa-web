@@ -14,20 +14,26 @@ import {
 import { getAppMeta, getAppStripeColor, buildBlobUrl } from '@/lib/atproto-apps';
 import type { ActivityCardProps } from './types';
 
-/** Map collection NSID prefixes to app IDs in atproto-apps registry */
+/** Map collection NSID prefixes to app IDs in atproto-apps registry.
+ * Must stay in sync with the verified API registry (sifa-api/src/lib/atproto-app-registry.ts).
+ * Order matters: more specific prefixes must come before broader ones. */
 const COLLECTION_TO_APP: Record<string, string> = {
   'app.bsky.': 'bluesky',
-  'com.whtwnd.': 'whitewind',
+  'sh.tangled.': 'tangled',
   'events.smokesignal.': 'smokesignal',
-  'com.smokesignal.': 'smokesignal',
-  'xyz.smokesignal.': 'smokesignal',
-  'fyi.unravel.frontpage.': 'frontpage',
+  'community.lexicon.calendar.': 'smokesignal',
+  'community.lexicon.bookmarks.': 'kipclip',
+  'com.kipclip.': 'kipclip',
   'blue.flashes.': 'flashes',
-  'com.picosky.': 'picosky',
-  'community.lexicon.': 'smokesignal',
-  'link.tangled.': 'tangled',
-  'app.linkat.': 'linkat',
-  'com.pastesphere.': 'pastesphere',
+  'com.whtwnd.': 'whitewind',
+  'fyi.unravel.frontpage.': 'frontpage',
+  'social.psky.': 'picosky',
+  'blue.linkat.': 'linkat',
+  'link.pastesphere.': 'pastesphere',
+  'site.standard.': 'standard',
+  'computer.aetheros.': 'aetheros',
+  'space.roomy.': 'roomy',
+  'dev.keytrace.': 'keytrace',
   'id.sifa.': 'sifa',
   'forum.barazo.': 'barazo',
 };
