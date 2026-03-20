@@ -180,9 +180,13 @@ export interface Profile {
   // Override system
   hasHeadlineOverride?: boolean;
   hasAboutOverride?: boolean;
+  hasDisplayNameOverride?: boolean;
+  hasAvatarUrlOverride?: boolean;
   source?: {
     headline?: string;
     about?: string;
+    displayName?: string;
+    avatarUrl?: string;
   };
   location?: LocationValue | null;
   website?: string;

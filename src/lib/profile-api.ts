@@ -96,6 +96,41 @@ export async function refreshPds(): Promise<
   }
 }
 
+export async function updateProfileOverride(data: {
+  headline?: string | null;
+  about?: string | null;
+  displayName?: string | null;
+}): Promise<WriteResult> {
+  return apiRequest('/api/profile/override', 'PUT', data);
+}
+
+export async function uploadAvatar(file: File): Promise<WriteResult & { url?: string }> {
+  try {
+    const formData = new FormData();
+    formData.append('file', file);
+    const res = await fetch(`${API_URL}/api/profile/avatar`, {
+      method: 'POST',
+      credentials: 'include',
+      body: formData,
+    });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      return {
+        success: false,
+        error: (data as { message?: string }).message ?? `Request failed (${res.status})`,
+      };
+    }
+    const data = (await res.json()) as { url: string };
+    return { success: true, url: data.url };
+  } catch {
+    return { success: false, error: 'Network error' };
+  }
+}
+
+export async function deleteAvatarOverride(): Promise<WriteResult> {
+  return apiRequest('/api/profile/avatar', 'DELETE');
+}
+
 export async function createRecord(
   collection: string,
   data: Record<string, unknown>,
