@@ -118,10 +118,22 @@ export function ProfileEditProvider({ initialProfile, children }: ProfileEditPro
   );
 }
 
+const NO_OP = () => {};
+const NO_OP_RESULT = { success: false } as never;
+
+/** Safe defaults when used outside a ProfileEditProvider (e.g. embed, events, homepage). */
+const DEFAULT_CONTEXT: ProfileEditContextValue = {
+  profile: {} as Profile,
+  isActualOwner: false,
+  previewMode: false,
+  togglePreview: NO_OP,
+  updateProfile: NO_OP,
+  addItem: NO_OP,
+  updateItem: NO_OP,
+  removeItem: NO_OP,
+};
+
 export function useProfileEdit(): ProfileEditContextValue {
   const context = useContext(ProfileEditContext);
-  if (context === null) {
-    throw new Error('useProfileEdit must be used within a ProfileEditProvider');
-  }
-  return context;
+  return context ?? DEFAULT_CONTEXT;
 }
