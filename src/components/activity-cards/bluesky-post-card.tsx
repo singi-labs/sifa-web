@@ -181,6 +181,7 @@ export function BlueskyPostCard({
               {facets.length > 0 ? renderRichText(text, facets) : text}
             </p>
             {thumbUrl && (
+              /* eslint-disable-next-line @next/next/no-img-element */
               <img
                 src={thumbUrl}
                 alt={firstImage?.alt ?? 'Embedded image'}

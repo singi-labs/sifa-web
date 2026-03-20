@@ -17,25 +17,21 @@ export default function ActivityVisibilityPage() {
   const params = useParams<{ handle: string }>();
   const router = useRouter();
 
-  const [apps, setApps] = useState<ActiveApp[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [apps, setApps] = useState<ActiveApp[] | null>(null);
   const [togglingApps, setTogglingApps] = useState<Set<string>>(new Set());
   const [feedback, setFeedback] = useState<FeedbackState>(null);
 
+  const isLoading = isAuthLoading || (session != null && apps === null);
+
   // Fetch profile to get activeApps
   useEffect(() => {
-    if (isAuthLoading) return;
-    if (!session) {
-      setIsLoading(false);
-      return;
-    }
+    if (isAuthLoading || !session) return;
 
     let cancelled = false;
     async function load() {
       const profile = await fetchProfile(session!.handle);
       if (cancelled) return;
       setApps(profile?.activeApps ?? []);
-      setIsLoading(false);
     }
     void load();
     return () => {
@@ -63,7 +59,7 @@ export default function ActivityVisibilityPage() {
       if (ok) {
         if (!newVisible) {
           // Remove from local state since the API will filter it out
-          setApps((prev) => prev.filter((a) => a.id !== appId));
+          setApps((prev) => (prev ?? []).filter((a) => a.id !== appId));
         }
         setFeedback({ type: 'success', appId, message: t('updateSuccess') });
       } else {
@@ -139,11 +135,11 @@ export default function ActivityVisibilityPage() {
         </div>
       )}
 
-      {apps.length === 0 ? (
+      {(apps ?? []).length === 0 ? (
         <p className="mt-8 text-center text-muted-foreground">{t('noApps')}</p>
       ) : (
-        <ul className="mt-6 divide-y divide-border" role="list" aria-label={t('title')}>
-          {apps.map((app) => {
+        <ul className="mt-6 divide-y divide-border" aria-label={t('title')}>
+          {(apps ?? []).map((app) => {
             const meta = getAppMeta(app.id);
             const isToggling = togglingApps.has(app.id);
             const toggleId = `toggle-${app.id}`;

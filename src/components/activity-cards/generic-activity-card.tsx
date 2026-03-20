@@ -169,6 +169,7 @@ export function GenericActivityCard({
           aria-hidden="true"
         />
         {showAuthor && authorAvatar && (
+          /* eslint-disable-next-line @next/next/no-img-element */
           <img
             src={authorAvatar}
             alt={authorHandle ? `${authorHandle}'s avatar` : 'Author avatar'}
@@ -201,6 +202,7 @@ export function GenericActivityCard({
             {showAuthor && (authorHandle || authorAvatar) && (
               <div className="mb-1 flex items-center gap-2">
                 {authorAvatar && (
+                  /* eslint-disable-next-line @next/next/no-img-element */
                   <img
                     src={authorAvatar}
                     alt={authorHandle ? `${authorHandle}'s avatar` : 'Author avatar'}
