@@ -58,6 +58,10 @@ export function AboutSection({ about, isOwnProfile }: AboutSectionProps) {
             location={profile.location}
             openTo={profile.openTo}
             preferredWorkplace={profile.preferredWorkplace}
+            hasDisplayNameOverride={profile.hasDisplayNameOverride}
+            hasAvatarUrlOverride={profile.hasAvatarUrlOverride}
+            sourceDisplayName={profile.source?.displayName}
+            sourceAvatar={profile.source?.avatarUrl}
             onClose={() => setEditing(false)}
           />
         )}
@@ -114,6 +118,11 @@ export function AboutSection({ about, isOwnProfile }: AboutSectionProps) {
           about={profile.about}
           location={profile.location}
           openTo={profile.openTo}
+          preferredWorkplace={profile.preferredWorkplace}
+          hasDisplayNameOverride={profile.hasDisplayNameOverride}
+          hasAvatarUrlOverride={profile.hasAvatarUrlOverride}
+          sourceDisplayName={profile.source?.displayName}
+          sourceAvatar={profile.source?.avatarUrl}
           onClose={() => setEditing(false)}
         />
       )}

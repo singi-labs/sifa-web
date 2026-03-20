@@ -109,6 +109,10 @@ export default async function ProfilePage({
             claimed={profile.claimed}
             isOwnProfile={profile.isOwnProfile}
             isFollowing={profile.isFollowing}
+            hasDisplayNameOverride={profile.hasDisplayNameOverride}
+            hasAvatarUrlOverride={profile.hasAvatarUrlOverride}
+            sourceDisplayName={profile.source?.displayName}
+            sourceAvatar={profile.source?.avatarUrl}
           />
           {profile.isOwnProfile && <DataTransparencyCard did={profile.did} />}
           <ProfileBody />
