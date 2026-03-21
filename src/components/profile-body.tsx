@@ -91,14 +91,16 @@ function ProfileBodyContent() {
 
   const content = (
     <div className="min-w-0 flex-1">
-      <PreviewBar />
-      <CompletionBar profile={profile} />
-      <TrustStatsHints
-        trustStats={profile.trustStats}
-        isOwnProfile={isOwn}
-        did={profile.did}
-        createdAt={profile.createdAt}
-      />
+      <div className="mb-4 empty:mb-0">
+        <PreviewBar />
+        <CompletionBar profile={profile} />
+        <TrustStatsHints
+          trustStats={profile.trustStats}
+          isOwnProfile={isOwn}
+          did={profile.did}
+          createdAt={profile.createdAt}
+        />
+      </div>
 
       {/* Hide the about section when the IdentityCard already shows it as a headline fallback */}
       {profile.about && !profile.headline ? (
