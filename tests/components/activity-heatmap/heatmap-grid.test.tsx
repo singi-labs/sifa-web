@@ -3,6 +3,13 @@ import { render, screen } from '@testing-library/react';
 import { HeatmapGrid } from '../../../src/components/activity-heatmap/heatmap-grid';
 import type { HeatmapDayData } from '../../../src/components/activity-heatmap/heatmap-colors';
 
+// Mock ResizeObserver for test environment
+globalThis.ResizeObserver = class {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+} as unknown as typeof ResizeObserver;
+
 vi.mock('react-activity-calendar', () => ({
   default: function MockActivityCalendar(props: { data: unknown[] }) {
     return <div data-testid="mock-activity-calendar">{String(props.data?.length)}</div>;

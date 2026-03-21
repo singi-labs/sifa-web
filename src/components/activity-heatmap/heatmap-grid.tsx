@@ -1,6 +1,6 @@
 'use client';
 
-import { cloneElement, useMemo } from 'react';
+import { cloneElement, useEffect, useMemo, useRef, useState } from 'react';
 import ActivityCalendar from 'react-activity-calendar';
 import type { Activity, BlockElement } from 'react-activity-calendar';
 import type { HeatmapDayData } from './heatmap-colors';
@@ -13,10 +13,15 @@ interface HeatmapGridProps {
   selectedDate: string | null;
 }
 
+const BLOCK_MARGIN = 3;
+const BLOCK_RADIUS = 2;
+const WEEKDAY_LABEL_WIDTH = 40; // approx space for Mon/Wed/Fri labels
+
 /** Build a complete date range, filling gaps with zero-activity entries. */
 function buildActivities(days: HeatmapDayData[]): {
   activities: Activity[];
   dayMap: Map<string, HeatmapDayData>;
+  weekCount: number;
 } {
   const dayMap = new Map<string, HeatmapDayData>();
   for (const d of days) {
@@ -47,7 +52,10 @@ function buildActivities(days: HeatmapDayData[]): {
     cursor.setDate(cursor.getDate() + 1);
   }
 
-  return { activities, dayMap };
+  const totalDays = activities.length;
+  const weekCount = Math.ceil(totalDays / 7);
+
+  return { activities, dayMap, weekCount };
 }
 
 function buildTooltipText(dayData: HeatmapDayData | undefined, dateStr: string): string {
@@ -68,8 +76,37 @@ function buildTooltipText(dayData: HeatmapDayData | undefined, dateStr: string):
   return `${dateLabel}\n${lines.join('\n')}`;
 }
 
+/** Compute blockSize so the grid fills availableWidth. */
+function computeBlockSize(availableWidth: number, weekCount: number): number {
+  // Total width = weekdayLabels + weekCount * (blockSize + margin) - margin
+  // Solve for blockSize: (availableWidth - labelWidth + margin) / weekCount - margin
+  const gridWidth = availableWidth - WEEKDAY_LABEL_WIDTH;
+  const size = Math.floor((gridWidth + BLOCK_MARGIN) / weekCount - BLOCK_MARGIN);
+  return Math.max(8, Math.min(size, 20)); // clamp between 8 and 20px
+}
+
 export function HeatmapGrid({ days, onSelectDate, selectedDate }: HeatmapGridProps) {
-  const { activities, dayMap } = useMemo(() => buildActivities(days), [days]);
+  const { activities, dayMap, weekCount } = useMemo(() => buildActivities(days), [days]);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [blockSize, setBlockSize] = useState(13);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const measure = () => {
+      const width = el.clientWidth;
+      if (width > 0) {
+        setBlockSize(computeBlockSize(width, weekCount));
+      }
+    };
+
+    measure();
+
+    const observer = new ResizeObserver(measure);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [weekCount]);
 
   const renderBlock = (block: BlockElement, activity: Activity) => {
     const dayData = dayMap.get(activity.date);
@@ -80,8 +117,6 @@ export function HeatmapGrid({ days, onSelectDate, selectedDate }: HeatmapGridPro
     const isSelected = selectedDate === activity.date;
     const titleText = buildTooltipText(dayData, activity.date);
 
-    // Override the fill ATTRIBUTE (not just style) — the library sets fill as
-    // an SVG attribute on <rect> which takes precedence over style.fill
     const fillValue = cellStyle.fill as string;
 
     return cloneElement(block, {
@@ -97,15 +132,12 @@ export function HeatmapGrid({ days, onSelectDate, selectedDate }: HeatmapGridPro
   };
 
   return (
-    <div
-      data-testid="heatmap-grid"
-      className="[&_div]:!overflow-visible [&_svg]:h-auto [&_svg]:max-w-full"
-    >
+    <div ref={containerRef} data-testid="heatmap-grid" className="w-full">
       <ActivityCalendar
         data={activities}
-        blockSize={13}
-        blockMargin={3}
-        blockRadius={2}
+        blockSize={blockSize}
+        blockMargin={BLOCK_MARGIN}
+        blockRadius={BLOCK_RADIUS}
         hideColorLegend
         hideTotalCount
         renderBlock={renderBlock}
