@@ -99,7 +99,7 @@ export function HeatmapGrid({ days, onSelectDate, selectedDate }: HeatmapGridPro
   return (
     <div
       data-testid="heatmap-grid"
-      className="w-full [&_div]:!overflow-visible [&_svg]:!w-full [&_svg]:h-auto [&_svg]:max-w-none"
+      className="[&_div]:!overflow-visible [&_svg]:h-auto [&_svg]:max-w-full"
     >
       <ActivityCalendar
         data={activities}

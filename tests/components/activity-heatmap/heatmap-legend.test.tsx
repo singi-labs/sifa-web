@@ -9,13 +9,6 @@ const appTotals = [
 ];
 
 describe('HeatmapLegend', () => {
-  it('renders Less and More labels for intensity scale', () => {
-    render(<HeatmapLegend appTotals={appTotals} showAppKey={false} />);
-
-    expect(screen.getByText('Less')).toBeDefined();
-    expect(screen.getByText('More')).toBeDefined();
-  });
-
   it('renders app names when showAppKey is true', () => {
     render(<HeatmapLegend appTotals={appTotals} showAppKey={true} />);
 
@@ -24,11 +17,15 @@ describe('HeatmapLegend', () => {
     expect(screen.getByText('Frontpage')).toBeDefined();
   });
 
-  it('hides app names when showAppKey is false', () => {
-    render(<HeatmapLegend appTotals={appTotals} showAppKey={false} />);
+  it('renders nothing when showAppKey is false', () => {
+    const { container } = render(<HeatmapLegend appTotals={appTotals} showAppKey={false} />);
 
-    expect(screen.queryByText('Bluesky')).toBeNull();
-    expect(screen.queryByText('Tangled')).toBeNull();
-    expect(screen.queryByText('Frontpage')).toBeNull();
+    expect(container.innerHTML).toBe('');
+  });
+
+  it('renders nothing when appTotals is empty', () => {
+    const { container } = render(<HeatmapLegend appTotals={[]} showAppKey={true} />);
+
+    expect(container.innerHTML).toBe('');
   });
 });

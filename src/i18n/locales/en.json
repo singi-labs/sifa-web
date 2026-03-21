@@ -36,8 +36,6 @@
     "viewProfile": "View profile"
   },
   "heatmap": {
-    "less": "Less",
-    "more": "More",
     "noActivity": "No activity",
     "totalActions": "{count} total",
     "actionsInPeriod": "{count} actions in {months} months",
