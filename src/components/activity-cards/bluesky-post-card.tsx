@@ -53,9 +53,16 @@ function formatRelativeTime(dateString: string): string {
   return `${years}y ago`;
 }
 
-function buildBlueskyUrl(authorHandle: string | undefined, rkey: string): string {
-  const handle = authorHandle ?? 'unknown';
-  return `https://bsky.app/profile/${handle}/post/${rkey}`;
+function extractDidFromUri(uri: string): string | null {
+  // at://did:plc:xxx/collection/rkey -> did:plc:xxx
+  const parts = uri.split('/');
+  return parts.length >= 3 ? (parts[2] ?? null) : null;
+}
+
+function buildBlueskyUrl(uri: string, authorHandle: string | undefined, rkey: string): string {
+  // Prefer handle for readable URLs, fall back to DID (bsky.app accepts both)
+  const actor = authorHandle ?? extractDidFromUri(uri) ?? 'unknown';
+  return `https://bsky.app/profile/${actor}/post/${rkey}`;
 }
 
 /**
@@ -124,6 +131,7 @@ function renderRichText(text: string, facets: Facet[]): React.ReactNode[] {
 
 export function BlueskyPostCard({
   record: rawRecord,
+  uri,
   rkey,
   authorHandle,
   compact,
@@ -133,7 +141,7 @@ export function BlueskyPostCard({
   const createdAt = record.createdAt ?? null;
   const timestamp = createdAt ? formatRelativeTime(createdAt) : '';
   const appMeta = getAppMeta('bluesky');
-  const postUrl = buildBlueskyUrl(authorHandle, rkey);
+  const postUrl = buildBlueskyUrl(uri, authorHandle, rkey);
   const isReply = Boolean(record.reply);
   const facets = record.facets ?? [];
   const firstImage = record.embed?.images?.[0];
