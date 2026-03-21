@@ -214,17 +214,19 @@ function PositionFormFields({ values, onUpdate }: PositionFormFieldsProps) {
             required
           />
         </div>
-        <div>
-          <label htmlFor="edit-endDate" className="mb-1 block text-sm font-medium">
-            End Date
-          </label>
-          <Input
-            id="edit-endDate"
-            type="month"
-            value={values.endDate as string}
-            onChange={(e) => onUpdate('endDate', e.target.value)}
-          />
-        </div>
+        {!values.current && (
+          <div>
+            <label htmlFor="edit-endDate" className="mb-1 block text-sm font-medium">
+              End Date
+            </label>
+            <Input
+              id="edit-endDate"
+              type="month"
+              value={values.endDate as string}
+              onChange={(e) => onUpdate('endDate', e.target.value)}
+            />
+          </div>
+        )}
       </div>
       <div className="flex items-center gap-2">
         <input
@@ -232,7 +234,12 @@ function PositionFormFields({ values, onUpdate }: PositionFormFieldsProps) {
           type="checkbox"
           className="h-4 w-4 rounded border-border"
           checked={values.current as boolean}
-          onChange={(e) => onUpdate('current', e.target.checked)}
+          onChange={(e) => {
+            onUpdate('current', e.target.checked);
+            if (e.target.checked) {
+              onUpdate('endDate', '');
+            }
+          }}
         />
         <label htmlFor="edit-current" className="text-sm text-muted-foreground">
           I currently work here
