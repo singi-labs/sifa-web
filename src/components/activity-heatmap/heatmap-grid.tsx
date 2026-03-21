@@ -13,7 +13,7 @@ interface HeatmapGridProps {
   selectedDate: string | null;
 }
 
-/** Build a complete date range for the last ~6 months, filling gaps with zero-activity entries. */
+/** Build a complete date range, filling gaps with zero-activity entries. */
 function buildActivities(days: HeatmapDayData[]): {
   activities: Activity[];
   dayMap: Map<string, HeatmapDayData>;
@@ -23,15 +23,16 @@ function buildActivities(days: HeatmapDayData[]): {
     dayMap.set(d.date, d);
   }
 
-  // Determine range based on data span, ending today
   const today = new Date();
   const end = new Date(today.getFullYear(), today.getMonth(), today.getDate());
   const start = new Date(end);
   start.setMonth(start.getMonth() - 6);
-  // Roll back start to the previous Monday so the first column is always full
-  const dayOfWeek = start.getDay(); // 0=Sun, 1=Mon, ...
-  const daysToMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
-  start.setDate(start.getDate() - daysToMonday);
+  // Roll back to previous Monday so the first column is always full (weekStart=1)
+  const dow = start.getDay(); // 0=Sun, 1=Mon...
+  const backToMon = dow === 0 ? 6 : dow - 1;
+  if (backToMon > 0) {
+    start.setDate(start.getDate() - backToMon);
+  }
 
   const activities: Activity[] = [];
   const cursor = new Date(start);
@@ -49,40 +50,44 @@ function buildActivities(days: HeatmapDayData[]): {
   return { activities, dayMap };
 }
 
+function buildTooltipText(dayData: HeatmapDayData | undefined, dateStr: string): string {
+  const dateLabel = new Date(dateStr + 'T00:00:00').toLocaleDateString('en-US', {
+    weekday: 'short',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+  if (!dayData || dayData.total === 0) {
+    return `${dateLabel}\nNo activity`;
+  }
+  const lines = dayData.apps.map((app) => {
+    const meta = getAppMeta(app.appId);
+    return `${app.count} ${meta.name}`;
+  });
+  lines.push(`${dayData.total} total`);
+  return `${dateLabel}\n${lines.join('\n')}`;
+}
+
 export function HeatmapGrid({ days, onSelectDate, selectedDate }: HeatmapGridProps) {
   const { activities, dayMap } = useMemo(() => buildActivities(days), [days]);
 
   const renderBlock = (block: BlockElement, activity: Activity) => {
     const dayData = dayMap.get(activity.date);
-    const style = dayData
+    const cellStyle = dayData
       ? getCellStyle(dayData.dominantApp, dayData.level, dayData.secondaryApp)
       : { fill: 'var(--heatmap-empty)' };
 
     const isSelected = selectedDate === activity.date;
+    const titleText = buildTooltipText(dayData, activity.date);
 
-    // Build tooltip text
-    const total = dayData?.total ?? 0;
-    const tooltipLines: string[] = [];
-    if (total > 0 && dayData) {
-      for (const app of dayData.apps) {
-        const meta = getAppMeta(app.appId);
-        tooltipLines.push(`${app.count} ${meta.name}`);
-      }
-      tooltipLines.push(`${total} total`);
-    } else {
-      tooltipLines.push('No activity');
-    }
-    const dateLabel = new Date(activity.date + 'T00:00:00').toLocaleDateString('en-US', {
-      weekday: 'short',
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    });
-    const titleText = `${dateLabel}\n${tooltipLines.join('\n')}`;
+    // Override the fill ATTRIBUTE (not just style) — the library sets fill as
+    // an SVG attribute on <rect> which takes precedence over style.fill
+    const fillValue = cellStyle.fill as string;
 
     return cloneElement(block, {
+      fill: fillValue,
+      opacity: cellStyle.opacity,
       style: {
-        ...style,
         ...(isSelected ? { outline: '2px solid var(--ring)', outlineOffset: '1px' } : {}),
         cursor: onSelectDate ? 'pointer' : undefined,
       },
@@ -92,7 +97,7 @@ export function HeatmapGrid({ days, onSelectDate, selectedDate }: HeatmapGridPro
   };
 
   return (
-    <div data-testid="heatmap-grid">
+    <div data-testid="heatmap-grid" className="w-full [&_svg]:w-full [&_svg]:h-auto">
       <ActivityCalendar
         data={activities}
         blockSize={13}
