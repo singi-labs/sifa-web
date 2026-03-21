@@ -23,11 +23,15 @@ function buildActivities(days: HeatmapDayData[]): {
     dayMap.set(d.date, d);
   }
 
-  // Determine range: 6 months back from today (or last date in data)
+  // Determine range based on data span, ending today
   const today = new Date();
   const end = new Date(today.getFullYear(), today.getMonth(), today.getDate());
   const start = new Date(end);
   start.setMonth(start.getMonth() - 6);
+  // Roll back start to the previous Monday so the first column is always full
+  const dayOfWeek = start.getDay(); // 0=Sun, 1=Mon, ...
+  const daysToMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+  start.setDate(start.getDate() - daysToMonday);
 
   const activities: Activity[] = [];
   const cursor = new Date(start);
