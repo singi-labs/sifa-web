@@ -49,7 +49,6 @@ export function ActivityHeatmap({
 
   useEffect(() => {
     let cancelled = false;
-    setLoading(true);
 
     fetchHeatmapData(handle, dayCount).then((result) => {
       if (!cancelled) {
