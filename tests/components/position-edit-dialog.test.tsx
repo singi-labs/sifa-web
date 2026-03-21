@@ -63,7 +63,7 @@ describe('PositionEditDialog', () => {
     expect(screen.getByLabelText(/Start Date/)).toBeDefined();
     expect(screen.getByLabelText(/End Date/)).toBeDefined();
     expect(screen.getByLabelText(/I currently work here/)).toBeDefined();
-    expect(screen.getByLabelText(/Location/)).toBeDefined();
+    expect(screen.getByText(/Location/)).toBeDefined();
     expect(screen.getByLabelText(/Description/)).toBeDefined();
     expect(screen.getByLabelText(/Skills used/)).toBeDefined();
   });
@@ -199,15 +199,17 @@ describe('PositionEditDialog', () => {
 
     await waitFor(() => {
       expect(onSave).toHaveBeenCalled();
-      const [values, skillRefs, linkedSkills] = onSave.mock.calls[0] as [
+      const [values, skillRefs, linkedSkills, location] = onSave.mock.calls[0] as [
         Record<string, string | boolean>,
         unknown[],
         unknown[],
+        unknown,
       ];
       expect(values.title).toBe('Engineer');
       expect(values.companyName).toBe('Acme');
       expect(Array.isArray(skillRefs)).toBe(true);
       expect(Array.isArray(linkedSkills)).toBe(true);
+      expect(location).toBeNull();
     });
   });
 
