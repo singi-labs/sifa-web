@@ -34,7 +34,7 @@ export function AboutSection({ about, isOwnProfile }: AboutSectionProps) {
 
   if (!about && isOwnProfile) {
     return (
-      <section className="mt-6">
+      <section>
         <div className="flex items-center gap-2">
           <p className="text-sm text-muted-foreground">{t('addAbout')}</p>
           <Button
@@ -74,7 +74,7 @@ export function AboutSection({ about, isOwnProfile }: AboutSectionProps) {
   const isLong = cleaned.length > COLLAPSE_THRESHOLD;
 
   return (
-    <section className="mt-6" aria-label={t('about')}>
+    <section aria-label={t('about')}>
       <div className="group/about relative">
         <div
           className={cn(
