@@ -8,6 +8,7 @@ import { DauChart } from './_components/dau-chart';
 import { MauChart } from './_components/mau-chart';
 import { LinkedinImportsChart } from './_components/linkedin-imports-chart';
 import { PdsDistributionChart } from './_components/pds-distribution-chart';
+import { UserLocationMap } from './_components/user-location-map';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3100';
 
@@ -315,6 +316,12 @@ export default function AdminPage() {
         ) : (
           <p className="text-muted-foreground">Failed to load PDS distribution.</p>
         )}
+      </div>
+
+      {/* User Locations */}
+      <h2 className="mt-10 text-xl font-semibold">User Locations</h2>
+      <div className="mt-4">
+        <UserLocationMap apiUrl={API_URL} />
       </div>
 
       {/* Latest signups */}
