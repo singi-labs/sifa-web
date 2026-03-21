@@ -195,29 +195,9 @@ describe('IdentityCard (default / page variant)', () => {
     expect(screen.queryByText('onSite')).toBeNull();
   });
 
-  it('renders default trust stats with zeros for new users', () => {
-    render(<IdentityCard {...baseProps} trustStats={[]} />);
-    const items = screen.getAllByRole('listitem');
-    expect(items).toHaveLength(3);
-    items.forEach((item) => {
-      expect(item.textContent).toContain('0');
-    });
-  });
-
-  it('renders provided trust stats', () => {
-    render(
-      <IdentityCard
-        {...baseProps}
-        trustStats={[
-          { key: 'connections', label: 'Connections', value: 42 },
-          { key: 'endorsements', label: 'Endorsements', value: 7 },
-          { key: 'reactions', label: 'Reactions', value: 128 },
-        ]}
-      />,
-    );
-    expect(screen.getByText('42')).toBeDefined();
-    expect(screen.getByText('7')).toBeDefined();
-    expect(screen.getByText('128')).toBeDefined();
+  it('does not render trust stats (hidden until meaningful)', () => {
+    render(<IdentityCard {...baseProps} />);
+    expect(screen.queryByRole('list', { name: 'Trust stats' })).toBeNull();
   });
 
   it('renders verified badge when verified accounts exist', () => {

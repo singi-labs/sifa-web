@@ -129,15 +129,6 @@ export function IdentityCard({
   const label = getDisplayLabel(displayName, handle);
   const displayFollowers = resolveDisplayFollowers(atprotoFollowersCount, followersCount);
 
-  const displayTrustStats =
-    trustStats.length > 0
-      ? trustStats.slice(0, 3)
-      : [
-          { key: 'connections', label: t('statConnections'), value: 0 },
-          { key: 'endorsements', label: t('statEndorsements'), value: 0 },
-          { key: 'reactions', label: t('statReactions'), value: 0 },
-        ];
-
   return (
     <section
       className={cn('relative rounded-xl border border-border bg-card p-6', className)}
@@ -487,16 +478,6 @@ export function IdentityCard({
                 </div>
               )}
             </div>
-          </div>
-
-          {/* Trust stats — full width below the two columns */}
-          <div className="mt-4 flex gap-6" role="list" aria-label={t('trustStatsLabel')}>
-            {displayTrustStats.map((stat) => (
-              <div key={stat.key} className="text-center" role="listitem">
-                <p className="text-lg font-semibold">{stat.value}</p>
-                <p className="text-xs text-muted-foreground">{stat.label}</p>
-              </div>
-            ))}
           </div>
         </>
       )}
