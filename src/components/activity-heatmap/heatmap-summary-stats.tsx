@@ -23,13 +23,9 @@ export function HeatmapSummaryStats({
         {t('actionsInPeriod', { count: String(totalActions), months: String(months) })}
       </span>
       {mostActiveApp !== null && (
-        <span className="text-muted-foreground">
-          {t('mostActive', { app: mostActiveApp })}
-        </span>
+        <span className="text-muted-foreground">{t('mostActive', { app: mostActiveApp })}</span>
       )}
-      <span className="text-muted-foreground">
-        {t('appsActive', { count: String(appCount) })}
-      </span>
+      <span className="text-muted-foreground">{t('appsActive', { count: String(appCount) })}</span>
     </div>
   );
 }

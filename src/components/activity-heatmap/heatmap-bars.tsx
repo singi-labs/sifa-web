@@ -13,7 +13,20 @@ interface MonthBucket {
   apps: Map<string, number>;
 }
 
-const SHORT_MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const SHORT_MONTHS = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+];
 
 function aggregateMonths(days: HeatmapDayData[]): MonthBucket[] {
   const bucketMap = new Map<string, MonthBucket>();
@@ -59,10 +72,7 @@ export function HeatmapBars({ days }: HeatmapBarsProps) {
 
         return (
           <div key={month.key} className="flex items-center gap-2">
-            <span
-              className="w-8 shrink-0 text-xs text-muted-foreground"
-              data-testid="bar-label"
-            >
+            <span className="w-8 shrink-0 text-xs text-muted-foreground" data-testid="bar-label">
               {month.label}
             </span>
             <div

@@ -5,12 +5,7 @@ import { HeatmapSummaryStats } from '../../../src/components/activity-heatmap/he
 describe('HeatmapSummaryStats', () => {
   it('renders all three stats', () => {
     render(
-      <HeatmapSummaryStats
-        totalActions={127}
-        months={6}
-        mostActiveApp="Bluesky"
-        appCount={4}
-      />,
+      <HeatmapSummaryStats totalActions={127} months={6} mostActiveApp="Bluesky" appCount={4} />,
     );
 
     expect(screen.getByText('127 actions in 6 months')).toBeDefined();
@@ -19,9 +14,7 @@ describe('HeatmapSummaryStats', () => {
   });
 
   it('omits most active app when null', () => {
-    render(
-      <HeatmapSummaryStats totalActions={0} months={6} mostActiveApp={null} appCount={0} />,
-    );
+    render(<HeatmapSummaryStats totalActions={0} months={6} mostActiveApp={null} appCount={0} />);
 
     expect(screen.getByText('0 actions in 6 months')).toBeDefined();
     expect(screen.queryByText(/Most active/)).toBeNull();

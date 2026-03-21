@@ -33,17 +33,13 @@ describe('ActivityHeatmap', () => {
 
   it('renders loading skeleton initially', () => {
     mockFetchHeatmapData.mockReturnValue(new Promise(() => {})); // never resolves
-    render(
-      <ActivityHeatmap handle="test.bsky.social" days={180} variant="compact" />,
-    );
+    render(<ActivityHeatmap handle="test.bsky.social" days={180} variant="compact" />);
     expect(screen.getByRole('img', { name: /loading/i })).toBeDefined();
   });
 
   it('renders content after data loads', async () => {
     mockFetchHeatmapData.mockResolvedValue(sampleResponse);
-    render(
-      <ActivityHeatmap handle="test.bsky.social" days={180} variant="full" />,
-    );
+    render(<ActivityHeatmap handle="test.bsky.social" days={180} variant="full" />);
 
     await waitFor(() => {
       expect(screen.getByTestId('heatmap-grid')).toBeDefined();
@@ -52,9 +48,7 @@ describe('ActivityHeatmap', () => {
 
   it('renders empty state when API returns null', async () => {
     mockFetchHeatmapData.mockResolvedValue(null);
-    render(
-      <ActivityHeatmap handle="test.bsky.social" days={180} variant="compact" />,
-    );
+    render(<ActivityHeatmap handle="test.bsky.social" days={180} variant="compact" />);
 
     await waitFor(() => {
       expect(screen.getByText('Activity across the ATmosphere will appear here.')).toBeDefined();
@@ -67,9 +61,7 @@ describe('ActivityHeatmap', () => {
       appTotals: [],
       thresholds: [2, 5, 10, 20],
     });
-    render(
-      <ActivityHeatmap handle="test.bsky.social" days={180} variant="compact" />,
-    );
+    render(<ActivityHeatmap handle="test.bsky.social" days={180} variant="compact" />);
 
     await waitFor(() => {
       expect(screen.getByText('Activity across the ATmosphere will appear here.')).toBeDefined();

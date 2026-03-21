@@ -30,23 +30,17 @@ const sampleDays: HeatmapDayData[] = [
 
 describe('HeatmapGrid', () => {
   it('renders with data-testid', () => {
-    render(
-      <HeatmapGrid days={sampleDays} onSelectDate={undefined} selectedDate={null} />,
-    );
+    render(<HeatmapGrid days={sampleDays} onSelectDate={undefined} selectedDate={null} />);
     expect(screen.getByTestId('heatmap-grid')).toBeDefined();
   });
 
   it('renders with empty days array', () => {
-    render(
-      <HeatmapGrid days={[]} onSelectDate={undefined} selectedDate={null} />,
-    );
+    render(<HeatmapGrid days={[]} onSelectDate={undefined} selectedDate={null} />);
     expect(screen.getByTestId('heatmap-grid')).toBeDefined();
   });
 
   it('passes data to ActivityCalendar', () => {
-    render(
-      <HeatmapGrid days={sampleDays} onSelectDate={undefined} selectedDate={null} />,
-    );
+    render(<HeatmapGrid days={sampleDays} onSelectDate={undefined} selectedDate={null} />);
     const calendar = screen.getByTestId('mock-activity-calendar');
     expect(calendar).toBeDefined();
     // Data length should be > 2 since we fill in all dates for the 6-month range
