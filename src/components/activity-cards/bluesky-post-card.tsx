@@ -3,6 +3,7 @@
 import { Butterfly } from '@phosphor-icons/react';
 import { getAppMeta, getAppStripeColor } from '@/lib/atproto-apps';
 import type { ActivityCardProps } from './types';
+import { CardLink } from './card-link';
 
 const STRIPE_COLOR = getAppStripeColor('bluesky');
 
@@ -101,7 +102,7 @@ function renderRichText(text: string, facets: Facet[]): React.ReactNode[] {
         <a
           key={`facet-${byteStart}`}
           href={linkFeature.uri}
-          className="text-sky-600 underline hover:text-sky-800 dark:text-sky-400 dark:hover:text-sky-300"
+          className="relative z-10 text-sky-600 underline hover:text-sky-800 dark:text-sky-400 dark:hover:text-sky-300"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -151,77 +152,76 @@ export function BlueskyPostCard({
   if (compact) {
     const truncated = text.length > 100 ? `${text.slice(0, 100)}...` : text;
     return (
-      <div
-        className="flex items-center gap-3 rounded-md border-l-4 px-3 py-2 transition-colors hover:bg-muted/50"
-        style={{ borderLeftColor: STRIPE_COLOR }}
-        data-testid="bluesky-card-compact"
-      >
-        <Butterfly className="h-5 w-5 shrink-0 text-sky-500" weight="regular" aria-hidden="true" />
-        <span className="min-w-0 flex-1 truncate text-sm">{truncated}</span>
-        {timestamp && <span className="shrink-0 text-xs text-muted-foreground">{timestamp}</span>}
-      </div>
+      <CardLink href={postUrl} label="View on Bluesky">
+        <div
+          className="flex items-center gap-3 rounded-md border-l-4 px-3 py-2 transition-colors hover:bg-muted/50"
+          style={{ borderLeftColor: STRIPE_COLOR }}
+          data-testid="bluesky-card-compact"
+        >
+          <Butterfly
+            className="h-5 w-5 shrink-0 text-sky-500"
+            weight="regular"
+            aria-hidden="true"
+          />
+          <span className="min-w-0 flex-1 truncate text-sm">{truncated}</span>
+          {timestamp && <span className="shrink-0 text-xs text-muted-foreground">{timestamp}</span>}
+        </div>
+      </CardLink>
     );
   }
 
   return (
-    <div
-      className="flex overflow-hidden rounded-lg border-l-4 bg-card transition-colors hover:bg-muted/50"
-      style={{ borderLeftColor: STRIPE_COLOR }}
-      data-testid="bluesky-card-full"
-    >
-      <div className="flex flex-1 flex-col gap-2 p-4">
-        <div className="flex items-start gap-3">
-          <Butterfly
-            className="mt-0.5 h-5 w-5 shrink-0 text-sky-500"
-            weight="regular"
-            aria-hidden="true"
-          />
-          <div className="min-w-0 flex-1">
-            {isReply && (
-              <span
-                className="mb-1 inline-block rounded bg-sky-100 px-1.5 py-0.5 text-xs font-medium text-sky-700 dark:bg-sky-900/40 dark:text-sky-300"
-                data-testid="bluesky-reply-label"
-              >
-                Reply
-              </span>
-            )}
-            <p className="text-sm leading-relaxed">
-              {facets.length > 0 ? renderRichText(text, facets) : text}
-            </p>
-            {thumbUrl && (
-              /* eslint-disable-next-line @next/next/no-img-element */
-              <img
-                src={thumbUrl}
-                alt={firstImage?.alt ?? 'Embedded image'}
-                className="mt-2 max-w-[200px] rounded"
-              />
+    <CardLink href={postUrl} label="View on Bluesky">
+      <div
+        className="flex overflow-hidden rounded-lg border-l-4 bg-card transition-colors hover:bg-muted/50"
+        style={{ borderLeftColor: STRIPE_COLOR }}
+        data-testid="bluesky-card-full"
+      >
+        <div className="flex flex-1 flex-col gap-2 p-4">
+          <div className="flex items-start gap-3">
+            <Butterfly
+              className="mt-0.5 h-5 w-5 shrink-0 text-sky-500"
+              weight="regular"
+              aria-hidden="true"
+            />
+            <div className="min-w-0 flex-1">
+              {isReply && (
+                <span
+                  className="mb-1 inline-block rounded bg-sky-100 px-1.5 py-0.5 text-xs font-medium text-sky-700 dark:bg-sky-900/40 dark:text-sky-300"
+                  data-testid="bluesky-reply-label"
+                >
+                  Reply
+                </span>
+              )}
+              <p className="text-sm leading-relaxed">
+                {facets.length > 0 ? renderRichText(text, facets) : text}
+              </p>
+              {thumbUrl && (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img
+                  src={thumbUrl}
+                  alt={firstImage?.alt ?? 'Embedded image'}
+                  className="mt-2 max-w-[200px] rounded"
+                />
+              )}
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 border-t border-border pt-2 text-xs text-muted-foreground">
+            <span
+              className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${appMeta.className}`}
+            >
+              {appMeta.name}
+            </span>
+            {timestamp && (
+              <>
+                <span aria-hidden="true">&middot;</span>
+                <span>{timestamp}</span>
+              </>
             )}
           </div>
         </div>
-
-        <div className="flex items-center gap-2 border-t border-border pt-2 text-xs text-muted-foreground">
-          <span
-            className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${appMeta.className}`}
-          >
-            {appMeta.name}
-          </span>
-          {timestamp && (
-            <>
-              <span aria-hidden="true">&middot;</span>
-              <span>{timestamp}</span>
-            </>
-          )}
-          <span aria-hidden="true">&middot;</span>
-          <a
-            href={postUrl}
-            className="text-sky-600 hover:underline dark:text-sky-400"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            View on Bluesky
-          </a>
-        </div>
       </div>
-    </div>
+    </CardLink>
   );
 }

@@ -49,12 +49,15 @@ describe('BlueskyPostCard', () => {
     expect(link.getAttribute('target')).toBe('_blank');
   });
 
-  it('renders "View on Bluesky" link with correct URL', () => {
+  it('wraps entire card in a link to the Bluesky post', () => {
     render(<BlueskyPostCard {...makeProps()} />);
 
     const link = screen.getByRole('link', { name: 'View on Bluesky' });
     expect(link).toBeDefined();
     expect(link.getAttribute('href')).toBe('https://bsky.app/profile/alice.bsky.social/post/rkey1');
+    expect(link.getAttribute('target')).toBe('_blank');
+    // Overlay link covers the card
+    expect(link.className).toContain('absolute');
   });
 
   it('compact variant shows truncated text', () => {

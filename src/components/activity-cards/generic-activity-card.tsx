@@ -11,8 +11,9 @@ import {
   Clipboard,
   type Icon,
 } from '@phosphor-icons/react';
-import { getAppMeta, getAppStripeColor, buildBlobUrl } from '@/lib/atproto-apps';
+import { getAppMeta, getAppStripeColor, buildBlobUrl, resolveCardUrl } from '@/lib/atproto-apps';
 import type { ActivityCardProps } from './types';
+import { CardLink } from './card-link';
 
 /** Map collection NSID prefixes to app IDs in atproto-apps registry.
  * Must stay in sync with the verified API registry (sifa-api/src/lib/atproto-app-registry.ts).
@@ -202,6 +203,8 @@ function formatRelativeTime(dateString: string): string {
 export function GenericActivityCard({
   record,
   collection,
+  uri,
+  rkey,
   showAuthor,
   compact,
   authorDid,
@@ -218,97 +221,105 @@ export function GenericActivityCard({
   const createdAt = typeof record.createdAt === 'string' ? record.createdAt : null;
   const timestamp = createdAt ? formatRelativeTime(createdAt) : '';
   const imageBlob = extractImageBlob(record);
+  const did = authorDid || uri.split('/')[2] || '';
+  const cardUrl = resolveCardUrl(appId, { handle: authorHandle, did, rkey });
 
   if (compact) {
     return (
-      <div
-        className="flex items-center gap-3 rounded-md border-l-4 px-3 py-2 transition-colors hover:bg-muted/50"
-        style={{ borderLeftColor: stripeColor }}
-        data-testid="activity-card-compact"
-      >
-        <IconComponent
-          className="h-5 w-5 shrink-0 text-muted-foreground"
-          weight="regular"
-          aria-hidden="true"
-        />
-        {showAuthor && authorAvatar && (
-          /* eslint-disable-next-line @next/next/no-img-element */
-          <img
-            src={authorAvatar}
-            alt={authorHandle ? `${authorHandle}'s avatar` : 'Author avatar'}
-            className="h-6 w-6 shrink-0 rounded-full"
+      <CardLink href={cardUrl} label={`View on ${appMeta.name}`}>
+        <div
+          className="flex items-center gap-3 rounded-md border-l-4 px-3 py-2 transition-colors hover:bg-muted/50"
+          style={{ borderLeftColor: stripeColor }}
+          data-testid="activity-card-compact"
+        >
+          <IconComponent
+            className="h-5 w-5 shrink-0 text-muted-foreground"
+            weight="regular"
+            aria-hidden="true"
           />
-        )}
-        {showAuthor && !authorAvatar && authorHandle && (
-          <span className="shrink-0 text-xs text-muted-foreground">@{authorHandle}</span>
-        )}
-        <span className="min-w-0 flex-1 truncate text-sm">{displayText}</span>
-        {timestamp && <span className="shrink-0 text-xs text-muted-foreground">{timestamp}</span>}
-      </div>
+          {showAuthor && authorAvatar && (
+            /* eslint-disable-next-line @next/next/no-img-element */
+            <img
+              src={authorAvatar}
+              alt={authorHandle ? `${authorHandle}'s avatar` : 'Author avatar'}
+              className="h-6 w-6 shrink-0 rounded-full"
+            />
+          )}
+          {showAuthor && !authorAvatar && authorHandle && (
+            <span className="shrink-0 text-xs text-muted-foreground">@{authorHandle}</span>
+          )}
+          <span className="min-w-0 flex-1 truncate text-sm">{displayText}</span>
+          {timestamp && <span className="shrink-0 text-xs text-muted-foreground">{timestamp}</span>}
+        </div>
+      </CardLink>
     );
   }
 
   return (
-    <div
-      className="flex overflow-hidden rounded-lg border-l-4 bg-card transition-colors hover:bg-muted/50"
-      style={{ borderLeftColor: stripeColor }}
-      data-testid="activity-card-full"
-    >
-      <div className="flex flex-1 flex-col gap-2 p-4">
-        <div className="flex items-start gap-3">
-          <IconComponent
-            className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground"
-            weight="regular"
-            aria-hidden="true"
-          />
-          <div className="min-w-0 flex-1">
-            {showAuthor && (authorHandle || authorAvatar) && (
-              <div className="mb-1 flex items-center gap-2">
-                {authorAvatar && (
-                  /* eslint-disable-next-line @next/next/no-img-element */
+    <CardLink href={cardUrl} label={`View on ${appMeta.name}`}>
+      <div
+        className="flex overflow-hidden rounded-lg border-l-4 bg-card transition-colors hover:bg-muted/50"
+        style={{ borderLeftColor: stripeColor }}
+        data-testid="activity-card-full"
+      >
+        <div className="flex flex-1 flex-col gap-2 p-4">
+          <div className="flex items-start gap-3">
+            <IconComponent
+              className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground"
+              weight="regular"
+              aria-hidden="true"
+            />
+            <div className="min-w-0 flex-1">
+              {showAuthor && (authorHandle || authorAvatar) && (
+                <div className="mb-1 flex items-center gap-2">
+                  {authorAvatar && (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img
+                      src={authorAvatar}
+                      alt={authorHandle ? `${authorHandle}'s avatar` : 'Author avatar'}
+                      className="h-5 w-5 rounded-full"
+                    />
+                  )}
+                  {authorHandle && (
+                    <span className="text-xs font-medium text-muted-foreground">
+                      @{authorHandle}
+                    </span>
+                  )}
+                </div>
+              )}
+              <p className="text-sm leading-relaxed">{displayText}</p>
+              {imageBlob && (
+                <div className="mt-2">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={authorAvatar}
-                    alt={authorHandle ? `${authorHandle}'s avatar` : 'Author avatar'}
-                    className="h-5 w-5 rounded-full"
+                    src={buildBlobUrl(authorDid, imageBlob.cid)}
+                    alt=""
+                    className="max-h-48 rounded-md object-cover"
+                    loading="lazy"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                    }}
                   />
-                )}
-                {authorHandle && (
-                  <span className="text-xs font-medium text-muted-foreground">@{authorHandle}</span>
-                )}
-              </div>
-            )}
-            <p className="text-sm leading-relaxed">{displayText}</p>
-            {imageBlob && (
-              <div className="mt-2">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={buildBlobUrl(authorDid, imageBlob.cid)}
-                  alt=""
-                  className="max-h-48 rounded-md object-cover"
-                  loading="lazy"
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                  }}
-                />
-              </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 border-t border-border pt-2 text-xs text-muted-foreground">
+            <span
+              className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${appMeta.className}`}
+            >
+              {appMeta.name}
+            </span>
+            {timestamp && (
+              <>
+                <span aria-hidden="true">&middot;</span>
+                <span>{timestamp}</span>
+              </>
             )}
           </div>
         </div>
-
-        <div className="flex items-center gap-2 border-t border-border pt-2 text-xs text-muted-foreground">
-          <span
-            className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${appMeta.className}`}
-          >
-            {appMeta.name}
-          </span>
-          {timestamp && (
-            <>
-              <span aria-hidden="true">&middot;</span>
-              <span>{timestamp}</span>
-            </>
-          )}
-        </div>
       </div>
-    </div>
+    </CardLink>
   );
 }

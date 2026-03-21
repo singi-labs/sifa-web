@@ -161,6 +161,7 @@ export function ActivityFeed({ handle, initialData }: ActivityFeedProps) {
                       rkey={item.rkey}
                       record={item.record}
                       authorDid=""
+                      authorHandle={handle}
                       showAuthor={false}
                       compact={false}
                     />

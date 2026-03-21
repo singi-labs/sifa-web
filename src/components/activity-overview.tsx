@@ -64,6 +64,7 @@ export function ActivityOverview({ handle }: ActivityOverviewProps) {
                 rkey={item.rkey}
                 record={item.record}
                 authorDid={did}
+                authorHandle={handle}
                 showAuthor={false}
                 compact={true}
               />

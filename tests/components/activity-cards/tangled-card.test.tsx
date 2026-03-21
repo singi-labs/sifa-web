@@ -105,16 +105,16 @@ describe('TangledCard', () => {
     expect(screen.getByTestId('tangled-type-label').textContent).toBe('Issue');
   });
 
-  it('renders "View on Tangled" link when name and handle are available', () => {
+  it('wraps entire card in a link to the Tangled repo when name is available', () => {
     render(<TangledCard {...makeProps()} />);
 
-    const link = screen.getByText('View on Tangled') as HTMLAnchorElement;
-    expect(link.href).toBe('https://tangled.sh/alice.test/sifa-api');
-    expect(link.target).toBe('_blank');
-    expect(link.rel).toContain('noopener');
+    const link = screen.getByRole('link', { name: 'View on Tangled' });
+    expect(link.getAttribute('href')).toBe('https://tangled.sh/alice.test/sifa-api');
+    expect(link.getAttribute('target')).toBe('_blank');
+    expect(link.className).toContain('absolute');
   });
 
-  it('omits "View on Tangled" link when name is missing', () => {
+  it('falls back to profile URL when repo name is missing', () => {
     render(
       <TangledCard
         {...makeProps({
@@ -123,7 +123,8 @@ describe('TangledCard', () => {
       />,
     );
 
-    expect(screen.queryByText('View on Tangled')).toBeNull();
+    const link = screen.getByRole('link', { name: 'View on Tangled' });
+    expect(link.getAttribute('href')).toBe('https://tangled.sh/alice.test');
   });
 
   it('uses emerald accent stripe color', () => {
