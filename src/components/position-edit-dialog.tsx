@@ -7,11 +7,11 @@ import { Input } from '@/components/ui/input';
 import { MonthPicker } from '@/components/ui/month-picker';
 import { X } from '@phosphor-icons/react';
 import { PositionSkillEditor } from '@/components/position-skill-editor';
+import { LocationSearch } from '@/components/location-search';
 import { useProfileEdit } from '@/components/profile-edit-provider';
 import { createSkill } from '@/lib/profile-api';
-import type { ProfilePosition, ProfileSkill, SkillRef } from '@/lib/types';
+import type { ProfilePosition, ProfileSkill, SkillRef, LocationValue } from '@/lib/types';
 import { trackEvent } from '@/lib/analytics';
-import { formatLocation, parseLocationString } from '@/lib/location-utils';
 
 /** Normalise a partial date to YYYY-MM for the month input. */
 const toMonth = (v: string | undefined): string => {
@@ -27,6 +27,7 @@ interface PositionEditDialogProps {
     values: Record<string, string | boolean>,
     skillRefs: SkillRef[],
     linkedSkills: ProfileSkill[],
+    location: LocationValue | null,
   ) => Promise<{ success: boolean; error?: string }>;
   onCancel: () => void;
 }
@@ -41,9 +42,12 @@ export function PositionEditDialog({ title, position, onSave, onCancel }: Positi
     startDate: toMonth(position?.startDate),
     endDate: toMonth(position?.endDate),
     current: position?.current ?? false,
-    location: position?.location ? formatLocation(position.location) : '',
     description: position?.description ?? '',
   }));
+
+  const [locationValue, setLocationValue] = useState<LocationValue | null>(
+    position?.location ?? null,
+  );
 
   const [linkedSkills, setLinkedSkills] = useState<ProfileSkill[]>(
     () => position?.linkedSkills ?? [],
@@ -106,7 +110,7 @@ export function PositionEditDialog({ title, position, onSave, onCancel }: Positi
     e.preventDefault();
     setSaving(true);
     setError(null);
-    const result = await onSave(values, skillRefs, linkedSkills);
+    const result = await onSave(values, skillRefs, linkedSkills, locationValue);
     setSaving(false);
     if (result.success) {
       trackEvent('profile-edit', { section: 'position' });
@@ -141,7 +145,12 @@ export function PositionEditDialog({ title, position, onSave, onCancel }: Positi
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <PositionFormFields values={values} onUpdate={updateValue} />
+          <PositionFormFields
+            values={values}
+            onUpdate={updateValue}
+            locationValue={locationValue}
+            onLocationChange={setLocationValue}
+          />
 
           <PositionSkillEditor
             linkedSkills={linkedSkills}
@@ -173,9 +182,16 @@ export function PositionEditDialog({ title, position, onSave, onCancel }: Positi
 interface PositionFormFieldsProps {
   values: Record<string, string | boolean>;
   onUpdate: (name: string, value: string | boolean) => void;
+  locationValue: LocationValue | null;
+  onLocationChange: (value: LocationValue | null) => void;
 }
 
-function PositionFormFields({ values, onUpdate }: PositionFormFieldsProps) {
+function PositionFormFields({
+  values,
+  onUpdate,
+  locationValue,
+  onLocationChange,
+}: PositionFormFieldsProps) {
   return (
     <>
       <div>
@@ -245,15 +261,8 @@ function PositionFormFields({ values, onUpdate }: PositionFormFieldsProps) {
         </label>
       </div>
       <div>
-        <label htmlFor="edit-location" className="mb-1 block text-sm font-medium">
-          Location
-        </label>
-        <Input
-          id="edit-location"
-          value={values.location as string}
-          onChange={(e) => onUpdate('location', e.target.value)}
-          placeholder="Amsterdam, Netherlands"
-        />
+        <span className="mb-1 block text-sm font-medium">Location</span>
+        <LocationSearch id="edit-location" value={locationValue} onChange={onLocationChange} />
       </div>
       <div>
         <label htmlFor="edit-description" className="mb-1 block text-sm font-medium">
@@ -276,6 +285,7 @@ function PositionFormFields({ values, onUpdate }: PositionFormFieldsProps) {
 export function positionFormToData(
   values: Record<string, string | boolean>,
   skillRefs: SkillRef[],
+  location: LocationValue | null,
 ): Record<string, unknown> {
   return {
     title: values.title as string,
@@ -283,9 +293,7 @@ export function positionFormToData(
     startDate: values.startDate as string,
     endDate: (values.endDate as string) || undefined,
     current: values.current as boolean,
-    location: (values.location as string)
-      ? (parseLocationString(values.location as string) ?? undefined)
-      : undefined,
+    location: location ?? undefined,
     description: (values.description as string) || undefined,
     skills: skillRefs.length > 0 ? skillRefs : undefined,
   };

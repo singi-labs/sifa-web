@@ -11,7 +11,7 @@ import { useProfileEdit } from '@/components/profile-edit-provider';
 import { createPosition, updatePosition, deletePosition } from '@/lib/profile-api';
 import { sortByDateDesc, dateRangeExtractor } from '@/lib/sort-by-date';
 import { Badge } from '@/components/ui/badge';
-import type { ProfilePosition, ProfileSkill, SkillRef } from '@/lib/types';
+import type { ProfilePosition, ProfileSkill, SkillRef, LocationValue } from '@/lib/types';
 
 type DialogState = { mode: 'add' } | { mode: 'edit'; item: ProfilePosition };
 
@@ -32,8 +32,9 @@ export function CareerSection({ isOwnProfile }: CareerSectionProps) {
       values: Record<string, string | boolean>,
       skillRefs: SkillRef[],
       linkedSkills: ProfileSkill[],
+      location: LocationValue | null,
     ): Promise<{ success: boolean; error?: string }> => {
-      const data = positionFormToData(values, skillRefs);
+      const data = positionFormToData(values, skillRefs, location);
 
       if (dialog?.mode === 'edit') {
         const result = await updatePosition(dialog.item.rkey, data);
