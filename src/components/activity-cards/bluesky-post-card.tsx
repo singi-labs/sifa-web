@@ -12,19 +12,51 @@ interface Facet {
   features: Array<{ $type: string; uri?: string; did?: string; tag?: string }>;
 }
 
+interface EmbedImage {
+  alt?: string;
+  thumb?: string;
+  fullsize?: string;
+  image?: { ref?: { $link?: string }; mimeType?: string };
+}
+
 interface BlueskyRecord {
   text?: string;
   createdAt?: string;
   facets?: Facet[];
   embed?: {
     $type?: string;
-    images?: Array<{
-      alt?: string;
-      thumb?: string;
-      image?: { ref?: { $link?: string }; mimeType?: string };
-    }>;
+    images?: EmbedImage[];
+    external?: { uri?: string; title?: string; description?: string; thumb?: string };
+    media?: {
+      $type?: string;
+      images?: EmbedImage[];
+      external?: { uri?: string; title?: string; description?: string; thumb?: string };
+    };
   };
   reply?: { root: { uri: string }; parent: { uri: string } };
+}
+
+/** Extract the first displayable thumbnail URL from a Bluesky embed. */
+function extractThumb(embed?: BlueskyRecord['embed']): { url: string; alt: string } | null {
+  if (!embed) return null;
+
+  // app.bsky.embed.images#view
+  const firstImage = embed.images?.[0];
+  if (firstImage && typeof firstImage.thumb === 'string') {
+    return { url: firstImage.thumb, alt: firstImage.alt ?? 'Embedded image' };
+  }
+
+  // app.bsky.embed.external#view (link preview)
+  if (embed.external && typeof embed.external.thumb === 'string') {
+    return { url: embed.external.thumb, alt: embed.external.title ?? 'Link preview' };
+  }
+
+  // app.bsky.embed.recordWithMedia#view — images or external nested under media
+  if (embed.media) {
+    return extractThumb(embed.media as BlueskyRecord['embed']);
+  }
+
+  return null;
 }
 
 function formatRelativeTime(dateString: string): string {
@@ -145,9 +177,7 @@ export function BlueskyPostCard({
   const postUrl = buildBlueskyUrl(uri, authorHandle, rkey);
   const isReply = Boolean(record.reply);
   const facets = record.facets ?? [];
-  const firstImage = record.embed?.images?.[0];
-  // Only use thumb URL strings, skip blob refs
-  const thumbUrl = firstImage && typeof firstImage.thumb === 'string' ? firstImage.thumb : null;
+  const thumb = extractThumb(record.embed);
 
   if (compact) {
     const truncated = text.length > 100 ? `${text.slice(0, 100)}...` : text;
@@ -196,13 +226,9 @@ export function BlueskyPostCard({
               <p className="text-sm leading-relaxed">
                 {facets.length > 0 ? renderRichText(text, facets) : text}
               </p>
-              {thumbUrl && (
+              {thumb && (
                 /* eslint-disable-next-line @next/next/no-img-element */
-                <img
-                  src={thumbUrl}
-                  alt={firstImage?.alt ?? 'Embedded image'}
-                  className="mt-2 max-w-[200px] rounded"
-                />
+                <img src={thumb.url} alt={thumb.alt} className="mt-2 max-w-[200px] rounded" />
               )}
             </div>
           </div>
