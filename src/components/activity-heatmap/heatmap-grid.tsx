@@ -1,6 +1,6 @@
 'use client';
 
-import { cloneElement, useMemo } from 'react';
+import { cloneElement, useEffect, useMemo, useRef } from 'react';
 import ActivityCalendar from 'react-activity-calendar';
 import type { Activity, BlockElement } from 'react-activity-calendar';
 import type { HeatmapDayData } from './heatmap-colors';
@@ -70,6 +70,19 @@ function buildTooltipText(dayData: HeatmapDayData | undefined, dateStr: string):
 
 export function HeatmapGrid({ days, onSelectDate, selectedDate }: HeatmapGridProps) {
   const { activities, dayMap } = useMemo(() => buildActivities(days), [days]);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Remove the library's fixed width/height attributes on the SVG so it
+  // scales to fill the container via viewBox + CSS width: 100%
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const svg = el.querySelector('svg');
+    if (svg) {
+      svg.removeAttribute('width');
+      svg.removeAttribute('height');
+    }
+  });
 
   const renderBlock = (block: BlockElement, activity: Activity) => {
     const dayData = dayMap.get(activity.date);
@@ -80,8 +93,6 @@ export function HeatmapGrid({ days, onSelectDate, selectedDate }: HeatmapGridPro
     const isSelected = selectedDate === activity.date;
     const titleText = buildTooltipText(dayData, activity.date);
 
-    // Override the fill ATTRIBUTE (not just style) — the library sets fill as
-    // an SVG attribute on <rect> which takes precedence over style.fill
     const fillValue = cellStyle.fill as string;
 
     return cloneElement(block, {
@@ -98,8 +109,9 @@ export function HeatmapGrid({ days, onSelectDate, selectedDate }: HeatmapGridPro
 
   return (
     <div
+      ref={containerRef}
       data-testid="heatmap-grid"
-      className="[&_div]:!overflow-visible [&_svg]:h-auto [&_svg]:max-w-full"
+      className="w-full [&_div]:!overflow-visible [&_svg]:!w-full [&_svg]:h-auto"
     >
       <ActivityCalendar
         data={activities}
