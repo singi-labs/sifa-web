@@ -35,6 +35,8 @@ const COLLECTION_TO_APP: Record<string, string> = {
   'computer.aetheros.': 'aetheros',
   'space.roomy.': 'roomy',
   'dev.keytrace.': 'keytrace',
+  'social.popfeed.': 'popfeed',
+  'app.popsky.': 'popfeed',
   'id.sifa.': 'sifa',
   'forum.barazo.': 'barazo',
 };
@@ -49,6 +51,7 @@ const CATEGORY_ICONS: Record<string, Icon> = {
   links: LinkIcon,
   pages: Globe,
   pastes: Clipboard,
+  reviews: ChatText,
 };
 
 /** Collection keyword to category mapping */
@@ -71,6 +74,7 @@ const COLLECTION_CATEGORY: Record<string, string> = {
   site: 'pages',
   paste: 'pastes',
   snippet: 'pastes',
+  review: 'reviews',
 };
 
 function resolveAppId(collection: string): string {

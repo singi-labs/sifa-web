@@ -139,6 +139,10 @@
   --app-roomy-badge-bg: oklch(0.93 0.03 30);
   --app-roomy-badge-text: oklch(0.35 0.1 30);
 
+  --app-popfeed-stripe: oklch(0.55 0.2 10);
+  --app-popfeed-badge-bg: oklch(0.93 0.04 10);
+  --app-popfeed-badge-text: oklch(0.38 0.12 10);
+
   --app-fallback-stripe: oklch(0.5 0.01 260);
   --app-fallback-badge-bg: oklch(0.93 0.01 260);
   --app-fallback-badge-text: oklch(0.35 0.02 260);
@@ -240,6 +244,10 @@
   --app-roomy-stripe: oklch(0.6 0.14 30);
   --app-roomy-badge-bg: oklch(0.25 0.05 30 / 40%);
   --app-roomy-badge-text: oklch(0.78 0.1 30);
+
+  --app-popfeed-stripe: oklch(0.6 0.2 10);
+  --app-popfeed-badge-bg: oklch(0.25 0.06 10 / 40%);
+  --app-popfeed-badge-text: oklch(0.78 0.12 10);
 
   --app-fallback-stripe: oklch(0.55 0.01 260);
   --app-fallback-badge-bg: oklch(0.25 0.01 260 / 40%);

@@ -36,6 +36,7 @@ const APP_REGISTRY: Record<string, AppMeta> = {
   aetheros: { name: 'Aetheros', className: badgeClass('aetheros') },
   roomy: { name: 'Roomy', className: badgeClass('roomy') },
   keytrace: { name: 'keytrace.dev', className: badgeClass('keytrace') },
+  popfeed: { name: 'Popfeed', className: badgeClass('popfeed') },
 };
 
 const FALLBACK_CLASS = badgeClass('fallback');
@@ -76,6 +77,10 @@ const APP_URL_PATTERNS: Record<string, AppUrlPatterns> = {
   },
   sifa: {
     profileUrlPattern: 'https://sifa.id/p/{handle}',
+  },
+  popfeed: {
+    urlPattern: 'https://popfeed.social/profile/{handle}',
+    profileUrlPattern: 'https://popfeed.social/profile/{handle}',
   },
   // picosky, flashes, standard, aetheros, roomy: no web URLs — cards are not clickable
 };

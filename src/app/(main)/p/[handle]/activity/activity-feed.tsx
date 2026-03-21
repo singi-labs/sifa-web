@@ -17,6 +17,7 @@ const CATEGORIES = [
   { key: 'Articles', labelKey: 'categoryArticles' },
   { key: 'Events', labelKey: 'categoryEvents' },
   { key: 'Links', labelKey: 'categoryLinks' },
+  { key: 'Reviews', labelKey: 'categoryReviews' },
 ] as const;
 
 interface ActivityFeedProps {

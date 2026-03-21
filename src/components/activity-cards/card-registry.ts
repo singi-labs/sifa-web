@@ -5,6 +5,7 @@ import { EventRsvpCard } from './event-rsvp-card';
 import { TangledCard } from './tangled-card';
 import { KeytraceCard } from './keytrace-card';
 import { KipClipCard } from './kipclip-card';
+import { PopfeedCard } from './popfeed-card';
 
 const CARD_REGISTRY = new Map<string, ComponentType<ActivityCardProps>>();
 
@@ -30,3 +31,4 @@ registerCard('sh.tangled.*', TangledCard);
 registerCard('community.lexicon.calendar.rsvp', EventRsvpCard);
 registerCard('dev.keytrace.claim', KeytraceCard);
 registerCard('community.lexicon.bookmarks.bookmark', KipClipCard);
+registerCard('social.popfeed.feed.*', PopfeedCard);
