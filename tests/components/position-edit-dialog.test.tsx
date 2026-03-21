@@ -210,6 +210,55 @@ describe('PositionEditDialog', () => {
     });
   });
 
+  it('hides end date field when "I currently work here" is checked', async () => {
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+    render(<PositionEditDialog {...defaultProps} />);
+
+    // End Date visible by default
+    expect(screen.getByLabelText(/End Date/)).toBeDefined();
+
+    // Check "I currently work here"
+    await user.click(screen.getByLabelText(/I currently work here/));
+
+    // End Date should be hidden
+    expect(screen.queryByLabelText(/End Date/)).toBeNull();
+
+    // Uncheck — End Date should reappear
+    await user.click(screen.getByLabelText(/I currently work here/));
+    expect(screen.getByLabelText(/End Date/)).toBeDefined();
+  });
+
+  it('clears end date value when "I currently work here" is checked', async () => {
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+    const onSave = vi.fn().mockResolvedValue({ success: true });
+    const position: ProfilePosition = {
+      rkey: 'pos1',
+      title: 'Dev',
+      companyName: 'Co',
+      startDate: '2023-01',
+      endDate: '2024-06',
+      current: false,
+    };
+
+    render(<PositionEditDialog {...defaultProps} onSave={onSave} position={position} />);
+
+    // End date has a value
+    expect((screen.getByLabelText(/End Date/) as HTMLInputElement).value).toBe('2024-06');
+
+    // Check "I currently work here"
+    await user.click(screen.getByLabelText(/I currently work here/));
+
+    // Save and verify endDate was cleared
+    await user.click(screen.getByText('Save'));
+
+    await waitFor(() => {
+      expect(onSave).toHaveBeenCalled();
+      const [values] = onSave.mock.calls[0] as [Record<string, string | boolean>];
+      expect(values.endDate).toBe('');
+      expect(values.current).toBe(true);
+    });
+  });
+
   it('does not add duplicate skills', async () => {
     const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     const position: ProfilePosition = {
