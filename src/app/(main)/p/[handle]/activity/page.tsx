@@ -44,7 +44,7 @@ export default async function ActivityPage({ params }: { params: Promise<{ handl
 
       <div className="mb-6">
         <Suspense fallback={<div className="h-[136px] w-full animate-pulse rounded-lg bg-muted" />}>
-          <ActivityHeatmap handle={handle} days={180} variant="full" />
+          <ActivityHeatmap handle={handle} days={365} variant="full" />
         </Suspense>
       </div>
 
