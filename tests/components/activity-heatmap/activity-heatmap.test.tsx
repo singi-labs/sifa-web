@@ -2,6 +2,13 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import { ActivityHeatmap } from '../../../src/components/activity-heatmap/activity-heatmap';
 
+// Mock ResizeObserver for test environment
+globalThis.ResizeObserver = class {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+} as unknown as typeof ResizeObserver;
+
 vi.mock('react-activity-calendar', () => ({
   default: function MockActivityCalendar() {
     return <div data-testid="mock-activity-calendar" />;
