@@ -3,6 +3,7 @@
 import { Calendar, MapPin, CheckCircle, Star } from '@phosphor-icons/react';
 import { getAppMeta } from '@/lib/atproto-apps';
 import type { ActivityCardProps } from './types';
+import { CardLink } from './card-link';
 
 const STRIPE_COLOR = '#ea580c';
 
@@ -153,103 +154,94 @@ export function EventRsvpCard({ record: rawRecord, compact }: ActivityCardProps)
 
   if (compact) {
     return (
-      <div
-        className="flex items-center gap-3 rounded-md border-l-4 px-3 py-2 transition-colors hover:bg-muted/50"
-        style={{ borderLeftColor: STRIPE_COLOR }}
-        data-testid="event-rsvp-card-compact"
-      >
-        <Calendar
-          className="h-5 w-5 shrink-0 text-muted-foreground"
-          weight="regular"
-          aria-hidden="true"
-        />
-        <span className="min-w-0 flex-1 truncate text-sm">
-          {rsvpLabel}: {eventName}
-        </span>
-        {timestamp && <span className="shrink-0 text-xs text-muted-foreground">{timestamp}</span>}
-      </div>
+      <CardLink href={smokesignalUrl} label="View on Smoke Signal">
+        <div
+          className="flex items-center gap-3 rounded-md border-l-4 px-3 py-2 transition-colors hover:bg-muted/50"
+          style={{ borderLeftColor: STRIPE_COLOR }}
+          data-testid="event-rsvp-card-compact"
+        >
+          <Calendar
+            className="h-5 w-5 shrink-0 text-muted-foreground"
+            weight="regular"
+            aria-hidden="true"
+          />
+          <span className="min-w-0 flex-1 truncate text-sm">
+            {rsvpLabel}: {eventName}
+          </span>
+          {timestamp && <span className="shrink-0 text-xs text-muted-foreground">{timestamp}</span>}
+        </div>
+      </CardLink>
     );
   }
 
   return (
-    <div
-      className="flex overflow-hidden rounded-lg border-l-4 bg-card transition-colors hover:bg-muted/50"
-      style={{ borderLeftColor: STRIPE_COLOR }}
-      data-testid="event-rsvp-card-full"
-    >
-      <div className="flex flex-1 flex-col gap-2 p-4">
-        <div className="flex items-start gap-3">
-          <Calendar
-            className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground"
-            weight="regular"
-            aria-hidden="true"
-          />
-          <div className="min-w-0 flex-1">
-            <div className="mb-1 flex flex-wrap items-center gap-2">
-              <span
-                className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${SMOKESIGNAL_BADGE_CLASS}`}
-                data-testid="event-rsvp-status-badge"
-              >
-                <RsvpIcon className="h-3.5 w-3.5" weight="bold" aria-hidden="true" />
-                {rsvpLabel}
-              </span>
-              {modeLabel && (
+    <CardLink href={smokesignalUrl} label="View on Smoke Signal">
+      <div
+        className="flex overflow-hidden rounded-lg border-l-4 bg-card transition-colors hover:bg-muted/50"
+        style={{ borderLeftColor: STRIPE_COLOR }}
+        data-testid="event-rsvp-card-full"
+      >
+        <div className="flex flex-1 flex-col gap-2 p-4">
+          <div className="flex items-start gap-3">
+            <Calendar
+              className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground"
+              weight="regular"
+              aria-hidden="true"
+            />
+            <div className="min-w-0 flex-1">
+              <div className="mb-1 flex flex-wrap items-center gap-2">
                 <span
-                  className="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-700 dark:bg-gray-800/40 dark:text-gray-300"
-                  data-testid="event-rsvp-mode-badge"
+                  className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${SMOKESIGNAL_BADGE_CLASS}`}
+                  data-testid="event-rsvp-status-badge"
                 >
-                  {modeLabel}
+                  <RsvpIcon className="h-3.5 w-3.5" weight="bold" aria-hidden="true" />
+                  {rsvpLabel}
                 </span>
+                {modeLabel && (
+                  <span
+                    className="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-700 dark:bg-gray-800/40 dark:text-gray-300"
+                    data-testid="event-rsvp-mode-badge"
+                  >
+                    {modeLabel}
+                  </span>
+                )}
+              </div>
+
+              <p className="text-sm font-semibold leading-relaxed" data-testid="event-rsvp-name">
+                {eventName}
+              </p>
+
+              {dateRange && (
+                <div className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <Calendar className="h-3.5 w-3.5 shrink-0" weight="regular" aria-hidden="true" />
+                  <span data-testid="event-rsvp-date">{dateRange}</span>
+                </div>
+              )}
+
+              {location && (
+                <div className="mt-0.5 flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <MapPin className="h-3.5 w-3.5 shrink-0" weight="regular" aria-hidden="true" />
+                  <span data-testid="event-rsvp-location">{location}</span>
+                </div>
               )}
             </div>
+          </div>
 
-            <p className="text-sm font-semibold leading-relaxed" data-testid="event-rsvp-name">
-              {eventName}
-            </p>
-
-            {dateRange && (
-              <div className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground">
-                <Calendar className="h-3.5 w-3.5 shrink-0" weight="regular" aria-hidden="true" />
-                <span data-testid="event-rsvp-date">{dateRange}</span>
-              </div>
-            )}
-
-            {location && (
-              <div className="mt-0.5 flex items-center gap-1.5 text-xs text-muted-foreground">
-                <MapPin className="h-3.5 w-3.5 shrink-0" weight="regular" aria-hidden="true" />
-                <span data-testid="event-rsvp-location">{location}</span>
-              </div>
+          <div className="flex items-center gap-2 border-t border-border pt-2 text-xs text-muted-foreground">
+            <span
+              className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${appMeta.className}`}
+            >
+              {appMeta.name}
+            </span>
+            {timestamp && (
+              <>
+                <span aria-hidden="true">&middot;</span>
+                <span>{timestamp}</span>
+              </>
             )}
           </div>
         </div>
-
-        <div className="flex items-center gap-2 border-t border-border pt-2 text-xs text-muted-foreground">
-          <span
-            className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${appMeta.className}`}
-          >
-            {appMeta.name}
-          </span>
-          {timestamp && (
-            <>
-              <span aria-hidden="true">&middot;</span>
-              <span>{timestamp}</span>
-            </>
-          )}
-          {smokesignalUrl && (
-            <>
-              <span aria-hidden="true">&middot;</span>
-              <a
-                href={smokesignalUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-orange-600 hover:underline dark:text-orange-400"
-              >
-                View on Smoke Signal
-              </a>
-            </>
-          )}
-        </div>
       </div>
-    </div>
+    </CardLink>
   );
 }

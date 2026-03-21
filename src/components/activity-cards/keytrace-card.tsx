@@ -1,8 +1,9 @@
 'use client';
 
 import { ShieldCheck, Key } from '@phosphor-icons/react';
-import { getAppMeta, getAppStripeColor } from '@/lib/atproto-apps';
+import { getAppMeta, getAppStripeColor, resolveCardUrl } from '@/lib/atproto-apps';
 import type { ActivityCardProps } from './types';
+import { CardLink } from './card-link';
 
 /** Platform type icons — maps keytrace claim types to display info */
 const PLATFORM_INFO: Record<string, { label: string; icon: string }> = {
@@ -56,99 +57,96 @@ export function KeytraceCard({ record, compact, authorHandle }: ActivityCardProp
   const isVerified = status === 'verified';
   const displayLabel = displayName ?? subject ?? claimType;
 
+  const cardUrl = resolveCardUrl('keytrace', { handle: authorHandle });
+
   if (compact) {
     return (
-      <div
-        className="flex items-center gap-3 rounded-md border-l-4 px-3 py-2 transition-colors hover:bg-muted/50"
-        style={{ borderLeftColor: stripeColor }}
-        data-testid="activity-card-compact"
-      >
-        <Key
-          className="h-5 w-5 shrink-0 text-muted-foreground"
-          weight="regular"
-          aria-hidden="true"
-        />
-        <span className="text-sm">{platform.icon}</span>
-        <span className="min-w-0 flex-1 truncate text-sm">
-          Verified {platform.label}: {displayLabel}
-        </span>
-        {isVerified && (
-          <ShieldCheck
-            className="h-4 w-4 shrink-0 text-emerald-600 dark:text-emerald-400"
-            weight="fill"
-            aria-label="Verified"
+      <CardLink href={cardUrl} label="View on keytrace.dev">
+        <div
+          className="flex items-center gap-3 rounded-md border-l-4 px-3 py-2 transition-colors hover:bg-muted/50"
+          style={{ borderLeftColor: stripeColor }}
+          data-testid="activity-card-compact"
+        >
+          <Key
+            className="h-5 w-5 shrink-0 text-muted-foreground"
+            weight="regular"
+            aria-hidden="true"
           />
-        )}
-        {timestamp && <span className="shrink-0 text-xs text-muted-foreground">{timestamp}</span>}
-      </div>
+          <span className="text-sm">{platform.icon}</span>
+          <span className="min-w-0 flex-1 truncate text-sm">
+            Verified {platform.label}: {displayLabel}
+          </span>
+          {isVerified && (
+            <ShieldCheck
+              className="h-4 w-4 shrink-0 text-emerald-600 dark:text-emerald-400"
+              weight="fill"
+              aria-label="Verified"
+            />
+          )}
+          {timestamp && <span className="shrink-0 text-xs text-muted-foreground">{timestamp}</span>}
+        </div>
+      </CardLink>
     );
   }
 
   return (
-    <div
-      className="flex overflow-hidden rounded-lg border-l-4 bg-card transition-colors hover:bg-muted/50"
-      style={{ borderLeftColor: stripeColor }}
-      data-testid="activity-card-full"
-    >
-      <div className="flex flex-1 flex-col gap-2 p-4">
-        <div className="flex items-start gap-3">
-          <Key
-            className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground"
-            weight="regular"
-            aria-hidden="true"
-          />
-          <div className="min-w-0 flex-1">
-            <div className="flex items-center gap-2">
-              <span className="text-base">{platform.icon}</span>
-              <p className="text-sm font-medium">
-                Verified {platform.label}
-                {isVerified && (
-                  <ShieldCheck
-                    className="ml-1 inline h-4 w-4 text-emerald-600 dark:text-emerald-400"
-                    weight="fill"
-                    aria-label="Verified"
-                  />
-                )}
-              </p>
+    <CardLink href={cardUrl} label="View on keytrace.dev">
+      <div
+        className="flex overflow-hidden rounded-lg border-l-4 bg-card transition-colors hover:bg-muted/50"
+        style={{ borderLeftColor: stripeColor }}
+        data-testid="activity-card-full"
+      >
+        <div className="flex flex-1 flex-col gap-2 p-4">
+          <div className="flex items-start gap-3">
+            <Key
+              className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground"
+              weight="regular"
+              aria-hidden="true"
+            />
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-2">
+                <span className="text-base">{platform.icon}</span>
+                <p className="text-sm font-medium">
+                  Verified {platform.label}
+                  {isVerified && (
+                    <ShieldCheck
+                      className="ml-1 inline h-4 w-4 text-emerald-600 dark:text-emerald-400"
+                      weight="fill"
+                      aria-label="Verified"
+                    />
+                  )}
+                </p>
+              </div>
+              {profileUrl ? (
+                <a
+                  href={profileUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="relative z-10 mt-1 block text-sm text-primary underline-offset-4 hover:underline"
+                >
+                  {displayLabel}
+                </a>
+              ) : (
+                <p className="mt-1 text-sm text-muted-foreground">{displayLabel}</p>
+              )}
             </div>
-            {profileUrl ? (
-              <a
-                href={profileUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-1 block text-sm text-primary underline-offset-4 hover:underline"
-              >
-                {displayLabel}
-              </a>
-            ) : (
-              <p className="mt-1 text-sm text-muted-foreground">{displayLabel}</p>
+          </div>
+
+          <div className="flex items-center gap-2 border-t border-border pt-2 text-xs text-muted-foreground">
+            <span
+              className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${appMeta.className}`}
+            >
+              {appMeta.name}
+            </span>
+            {timestamp && (
+              <>
+                <span aria-hidden="true">&middot;</span>
+                <span>{timestamp}</span>
+              </>
             )}
           </div>
         </div>
-
-        <div className="flex items-center gap-2 border-t border-border pt-2 text-xs text-muted-foreground">
-          <span
-            className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${appMeta.className}`}
-          >
-            {appMeta.name}
-          </span>
-          {timestamp && (
-            <>
-              <span aria-hidden="true">&middot;</span>
-              <span>{timestamp}</span>
-            </>
-          )}
-          <span aria-hidden="true">&middot;</span>
-          <a
-            href={`https://keytrace.dev/${authorHandle ?? ''}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:underline"
-          >
-            View on keytrace.dev
-          </a>
-        </div>
       </div>
-    </div>
+    </CardLink>
   );
 }
