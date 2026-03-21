@@ -5,7 +5,6 @@ import { useTranslations } from 'next-intl';
 import { fetchHeatmapData } from '@/lib/api';
 import type { HeatmapResponse } from '@/lib/api';
 import { transformHeatmapData } from './heatmap-colors';
-import type { HeatmapDayData } from './heatmap-colors';
 import { HeatmapGrid } from './heatmap-grid';
 import { HeatmapBars } from './heatmap-bars';
 import { HeatmapLegend } from './heatmap-legend';
@@ -18,14 +17,6 @@ interface ActivityHeatmapProps {
   variant: 'compact' | 'full';
   onSelectDate?: (date: string | null) => void;
   selectedDate?: string | null;
-}
-
-function computeMonthCount(days: HeatmapDayData[]): number {
-  const months = new Set<string>();
-  for (const d of days) {
-    months.add(d.date.slice(0, 7));
-  }
-  return months.size;
 }
 
 function computeMostActiveApp(
@@ -93,7 +84,7 @@ export function ActivityHeatmap({
 
   const transformed = transformHeatmapData(data.days, data.thresholds);
   const totalActions = data.days.reduce((sum, d) => sum + d.total, 0);
-  const monthCount = computeMonthCount(transformed);
+  const monthCount = Math.round(dayCount / 30);
   const mostActiveApp = computeMostActiveApp(data.appTotals);
   const appTotals = data.appTotals.map((a) => ({
     appId: a.appId,
@@ -103,31 +94,9 @@ export function ActivityHeatmap({
 
   return (
     <div>
-      {/* Desktop layout */}
-      <div className="hidden md:flex md:items-start md:gap-6">
-        <div className="flex-1">
-          <HeatmapGrid
-            days={transformed}
-            onSelectDate={variant === 'full' ? handleSelectDate : undefined}
-            selectedDate={selectedDate ?? null}
-          />
-        </div>
-        <div className="shrink-0">
-          <HeatmapLegend appTotals={appTotals} showAppKey={variant === 'full'} />
-        </div>
-      </div>
-
-      {/* Mobile layout */}
-      <div className="md:hidden">
-        <HeatmapBars days={transformed} />
-        <div className="mt-3">
-          <HeatmapLegend appTotals={appTotals} showAppKey={variant === 'full'} />
-        </div>
-      </div>
-
       {/* Summary stats (full variant only) */}
       {variant === 'full' && totalActions > 0 && (
-        <div className="mt-4">
+        <div className="mb-4">
           <HeatmapSummaryStats
             totalActions={totalActions}
             months={monthCount}
@@ -136,6 +105,26 @@ export function ActivityHeatmap({
           />
         </div>
       )}
+
+      {/* Desktop: calendar grid */}
+      <div className="hidden md:block">
+        <HeatmapGrid
+          days={transformed}
+          onSelectDate={variant === 'full' ? handleSelectDate : undefined}
+          selectedDate={selectedDate ?? null}
+        />
+        <div className="mt-3">
+          <HeatmapLegend appTotals={appTotals} showAppKey={variant === 'full'} />
+        </div>
+      </div>
+
+      {/* Mobile: stacked bars */}
+      <div className="md:hidden">
+        <HeatmapBars days={transformed} />
+        <div className="mt-3">
+          <HeatmapLegend appTotals={appTotals} showAppKey={variant === 'full'} />
+        </div>
+      </div>
     </div>
   );
 }

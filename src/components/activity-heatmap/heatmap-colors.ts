@@ -40,25 +40,18 @@ const LEVEL_OPACITY: Record<number, number> = {
 export function getCellStyle(
   dominantApp: string | null,
   level: 0 | 1 | 2 | 3 | 4,
-  secondaryApp: string | null,
+  _secondaryApp: string | null,
 ): React.CSSProperties {
   if (level === 0 || !dominantApp) {
-    return { backgroundColor: 'var(--heatmap-empty)' };
+    return { fill: 'var(--heatmap-empty)' };
   }
 
   const opacity = LEVEL_OPACITY[level] ?? 1;
-  const baseColor = `var(--app-${dominantApp}-stripe)`;
 
-  const style: React.CSSProperties = {
-    backgroundColor: baseColor,
+  return {
+    fill: `var(--app-${dominantApp}-stripe)`,
     opacity,
   };
-
-  if (secondaryApp) {
-    style.background = `linear-gradient(225deg, var(--app-${secondaryApp}-stripe) 3px, transparent 3px), ${baseColor}`;
-  }
-
-  return style;
 }
 
 export function transformHeatmapData(
