@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { X, Copy, Check } from '@phosphor-icons/react';
+import { MonthPicker } from '@/components/ui/month-picker';
 import { trackEvent } from '@/lib/analytics';
 
 const PlateMarkdownEditor = lazy(() =>
@@ -255,6 +256,13 @@ export function EditDialog({
                       </option>
                     ))}
                   </select>
+                ) : field.type === 'month' ? (
+                  <MonthPicker
+                    id={`edit-${field.name}`}
+                    value={values[field.name] as string}
+                    onChange={(v) => updateValue(field.name, v)}
+                    required={field.required}
+                  />
                 ) : (
                   <Input
                     id={`edit-${field.name}`}
