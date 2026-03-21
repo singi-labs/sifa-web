@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { ArrowRight } from '@phosphor-icons/react';
@@ -9,6 +9,10 @@ import type { ActivityItem } from '@/lib/api';
 import { getCardComponent } from './activity-cards/card-registry';
 import { GenericActivityCard } from './activity-cards/generic-activity-card';
 import { CardErrorBoundary } from './activity-cards/card-error-boundary';
+
+const ActivityHeatmap = lazy(() =>
+  import('./activity-heatmap/activity-heatmap').then((m) => ({ default: m.ActivityHeatmap })),
+);
 
 interface ActivityOverviewProps {
   handle: string;
@@ -41,6 +45,11 @@ export function ActivityOverview({ handle }: ActivityOverviewProps) {
     <section className="mt-8" aria-label={t('title')} data-testid="activity-overview">
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold">{t('title')}</h2>
+      </div>
+      <div className="mt-4">
+        <Suspense fallback={<div className="h-[100px] w-full animate-pulse rounded-lg bg-muted" />}>
+          <ActivityHeatmap handle={handle} days={90} variant="compact" />
+        </Suspense>
       </div>
       <div className="mt-4 space-y-2">
         {teaserItems.map((item) => {

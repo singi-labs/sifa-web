@@ -35,6 +35,21 @@
     "editProfile": "Edit profile",
     "viewProfile": "View profile"
   },
+  "heatmap": {
+    "less": "Less",
+    "more": "More",
+    "noActivity": "No activity",
+    "totalActions": "{count} total",
+    "actionsInPeriod": "{count} actions in {months} months",
+    "mostActive": "Most active: {app}",
+    "appsActive": "{count} apps active",
+    "emptyState": "Activity across the ATmosphere will appear here.",
+    "emptyStateOwner": "Activity across the ATmosphere will appear here as you participate.",
+    "showFullYear": "Show full year",
+    "showSixMonths": "Show 6 months",
+    "filterDate": "Showing {date}",
+    "clearFilter": "Clear date"
+  },
   "home": {
     "title": "Sifa",
     "subtitle": "Professional identity on the AT Protocol. Own your career narrative.",
