@@ -4,6 +4,7 @@ import { useState, useCallback, type FormEvent } from 'react';
 import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { MonthPicker } from '@/components/ui/month-picker';
 import { X } from '@phosphor-icons/react';
 import { PositionSkillEditor } from '@/components/position-skill-editor';
 import { useProfileEdit } from '@/components/profile-edit-provider';
@@ -206,11 +207,10 @@ function PositionFormFields({ values, onUpdate }: PositionFormFieldsProps) {
           <label htmlFor="edit-startDate" className="mb-1 block text-sm font-medium">
             Start Date<span className="text-destructive"> *</span>
           </label>
-          <Input
+          <MonthPicker
             id="edit-startDate"
-            type="month"
             value={values.startDate as string}
-            onChange={(e) => onUpdate('startDate', e.target.value)}
+            onChange={(v) => onUpdate('startDate', v)}
             required
           />
         </div>
@@ -219,11 +219,10 @@ function PositionFormFields({ values, onUpdate }: PositionFormFieldsProps) {
             <label htmlFor="edit-endDate" className="mb-1 block text-sm font-medium">
               End Date
             </label>
-            <Input
+            <MonthPicker
               id="edit-endDate"
-              type="month"
               value={values.endDate as string}
-              onChange={(e) => onUpdate('endDate', e.target.value)}
+              onChange={(v) => onUpdate('endDate', v)}
             />
           </div>
         )}

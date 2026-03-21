@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { axe } from 'vitest-axe';
 import { PositionEditDialog } from '@/components/position-edit-dialog';
@@ -105,7 +105,7 @@ describe('PositionEditDialog', () => {
 
     render(<PositionEditDialog {...defaultProps} />);
 
-    const combobox = screen.getByRole('combobox');
+    const combobox = screen.getByRole('combobox', { name: /^Skills$/ });
     await user.type(combobox, 'TypeScript');
 
     await vi.advanceTimersByTimeAsync(350);
@@ -113,8 +113,9 @@ describe('PositionEditDialog', () => {
       expect(screen.getByRole('listbox')).toBeDefined();
     });
 
-    // Click the suggestion to select it
-    const options = screen.getAllByRole('option');
+    // Click the suggestion to select it (scope to the skill listbox)
+    const listbox = screen.getByRole('listbox');
+    const options = within(listbox).getAllByRole('option');
     await user.click(options[0]!);
 
     // Should show as chip
@@ -157,7 +158,7 @@ describe('PositionEditDialog', () => {
 
     render(<PositionEditDialog {...defaultProps} />);
 
-    const combobox = screen.getByRole('combobox');
+    const combobox = screen.getByRole('combobox', { name: /^Skills$/ });
     await user.type(combobox, 'GraphQL');
 
     await vi.advanceTimersByTimeAsync(350);
@@ -165,8 +166,9 @@ describe('PositionEditDialog', () => {
       expect(screen.getByRole('listbox')).toBeDefined();
     });
 
-    // Select from dropdown
-    const options = screen.getAllByRole('option');
+    // Select from dropdown (scope to the skill listbox)
+    const listbox = screen.getByRole('listbox');
+    const options = within(listbox).getAllByRole('option');
     await user.click(options[0]!);
 
     await waitFor(() => {
@@ -190,9 +192,8 @@ describe('PositionEditDialog', () => {
 
     await user.type(screen.getByLabelText(/Job Title/), 'Engineer');
     await user.type(screen.getByLabelText(/Company/), 'Acme');
-    const startInput = screen.getByLabelText(/Start Date/);
-    await user.clear(startInput);
-    await user.type(startInput, '2024-01');
+    await user.selectOptions(document.getElementById('edit-startDate')!, '01');
+    await user.selectOptions(document.getElementById('edit-startDate-year')!, '2024');
 
     await user.click(screen.getByText('Save'));
 
@@ -242,8 +243,9 @@ describe('PositionEditDialog', () => {
 
     render(<PositionEditDialog {...defaultProps} onSave={onSave} position={position} />);
 
-    // End date has a value
-    expect((screen.getByLabelText(/End Date/) as HTMLInputElement).value).toBe('2024-06');
+    // End date has values in the month/year selects
+    expect((document.getElementById('edit-endDate') as HTMLSelectElement).value).toBe('06');
+    expect((document.getElementById('edit-endDate-year') as HTMLSelectElement).value).toBe('2024');
 
     // Check "I currently work here"
     await user.click(screen.getByLabelText(/I currently work here/));
@@ -277,14 +279,15 @@ describe('PositionEditDialog', () => {
 
     render(<PositionEditDialog {...defaultProps} position={position} />);
 
-    const combobox = screen.getByRole('combobox');
+    const combobox = screen.getByRole('combobox', { name: /^Skills$/ });
     await user.type(combobox, 'TypeScript');
     await vi.advanceTimersByTimeAsync(350);
     await waitFor(() => {
       expect(screen.getByRole('listbox')).toBeDefined();
     });
 
-    const options = screen.getAllByRole('option');
+    const listbox = screen.getByRole('listbox');
+    const options = within(listbox).getAllByRole('option');
     await user.click(options[0]!);
 
     // Should still have only one TypeScript chip
