@@ -48,7 +48,7 @@ export function ActivityOverview({ handle }: ActivityOverviewProps) {
       </div>
       <div className="mt-4">
         <Suspense fallback={<div className="h-[100px] w-full animate-pulse rounded-lg bg-muted" />}>
-          <ActivityHeatmap handle={handle} days={90} variant="compact" />
+          <ActivityHeatmap handle={handle} days={365} variant="compact" />
         </Suspense>
       </div>
       <div className="mt-4 space-y-2">
