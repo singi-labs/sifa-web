@@ -186,9 +186,16 @@ export function IdentityCard({
                 )}
               </div>
 
-              {/* Handle (plain text, no PDS icon) */}
+              {/* Handle */}
               <div className="text-xs text-muted-foreground">
-                <span className="truncate">@{handle}</span>
+                <a
+                  href={`https://bsky.app/profile/${handle}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="truncate hover:text-foreground"
+                >
+                  @{handle}
+                </a>
               </div>
 
               {badge && (
@@ -300,9 +307,16 @@ export function IdentityCard({
                 )}
               </div>
 
-              {/* Handle + unclaimed badge (plain text, no PDS icon) */}
+              {/* Handle + unclaimed badge */}
               <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                <span className="truncate">@{handle}</span>
+                <a
+                  href={`https://bsky.app/profile/${handle}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="truncate hover:text-foreground"
+                >
+                  @{handle}
+                </a>
                 {!claimed && (
                   <Popover.Root>
                     <Popover.Trigger className="inline-flex h-5 shrink-0 cursor-pointer items-center rounded-full border border-amber-300 bg-amber-50 px-2 text-xs font-medium text-amber-800 transition-colors hover:bg-amber-100 dark:border-amber-700 dark:bg-amber-950/50 dark:text-amber-300 dark:hover:bg-amber-900/50">
