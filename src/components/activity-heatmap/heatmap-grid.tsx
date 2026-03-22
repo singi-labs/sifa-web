@@ -9,6 +9,8 @@ import { getAppMeta } from '@/lib/atproto-apps';
 
 interface HeatmapGridProps {
   days: HeatmapDayData[];
+  /** How many days back the grid should cover */
+  daysBack: number;
   onSelectDate: ((date: string) => void) | undefined;
   selectedDate: string | null;
 }
@@ -26,7 +28,10 @@ function toLocalDateStr(d: Date): string {
 }
 
 /** Build a complete date range, filling gaps with zero-activity entries. */
-function buildActivities(days: HeatmapDayData[]): {
+function buildActivities(
+  days: HeatmapDayData[],
+  daysBack: number,
+): {
   activities: Activity[];
   dayMap: Map<string, HeatmapDayData>;
   weekCount: number;
@@ -38,20 +43,8 @@ function buildActivities(days: HeatmapDayData[]): {
 
   const today = new Date();
   const end = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-
-  // Derive start from the earliest date in the data (or fall back to 6 months)
   const start = new Date(end);
-  if (days.length > 0) {
-    const sorted = [...days].sort((a, b) => a.date.localeCompare(b.date));
-    const earliest = new Date(sorted[0]!.date + 'T00:00:00');
-    if (!isNaN(earliest.getTime())) {
-      start.setTime(earliest.getTime());
-    } else {
-      start.setMonth(start.getMonth() - 6);
-    }
-  } else {
-    start.setMonth(start.getMonth() - 6);
-  }
+  start.setDate(start.getDate() - daysBack);
 
   // Roll back to the previous Monday so the first column is full (weekStart=1).
   const dow = start.getDay(); // 0=Sun, 1=Mon...
@@ -108,8 +101,11 @@ function computeBlockSize(availableWidth: number, weekCount: number): number {
   return Math.max(8, Math.min(size, 20)); // clamp between 8 and 20px
 }
 
-export function HeatmapGrid({ days, onSelectDate, selectedDate }: HeatmapGridProps) {
-  const { activities, dayMap, weekCount } = useMemo(() => buildActivities(days), [days]);
+export function HeatmapGrid({ days, daysBack, onSelectDate, selectedDate }: HeatmapGridProps) {
+  const { activities, dayMap, weekCount } = useMemo(
+    () => buildActivities(days, daysBack),
+    [days, daysBack],
+  );
   const containerRef = useRef<HTMLDivElement>(null);
   const [blockSize, setBlockSize] = useState(13);
 
