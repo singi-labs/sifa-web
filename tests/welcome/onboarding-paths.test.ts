@@ -9,7 +9,7 @@ describe('onboarding paths config', () => {
   it('has exactly 1 hero path', () => {
     const heroes = onboardingPaths.filter((p) => p.hero);
     expect(heroes).toHaveLength(1);
-    expect(heroes[0].id).toBe('import');
+    expect(heroes[0]!.id).toBe('import');
   });
 
   it('all paths have required fields', () => {
@@ -42,8 +42,8 @@ describe('onboarding paths config', () => {
 
   it('paths are sorted by order when filtered and sorted', () => {
     const sorted = [...onboardingPaths].sort((a, b) => a.order - b.order);
-    expect(sorted[0].order).toBeLessThan(sorted[1].order);
-    expect(sorted[1].order).toBeLessThan(sorted[2].order);
+    expect(sorted[0]!.order).toBeLessThan(sorted[1]!.order);
+    expect(sorted[1]!.order).toBeLessThan(sorted[2]!.order);
   });
 
   it('each path has a valid iconName from the allowed set', () => {
