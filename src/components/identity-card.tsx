@@ -6,12 +6,22 @@ import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 import { Popover } from '@base-ui/react/popover';
-import { ShareNetwork, PencilSimple, CheckCircle, Check, Code, Eye } from '@phosphor-icons/react';
+import {
+  ShareNetwork,
+  PencilSimple,
+  CheckCircle,
+  Check,
+  Code,
+  Eye,
+  MapPin,
+  LinkSimple,
+  Briefcase,
+  Buildings,
+} from '@phosphor-icons/react';
 import { useProfileEdit } from '@/components/profile-edit-provider';
 import { Badge } from '@/components/ui/badge';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { FollowButton } from '@/components/follow-button';
-import { PdsIcon } from '@/components/pds-icon';
 import { ProfileEditDialog } from '@/components/profile-edit-dialog';
 import { useAuth } from '@/components/auth-provider';
 import type {
@@ -22,17 +32,18 @@ import type {
   VerifiedAccount,
 } from '@/lib/types';
 import { formatLocation, countryCodeToFlag } from '@/lib/location-utils';
-import {
-  detectPdsProvider,
-  getDisplayLabel,
-  getPdsDisplayName,
-  pdsProviderFromApi,
-} from '@/lib/pds-utils';
-import { getAppMeta } from '@/lib/atproto-apps';
-import { formatCompactNumber } from '@/i18n/format';
-import { resolveDisplayFollowers } from '@/lib/follower-utils';
+import { getDisplayLabel } from '@/lib/pds-utils';
 import { cn } from '@/lib/utils';
 import { trackEvent } from '@/lib/analytics';
+
+function isSafeUrl(url: string): boolean {
+  try {
+    const parsed = new URL(url.startsWith('http') ? url : `https://${url}`);
+    return parsed.protocol === 'https:' || parsed.protocol === 'http:';
+  } catch {
+    return false;
+  }
+}
 
 const OPEN_TO_LABEL_KEYS: Record<string, string> = {
   'id.sifa.defs#fullTimeRoles': 'fullTimeRoles',
@@ -51,6 +62,11 @@ const PREFERRED_WORKPLACE_LABEL_KEYS: Record<string, string> = {
   'id.sifa.defs#hybrid': 'hybrid',
 };
 
+interface FeaturedSkill {
+  rkey: string;
+  skillName: string;
+}
+
 interface IdentityCardProps {
   did: string;
   handle: string;
@@ -65,6 +81,8 @@ interface IdentityCardProps {
   website?: string;
   openTo?: string[];
   preferredWorkplace?: string[];
+  featuredSkills?: FeaturedSkill[];
+  // Kept for caller compatibility -- no longer rendered on the card
   followersCount?: number;
   atprotoFollowersCount?: number;
   trustStats?: TrustStat[];
@@ -98,12 +116,14 @@ export function IdentityCard({
   website,
   openTo,
   preferredWorkplace,
-  followersCount,
-  atprotoFollowersCount,
-  trustStats = [],
+  featuredSkills = [],
+  // Destructured but not rendered (callers still pass these)
+  followersCount: _followersCount,
+  atprotoFollowersCount: _atprotoFollowersCount,
+  trustStats: _trustStats = [],
   verifiedAccounts = [],
-  activeApps = [],
-  pdsProviderInfo,
+  activeApps: _activeApps = [],
+  pdsProviderInfo: _pdsProviderInfo,
   claimed,
   isOwnProfile,
   isFollowing,
@@ -125,9 +145,7 @@ export function IdentityCard({
   const isOwn = isOwnProfile || Boolean(session?.did && session.did === did);
   const [editing, setEditing] = useState(false);
   const [copied, setCopied] = useState(false);
-  const pdsProvider = pdsProviderFromApi(pdsProviderInfo, handle) ?? detectPdsProvider(handle);
   const label = getDisplayLabel(displayName, handle);
-  const displayFollowers = resolveDisplayFollowers(atprotoFollowersCount, followersCount);
 
   return (
     <section
@@ -136,13 +154,13 @@ export function IdentityCard({
     >
       {isEmbed ? (
         <>
-          {/* Embed layout: two-column with avatar left */}
+          {/* Embed layout: compact two-column with avatar left */}
           <div className="flex items-start gap-4">
             <div className="flex h-[72px] w-[72px] shrink-0 items-center justify-center overflow-hidden rounded-full bg-muted text-xl font-semibold text-muted-foreground">
               {avatar ? (
                 <Image
                   src={avatar}
-                  alt={t('avatarAlt', { name: label })}
+                  alt=""
                   width={72}
                   height={72}
                   className="h-[72px] w-[72px] rounded-full object-cover"
@@ -152,8 +170,10 @@ export function IdentityCard({
               )}
             </div>
             <div className="min-w-0 flex-1">
+              {/* Name + pronouns + verified */}
               <div className="flex items-center gap-1.5">
-                <h1 className="truncate text-base font-bold">{label}</h1>
+                {/* h1 is correct here: embed renders in an isolated iframe document */}
+                <h1 className="truncate text-base font-semibold">{label}</h1>
                 {pronouns && (
                   <span className="text-xs font-normal text-muted-foreground">({pronouns})</span>
                 )}
@@ -165,29 +185,12 @@ export function IdentityCard({
                   />
                 )}
               </div>
-              <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                {pdsProvider && (
-                  <span title={getPdsDisplayName(pdsProvider.name)}>
-                    <PdsIcon
-                      provider={pdsProvider.name}
-                      host={pdsProvider.host}
-                      className="h-3 w-3 shrink-0"
-                    />
-                  </span>
-                )}
-                {pdsProvider?.profileUrl ? (
-                  <a
-                    href={pdsProvider.profileUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="truncate hover:text-foreground"
-                  >
-                    @{handle}
-                  </a>
-                ) : (
-                  <span className="truncate">@{handle}</span>
-                )}
+
+              {/* Handle (plain text, no PDS icon) */}
+              <div className="text-xs text-muted-foreground">
+                <span className="truncate">@{handle}</span>
               </div>
+
               {badge && (
                 <Badge
                   variant="secondary"
@@ -197,130 +200,81 @@ export function IdentityCard({
                 </Badge>
               )}
 
+              {/* Role at company */}
               {currentRole && currentCompany && (
                 <p className="mt-1 text-xs text-muted-foreground">
                   {currentRole} {t('roleAt')} {currentCompany}
                 </p>
               )}
 
+              {/* Location + website (icon-led rows) */}
               {(location || website) && (
-                <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-xs text-muted-foreground">
+                <div className="mt-1 space-y-0.5">
                   {location && (
-                    <span>
-                      {formatLocation(location)}
-                      {location.countryCode && (
-                        <span className="ml-1" role="img" aria-label={location.countryCode}>
-                          {countryCodeToFlag(location.countryCode)}
-                        </span>
-                      )}
-                    </span>
+                    <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                      <MapPin className="h-3 w-3 shrink-0" weight="regular" aria-hidden="true" />
+                      <span>
+                        {formatLocation(location)}
+                        {location.countryCode && (
+                          <span className="ml-0.5" role="img" aria-label={location.countryCode}>
+                            {countryCodeToFlag(location.countryCode)}
+                          </span>
+                        )}
+                      </span>
+                    </div>
                   )}
-                  {website && (
-                    <a
-                      href={website.startsWith('http') ? website : `https://${website}`}
-                      className="underline-offset-4 hover:text-foreground hover:underline"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {website.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '')}
-                    </a>
+                  {website && isSafeUrl(website) && (
+                    <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                      <LinkSimple
+                        className="h-3 w-3 shrink-0"
+                        weight="regular"
+                        aria-hidden="true"
+                      />
+                      <a
+                        href={website.startsWith('http') ? website : `https://${website}`}
+                        className="truncate underline-offset-4 hover:text-foreground hover:underline"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {website.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '')}
+                      </a>
+                    </div>
                   )}
                 </div>
               )}
             </div>
           </div>
 
+          {/* Headline (below avatar row, full width) */}
           {(headline || about) && (
             <p className="mt-3 line-clamp-2 text-sm text-foreground">
               {headline ?? (about && about.length > 120 ? about.slice(0, 120) + '\u2026' : about)}
             </p>
           )}
 
-          {/* Open to pills */}
+          {/* Condensed availability badge */}
           {openTo && openTo.length > 0 && (
-            <div className="mt-2 flex flex-wrap items-center gap-1.5">
-              <span className="text-xs font-medium text-muted-foreground">{tEdit('openTo')}:</span>
-              {openTo.map((item) => (
-                <Badge
-                  key={item}
-                  variant="outline"
-                  className="border-primary/30 px-2 py-0 text-xs text-primary"
-                >
-                  {OPEN_TO_LABEL_KEYS[item] ? tEdit(OPEN_TO_LABEL_KEYS[item]!) : item}
-                </Badge>
-              ))}
-            </div>
-          )}
-
-          {/* Preferred workplace pills */}
-          {preferredWorkplace && preferredWorkplace.length > 0 && (
-            <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
-              <span className="text-xs font-medium text-muted-foreground">
-                {tEdit('preferredWorkplace')}:
-              </span>
-              {preferredWorkplace.map((item) => (
-                <Badge
-                  key={item}
-                  variant="outline"
-                  className="border-primary/30 px-2 py-0 text-xs text-primary"
-                >
-                  {PREFERRED_WORKPLACE_LABEL_KEYS[item]
-                    ? tEdit(PREFERRED_WORKPLACE_LABEL_KEYS[item]!)
-                    : item}
-                </Badge>
-              ))}
-            </div>
-          )}
-
-          {/* Activity indicators: follower count */}
-          {displayFollowers ? (
-            <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
-              <span>
-                {displayFollowers.source === 'atproto'
-                  ? t('followersOnBluesky', {
-                      count: formatCompactNumber(displayFollowers.count, 'en'),
-                    })
-                  : t('followers', { count: formatCompactNumber(displayFollowers.count, 'en') })}
-              </span>
-            </div>
-          ) : null}
-
-          {/* Active ATproto apps */}
-          {activeApps.length > 0 && (
-            <div
-              className="mt-2 flex flex-wrap gap-1"
-              role="list"
-              aria-label={t('activeAppsLabel')}
-            >
-              {activeApps.map((app) => {
-                const meta = getAppMeta(app.id);
-                return (
-                  <span
-                    key={app.id}
-                    role="listitem"
-                    className={cn(
-                      'rounded-full px-2 py-0.5 text-[10px] font-medium',
-                      meta.className,
-                    )}
-                    aria-label={t('activeOn', { app: meta.name })}
-                  >
-                    {meta.name}
-                  </span>
-                );
-              })}
+            <div className="mt-2">
+              <Badge
+                variant="outline"
+                className="border-primary/30 px-2 py-0.5 text-xs text-primary"
+              >
+                <Briefcase className="mr-1 h-3 w-3" weight="regular" aria-hidden="true" />
+                {t('availableForWork')}
+              </Badge>
             </div>
           )}
         </>
       ) : (
         <>
-          {/* Page layout: avatar stacked on mobile, side-by-side on sm+ */}
+          {/* Page layout: Zone A - Identity */}
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:gap-6">
-            {/* Left column: avatar */}
+            {/* Avatar */}
             <div className="flex h-24 w-24 shrink-0 self-center items-center justify-center overflow-hidden rounded-full bg-muted text-2xl font-semibold text-muted-foreground sm:self-auto">
               {avatar ? (
                 <Image
                   src={avatar}
-                  alt={t('avatarAlt', { name: label })}
+                  alt=""
                   width={96}
                   height={96}
                   className="h-24 w-24 rounded-full object-cover"
@@ -330,10 +284,10 @@ export function IdentityCard({
               )}
             </div>
 
-            {/* Right column: all text content */}
+            {/* Identity text */}
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2">
-                <h1 className="truncate text-xl font-bold">{label}</h1>
+                <h1 className="truncate text-lg font-semibold">{label}</h1>
                 {pronouns && (
                   <span className="text-sm font-normal text-muted-foreground">({pronouns})</span>
                 )}
@@ -346,29 +300,9 @@ export function IdentityCard({
                 )}
               </div>
 
-              {/* Handle + unclaimed badge */}
+              {/* Handle + unclaimed badge (plain text, no PDS icon) */}
               <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                {pdsProvider && (
-                  <span title={getPdsDisplayName(pdsProvider.name)}>
-                    <PdsIcon
-                      provider={pdsProvider.name}
-                      host={pdsProvider.host}
-                      className="h-3.5 w-3.5 shrink-0"
-                    />
-                  </span>
-                )}
-                {pdsProvider?.profileUrl ? (
-                  <a
-                    href={pdsProvider.profileUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="truncate hover:text-foreground"
-                  >
-                    @{handle}
-                  </a>
-                ) : (
-                  <span className="truncate">@{handle}</span>
-                )}
+                <span className="truncate">@{handle}</span>
                 {!claimed && (
                   <Popover.Root>
                     <Popover.Trigger className="inline-flex h-5 shrink-0 cursor-pointer items-center rounded-full border border-amber-300 bg-amber-50 px-2 text-xs font-medium text-amber-800 transition-colors hover:bg-amber-100 dark:border-amber-700 dark:bg-amber-950/50 dark:text-amber-300 dark:hover:bg-amber-900/50">
@@ -395,10 +329,20 @@ export function IdentityCard({
                   </Popover.Root>
                 )}
               </div>
+            </div>
+          </div>
 
-              {/* Headline (falls back to truncated about when no headline) */}
+          {/* Zone B: Professional Context */}
+          {(headline ||
+            about ||
+            currentRole ||
+            location ||
+            website ||
+            featuredSkills.length > 0) && (
+            <div className="mt-4 space-y-1" data-testid="zone-b">
+              {/* Headline */}
               {(headline || about) && (
-                <p className="mt-2 text-base text-foreground">
+                <p className="text-[15px] text-foreground">
                   {headline ??
                     (about && about.length > 120 ? about.slice(0, 120) + '\u2026' : about)}
                 </p>
@@ -406,51 +350,73 @@ export function IdentityCard({
 
               {/* Current role */}
               {currentRole && currentCompany && (
-                <p className="mt-1 text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground">
                   {currentRole} {t('roleAt')} {currentCompany}
                 </p>
               )}
 
-              {/* Location + Website + Followers */}
-              {(location || website || displayFollowers) && (
-                <div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
+              {/* Icon-led metadata rows */}
+              {(location || website) && (
+                <div className="mt-1 space-y-0.5">
                   {location && (
-                    <span>
-                      {formatLocation(location)}
-                      {location.countryCode && (
-                        <span className="ml-1" role="img" aria-label={location.countryCode}>
-                          {countryCodeToFlag(location.countryCode)}
-                        </span>
-                      )}
-                    </span>
+                    <div className="flex items-center gap-1.5 text-[13px] text-muted-foreground">
+                      <MapPin className="h-4 w-4 shrink-0" weight="regular" aria-hidden="true" />
+                      <span>
+                        {formatLocation(location)}
+                        {location.countryCode && (
+                          <span className="ml-1" role="img" aria-label={location.countryCode}>
+                            {countryCodeToFlag(location.countryCode)}
+                          </span>
+                        )}
+                      </span>
+                    </div>
                   )}
-                  {website && (
-                    <a
-                      href={website.startsWith('http') ? website : `https://${website}`}
-                      className="underline-offset-4 hover:text-foreground hover:underline"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {website.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '')}
-                    </a>
-                  )}
-                  {displayFollowers && (
-                    <span>
-                      {displayFollowers.source === 'atproto'
-                        ? t('followersOnBluesky', {
-                            count: formatCompactNumber(displayFollowers.count, 'en'),
-                          })
-                        : t('followers', {
-                            count: formatCompactNumber(displayFollowers.count, 'en'),
-                          })}
-                    </span>
+                  {website && isSafeUrl(website) && (
+                    <div className="flex items-center gap-1.5 text-[13px] text-muted-foreground">
+                      <LinkSimple
+                        className="h-4 w-4 shrink-0"
+                        weight="regular"
+                        aria-hidden="true"
+                      />
+                      <a
+                        href={website.startsWith('http') ? website : `https://${website}`}
+                        className="underline-offset-4 hover:text-foreground hover:underline"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {website.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '')}
+                      </a>
+                    </div>
                   )}
                 </div>
               )}
 
-              {/* Open to pills */}
+              {/* Featured skills pills */}
+              {featuredSkills.length > 0 && (
+                <ul className="mt-2 flex flex-wrap gap-1.5" aria-label={t('featuredSkillsLabel')}>
+                  {featuredSkills.slice(0, 3).map((skill) => (
+                    <li key={skill.rkey}>
+                      <Badge variant="secondary" className="px-2 py-0.5 text-xs">
+                        {skill.skillName}
+                      </Badge>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )}
+
+          {/* Zone C: Signals & Actions */}
+          {((openTo && openTo.length > 0) ||
+            (preferredWorkplace && preferredWorkplace.length > 0)) && (
+            <div className="mt-4 space-y-1.5">
               {openTo && openTo.length > 0 && (
-                <div className="mt-2 flex flex-wrap items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2">
+                  <Briefcase
+                    className="h-4 w-4 shrink-0 text-muted-foreground"
+                    weight="regular"
+                    aria-hidden="true"
+                  />
                   <span className="text-sm font-medium text-muted-foreground">
                     {tEdit('openTo')}:
                   </span>
@@ -461,10 +427,13 @@ export function IdentityCard({
                   ))}
                 </div>
               )}
-
-              {/* Preferred workplace pills */}
               {preferredWorkplace && preferredWorkplace.length > 0 && (
-                <div className="mt-1.5 flex flex-wrap items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2">
+                  <Buildings
+                    className="h-4 w-4 shrink-0 text-muted-foreground"
+                    weight="regular"
+                    aria-hidden="true"
+                  />
                   <span className="text-sm font-medium text-muted-foreground">
                     {tEdit('preferredWorkplace')}:
                   </span>
@@ -478,11 +447,11 @@ export function IdentityCard({
                 </div>
               )}
             </div>
-          </div>
+          )}
         </>
       )}
 
-      {/* Floating edit/preview buttons — top-right, own profile only, not in embeds */}
+      {/* Floating edit/preview buttons -- top-right, own profile only, not in embeds */}
       {isActualOwner && !isEmbed && (
         <div className="absolute right-4 top-4 flex items-center gap-2">
           <button
@@ -508,7 +477,7 @@ export function IdentityCard({
         </div>
       )}
 
-      {/* Row 8: Action buttons (page) or "View on Sifa" CTA (embed) */}
+      {/* Action buttons (page) or "View on Sifa" CTA (embed) */}
       {isEmbed && !hideFooter && (
         <div className="mt-4 flex items-center justify-between border-t border-border pt-3">
           <a

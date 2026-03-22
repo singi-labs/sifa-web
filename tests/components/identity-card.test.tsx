@@ -78,6 +78,12 @@ vi.mock('@phosphor-icons/react', () => ({
   Eye: (props: Record<string, unknown>) => <span data-testid="icon-eye" {...props} />,
   X: (props: Record<string, unknown>) => <span data-testid="icon-x" {...props} />,
   Info: (props: Record<string, unknown>) => <span data-testid="icon-info" {...props} />,
+  MapPin: (props: Record<string, unknown>) => <span data-testid="icon-map-pin" {...props} />,
+  LinkSimple: (props: Record<string, unknown>) => (
+    <span data-testid="icon-link-simple" {...props} />
+  ),
+  Briefcase: (props: Record<string, unknown>) => <span data-testid="icon-briefcase" {...props} />,
+  Buildings: (props: Record<string, unknown>) => <span data-testid="icon-buildings" {...props} />,
 }));
 
 // Mock sonner
@@ -158,25 +164,83 @@ describe('IdentityCard (default / page variant)', () => {
     expect(screen.queryByText(/^\(.*\)$/)).toBeNull();
   });
 
-  it('renders location and website', () => {
+  it('renders location with icon in separate row', () => {
     render(
       <IdentityCard
         {...baseProps}
-        location={{ city: 'Amsterdam', country: 'NL' }}
-        website="https://example.com"
+        location={{ city: 'Amsterdam', country: 'Netherlands', countryCode: 'NL' }}
       />,
     );
-    expect(screen.getByText('Amsterdam, NL')).toBeDefined();
-    expect(screen.getByText('example.com')).toBeDefined();
+    expect(screen.getByText(/Amsterdam, Netherlands/)).toBeDefined();
+    // Country flag should be present
+    const flag = screen.getByRole('img', { name: 'NL' });
+    expect(flag).toBeDefined();
+    // MapPin icon should be present
+    expect(screen.getByTestId('icon-map-pin')).toBeDefined();
   });
 
-  it('renders open to pills', () => {
+  it('renders website as separate icon-led row', () => {
+    render(
+      <IdentityCard
+        {...baseProps}
+        location={{ city: 'Amsterdam', country: 'Netherlands' }}
+        website="https://singi.dev"
+      />,
+    );
+    const locationText = screen.getByText('Amsterdam, Netherlands');
+    const websiteLink = screen.getByText('singi.dev');
+    // They should be in Zone B but NOT share the same direct parent
+    expect(locationText.closest('[data-testid="zone-b"]')).toBeDefined();
+    expect(websiteLink.closest('[data-testid="zone-b"]')).toBeDefined();
+    expect(locationText.parentElement).not.toBe(websiteLink.parentElement);
+    // LinkSimple icon should be present
+    expect(screen.getByTestId('icon-link-simple')).toBeDefined();
+  });
+
+  it('does not render follower count on card (demoted to profile body)', () => {
+    render(
+      <IdentityCard
+        {...baseProps}
+        followersCount={1234}
+        atprotoFollowersCount={5678}
+        location={{ city: 'Amsterdam', country: 'Netherlands' }}
+        website="https://singi.dev"
+      />,
+    );
+    expect(screen.queryByText(/followers/)).toBeNull();
+  });
+
+  it('renders featured skills pills when provided', () => {
+    render(
+      <IdentityCard
+        {...baseProps}
+        featuredSkills={[
+          { rkey: 's1', skillName: 'TypeScript' },
+          { rkey: 's2', skillName: 'AT Protocol' },
+          { rkey: 's3', skillName: 'React' },
+        ]}
+      />,
+    );
+    expect(screen.getByText('TypeScript')).toBeDefined();
+    expect(screen.getByText('AT Protocol')).toBeDefined();
+    expect(screen.getByText('React')).toBeDefined();
+    // Skills should be in an accessible list
+    expect(screen.getByRole('list', { name: 'featuredSkillsLabel' })).toBeDefined();
+  });
+
+  it('does not render skills section when featuredSkills is empty', () => {
+    render(<IdentityCard {...baseProps} featuredSkills={[]} />);
+    expect(screen.queryByRole('list', { name: 'featuredSkillsLabel' })).toBeNull();
+  });
+
+  it('renders open to pills with briefcase icon', () => {
     render(<IdentityCard {...baseProps} openTo={['Mentoring', 'Freelance']} />);
     expect(screen.getByText('Mentoring')).toBeDefined();
     expect(screen.getByText('Freelance')).toBeDefined();
+    expect(screen.getByTestId('icon-briefcase')).toBeDefined();
   });
 
-  it('renders preferredWorkplace pills', () => {
+  it('renders preferredWorkplace pills with buildings icon', () => {
     render(
       <IdentityCard
         {...baseProps}
@@ -186,6 +250,7 @@ describe('IdentityCard (default / page variant)', () => {
     // Translation mock returns the key; production renders the translated label
     expect(screen.getByText('remote')).toBeDefined();
     expect(screen.getByText('hybrid')).toBeDefined();
+    expect(screen.getByTestId('icon-buildings')).toBeDefined();
   });
 
   it('does not render preferredWorkplace section when empty', () => {
@@ -228,6 +293,35 @@ describe('IdentityCard (default / page variant)', () => {
     render(<IdentityCard {...baseProps} avatar={undefined} />);
     // Should show first letter of display name
     expect(screen.getByText('A')).toBeDefined();
+  });
+
+  it('renders handle without PDS icon (demoted to profile body)', () => {
+    render(
+      <IdentityCard {...baseProps} pdsProviderInfo={{ name: 'bluesky', host: 'bsky.social' }} />,
+    );
+    // Handle text should still render
+    expect(screen.getByText('@alice.bsky.social')).toBeDefined();
+    // PDS icon should not be rendered (no title attribute for PDS provider)
+    expect(screen.queryByTitle('Bluesky')).toBeNull();
+  });
+
+  it('does not render active apps badges on card', () => {
+    render(
+      <IdentityCard
+        {...baseProps}
+        activeApps={[
+          {
+            id: 'bluesky',
+            name: 'Bluesky',
+            category: 'Posts',
+            recentCount: 10,
+            latestRecordAt: null,
+          },
+        ]}
+      />,
+    );
+    expect(screen.queryByRole('list', { name: 'activeAppsLabel' })).toBeNull();
+    expect(screen.queryByText('Bluesky')).toBeNull();
   });
 });
 
@@ -283,86 +377,91 @@ describe('IdentityCard (embed variant)', () => {
     expect(screen.getByText('(they/them)')).toBeDefined();
   });
 
-  it('does not show trust stats in embed variant', () => {
-    render(<IdentityCard {...baseProps} variant="embed" />);
-    expect(screen.queryByRole('list', { name: 'Trust stats' })).toBeNull();
+  it('renders role at company in embed', () => {
+    render(<IdentityCard {...baseProps} variant="embed" currentRole="CTO" currentCompany="Acme" />);
+    expect(screen.getByText(/CTO/)).toBeDefined();
+    expect(screen.getByText(/Acme/)).toBeDefined();
   });
 
-  it('shows follower count when provided', () => {
+  it('renders location with icon in embed', () => {
+    render(
+      <IdentityCard
+        {...baseProps}
+        variant="embed"
+        location={{ city: 'Amsterdam', country: 'Netherlands', countryCode: 'NL' }}
+      />,
+    );
+    expect(screen.getByText(/Amsterdam, Netherlands/)).toBeDefined();
+    expect(screen.getByTestId('icon-map-pin')).toBeDefined();
+  });
+
+  it('renders website with icon in embed', () => {
+    render(<IdentityCard {...baseProps} variant="embed" website="https://singi.dev" />);
+    expect(screen.getByText('singi.dev')).toBeDefined();
+    expect(screen.getByTestId('icon-link-simple')).toBeDefined();
+  });
+
+  it('shows condensed "Available for work" badge when openTo is set', () => {
+    render(<IdentityCard {...baseProps} variant="embed" openTo={['id.sifa.defs#fullTimeRoles']} />);
+    // next-intl mock returns the key itself
+    expect(screen.getByText('availableForWork')).toBeDefined();
+  });
+
+  it('does not show individual openTo pills in embed', () => {
+    render(
+      <IdentityCard
+        {...baseProps}
+        variant="embed"
+        openTo={['id.sifa.defs#fullTimeRoles', 'id.sifa.defs#contractRoles']}
+      />,
+    );
+    // Should show condensed badge, not individual pills
+    expect(screen.getByText('availableForWork')).toBeDefined();
+    expect(screen.queryByText('fullTimeRoles')).toBeNull();
+    expect(screen.queryByText('contractRoles')).toBeNull();
+  });
+
+  it('does not show preferred workplace in embed', () => {
+    render(
+      <IdentityCard {...baseProps} variant="embed" preferredWorkplace={['id.sifa.defs#remote']} />,
+    );
+    expect(screen.queryByText('remote')).toBeNull();
+    expect(screen.queryByTestId('icon-buildings')).toBeNull();
+  });
+
+  it('does not show follower count in embed', () => {
     render(<IdentityCard {...baseProps} variant="embed" followersCount={1234} />);
-    expect(screen.getByText(/followers/)).toBeDefined();
+    expect(screen.queryByText(/followers/)).toBeNull();
   });
 
-  it('does not show follower count when zero', () => {
-    render(<IdentityCard {...baseProps} variant="embed" followersCount={0} />);
-    expect(screen.queryByText(/follower/)).toBeNull();
-  });
-
-  it('shows "on Bluesky" when atprotoFollowersCount is used', () => {
-    render(
-      <IdentityCard
-        {...baseProps}
-        variant="embed"
-        followersCount={5}
-        atprotoFollowersCount={9999}
-      />,
-    );
-    expect(screen.getByText(/followers on Bluesky/)).toBeDefined();
-  });
-
-  it('falls back to followersCount without Bluesky label when atprotoFollowersCount is zero', () => {
-    render(
-      <IdentityCard
-        {...baseProps}
-        variant="embed"
-        followersCount={100}
-        atprotoFollowersCount={0}
-      />,
-    );
-    const el = screen.getByText(/followers/);
-    expect(el).toBeDefined();
-    expect(el.textContent).not.toContain('Bluesky');
-  });
-
-  it('shows PDS icon next to handle but no separate provider tagline', () => {
-    render(<IdentityCard {...baseProps} variant="embed" />);
-    // PDS icon is shown next to handle (via the link with provider profileUrl)
-    expect(screen.getByRole('link', { name: /@alice\.bsky\.social/ })).toBeDefined();
-    // No separate "on bluesky" tagline in activity indicators
-    expect(screen.queryByText('pdsProvider')).toBeNull();
-  });
-
-  it('renders active app badges', () => {
+  it('does not show active apps in embed', () => {
     render(
       <IdentityCard
         {...baseProps}
         variant="embed"
         activeApps={[
           {
-            id: 'smokesignal',
-            name: 'Smoke Signal',
+            id: 'bluesky',
+            name: 'Bluesky',
             category: 'Posts',
             recentCount: 10,
-            latestRecordAt: null,
-          },
-          {
-            id: 'whitewind',
-            name: 'Whitewind',
-            category: 'Posts',
-            recentCount: 5,
             latestRecordAt: null,
           },
         ]}
       />,
     );
-    expect(screen.getByText('Smoke Signal')).toBeDefined();
-    expect(screen.getByText('Whitewind')).toBeDefined();
-    // next-intl mock returns key for parameterized aria labels
-    expect(screen.getByRole('list', { name: 'activeAppsLabel' })).toBeDefined();
+    expect(screen.queryByRole('list', { name: 'activeAppsLabel' })).toBeNull();
+    expect(screen.queryByText('Bluesky')).toBeNull();
   });
 
-  it('does not render active apps section when empty', () => {
-    render(<IdentityCard {...baseProps} variant="embed" activeApps={[]} />);
-    expect(screen.queryByRole('list', { name: 'Active on' })).toBeNull();
+  it('does not show skills pills in embed', () => {
+    render(
+      <IdentityCard
+        {...baseProps}
+        variant="embed"
+        featuredSkills={[{ rkey: 's1', skillName: 'TypeScript' }]}
+      />,
+    );
+    expect(screen.queryByText('TypeScript')).toBeNull();
   });
 });

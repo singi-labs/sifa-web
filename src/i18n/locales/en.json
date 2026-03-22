@@ -296,7 +296,9 @@
     "followersOnBluesky": "{count} followers on Bluesky",
     "pdsProvider": "on {provider}",
     "activeAppsLabel": "Active on",
-    "activeOn": "Active on {app}"
+    "activeOn": "Active on {app}",
+    "featuredSkillsLabel": "Top skills",
+    "availableForWork": "Available for work"
   },
   "unclaimedBanner": {
     "text": "This profile shows public AT Protocol data and hasn't been claimed yet.",

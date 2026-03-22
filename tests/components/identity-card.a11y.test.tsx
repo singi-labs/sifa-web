@@ -53,7 +53,7 @@ describe('IdentityCard accessibility', () => {
     expect(results).toHaveNoViolations();
   });
 
-  it('has no a11y violations for embed with activity data', async () => {
+  it('has no a11y violations for embed variant', async () => {
     const { container } = render(
       <IdentityCard
         did="did:plc:abc123"
@@ -62,23 +62,40 @@ describe('IdentityCard accessibility', () => {
         headline="Senior Engineer"
         claimed={true}
         variant="embed"
-        followersCount={1500}
-        activeApps={[
-          {
-            id: 'bluesky',
-            name: 'Bluesky',
-            category: 'Posts',
-            recentCount: 10,
-            latestRecordAt: null,
-          },
-          {
-            id: 'whitewind',
-            name: 'Whitewind',
-            category: 'Posts',
-            recentCount: 5,
-            latestRecordAt: null,
-          },
+      />,
+    );
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
+  it('has no a11y violations with featured skills', async () => {
+    const { container } = render(
+      <IdentityCard
+        did="did:plc:abc123"
+        handle="alice.bsky.social"
+        displayName="Alice Smith"
+        headline="Senior Engineer"
+        claimed={true}
+        featuredSkills={[
+          { rkey: 's1', skillName: 'TypeScript' },
+          { rkey: 's2', skillName: 'React' },
         ]}
+      />,
+    );
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
+  it('has no a11y violations for embed with availability', async () => {
+    const { container } = render(
+      <IdentityCard
+        did="did:plc:abc123"
+        handle="alice.bsky.social"
+        displayName="Alice Smith"
+        headline="Senior Engineer"
+        claimed={true}
+        variant="embed"
+        openTo={['id.sifa.defs#fullTimeRoles']}
       />,
     );
     const results = await axe(container);
