@@ -22,7 +22,7 @@ import {
 } from '@phosphor-icons/react';
 import type { Icon } from '@phosphor-icons/react';
 
-import { getAppMeta } from '@/lib/atproto-apps';
+import { getAppMeta, getAppStripeColor } from '@/lib/atproto-apps';
 import type { ActiveApp } from '@/lib/types';
 
 const MOBILE_MAX = 3;
@@ -78,14 +78,21 @@ export function ActivityIndicators({
     const IconComponent = ICON_MAP[app.id] ?? CircleDashed;
     const label = t('activeOn', { app: meta.name });
     const displayClass = !expanded && index >= MOBILE_MAX ? 'hidden sm:inline-flex' : 'inline-flex';
-    const pillClasses = `${displayClass} items-center gap-1 rounded-full border px-2.5 py-0.5 text-xs font-medium ${meta.className}`;
+    const stripeColor = getAppStripeColor(app.id);
+    const pillStyle = {
+      backgroundColor: `oklch(from ${stripeColor} l c h / 0.15)`,
+      color: stripeColor,
+      borderColor: `oklch(from ${stripeColor} l c h / 0.3)`,
+    } as React.CSSProperties;
+    const pillClasses = `${displayClass} items-center gap-1 rounded-full border px-2.5 py-0.5 text-xs font-medium transition-colors`;
 
     if (onFilter) {
       return (
         <button
           key={app.id}
           type="button"
-          className={pillClasses}
+          className={`${pillClasses} hover:opacity-80`}
+          style={pillStyle}
           aria-label={label}
           aria-pressed={activeFilter === app.id}
           onClick={() => handleClick(app.id)}
@@ -97,7 +104,7 @@ export function ActivityIndicators({
     }
 
     return (
-      <span key={app.id} className={pillClasses} aria-label={label}>
+      <span key={app.id} className={pillClasses} style={pillStyle} aria-label={label}>
         <IconComponent size={14} weight="regular" aria-hidden="true" />
         {meta.name}
       </span>
