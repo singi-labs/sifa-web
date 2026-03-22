@@ -42,7 +42,7 @@ describe('ExternalAccountsSection', () => {
     withProvider(<ExternalAccountsSection accounts={[baseAccount]} />, {
       externalAccounts: [baseAccount],
     });
-    expect(screen.getByText('Other Profiles')).toBeDefined();
+    expect(screen.getByText('Also find test.bsky.social on')).toBeDefined();
     expect(screen.getByRole('link', { name: 'GitHub' })).toBeDefined();
   });
 
@@ -81,7 +81,7 @@ describe('ExternalAccountsSection', () => {
       externalAccounts: [],
       handle: 'gui.do',
     });
-    await user.click(screen.getByRole('button', { name: 'Add Other Profiles' }));
+    await user.click(screen.getByRole('button', { name: 'Add Links' }));
     await user.selectOptions(screen.getByRole('combobox'), 'github');
     expect(screen.getByText(/Add your Sifa profile URL/)).toBeDefined();
   });

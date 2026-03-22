@@ -101,10 +101,13 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
   const totalCount = accounts.length + 1; // +1 for ATProto entry
 
   return (
-    <section className="mt-8" aria-label={t('otherProfiles')}>
+    <section
+      className="mt-8"
+      aria-label={t('alsoFindOn', { name: profile.displayName ?? profile.handle })}
+    >
       <div className="mb-4 flex items-center gap-2">
         <h2 className="text-xl font-semibold">
-          {t('otherProfiles')}
+          {t('alsoFindOn', { name: profile.displayName ?? profile.handle })}
           {totalCount > 0 && (
             <span className="ml-2 text-sm font-normal text-muted-foreground">{totalCount}</span>
           )}
