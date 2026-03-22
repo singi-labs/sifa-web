@@ -83,7 +83,7 @@ describe('ConnectionSummary', () => {
     render(<ConnectionSummary isLoggedIn={true} isLoading={false} connections={connections} />);
 
     const images = screen.getAllByRole('img');
-    expect(images[0].getAttribute('alt')).toBe('Alice');
-    expect(images[1].getAttribute('alt')).toBe('Connection');
+    expect(images[0]!.getAttribute('alt')).toBe('Alice');
+    expect(images[1]!.getAttribute('alt')).toBe('Connection');
   });
 });

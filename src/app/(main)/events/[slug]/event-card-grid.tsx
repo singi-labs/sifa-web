@@ -7,6 +7,8 @@ import { Badge } from '@/components/ui/badge';
 import { resolveDisplayFollowers } from '@/lib/follower-utils';
 import { pdsProviderFromApi } from '@/lib/pds-utils';
 import { PdsIcon } from '@/components/pds-icon';
+import { ConnectionBadge } from '@/components/events/connection-badge';
+import type { ConnectionMap } from '@/hooks/use-attendee-connections';
 import type {
   ActiveApp,
   LocationValue,
@@ -85,11 +87,17 @@ interface EventCardGridProps {
   entries: EventEntry[];
   speakerCount: number;
   attendeeCount: number;
+  connections?: ConnectionMap;
 }
 
 type SortOption = 'random' | 'followers';
 
-export function EventCardGrid({ entries, speakerCount, attendeeCount }: EventCardGridProps) {
+export function EventCardGrid({
+  entries,
+  speakerCount,
+  attendeeCount,
+  connections,
+}: EventCardGridProps) {
   const [activeFilters, setActiveFilters] = useState<Set<FilterGroup>>(new Set());
   const [activePdsFilters, setActivePdsFilters] = useState<Set<string>>(new Set());
   const [sortBy, setSortBy] = useState<SortOption>('random');
@@ -274,6 +282,7 @@ export function EventCardGrid({ entries, speakerCount, attendeeCount }: EventCar
       {/* Card grid */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {sorted.map(({ profile, badge }) => {
+          const connectionType = connections?.get(profile.did);
           const location: LocationValue | null = profile.locationCountry
             ? {
                 country: profile.locationCountry,
@@ -291,8 +300,13 @@ export function EventCardGrid({ entries, speakerCount, attendeeCount }: EventCar
             <Link
               key={profile.handle}
               href={`/p/${profile.handle}`}
-              className="h-full transition-transform hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              className="relative h-full transition-transform hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
+              {connectionType && (
+                <div className="absolute right-3 top-3 z-10">
+                  <ConnectionBadge type={connectionType} handle={profile.handle} />
+                </div>
+              )}
               <IdentityCard
                 className="h-full"
                 did={profile.did}
