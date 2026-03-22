@@ -42,6 +42,8 @@
     "actionsInPeriod": "{count} actions in {months} months",
     "mostActive": "Most active: {app}",
     "appsActive": "{count} apps active",
+    "loading": "Loading activity...",
+    "loadingSlow": "Dang, that's a lot of activity! Hold on...",
     "emptyState": "Activity across the ATmosphere will appear here.",
     "emptyStateOwner": "Activity across the ATmosphere will appear here as you participate.",
     "showFullYear": "Show full year",
