@@ -42,7 +42,7 @@ describe('ExternalAccountsSection', () => {
     withProvider(<ExternalAccountsSection accounts={[baseAccount]} />, {
       externalAccounts: [baseAccount],
     });
-    expect(screen.getByText('Also find test.bsky.social on')).toBeDefined();
+    expect(screen.getByText('Also find test.bsky.social on…')).toBeDefined();
     expect(screen.getByRole('link', { name: 'GitHub' })).toBeDefined();
   });
 

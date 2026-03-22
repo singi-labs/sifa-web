@@ -182,7 +182,7 @@
     "awards": "Awards",
     "languages": "Languages",
     "otherProfiles": "Links",
-    "alsoFindOn": "Also find {name} on",
+    "alsoFindOn": "Also find {name} on…",
     "usedIn": "Used in",
     "verified": "Verified",
     "verifyHintGithub": "Add your Sifa profile URL in the \"URL\" field or under \"Social accounts\" in your GitHub profile settings. We'll verify the link automatically when you save.",
