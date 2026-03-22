@@ -6,9 +6,11 @@ import { useTranslations } from 'next-intl';
 import { ArrowRight } from '@phosphor-icons/react';
 import { fetchActivityTeaser } from '@/lib/api';
 import type { ActivityItem } from '@/lib/api';
+import { ActivityIndicators } from './activity-indicators';
 import { getCardComponent } from './activity-cards/card-registry';
 import { GenericActivityCard } from './activity-cards/generic-activity-card';
 import { CardErrorBoundary } from './activity-cards/card-error-boundary';
+import type { ActiveApp } from '@/lib/types';
 
 const ActivityHeatmap = lazy(() =>
   import('./activity-heatmap/activity-heatmap').then((m) => ({ default: m.ActivityHeatmap })),
@@ -16,9 +18,10 @@ const ActivityHeatmap = lazy(() =>
 
 interface ActivityOverviewProps {
   handle: string;
+  activeApps?: ActiveApp[];
 }
 
-export function ActivityOverview({ handle }: ActivityOverviewProps) {
+export function ActivityOverview({ handle, activeApps = [] }: ActivityOverviewProps) {
   const t = useTranslations('activityOverview');
   const [items, setItems] = useState<ActivityItem[] | null>(null);
   const [loaded, setLoaded] = useState(false);
@@ -43,6 +46,11 @@ export function ActivityOverview({ handle }: ActivityOverviewProps) {
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold">{t('title')}</h2>
       </div>
+      {activeApps.length > 0 && (
+        <div className="mt-3">
+          <ActivityIndicators apps={activeApps} maxVisible={5} />
+        </div>
+      )}
       <div className="mt-4">
         <Suspense fallback={<div className="h-[100px] w-full animate-pulse rounded-lg bg-muted" />}>
           <ActivityHeatmap handle={handle} days={365} variant="compact" />

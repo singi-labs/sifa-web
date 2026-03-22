@@ -113,7 +113,7 @@ function ProfileBodyContent() {
         isOwn && <AboutSection about="" isOwnProfile />
       )}
 
-      <ActivityOverview handle={profile.handle} />
+      <ActivityOverview handle={profile.handle} activeApps={profile.activeApps} />
       <TrackRecord isOwnProfile={isOwn} />
 
       <div id="career" className="scroll-mt-20">
