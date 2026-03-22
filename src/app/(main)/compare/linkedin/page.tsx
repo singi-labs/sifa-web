@@ -6,12 +6,10 @@ import { CheckCircle } from '@phosphor-icons/react/dist/ssr';
 export const metadata: Metadata = {
   title: 'LinkedIn alternative with data ownership',
   description:
-    'LinkedIn owns your career data. Sifa stores it in your own account -- portable and yours to keep. No ads, no lock-in. See the full comparison.',
+    'LinkedIn owns your career data. Sifa stores it in your own account, portable and yours to keep. No ads, no lock-in. See the full comparison.',
 };
 
-const QUICK_ROWS = ['data', 'portability', 'cost', 'tracking', 'hosting'] as const;
-
-const FULL_ROWS = [
+const TABLE_ROWS = [
   'data',
   'portability',
   'signIn',
@@ -23,6 +21,9 @@ const FULL_ROWS = [
   'cost',
   'sourceCode',
   'crossApp',
+  'networkSize',
+  'jobBoard',
+  'companyPages',
 ] as const;
 
 const SIFA_WINS = new Set([
@@ -38,6 +39,8 @@ const SIFA_WINS = new Set([
   'sourceCode',
   'crossApp',
 ]);
+
+const LINKEDIN_WINS = new Set(['networkSize', 'jobBoard', 'companyPages']);
 
 const WHEN_LINKEDIN_KEYS = ['recruiting', 'industry', 'companyPages', 'network'] as const;
 
@@ -89,58 +92,9 @@ export default async function CompareLinkedInPage() {
           </Link>
         </div>
 
-        {/* Quick comparison table */}
+        {/* Comparison table */}
         <section className="mt-12">
-          <h2 className="sr-only">{t('quickTableCaption')}</h2>
-          <div className="overflow-hidden rounded-lg border border-border">
-            <table className="w-full text-sm">
-              <thead className="hidden sm:table-header-group">
-                <tr className="border-b border-border bg-muted/40">
-                  <th scope="col" className="px-4 py-3 text-left font-medium">
-                    &nbsp;
-                  </th>
-                  <th scope="col" className="px-4 py-3 text-left font-medium">
-                    {t('colLinkedin')}
-                  </th>
-                  <th scope="col" className="bg-primary/5 px-4 py-3 text-left font-medium">
-                    {t('colSifa')}
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {QUICK_ROWS.map((key) => (
-                  <tr
-                    key={key}
-                    className="flex flex-col border-b border-border last:border-0 sm:table-row"
-                  >
-                    <th
-                      scope="row"
-                      className="block px-4 pt-3 pb-1 text-left font-semibold sm:table-cell sm:py-3 sm:pb-3 sm:font-medium"
-                    >
-                      {t(`quick.${key}.label`)}
-                    </th>
-                    <td
-                      className="block px-4 pb-1 text-muted-foreground before:mb-1 before:block before:text-xs before:font-semibold before:text-foreground before:content-[attr(data-label)] sm:table-cell sm:py-3 sm:before:hidden"
-                      data-label={t('colLinkedin')}
-                    >
-                      {t(`quick.${key}.linkedin`)}
-                    </td>
-                    <td
-                      className="block bg-primary/5 px-4 pb-3 text-foreground before:mb-1 before:block before:text-xs before:font-semibold before:text-foreground before:content-[attr(data-label)] sm:table-cell sm:py-3 sm:before:hidden"
-                      data-label={t('colSifa')}
-                    >
-                      {t(`quick.${key}.sifa`)}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </section>
-
-        {/* Full comparison table */}
-        <section className="mt-12">
-          <h2 className="text-xl font-semibold">{t('fullTableCaption')}</h2>
+          <h2 className="text-xl font-semibold">{t('tableCaption')}</h2>
           <div className="mt-4 overflow-hidden rounded-lg border border-border">
             <table className="w-full text-sm">
               <thead className="hidden sm:table-header-group">
@@ -157,7 +111,7 @@ export default async function CompareLinkedInPage() {
                 </tr>
               </thead>
               <tbody>
-                {FULL_ROWS.map((key) => (
+                {TABLE_ROWS.map((key) => (
                   <tr
                     key={key}
                     className="flex flex-col border-b border-border last:border-0 sm:table-row"
@@ -166,16 +120,26 @@ export default async function CompareLinkedInPage() {
                       scope="row"
                       className="block px-4 pt-3 pb-1 text-left font-semibold sm:table-cell sm:w-36 sm:py-3 sm:pb-3 sm:align-top sm:font-medium"
                     >
-                      {t(`full.${key}.label`)}
+                      {t(`table.${key}.label`)}
                     </th>
                     <td
-                      className="block px-4 pb-1 text-muted-foreground before:mb-1 before:block before:text-xs before:font-semibold before:text-foreground before:content-[attr(data-label)] sm:table-cell sm:py-3 sm:align-top sm:before:hidden"
+                      className={`block px-4 pb-1 before:mb-1 before:block before:text-xs before:font-semibold before:text-foreground before:content-[attr(data-label)] sm:table-cell sm:py-3 sm:align-top sm:before:hidden ${LINKEDIN_WINS.has(key) ? 'text-foreground' : 'text-muted-foreground'}`}
                       data-label={t('colLinkedin')}
                     >
-                      {t(`full.${key}.linkedin`)}
+                      <span className="flex items-start gap-2">
+                        {LINKEDIN_WINS.has(key) && (
+                          <CheckCircle
+                            size={18}
+                            weight="fill"
+                            className="mt-0.5 shrink-0 text-green-600 dark:text-green-400"
+                            aria-hidden="true"
+                          />
+                        )}
+                        <span>{t(`table.${key}.linkedin`)}</span>
+                      </span>
                     </td>
                     <td
-                      className="block bg-primary/5 px-4 pb-3 text-foreground before:mb-1 before:block before:text-xs before:font-semibold before:text-foreground before:content-[attr(data-label)] sm:table-cell sm:py-3 sm:align-top sm:before:hidden"
+                      className={`block bg-primary/5 px-4 pb-3 before:mb-1 before:block before:text-xs before:font-semibold before:text-foreground before:content-[attr(data-label)] sm:table-cell sm:py-3 sm:align-top sm:before:hidden ${SIFA_WINS.has(key) ? 'text-foreground' : 'text-muted-foreground'}`}
                       data-label={t('colSifa')}
                     >
                       <span className="flex items-start gap-2">
@@ -187,7 +151,7 @@ export default async function CompareLinkedInPage() {
                             aria-hidden="true"
                           />
                         )}
-                        <span>{t(`full.${key}.sifa`)}</span>
+                        <span>{t(`table.${key}.sifa`)}</span>
                       </span>
                     </td>
                   </tr>
