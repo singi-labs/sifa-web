@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import {
@@ -13,7 +13,7 @@ import {
 } from '@phosphor-icons/react';
 import { useAuth } from '@/components/auth-provider';
 import { trackEvent } from '@/lib/analytics';
-import { markOnboardingSeen, hasSeenOnboarding, resolvePathHref } from '@/lib/onboarding';
+import { resolvePathHref } from '@/lib/onboarding';
 import { featureFlags } from '@/lib/feature-flags';
 import { onboardingPaths } from './onboarding-paths';
 import { EmailBanner } from './email-banner';
@@ -32,10 +32,7 @@ const ICON_MAP = { LinkedinLogo, PencilSimpleLine, Compass } as const;
 export function WelcomeContent() {
   const t = useTranslations('welcome');
   const router = useRouter();
-  const searchParams = useSearchParams();
   const { session, isLoading } = useAuth();
-
-  const isForced = searchParams.has('ref') || searchParams.has('force');
 
   useEffect(() => {
     if (isLoading) return;
@@ -45,14 +42,8 @@ export function WelcomeContent() {
       return;
     }
 
-    if (!session.isNewUser && !isForced && hasSeenOnboarding()) {
-      router.replace('/');
-      return;
-    }
-
     trackEvent('onboarding_view');
-    markOnboardingSeen();
-  }, [isLoading, session, isForced, router]);
+  }, [isLoading, session, router]);
 
   if (isLoading || !session) return null;
 
