@@ -17,6 +17,14 @@ const BLOCK_MARGIN = 3;
 const BLOCK_RADIUS = 2;
 const WEEKDAY_LABEL_WIDTH = 40; // approx space for Mon/Wed/Fri labels
 
+/** Format a Date as YYYY-MM-DD in local timezone (not UTC). */
+function toLocalDateStr(d: Date): string {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
 /** Build a complete date range, filling gaps with zero-activity entries. */
 function buildActivities(days: HeatmapDayData[]): {
   activities: Activity[];
@@ -32,18 +40,20 @@ function buildActivities(days: HeatmapDayData[]): {
   const end = new Date(today.getFullYear(), today.getMonth(), today.getDate());
   const start = new Date(end);
   start.setMonth(start.getMonth() - 6);
-  // Roll back to the Monday BEFORE the 6-month boundary so the first
-  // column is always a complete week. The library renders partial first
-  // columns when the start date falls mid-week, even if it's a Monday
-  // (due to how it aligns weeks internally with weekStart).
+  // Roll back to the previous Monday so the first column is full (weekStart=1).
+  // Use getDay() which returns local timezone day-of-week, matching toLocalDateStr.
   const dow = start.getDay(); // 0=Sun, 1=Mon...
   const backToMon = dow === 0 ? 6 : dow - 1;
-  start.setDate(start.getDate() - backToMon - 7);
+  if (backToMon > 0) {
+    start.setDate(start.getDate() - backToMon);
+  }
 
   const activities: Activity[] = [];
   const cursor = new Date(start);
   while (cursor <= end) {
-    const dateStr = cursor.toISOString().slice(0, 10);
+    // Use local date string, NOT toISOString() which converts to UTC
+    // and can shift the date by -1 day for timezones ahead of UTC
+    const dateStr = toLocalDateStr(cursor);
     const existing = dayMap.get(dateStr);
     activities.push({
       date: dateStr,
