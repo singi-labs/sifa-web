@@ -126,6 +126,13 @@ describe('BlueskyPostCard', () => {
     expect(screen.queryByTestId('bluesky-reply-label')).toBeNull();
   });
 
+  it('hides card overlay link on touch devices via pointer-coarse variant', () => {
+    render(<BlueskyPostCard {...makeProps()} />);
+
+    const link = screen.getByRole('link', { name: 'View on Bluesky' });
+    expect(link.className).toContain('pointer-coarse:hidden');
+  });
+
   it('shows Bluesky app badge in full variant', () => {
     render(<BlueskyPostCard {...makeProps()} />);
 

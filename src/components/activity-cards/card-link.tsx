@@ -28,7 +28,7 @@ export function CardLink({ href, label, children }: CardLinkProps) {
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        className="absolute inset-0"
+        className="absolute inset-0 pointer-coarse:hidden"
         aria-label={label}
       />
     </div>

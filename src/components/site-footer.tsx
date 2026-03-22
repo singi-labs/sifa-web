@@ -50,6 +50,12 @@ export function SiteFooter() {
           >
             {t('roadmap')}
           </Link>
+          <Link
+            href="/compare/linkedin"
+            className="text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+          >
+            {t('compare')}
+          </Link>
           <a
             href="https://github.com/singi-labs"
             className="text-muted-foreground hover:text-foreground"
