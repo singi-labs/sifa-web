@@ -41,6 +41,30 @@ const APP_REGISTRY: Record<string, AppMeta> = {
 
 const FALLBACK_CLASS = badgeClass('fallback');
 
+/** Phosphor icon component names per app (string mapping — actual imports happen in components) */
+const APP_ICONS: Record<string, string> = {
+  bluesky: 'ChatCircle',
+  tangled: 'GitBranch',
+  smokesignal: 'CalendarBlank',
+  flashes: 'Camera',
+  whitewind: 'Article',
+  frontpage: 'Newspaper',
+  picosky: 'ChatsCircle',
+  linkat: 'LinkSimple',
+  pastesphere: 'Clipboard',
+  kipclip: 'BookmarkSimple',
+  standard: 'FileText',
+  aetheros: 'Globe',
+  roomy: 'UsersThree',
+  keytrace: 'Key',
+  popfeed: 'Star',
+};
+
+/** Get the Phosphor icon component name for an app */
+export function getAppIconName(appId: string): string {
+  return APP_ICONS[appId] ?? 'CircleDashed';
+}
+
 /** URL patterns per app. Per-item patterns use {handle}, {did}, {rkey}, {name} placeholders. */
 const APP_URL_PATTERNS: Record<string, AppUrlPatterns> = {
   bluesky: {

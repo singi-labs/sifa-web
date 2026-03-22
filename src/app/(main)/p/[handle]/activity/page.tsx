@@ -1,11 +1,10 @@
 import type { Metadata } from 'next';
-import { Suspense } from 'react';
 import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 import { ArrowLeft } from '@phosphor-icons/react/dist/ssr';
-import { fetchActivityFeed } from '@/lib/api';
-import { ActivityHeatmap } from '@/components/activity-heatmap/activity-heatmap';
-import { ActivityFeed } from './activity-feed';
+import { fetchProfile, fetchActivityFeed } from '@/lib/api';
+import { ActivityPageContent } from './activity-page-content';
+import type { ActiveApp } from '@/lib/types';
 
 export async function generateMetadata({
   params,
@@ -23,10 +22,15 @@ export default async function ActivityPage({ params }: { params: Promise<{ handl
   const { handle } = await params;
   const t = await getTranslations('activity');
 
-  const initialData = await fetchActivityFeed(handle, {
-    category: 'all',
-    limit: 20,
-  });
+  const [profile, initialData] = await Promise.all([
+    fetchProfile(handle),
+    fetchActivityFeed(handle, {
+      category: 'all',
+      limit: 20,
+    }),
+  ]);
+
+  const activeApps: ActiveApp[] = profile?.activeApps ?? [];
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
@@ -42,13 +46,7 @@ export default async function ActivityPage({ params }: { params: Promise<{ handl
 
       <h1 className="mb-6 text-2xl font-bold">{t('title', { handle })}</h1>
 
-      <div className="mb-6">
-        <Suspense fallback={<div className="h-[136px] w-full animate-pulse rounded-lg bg-muted" />}>
-          <ActivityHeatmap handle={handle} days={365} variant="full" />
-        </Suspense>
-      </div>
-
-      <ActivityFeed handle={handle} initialData={initialData} />
+      <ActivityPageContent handle={handle} activeApps={activeApps} initialData={initialData} />
     </div>
   );
 }

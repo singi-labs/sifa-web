@@ -82,6 +82,13 @@
     "previewBanner": "Viewing your profile as others see it",
     "exitPreview": "Exit preview"
   },
+  "activityIndicators": {
+    "label": "Active apps",
+    "activeOn": "Active on {app}",
+    "moreApps": "+{count} more",
+    "clearFilter": "Clear filter",
+    "viewOnApp": "View on {app}"
+  },
   "activity": {
     "title": "Activity for {handle}",
     "breadcrumb": "Activity breadcrumb",

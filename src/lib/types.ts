@@ -208,6 +208,9 @@ export interface Profile {
   // Verified accounts (Keytrace)
   verifiedAccounts?: VerifiedAccount[];
 
+  // Active apps (cross-app activity)
+  activeApps?: ActiveApp[];
+
   // Social graph counts
   followersCount: number;
   followingCount: number;
