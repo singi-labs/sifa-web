@@ -8,17 +8,40 @@ describe('BetaBanner', () => {
     sessionStorage.clear();
   });
 
-  it('renders the beta message', () => {
+  it('renders the pre-alpha message', () => {
     render(<BetaBanner />);
 
     expect(screen.getByRole('status')).toBeDefined();
     expect(screen.getByText(/Sifa is pre-alpha/)).toBeDefined();
   });
 
-  it('has a dismiss button', () => {
+  it('has an info button and a dismiss button', () => {
     render(<BetaBanner />);
 
+    expect(screen.getByRole('button', { name: 'What this means' })).toBeDefined();
     expect(screen.getByRole('button', { name: 'Dismiss banner' })).toBeDefined();
+  });
+
+  it('opens popover with details when info button is clicked', async () => {
+    const user = userEvent.setup();
+    render(<BetaBanner />);
+
+    await user.click(screen.getByRole('button', { name: 'What this means' }));
+
+    expect(screen.getByRole('dialog')).toBeDefined();
+    expect(screen.getByText(/live dev server/)).toBeDefined();
+    expect(screen.getByText('Report issues on GitHub')).toBeDefined();
+  });
+
+  it('closes popover on Escape', async () => {
+    const user = userEvent.setup();
+    render(<BetaBanner />);
+
+    await user.click(screen.getByRole('button', { name: 'What this means' }));
+    expect(screen.getByRole('dialog')).toBeDefined();
+
+    await user.keyboard('{Escape}');
+    expect(screen.queryByRole('dialog')).toBeNull();
   });
 
   it('hides when dismissed', async () => {
