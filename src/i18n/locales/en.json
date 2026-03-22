@@ -18,6 +18,7 @@
     "privacy": "Privacy",
     "terms": "Terms",
     "roadmap": "Roadmap",
+    "compare": "Sifa vs LinkedIn",
     "builtBy": "Built by",
     "poweredByAtproto": "Powered by the AT Protocol",
     "switchToLight": "Switch to light mode",
@@ -181,7 +182,7 @@
     "awards": "Awards",
     "languages": "Languages",
     "otherProfiles": "Links",
-    "alsoFindOn": "Also find {name} on",
+    "alsoFindOn": "Also find {name} on…",
     "usedIn": "Used in",
     "verified": "Verified",
     "verifyHintGithub": "Add your Sifa profile URL in the \"URL\" field or under \"Social accounts\" in your GitHub profile settings. We'll verify the link automatically when you save.",
@@ -584,5 +585,140 @@
       "errorInvalid": "Please enter a valid email address.",
       "errorServer": "Something went wrong. Please try again."
     }
+  },
+  "compareLinkedin": {
+    "kicker": "Time to free your professional data",
+    "title": "The LinkedIn alternative that gives you your data back",
+    "description": "LinkedIn alternative with data ownership -- Sifa",
+    "metaDescription": "LinkedIn owns your career data. Sifa stores it in your own account -- portable and yours to keep. No ads, no lock-in. See the full comparison.",
+    "subhead": "Your career history, skills, and endorsements live in your own data account -- not on someone else's servers. Portable, verifiable, and yours to keep. Built in the Netherlands, hosted in Germany, funded by no one but ourselves.",
+    "heroCta": "Import your LinkedIn profile in 2 minutes",
+    "lastUpdated": "Last updated: March 2026",
+    "quickTableCaption": "Quick comparison",
+    "fullTableCaption": "Full comparison",
+    "colLinkedin": "LinkedIn",
+    "colSifa": "Sifa",
+    "quick": {
+      "data": {
+        "label": "Your data",
+        "linkedin": "Stored on LinkedIn's servers",
+        "sifa": "Stored in your own data account"
+      },
+      "portability": {
+        "label": "Profile portability",
+        "linkedin": "Not portable to other services",
+        "sifa": "Portable to any compatible app"
+      },
+      "cost": {
+        "label": "Cost",
+        "linkedin": "Free + paid tiers from $30/month",
+        "sifa": "Free, no paid tiers"
+      },
+      "tracking": {
+        "label": "Ads and tracking",
+        "linkedin": "Activity tracked for advertising",
+        "sifa": "No tracking, no ads"
+      },
+      "hosting": {
+        "label": "Headquarters and hosting",
+        "linkedin": "Microsoft (US). EU data centers available, but US parent company and US law apply.",
+        "sifa": "Netherlands (company) + Germany (servers). No US parent entity. EU law only."
+      }
+    },
+    "full": {
+      "data": {
+        "label": "Your data",
+        "linkedin": "Stored on LinkedIn's servers. You can export a copy, but the live profile and its network context stay behind.",
+        "sifa": "Stored in your own data account. Move it, delete it, or take it to another app anytime."
+      },
+      "portability": {
+        "label": "Profile portability",
+        "linkedin": "Leave LinkedIn, lose your live profile. The export is a static archive, not a working profile.",
+        "sifa": "Take your profile to any compatible app. If Sifa disappears, your data doesn't."
+      },
+      "signIn": {
+        "label": "Sign-in",
+        "linkedin": "One LinkedIn account, one platform. LinkedIn decides if you keep access.",
+        "sifa": "Sign in with your Bluesky account (or any AT Protocol account). No Sifa-specific signup."
+      },
+      "algorithm": {
+        "label": "Algorithm",
+        "linkedin": "LinkedIn's algorithm controls your feed and who sees your profile in search. Optimized for engagement.",
+        "sifa": "No algorithmic feed. Your profile is publicly searchable by default."
+      },
+      "privacy": {
+        "label": "Privacy",
+        "linkedin": "Activity tracked for Microsoft's advertising network. US-headquartered, subject to US data laws.",
+        "sifa": "No tracking, no ads, no third-party data sharing. EU-hosted (Hetzner, Germany). Cookieless analytics (Umami, self-hosted in the Netherlands)."
+      },
+      "jurisdiction": {
+        "label": "Jurisdiction",
+        "linkedin": "Owned by Microsoft (US). Your data is subject to US jurisdiction, including potential government access under CLOUD Act. EU data residency available but processing still governed by a US parent company.",
+        "sifa": "Built and operated from the Netherlands. All infrastructure in the EU (Germany). No US parent company. GDPR is our baseline, not an afterthought."
+      },
+      "endorsements": {
+        "label": "Endorsements",
+        "linkedin": "Endorsements from people who may never have seen your work. No verification of the relationship.",
+        "sifa": "Endorsements require mutual confirmation. Each includes context about how the endorser knows your work."
+      },
+      "profileViews": {
+        "label": "Profile views",
+        "linkedin": "\"Who viewed your profile\" requires Premium ($30/month).",
+        "sifa": "Free, with a mutual privacy model (you see views only if you also share yours)."
+      },
+      "cost": {
+        "label": "Cost",
+        "linkedin": "Free tier with persistent upselling. Premium starts at ~$30/month.",
+        "sifa": "Free. No premium tiers. No upselling."
+      },
+      "sourceCode": {
+        "label": "Source code",
+        "linkedin": "Proprietary, closed source.",
+        "sifa": "Source-available on GitHub. Professional profile data standards are MIT-licensed."
+      },
+      "crossApp": {
+        "label": "Cross-app activity",
+        "linkedin": "Shows activity within LinkedIn only.",
+        "sifa": "Shows your activity across the open social web: Bluesky posts, code contributions, blog posts, event attendance."
+      }
+    },
+    "acknowledgmentTitle": "An honest take",
+    "acknowledgment": "LinkedIn has a billion members, two decades of recruiter tooling, and a job marketplace we haven't built yet. We're not trying to replace all of that. Sifa exists for a different reason: to give you a professional identity that isn't controlled by a platform. Many people maintain both -- and that's fine. Two things LinkedIn does that Sifa doesn't yet: a job board and company pages. Both are on <roadmapLink>the roadmap</roadmapLink>.",
+    "whenLinkedinTitle": "When LinkedIn is the better choice",
+    "whenLinkedin": {
+      "recruiting": "You're actively job hunting and need recruiter inbox access",
+      "industry": "Your industry's hiring happens primarily on LinkedIn",
+      "companyPages": "You need company pages or LinkedIn Learning",
+      "network": "Your entire professional network is on LinkedIn with no interest in moving"
+    },
+    "diffProfileTitle": "Your profile works everywhere",
+    "diffProfile": "Your Sifa profile is a public, SEO-indexed page that works independently -- even if nobody else is on Sifa. Embed it on your personal website, your conference speaker page, or your team directory with a single line of code. Already on LinkedIn? Import your career history in 2 minutes and own it from here on.",
+    "diffEndorsementsTitle": "Endorsements with verified context",
+    "diffEndorsements": "Each Sifa endorsement records how the endorser knows your work: \"worked together at [company]\", \"collaborated in [community]\", \"co-authored [project]\". Both sides confirm before it appears on your profile. No more meaningless +1s from strangers.",
+    "diffEuropeTitle": "Built in Europe, not bolted on",
+    "diffEurope": "LinkedIn is owned by Microsoft and headquartered in the US. Even with EU data centers, your professional data is governed by a US parent company subject to the CLOUD Act. Sifa is built in the Netherlands, hosted in Germany, and has no US parent entity. We use EU-based or self-hosted services for everything -- analytics, error tracking, email. GDPR is not a compliance checkbox for us; it is how we build.",
+    "diffPaywallsTitle": "No paywalls, no algorithmic feed",
+    "diffPaywalls": "Who viewed your profile? Free. Full search? Free. No \"premium\" tier, no InMail credits, no connection limits. Your profile is publicly findable. No algorithm decides who sees it.",
+    "faqTitle": "Frequently asked questions",
+    "faq": {
+      "importQ": "Can I move my existing LinkedIn profile to Sifa?",
+      "importA": "Yes. Export your LinkedIn data, upload the ZIP to Sifa, and your positions, education, and skills are imported in about 2 minutes. The ZIP is processed in your browser and never leaves your device.",
+      "bothQ": "Does Sifa work if I still want to use LinkedIn?",
+      "bothA": "Yes. Sifa is an alternative, not a replacement. Many people maintain both. Your Sifa profile gives you a portable version of your professional identity that you control regardless of what happens on any platform.",
+      "freeQ": "Is Sifa free?",
+      "freeA": "Yes. Profiles, search, endorsements, and profile analytics are all free. There are no premium tiers.",
+      "pdsQ": "What is a Personal Data Server?",
+      "pdsA": "A Personal Data Server (PDS) is where your data lives on the AT Protocol -- the open standard behind Bluesky. Think of it as your own account that you control. You can move it between providers or even host it yourself.",
+      "storedQ": "Where is my data stored?",
+      "storedA": "Your profile data is stored in your Personal Data Server, which you choose. Sifa's application servers are hosted by Hetzner in Germany, under EU data protection law.",
+      "usLawQ": "Is Sifa subject to US data laws?",
+      "usLawA": "No. Sifa is operated from the Netherlands with servers in Germany. There is no US parent company. Your data is governed exclusively by EU law (GDPR). We use EU-based or self-hosted tools for all infrastructure -- no data flows to US services like Google Analytics, Cloudflare, or AWS.",
+      "jobBoardQ": "Does Sifa have a job board?",
+      "jobBoardA": "Not yet. A job board integration is on the roadmap. Today, Sifa focuses on professional identity: your profile, endorsements, and cross-app activity."
+    },
+    "ctaTitle": "Ready to own your professional identity?",
+    "ctaPrimary": "Create your profile",
+    "ctaSecondary": "Import from LinkedIn",
+    "ctaTertiary": "View the roadmap"
   }
 }
