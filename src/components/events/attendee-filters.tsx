@@ -100,6 +100,7 @@ function AttendeeFilters({
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
       setSearchValue(value);
+      setShowLoginNudge(false);
 
       if (debounceRef.current) {
         clearTimeout(debounceRef.current);
@@ -120,13 +121,6 @@ function AttendeeFilters({
     nudgeTimerRef.current = setTimeout(() => {
       setShowLoginNudge(false);
     }, LOGIN_NUDGE_DURATION_MS);
-  }, []);
-
-  const dismissNudge = useCallback(() => {
-    setShowLoginNudge(false);
-    if (nudgeTimerRef.current) {
-      clearTimeout(nudgeTimerRef.current);
-    }
   }, []);
 
   useEffect(() => {
@@ -196,7 +190,7 @@ function AttendeeFilters({
 
       {/* Login nudge for ghost chips */}
       {showLoginNudge && !isLoggedIn && (
-        <p className="text-sm text-muted-foreground" role="status" onClick={dismissNudge}>
+        <p className="text-sm text-muted-foreground" role="status">
           Sign in with your AT Protocol handle to filter by connections.{' '}
           {loginUrl && (
             <Link href={loginUrl} className="underline hover:text-foreground">

@@ -47,9 +47,7 @@ describe('AttendeeFilters', () => {
   it('renders ghost connection filter chips when logged out', () => {
     renderFilters({ isLoggedIn: false });
 
-    const connectionLabels = ['All', 'Mutual', 'Following', 'Follows you', 'New to you'];
-    // The first "All" is a role chip; connection chips include a second "All"
-    // Ghost chips should be present as buttons
+    // Ghost chips should be present as buttons (connection filter chips rendered in ghost style)
     expect(screen.getByRole('button', { name: 'Mutual' })).toBeDefined();
     expect(screen.getByRole('button', { name: 'Following' })).toBeDefined();
     expect(screen.getByRole('button', { name: 'Follows you' })).toBeDefined();
