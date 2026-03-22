@@ -4,6 +4,9 @@ import {
   mapProfileCsv,
   mapEducationCsv,
   mapSkillsCsv,
+  mapCertificationsCsv,
+  mapProjectsCsv,
+  mapPublicationsCsv,
 } from '@/lib/import/field-mapper';
 
 describe('LinkedIn field mapper', () => {
@@ -92,6 +95,63 @@ describe('LinkedIn field mapper', () => {
 
       const result = mapSkillsCsv(csvRow);
       expect(result.skillName).toBe('TypeScript');
+    });
+  });
+
+  describe('mapCertificationsCsv', () => {
+    it('keeps valid credential URLs', () => {
+      const result = mapCertificationsCsv({
+        Name: 'AWS SA',
+        Authority: 'Amazon',
+        Url: 'https://aws.amazon.com/cert/123',
+        'License Number': 'ABC-123',
+        'Started On': 'Jan 2023',
+      });
+      expect(result.credentialUrl).toBe('https://aws.amazon.com/cert/123');
+    });
+
+    it('strips invalid credential URLs', () => {
+      const result = mapCertificationsCsv({
+        Name: 'Some Cert',
+        Url: 'not-a-url',
+      });
+      expect(result.credentialUrl).toBeUndefined();
+    });
+
+    it('strips empty credential URLs', () => {
+      const result = mapCertificationsCsv({
+        Name: 'Some Cert',
+        Url: '  ',
+      });
+      expect(result.credentialUrl).toBeUndefined();
+    });
+  });
+
+  describe('mapProjectsCsv', () => {
+    it('strips invalid project URLs', () => {
+      const result = mapProjectsCsv({
+        Title: 'My Project',
+        Url: 'broken',
+      });
+      expect(result.url).toBeUndefined();
+    });
+
+    it('keeps valid project URLs', () => {
+      const result = mapProjectsCsv({
+        Title: 'My Project',
+        Url: 'https://github.com/example',
+      });
+      expect(result.url).toBe('https://github.com/example');
+    });
+  });
+
+  describe('mapPublicationsCsv', () => {
+    it('strips invalid publication URLs', () => {
+      const result = mapPublicationsCsv({
+        Name: 'My Paper',
+        Url: 'garbage',
+      });
+      expect(result.url).toBeUndefined();
     });
   });
 });

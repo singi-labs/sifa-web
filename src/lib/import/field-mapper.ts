@@ -40,6 +40,18 @@ function optional(value: string | undefined): string | undefined {
   return trimmed ? trimmed : undefined;
 }
 
+/** Return trimmed string only if it's a valid URL, otherwise undefined. */
+function optionalUrl(value: string | undefined): string | undefined {
+  const trimmed = value?.trim();
+  if (!trimmed) return undefined;
+  try {
+    new URL(trimmed);
+    return trimmed;
+  } catch {
+    return undefined;
+  }
+}
+
 // ── Positions.csv → id.sifa.profile.position ──────────────────────────
 
 export interface SifaPosition {
@@ -136,7 +148,7 @@ export function mapCertificationsCsv(row: Record<string, string>): SifaCertifica
   return {
     name: row['Name']?.trim() ?? '',
     authority: optional(row['Authority']),
-    credentialUrl: optional(row['Url']),
+    credentialUrl: optionalUrl(row['Url']),
     credentialId: optional(row['License Number']),
     issuedAt: parseLinkedInDate(row['Started On']),
   };
@@ -156,7 +168,7 @@ export function mapProjectsCsv(row: Record<string, string>): SifaProject {
   return {
     name: row['Title']?.trim() ?? '',
     description: restoreLineBreaks(optional(row['Description'])),
-    url: optional(row['Url']),
+    url: optionalUrl(row['Url']),
     startDate: parseLinkedInDate(row['Started On']),
     endDate: parseLinkedInDate(row['Finished On']),
   };
@@ -218,7 +230,7 @@ export function mapPublicationsCsv(row: Record<string, string>): SifaPublication
   return {
     title: row['Name']?.trim() ?? '',
     publisher: optional(row['Publisher']),
-    url: optional(row['Url']),
+    url: optionalUrl(row['Url']),
     description: restoreLineBreaks(optional(row['Description'])),
     publishedAt: parsePublicationDate(row['Published On']),
   };
