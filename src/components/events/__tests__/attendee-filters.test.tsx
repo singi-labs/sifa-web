@@ -37,18 +37,65 @@ describe('AttendeeFilters', () => {
   it('renders role filter chips (All, Speakers, Attendees)', () => {
     renderFilters();
 
-    expect(screen.getByRole('button', { name: 'All' })).toBeDefined();
+    // There are two "All" buttons (role + connection), so use getAllByRole
+    const allButtons = screen.getAllByRole('button', { name: 'All' });
+    expect(allButtons.length).toBeGreaterThanOrEqual(1);
     expect(screen.getByRole('button', { name: 'Speakers' })).toBeDefined();
     expect(screen.getByRole('button', { name: 'Attendees' })).toBeDefined();
   });
 
-  it('does NOT render connection filters when logged out', () => {
+  it('renders ghost connection filter chips when logged out', () => {
     renderFilters({ isLoggedIn: false });
 
-    expect(screen.queryByRole('button', { name: 'Mutual' })).toBeNull();
-    expect(screen.queryByRole('button', { name: 'Following' })).toBeNull();
-    expect(screen.queryByRole('button', { name: 'Follows you' })).toBeNull();
-    expect(screen.queryByRole('button', { name: 'New to you' })).toBeNull();
+    const connectionLabels = ['All', 'Mutual', 'Following', 'Follows you', 'New to you'];
+    // The first "All" is a role chip; connection chips include a second "All"
+    // Ghost chips should be present as buttons
+    expect(screen.getByRole('button', { name: 'Mutual' })).toBeDefined();
+    expect(screen.getByRole('button', { name: 'Following' })).toBeDefined();
+    expect(screen.getByRole('button', { name: 'Follows you' })).toBeDefined();
+    expect(screen.getByRole('button', { name: 'New to you' })).toBeDefined();
+  });
+
+  it('ghost chips have aria-disabled when logged out', () => {
+    renderFilters({ isLoggedIn: false });
+
+    const mutualChip = screen.getByRole('button', { name: 'Mutual' });
+    expect(mutualChip.getAttribute('aria-disabled')).toBe('true');
+
+    const followingChip = screen.getByRole('button', { name: 'Following' });
+    expect(followingChip.getAttribute('aria-disabled')).toBe('true');
+  });
+
+  it('clicking ghost chip shows login nudge message', () => {
+    renderFilters({ isLoggedIn: false, loginUrl: '/login?returnTo=/events/test' });
+
+    const mutualChip = screen.getByRole('button', { name: 'Mutual' });
+    act(() => {
+      mutualChip.click();
+    });
+
+    const nudge = screen.getByText(/Sign in with your AT Protocol handle/);
+    expect(nudge).toBeDefined();
+
+    const link = screen.getByRole('link', { name: 'Sign in' });
+    expect(link.getAttribute('href')).toBe('/login?returnTo=/events/test');
+  });
+
+  it('login nudge auto-dismisses after 5 seconds', () => {
+    renderFilters({ isLoggedIn: false, loginUrl: '/login?returnTo=/events/test' });
+
+    const mutualChip = screen.getByRole('button', { name: 'Mutual' });
+    act(() => {
+      mutualChip.click();
+    });
+
+    expect(screen.getByText(/Sign in with your AT Protocol handle/)).toBeDefined();
+
+    act(() => {
+      vi.advanceTimersByTime(5000);
+    });
+
+    expect(screen.queryByText(/Sign in with your AT Protocol handle/)).toBeNull();
   });
 
   it('renders connection filters when logged in', () => {
@@ -147,6 +194,10 @@ describe('AttendeeFilters', () => {
     expect(screen.getByRole('button', { name: 'Speakers' }).getAttribute('aria-pressed')).toBe(
       'true',
     );
-    expect(screen.getByRole('button', { name: 'All' }).getAttribute('aria-pressed')).toBe('false');
+    // Find the role "All" chip (has aria-pressed, not aria-disabled)
+    const allButtons = screen.getAllByRole('button', { name: 'All' });
+    const roleAllChip = allButtons.find((btn) => btn.getAttribute('aria-pressed') !== null);
+    expect(roleAllChip).toBeDefined();
+    expect(roleAllChip!.getAttribute('aria-pressed')).toBe('false');
   });
 });

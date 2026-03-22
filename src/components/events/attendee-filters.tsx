@@ -1,6 +1,7 @@
 'use client';
 
 import { MagnifyingGlass } from '@phosphor-icons/react';
+import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { cn } from '@/lib/utils';
@@ -43,6 +44,8 @@ const chipBase =
   'rounded-full px-3 py-1.5 text-sm font-medium min-h-[44px] transition-colors cursor-pointer';
 const chipActive = 'bg-primary text-primary-foreground';
 const chipInactive = 'bg-muted text-muted-foreground hover:bg-accent';
+const chipGhost =
+  'rounded-full px-3 py-1.5 text-sm font-medium min-h-[44px] border border-dashed border-border text-muted-foreground/50 cursor-default';
 
 function FilterChip({
   label,
@@ -65,6 +68,16 @@ function FilterChip({
   );
 }
 
+function GhostFilterChip({ label, onClick }: { label: string; onClick: () => void }) {
+  return (
+    <button type="button" aria-disabled="true" onClick={onClick} className={chipGhost}>
+      {label}
+    </button>
+  );
+}
+
+const LOGIN_NUDGE_DURATION_MS = 5000;
+
 function AttendeeFilters({
   onSearchChange,
   onRoleFilterChange,
@@ -76,9 +89,12 @@ function AttendeeFilters({
   isLoggedIn,
   resultCount,
   totalCount,
+  loginUrl,
 }: AttendeeFiltersProps) {
   const [searchValue, setSearchValue] = useState('');
+  const [showLoginNudge, setShowLoginNudge] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const nudgeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleSearchInput = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -96,10 +112,30 @@ function AttendeeFilters({
     [onSearchChange],
   );
 
+  const handleGhostChipClick = useCallback(() => {
+    setShowLoginNudge(true);
+    if (nudgeTimerRef.current) {
+      clearTimeout(nudgeTimerRef.current);
+    }
+    nudgeTimerRef.current = setTimeout(() => {
+      setShowLoginNudge(false);
+    }, LOGIN_NUDGE_DURATION_MS);
+  }, []);
+
+  const dismissNudge = useCallback(() => {
+    setShowLoginNudge(false);
+    if (nudgeTimerRef.current) {
+      clearTimeout(nudgeTimerRef.current);
+    }
+  }, []);
+
   useEffect(() => {
     return () => {
       if (debounceRef.current) {
         clearTimeout(debounceRef.current);
+      }
+      if (nudgeTimerRef.current) {
+        clearTimeout(nudgeTimerRef.current);
       }
     };
   }, []);
@@ -141,22 +177,34 @@ function AttendeeFilters({
           />
         ))}
 
-        {isLoggedIn && (
-          <>
-            <span className="mx-1 text-muted-foreground" aria-hidden="true">
-              |
-            </span>
-            {CONNECTION_CHIPS.map((chip) => (
+        <span className="mx-1 text-muted-foreground" aria-hidden="true">
+          |
+        </span>
+        {isLoggedIn
+          ? CONNECTION_CHIPS.map((chip) => (
               <FilterChip
                 key={chip.value}
                 label={chip.label}
                 pressed={connectionFilter === chip.value}
                 onClick={() => onConnectionFilterChange(chip.value)}
               />
+            ))
+          : CONNECTION_CHIPS.map((chip) => (
+              <GhostFilterChip key={chip.value} label={chip.label} onClick={handleGhostChipClick} />
             ))}
-          </>
-        )}
       </div>
+
+      {/* Login nudge for ghost chips */}
+      {showLoginNudge && !isLoggedIn && (
+        <p className="text-sm text-muted-foreground" role="status" onClick={dismissNudge}>
+          Sign in with your AT Protocol handle to filter by connections.{' '}
+          {loginUrl && (
+            <Link href={loginUrl} className="underline hover:text-foreground">
+              Sign in
+            </Link>
+          )}
+        </p>
+      )}
 
       {/* Status bar */}
       <div className="flex items-center justify-between text-sm text-muted-foreground">
