@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useAuth } from '@/components/auth-provider';
 
 export type ConnectionType = 'mutual' | 'following' | 'followedBy';
@@ -89,9 +89,13 @@ export async function detectConnections(
   return connections;
 }
 
-function getCachedConnections(did: string): ConnectionMap | null {
+function getCacheKey(did: string, attendeeCount: number): string {
+  return `${CACHE_KEY_PREFIX}${did}:${String(attendeeCount)}`;
+}
+
+function getCachedConnections(did: string, attendeeCount: number): ConnectionMap | null {
   try {
-    const raw = sessionStorage.getItem(`${CACHE_KEY_PREFIX}${did}`);
+    const raw = sessionStorage.getItem(getCacheKey(did, attendeeCount));
     if (!raw) return null;
     const entries = JSON.parse(raw) as Array<[string, ConnectionType]>;
     return new Map(entries);
@@ -100,10 +104,14 @@ function getCachedConnections(did: string): ConnectionMap | null {
   }
 }
 
-function setCachedConnections(did: string, connections: ConnectionMap): void {
+function setCachedConnections(
+  did: string,
+  attendeeCount: number,
+  connections: ConnectionMap,
+): void {
   try {
     const entries = Array.from(connections.entries());
-    sessionStorage.setItem(`${CACHE_KEY_PREFIX}${did}`, JSON.stringify(entries));
+    sessionStorage.setItem(getCacheKey(did, attendeeCount), JSON.stringify(entries));
   } catch {
     // sessionStorage unavailable
   }
@@ -117,48 +125,58 @@ interface UseAttendeeConnectionsResult {
 
 export function useAttendeeConnections(attendeeDids: string[]): UseAttendeeConnectionsResult {
   const { session } = useAuth();
-  const isLoggedIn = session !== null;
-  const [connections, setConnections] = useState<ConnectionMap>(() => {
-    if (!session?.did) return new Map();
-    return getCachedConnections(session.did) ?? new Map();
-  });
-  const [isLoading, setIsLoading] = useState(false);
+  const userDid = session?.did ?? null;
+  const isLoggedIn = userDid !== null;
+  const attendeeCount = attendeeDids.length;
+
+  // Check cache synchronously outside the effect to avoid setState-in-effect lint errors
+  const cachedConnections = useMemo<ConnectionMap | null>(() => {
+    if (!userDid || attendeeCount === 0) return null;
+    return getCachedConnections(userDid, attendeeCount);
+  }, [userDid, attendeeCount]);
+
+  const needsFetch = userDid !== null && attendeeCount > 0 && cachedConnections === null;
+
+  // Track fetch results. When needsFetch becomes true, we're loading until a result arrives.
+  const [fetchResult, setFetchResult] = useState<{
+    key: string;
+    connections: ConnectionMap;
+  } | null>(null);
+
+  const fetchKey = needsFetch ? `${userDid}:${String(attendeeCount)}` : '';
 
   useEffect(() => {
-    if (!session?.did || attendeeDids.length === 0) {
-      setConnections(new Map());
-      setIsLoading(false);
-      return;
-    }
-
-    const cached = getCachedConnections(session.did);
-    if (cached) {
-      setConnections(cached);
-      setIsLoading(false);
+    if (!needsFetch || !userDid) {
       return;
     }
 
     const controller = new AbortController();
-    setIsLoading(true);
 
-    detectConnections(session.did, attendeeDids, controller.signal)
+    detectConnections(userDid, attendeeDids, controller.signal)
       .then((result) => {
         if (!controller.signal.aborted) {
-          setConnections(result);
-          setCachedConnections(session.did, result);
-          setIsLoading(false);
+          setCachedConnections(userDid, attendeeCount, result);
+          setFetchResult({ key: fetchKey, connections: result });
         }
       })
       .catch(() => {
         if (!controller.signal.aborted) {
-          setIsLoading(false);
+          // Mark fetch as done with empty result on error
+          setFetchResult({ key: fetchKey, connections: new Map() });
         }
       });
 
     return () => {
       controller.abort();
     };
-  }, [session?.did, attendeeDids]);
+  }, [needsFetch, userDid, attendeeDids, attendeeCount, fetchKey]);
+
+  // Derive final state without synchronous setState in effects
+  const hasFetchResult = fetchResult !== null && fetchResult.key === fetchKey;
+  const connections =
+    cachedConnections ??
+    (hasFetchResult ? fetchResult.connections : new Map<string, ConnectionType>());
+  const isLoading = needsFetch && !hasFetchResult;
 
   return { connections, isLoading, isLoggedIn };
 }

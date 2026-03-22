@@ -46,8 +46,6 @@ export interface EventEntry {
 
 interface EventCardGridProps {
   entries: EventEntry[];
-  speakerCount: number;
-  attendeeCount: number;
   connections?: ConnectionMap;
 }
 
@@ -73,6 +71,7 @@ export function EventCardGrid({ entries, connections }: EventCardGridProps) {
           <Link
             key={profile.handle}
             href={`/p/${profile.handle}`}
+            aria-label={`View profile of ${profile.displayName ?? profile.handle}`}
             className="relative h-full transition-transform hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           >
             {connectionType && (

@@ -15,8 +15,6 @@ import { EventCardGrid, type EventEntry } from './event-card-grid';
 
 interface EventPageClientProps {
   entries: EventEntry[];
-  speakerCount: number;
-  attendeeCount: number;
   eventSlug: string;
 }
 
@@ -37,14 +35,9 @@ function getName(entry: EventEntry): string {
   return (entry.profile.displayName ?? entry.profile.handle).toLowerCase();
 }
 
-export function EventPageClient({
-  entries,
-  speakerCount,
-  attendeeCount,
-  eventSlug,
-}: EventPageClientProps) {
-  const { session } = useAuth();
-  const isLoggedIn = session !== null;
+export function EventPageClient({ entries, eventSlug }: EventPageClientProps) {
+  const { session, isLoading: authLoading } = useAuth();
+  const isLoggedIn = !!session?.did;
 
   const attendeeDids = useMemo(() => entries.map((e) => e.profile.did), [entries]);
   const { connections, isLoading } = useAttendeeConnections(attendeeDids);
@@ -136,8 +129,8 @@ export function EventPageClient({
     <div className="flex flex-col gap-6">
       {/* Connection summary banner */}
       <ConnectionSummary
-        isLoggedIn={isLoggedIn}
-        isLoading={isLoading}
+        isLoggedIn={isLoggedIn || authLoading}
+        isLoading={authLoading || isLoading}
         connections={connectionPeople}
         loginUrl={loginUrl}
       />
@@ -161,12 +154,7 @@ export function EventPageClient({
       />
 
       {/* Card grid */}
-      <EventCardGrid
-        entries={sorted}
-        speakerCount={speakerCount}
-        attendeeCount={attendeeCount}
-        connections={connections}
-      />
+      <EventCardGrid entries={sorted} connections={connections} />
     </div>
   );
 }

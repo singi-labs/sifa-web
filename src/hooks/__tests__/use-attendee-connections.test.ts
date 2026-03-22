@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { detectConnections, type ConnectionMap } from '../use-attendee-connections';
+import { detectConnections } from '../use-attendee-connections';
 
 const BSKY_API = 'https://public.api.bsky.app/xrpc/app.bsky.graph.getRelationships';
 

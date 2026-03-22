@@ -178,12 +178,7 @@ export default async function EventPage({ params }: EventPageProps) {
         </div>
       </div>
 
-      <EventPageClient
-        entries={entries}
-        speakerCount={speakerCount}
-        attendeeCount={attendeeCount}
-        eventSlug={event.slug}
-      />
+      <EventPageClient entries={entries} eventSlug={event.slug} />
 
       {/* RSVP CTA */}
       <div className="mt-12 rounded-lg border border-border bg-muted/30 p-6 text-center">

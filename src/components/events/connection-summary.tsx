@@ -70,17 +70,26 @@ export function ConnectionSummary({
   return (
     <div className={containerClass}>
       <div className="flex shrink-0 -space-x-2">
-        {visibleAvatars.map((person) => (
-          <Image
-            key={person.did}
-            src={person.avatar ?? ''}
-            alt={person.displayName ?? 'Connection'}
-            width={32}
-            height={32}
-            className="size-8 rounded-full border-2 border-background object-cover"
-            unoptimized
-          />
-        ))}
+        {visibleAvatars.map((person) =>
+          person.avatar ? (
+            <Image
+              key={person.did}
+              src={person.avatar}
+              alt={person.displayName ?? 'Connection'}
+              width={32}
+              height={32}
+              className="size-8 rounded-full border-2 border-background object-cover"
+            />
+          ) : (
+            <span
+              key={person.did}
+              className="flex size-8 items-center justify-center rounded-full border-2 border-background bg-muted text-xs font-medium text-muted-foreground"
+              aria-hidden="true"
+            >
+              {(person.displayName ?? '?')[0]?.toUpperCase()}
+            </span>
+          ),
+        )}
         {remaining > 0 && (
           <span className="flex size-8 items-center justify-center rounded-full border-2 border-background bg-muted text-xs font-medium text-muted-foreground">
             +{remaining}
