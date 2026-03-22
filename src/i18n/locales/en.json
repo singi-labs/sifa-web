@@ -84,6 +84,7 @@
   },
   "activityIndicators": {
     "label": "Active apps",
+    "rowLabel": "Active on:",
     "activeOn": "Active on {app}",
     "moreApps": "+{count} more",
     "clearFilter": "Clear filter",
