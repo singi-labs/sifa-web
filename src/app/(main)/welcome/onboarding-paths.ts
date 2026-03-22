@@ -29,11 +29,7 @@ export const onboardingPaths: OnboardingPath[] = [
     buttonVariant: 'default',
     buttonSize: 'lg',
     order: 1,
-    benefits: [
-      'paths.import.benefit1',
-      'paths.import.benefit2',
-      'paths.import.benefit3',
-    ],
+    benefits: ['paths.import.benefit1', 'paths.import.benefit2', 'paths.import.benefit3'],
   },
   {
     id: 'manual',
