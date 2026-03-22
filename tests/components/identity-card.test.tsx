@@ -121,10 +121,14 @@ const baseProps = {
 };
 
 describe('IdentityCard (default / page variant)', () => {
-  it('renders name and handle', () => {
+  it('renders name and handle as link to Bluesky', () => {
     render(<IdentityCard {...baseProps} />);
     expect(screen.getByText('Alice Smith')).toBeDefined();
-    expect(screen.getByText('@alice.bsky.social')).toBeDefined();
+    const handleLink = screen.getByText('@alice.bsky.social');
+    expect(handleLink).toBeDefined();
+    expect(handleLink.tagName).toBe('A');
+    expect(handleLink.getAttribute('href')).toBe('https://bsky.app/profile/alice.bsky.social');
+    expect(handleLink.getAttribute('target')).toBe('_blank');
   });
 
   it('shows follow button for non-own profiles', () => {
@@ -326,10 +330,12 @@ describe('IdentityCard (default / page variant)', () => {
 });
 
 describe('IdentityCard (embed variant)', () => {
-  it('renders name and handle', () => {
+  it('renders name and handle as link to Bluesky', () => {
     render(<IdentityCard {...baseProps} variant="embed" />);
     expect(screen.getByText('Alice Smith')).toBeDefined();
-    expect(screen.getByText('@alice.bsky.social')).toBeDefined();
+    const handleLink = screen.getByText('@alice.bsky.social');
+    expect(handleLink.tagName).toBe('A');
+    expect(handleLink.getAttribute('href')).toBe('https://bsky.app/profile/alice.bsky.social');
   });
 
   it('hides follow button', () => {
