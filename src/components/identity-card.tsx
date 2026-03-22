@@ -19,6 +19,7 @@ import {
   Buildings,
 } from '@phosphor-icons/react';
 import { useProfileEdit } from '@/components/profile-edit-provider';
+import { ConnectionBadge } from '@/components/events/connection-badge';
 import { Badge } from '@/components/ui/badge';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { FollowButton } from '@/components/follow-button';
@@ -94,6 +95,7 @@ interface IdentityCardProps {
   isFollowing?: boolean;
   variant?: 'page' | 'embed';
   badge?: string;
+  connectionType?: 'mutual' | 'following' | 'followedBy';
   hideFooter?: boolean;
   className?: string;
   hasDisplayNameOverride?: boolean;
@@ -129,6 +131,7 @@ export function IdentityCard({
   isFollowing,
   variant = 'page',
   badge,
+  connectionType,
   hideFooter,
   className,
   hasDisplayNameOverride,
@@ -198,13 +201,18 @@ export function IdentityCard({
                 </a>
               </div>
 
-              {badge && (
-                <Badge
-                  variant="secondary"
-                  className="mt-0.5 w-fit px-1.5 py-0 text-[10px] font-medium"
-                >
-                  {badge}
-                </Badge>
+              {(badge || connectionType) && (
+                <div className="mt-0.5 flex flex-wrap items-center gap-1">
+                  {badge && (
+                    <Badge
+                      variant="secondary"
+                      className="w-fit px-1.5 py-0 text-[10px] font-medium"
+                    >
+                      {badge}
+                    </Badge>
+                  )}
+                  {connectionType && <ConnectionBadge type={connectionType} handle={handle} />}
+                </div>
               )}
 
               {/* Role at company */}

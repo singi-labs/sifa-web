@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 
 export type RoleFilter = 'all' | 'speakers' | 'attendees';
 export type ConnectionFilter = 'all' | 'mutual' | 'following' | 'followedBy' | 'new';
-export type SortOption = 'connections' | 'alphabetical' | 'speakers';
+export type SortOption = 'connections' | 'alphabetical' | 'speakers' | 'followers';
 
 interface AttendeeFiltersProps {
   onSearchChange: (query: string) => void;
@@ -215,6 +215,7 @@ function AttendeeFilters({
           >
             {isLoggedIn && <option value="connections">Connections first</option>}
             <option value="speakers">Speakers first</option>
+            <option value="followers">Most followed</option>
             <option value="alphabetical">Alphabetical</option>
           </select>
         </label>

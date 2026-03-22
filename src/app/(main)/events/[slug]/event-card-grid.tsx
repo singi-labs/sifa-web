@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { IdentityCard } from '@/components/identity-card';
-import { ConnectionBadge } from '@/components/events/connection-badge';
 import type { ConnectionMap } from '@/hooks/use-attendee-connections';
 import type {
   ActiveApp,
@@ -74,11 +73,6 @@ export function EventCardGrid({ entries, connections }: EventCardGridProps) {
             aria-label={`View profile of ${profile.displayName ?? profile.handle}`}
             className="relative h-full transition-transform hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           >
-            {connectionType && (
-              <div className="absolute right-3 top-3 z-10">
-                <ConnectionBadge type={connectionType} handle={profile.handle} />
-              </div>
-            )}
             <IdentityCard
               className="h-full"
               did={profile.did}
@@ -102,6 +96,7 @@ export function EventCardGrid({ entries, connections }: EventCardGridProps) {
               claimed={profile.claimed}
               variant="embed"
               badge={badge}
+              connectionType={connectionType}
               hideFooter
             />
           </Link>

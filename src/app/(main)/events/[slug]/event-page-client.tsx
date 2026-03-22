@@ -100,6 +100,14 @@ export function EventPageClient({ entries, eventSlug }: EventPageClientProps) {
           return getName(a).localeCompare(getName(b));
         });
         break;
+      case 'followers':
+        copy.sort((a, b) => {
+          const aCount = (a.profile.followersCount ?? 0) + (a.profile.atprotoFollowersCount ?? 0);
+          const bCount = (b.profile.followersCount ?? 0) + (b.profile.atprotoFollowersCount ?? 0);
+          if (bCount !== aCount) return bCount - aCount;
+          return getName(a).localeCompare(getName(b));
+        });
+        break;
       case 'alphabetical':
         copy.sort((a, b) => getName(a).localeCompare(getName(b)));
         break;
