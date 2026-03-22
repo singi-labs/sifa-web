@@ -82,6 +82,9 @@
       '.activity-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;font-size:12px;color:var(--sifa-muted);}' +
       '.app-badges{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;}' +
       '.app-badge{font-size:10px;font-weight:500;padding:2px 8px;border-radius:10px;}' +
+      '.app-badges-link{text-decoration:none;color:inherit;display:block;}' +
+      '.app-badges-link:hover .app-badge{opacity:0.8;}' +
+      '.app-badge-more{background:var(--sifa-border);color:var(--sifa-muted);font-style:normal;}' +
       '.footer{margin-top:12px;padding-top:10px;border-top:1px solid var(--sifa-border);display:flex;align-items:center;justify-content:space-between;}' +
       '.cta{display:inline-block;font-size:13px;color:var(--sifa-primary);text-decoration:none;font-weight:500;}' +
       '.cta:hover{text-decoration:underline;}' +
@@ -140,11 +143,13 @@
       activityHtml = '<div class="activity-row">' + activityItems + '</div>';
     }
 
-    // Active apps badges
+    // Active apps indicators (max 2, linked to sifa.id)
     var appsHtml = '';
     if (data.activeApps && data.activeApps.length > 0) {
+      var maxShow = 2;
       var badges = '';
-      for (var k = 0; k < data.activeApps.length; k++) {
+      var shown = Math.min(data.activeApps.length, maxShow);
+      for (var k = 0; k < shown; k++) {
         var app = data.activeApps[k];
         var colors = APP_COLORS[app.id] || FALLBACK_COLOR;
         badges +=
@@ -156,7 +161,18 @@
           escapeHtml(app.name) +
           '</span>';
       }
-      appsHtml = '<div class="app-badges">' + badges + '</div>';
+      var overflow = data.activeApps.length - shown;
+      if (overflow > 0) {
+        badges +=
+          '<span class="app-badge app-badge-more">and ' + overflow + ' more on sifa.id</span>';
+      }
+      appsHtml =
+        '<a class="app-badges-link" href="' +
+        escapeHtml(data.profileUrl) +
+        '" target="_blank" rel="noopener">' +
+        '<div class="app-badges">' +
+        badges +
+        '</div></a>';
     }
 
     var footerHtml =

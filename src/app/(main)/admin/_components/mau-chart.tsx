@@ -16,7 +16,8 @@ function formatMonth(value: ReactNode): string {
   if (typeof value !== 'string') return String(value ?? '');
   const [year, month] = value.split('-');
   const date = new Date(Number(year), Number(month) - 1);
-  return date.toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
+  const formatted = date.toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
+  return formatted.replace(/(\w{3}) (\d{2})/, "$1 '$2");
 }
 
 export function MauChart({ data }: MauChartProps) {

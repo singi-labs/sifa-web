@@ -23,9 +23,10 @@ const CATEGORIES = [
 interface ActivityFeedProps {
   handle: string;
   initialData: ActivityFeedResponse | null;
+  initialCategory?: string;
 }
 
-export function ActivityFeed({ handle, initialData }: ActivityFeedProps) {
+export function ActivityFeed({ handle, initialData, initialCategory }: ActivityFeedProps) {
   const t = useTranslations('activity');
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [items, setItems] = useState<ActivityItem[]>(initialData?.items ?? []);
@@ -34,6 +35,33 @@ export function ActivityFeed({ handle, initialData }: ActivityFeedProps) {
   const [error, setError] = useState(initialData === null);
   const [isPending, startTransition] = useTransition();
   const [isLoadingMore, setIsLoadingMore] = useState(false);
+
+  // Track previous initialCategory to detect external filter changes (React-recommended pattern)
+  const [prevInitialCategory, setPrevInitialCategory] = useState(initialCategory);
+  if (initialCategory !== prevInitialCategory) {
+    setPrevInitialCategory(initialCategory);
+    if (initialCategory && initialCategory !== activeCategory) {
+      setActiveCategory(initialCategory);
+      setError(false);
+      // Trigger data fetch for the new category
+      startTransition(async () => {
+        const data = await fetchActivityFeed(handle, {
+          category: initialCategory,
+          limit: 20,
+        });
+        if (data) {
+          setItems(data.items);
+          setCursor(data.cursor);
+          setHasMore(data.hasMore);
+        } else {
+          setItems([]);
+          setCursor(null);
+          setHasMore(false);
+          setError(true);
+        }
+      });
+    }
+  }
 
   const availableCategories = initialData?.availableCategories;
   const hasMultipleCategories = availableCategories && availableCategories.length > 1;
