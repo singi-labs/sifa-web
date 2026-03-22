@@ -75,8 +75,8 @@ describe('onboarding paths config', () => {
     expect(manual?.href).toBe('dynamic:profile');
   });
 
-  it('explore path points to root', () => {
+  it('explore path points to find-people', () => {
     const explore = onboardingPaths.find((p) => p.id === 'explore');
-    expect(explore?.href).toBe('/');
+    expect(explore?.href).toBe('/find-people');
   });
 });
