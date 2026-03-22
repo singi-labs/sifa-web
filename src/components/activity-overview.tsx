@@ -35,10 +35,7 @@ export function ActivityOverview({ handle }: ActivityOverviewProps) {
     };
   }, [handle]);
 
-  if (!loaded) return null;
-  if (!items || items.length === 0) return null;
-
-  const validItems = items.filter((item) => item.record != null);
+  const validItems = (items ?? []).filter((item) => item.record != null);
   const teaserItems = validItems.slice(0, 5);
 
   return (
@@ -51,27 +48,29 @@ export function ActivityOverview({ handle }: ActivityOverviewProps) {
           <ActivityHeatmap handle={handle} days={365} variant="compact" />
         </Suspense>
       </div>
-      <div className="mt-4 space-y-2">
-        {teaserItems.map((item) => {
-          const SpecificCard = getCardComponent(item.collection);
-          const CardComponent = SpecificCard ?? GenericActivityCard;
-          const did = item.uri.split('/')[2] ?? '';
-          return (
-            <CardErrorBoundary key={item.uri}>
-              <CardComponent
-                uri={item.uri}
-                collection={item.collection}
-                rkey={item.rkey}
-                record={item.record}
-                authorDid={did}
-                authorHandle={handle}
-                showAuthor={false}
-                compact={true}
-              />
-            </CardErrorBoundary>
-          );
-        })}
-      </div>
+      {teaserItems.length > 0 && (
+        <div className="mt-4 space-y-2">
+          {teaserItems.map((item) => {
+            const SpecificCard = getCardComponent(item.collection);
+            const CardComponent = SpecificCard ?? GenericActivityCard;
+            const did = item.uri.split('/')[2] ?? '';
+            return (
+              <CardErrorBoundary key={item.uri}>
+                <CardComponent
+                  uri={item.uri}
+                  collection={item.collection}
+                  rkey={item.rkey}
+                  record={item.record}
+                  authorDid={did}
+                  authorHandle={handle}
+                  showAuthor={false}
+                  compact={true}
+                />
+              </CardErrorBoundary>
+            );
+          })}
+        </div>
+      )}
       <Link
         href={`/p/${handle}/activity`}
         className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-muted py-3 text-sm font-medium text-foreground transition-colors hover:bg-muted/80"

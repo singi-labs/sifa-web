@@ -78,33 +78,29 @@ describe('ActivityOverview', () => {
     expect(screen.getByText('My blog post')).toBeDefined();
   });
 
-  it('shows nothing when no items', async () => {
+  it('renders section with heatmap but no teaser cards when items empty', async () => {
     mockFetch.mockResolvedValue({ items: [] });
 
-    const { container } = render(<ActivityOverview handle="alice.bsky.social" />);
+    render(<ActivityOverview handle="alice.bsky.social" />);
 
     await waitFor(() => {
-      expect(mockFetch).toHaveBeenCalled();
+      expect(screen.getByTestId('activity-overview')).toBeDefined();
     });
 
-    // Give time for state to settle
-    await new Promise((r) => setTimeout(r, 50));
-
-    expect(container.innerHTML).toBe('');
+    expect(screen.queryAllByTestId('activity-card-compact')).toHaveLength(0);
+    expect(screen.getByTestId('activity-view-all')).toBeDefined();
   });
 
-  it('shows nothing when fetch returns null', async () => {
+  it('renders section with heatmap but no teaser cards when fetch returns null', async () => {
     mockFetch.mockResolvedValue(null);
 
-    const { container } = render(<ActivityOverview handle="alice.bsky.social" />);
+    render(<ActivityOverview handle="alice.bsky.social" />);
 
     await waitFor(() => {
-      expect(mockFetch).toHaveBeenCalled();
+      expect(screen.getByTestId('activity-overview')).toBeDefined();
     });
 
-    await new Promise((r) => setTimeout(r, 50));
-
-    expect(container.innerHTML).toBe('');
+    expect(screen.queryAllByTestId('activity-card-compact')).toHaveLength(0);
   });
 
   it('shows "View full activity" link', async () => {
