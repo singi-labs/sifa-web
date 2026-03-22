@@ -4,6 +4,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getMessages } from 'next-intl/server';
 import { ThemeProvider } from '@/components/theme-provider';
 import { KonamiRickroll } from '@/components/konami-rickroll';
+import { StaleDeploymentDetector } from '@/components/stale-deployment-detector';
 import { Toaster } from 'sonner';
 import './globals.css';
 
@@ -50,6 +51,7 @@ export default async function RootLayout({
           >
             {children}
             <KonamiRickroll />
+            <StaleDeploymentDetector />
             <Toaster position="bottom-left" closeButton />
           </ThemeProvider>
         </NextIntlClientProvider>
