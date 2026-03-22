@@ -32,12 +32,13 @@ function buildActivities(days: HeatmapDayData[]): {
   const end = new Date(today.getFullYear(), today.getMonth(), today.getDate());
   const start = new Date(end);
   start.setMonth(start.getMonth() - 6);
-  // Roll back to previous Monday so the first column is always full (weekStart=1)
+  // Roll back to the Monday BEFORE the 6-month boundary so the first
+  // column is always a complete week. The library renders partial first
+  // columns when the start date falls mid-week, even if it's a Monday
+  // (due to how it aligns weeks internally with weekStart).
   const dow = start.getDay(); // 0=Sun, 1=Mon...
   const backToMon = dow === 0 ? 6 : dow - 1;
-  if (backToMon > 0) {
-    start.setDate(start.getDate() - backToMon);
-  }
+  start.setDate(start.getDate() - backToMon - 7);
 
   const activities: Activity[] = [];
   const cursor = new Date(start);
