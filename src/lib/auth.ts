@@ -5,6 +5,7 @@ export interface AuthSession {
   handle: string;
   displayName?: string;
   avatar?: string;
+  isNewUser?: boolean;
 }
 
 export async function getSession(): Promise<AuthSession | null> {

@@ -535,5 +535,41 @@
     "noApps": "No active apps found on your profile yet.",
     "hiddenAppsNote": "Only apps you are currently active on are shown here. If you hide an app, it will no longer appear on your profile or in this list. To make a hidden app visible again, use the API endpoint PUT /api/profile/activity-visibility.",
     "notOwnProfile": "You can only manage activity visibility for your own profile."
+  },
+  "welcome": {
+    "pageTitle": "Welcome | Sifa",
+    "title": "Welcome to Sifa, {displayName}",
+    "titleGeneric": "Welcome to Sifa",
+    "subtitle": "Your professional identity, owned by you. Choose how to get started.",
+    "skipForNow": "Skip for now",
+    "paths": {
+      "import": {
+        "title": "Import from LinkedIn",
+        "description": "Bring your experience, education, and skills in seconds.",
+        "cta": "Import LinkedIn data",
+        "benefit1": "Positions, education, and skills imported automatically",
+        "benefit2": "Your data stays in your browser -- private and secure",
+        "benefit3": "Review and edit everything before saving"
+      },
+      "manual": {
+        "title": "Build from scratch",
+        "description": "Add your experience step by step.",
+        "cta": "Start building"
+      },
+      "explore": {
+        "title": "Explore first",
+        "description": "Browse profiles and see what Sifa looks like.",
+        "cta": "Start exploring"
+      }
+    },
+    "emailBanner": {
+      "pitch": "Get notified about new features and profile tips.",
+      "placeholder": "you@example.com",
+      "submit": "Subscribe",
+      "dismiss": "Dismiss email subscription banner",
+      "success": "Thanks! We'll keep you posted.",
+      "errorInvalid": "Please enter a valid email address.",
+      "errorServer": "Something went wrong. Please try again."
+    }
   }
 }
