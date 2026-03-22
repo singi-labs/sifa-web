@@ -25,6 +25,8 @@ import type { Icon } from '@phosphor-icons/react';
 import { getAppMeta } from '@/lib/atproto-apps';
 import type { ActiveApp } from '@/lib/types';
 
+const MOBILE_MAX = 3;
+
 const ICON_MAP: Record<string, Icon> = {
   bluesky: ChatCircle,
   tangled: GitBranch,
@@ -64,18 +66,19 @@ export function ActivityIndicators({
   const sorted = [...apps].sort((a, b) => b.recentCount - a.recentCount);
   const visible = sorted.slice(0, maxVisible);
   const overflow = sorted.slice(maxVisible);
-  const hasOverflow = overflow.length > 0;
+  const overflowCount = overflow.length;
 
   function handleClick(appId: string) {
     if (!onFilter) return;
     onFilter(activeFilter === appId ? null : appId);
   }
 
-  function renderPill(app: ActiveApp) {
+  function renderPill(app: ActiveApp, index: number) {
     const meta = getAppMeta(app.id);
     const IconComponent = ICON_MAP[app.id] ?? CircleDashed;
     const label = t('activeOn', { app: meta.name });
-    const pillClasses = `inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-xs font-medium ${meta.className}`;
+    const displayClass = !expanded && index >= MOBILE_MAX ? 'hidden sm:inline-flex' : 'inline-flex';
+    const pillClasses = `${displayClass} items-center gap-1 rounded-full border px-2.5 py-0.5 text-xs font-medium ${meta.className}`;
 
     if (onFilter) {
       return (
@@ -103,16 +106,27 @@ export function ActivityIndicators({
 
   return (
     <div role="group" aria-label={t('label')} className="flex flex-wrap gap-1.5">
-      {visible.map(renderPill)}
-      {hasOverflow && expanded && overflow.map(renderPill)}
-      {hasOverflow && !expanded && (
+      {visible.map((app, index) => renderPill(app, index))}
+      {expanded && overflow.map((app, index) => renderPill(app, visible.length + index))}
+      {/* Mobile overflow: visible below sm, counts pills hidden by CSS */}
+      {!expanded && sorted.length > MOBILE_MAX && (
         <button
           type="button"
-          className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium text-muted-foreground"
+          className="inline-flex items-center rounded-full border border-border bg-muted px-2.5 py-0.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground sm:hidden"
+          onClick={() => setExpanded(true)}
+        >
+          {t('moreApps', { count: sorted.length - MOBILE_MAX })}
+        </button>
+      )}
+      {/* Desktop overflow: visible at sm+ */}
+      {!expanded && overflowCount > 0 && (
+        <button
+          type="button"
+          className="hidden items-center rounded-full border border-border bg-muted px-2.5 py-0.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground sm:inline-flex"
           aria-expanded={expanded}
           onClick={() => setExpanded(true)}
         >
-          {t('moreApps', { count: overflow.length })}
+          {t('moreApps', { count: overflowCount })}
         </button>
       )}
     </div>
