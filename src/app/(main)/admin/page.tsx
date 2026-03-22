@@ -265,8 +265,8 @@ export default function AdminPage() {
           </>
         ) : data ? (
           <>
-            <DailySignupsChart data={data.signups} />
-            <CumulativeUsersChart data={data.signups} />
+            <DailySignupsChart data={data.signups.filter((d) => d.date >= '2026-03-09')} />
+            <CumulativeUsersChart data={data.signups.filter((d) => d.date >= '2026-03-09')} />
           </>
         ) : (
           <p className="text-muted-foreground">Failed to load stats.</p>
@@ -286,7 +286,7 @@ export default function AdminPage() {
           </>
         ) : activeUsers ? (
           <>
-            <DauChart data={activeUsers.daily} />
+            <DauChart data={activeUsers.daily.filter((d) => d.date >= '2026-03-19')} />
             <MauChart data={activeUsers.monthly} />
           </>
         ) : (
