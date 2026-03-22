@@ -10,6 +10,7 @@ import {
   type SortOption,
 } from '@/components/events/attendee-filters';
 import { ConnectionSummary, type ConnectionPerson } from '@/components/events/connection-summary';
+import { PrivacyDisclosure } from '@/components/events/privacy-disclosure';
 import { EventCardGrid, type EventEntry } from './event-card-grid';
 
 interface EventPageClientProps {
@@ -140,6 +141,9 @@ export function EventPageClient({
         connections={connectionPeople}
         loginUrl={loginUrl}
       />
+
+      {/* Privacy disclosure */}
+      <PrivacyDisclosure />
 
       {/* Filters */}
       <AttendeeFilters
