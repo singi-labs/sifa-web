@@ -13,7 +13,7 @@ import {
 } from '@phosphor-icons/react';
 import { useAuth } from '@/components/auth-provider';
 import { trackEvent } from '@/lib/analytics';
-import { resolvePathHref } from '@/lib/onboarding';
+import { resolvePathHref, markOnboardingSeen } from '@/lib/onboarding';
 import { featureFlags } from '@/lib/feature-flags';
 import { onboardingPaths } from './onboarding-paths';
 import { EmailBanner } from './email-banner';
@@ -43,6 +43,7 @@ export function WelcomeContent() {
       return;
     }
 
+    markOnboardingSeen();
     trackEvent('onboarding_view');
   }, [isLoading, session, router]);
 
