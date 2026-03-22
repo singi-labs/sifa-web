@@ -36,6 +36,15 @@ import { getDisplayLabel } from '@/lib/pds-utils';
 import { cn } from '@/lib/utils';
 import { trackEvent } from '@/lib/analytics';
 
+function isSafeUrl(url: string): boolean {
+  try {
+    const parsed = new URL(url.startsWith('http') ? url : `https://${url}`);
+    return parsed.protocol === 'https:' || parsed.protocol === 'http:';
+  } catch {
+    return false;
+  }
+}
+
 const OPEN_TO_LABEL_KEYS: Record<string, string> = {
   'id.sifa.defs#fullTimeRoles': 'fullTimeRoles',
   'id.sifa.defs#partTimeRoles': 'partTimeRoles',
@@ -163,6 +172,7 @@ export function IdentityCard({
             <div className="min-w-0 flex-1">
               {/* Name + pronouns + verified */}
               <div className="flex items-center gap-1.5">
+                {/* h1 is correct here: embed renders in an isolated iframe document */}
                 <h1 className="truncate text-base font-semibold">{label}</h1>
                 {pronouns && (
                   <span className="text-xs font-normal text-muted-foreground">({pronouns})</span>
@@ -213,7 +223,7 @@ export function IdentityCard({
                       </span>
                     </div>
                   )}
-                  {website && (
+                  {website && isSafeUrl(website) && (
                     <div className="flex items-center gap-1 text-xs text-muted-foreground">
                       <LinkSimple
                         className="h-3 w-3 shrink-0"
@@ -329,7 +339,7 @@ export function IdentityCard({
             location ||
             website ||
             featuredSkills.length > 0) && (
-            <div className="mt-4 space-y-1" data-zone="b">
+            <div className="mt-4 space-y-1" data-testid="zone-b">
               {/* Headline */}
               {(headline || about) && (
                 <p className="text-[15px] text-foreground">
@@ -361,7 +371,7 @@ export function IdentityCard({
                       </span>
                     </div>
                   )}
-                  {website && (
+                  {website && isSafeUrl(website) && (
                     <div className="flex items-center gap-1.5 text-[13px] text-muted-foreground">
                       <LinkSimple
                         className="h-4 w-4 shrink-0"

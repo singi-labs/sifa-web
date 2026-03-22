@@ -190,8 +190,8 @@ describe('IdentityCard (default / page variant)', () => {
     const locationText = screen.getByText('Amsterdam, Netherlands');
     const websiteLink = screen.getByText('singi.dev');
     // They should be in Zone B but NOT share the same direct parent
-    expect(locationText.closest('[data-zone="b"]')).toBeDefined();
-    expect(websiteLink.closest('[data-zone="b"]')).toBeDefined();
+    expect(locationText.closest('[data-testid="zone-b"]')).toBeDefined();
+    expect(websiteLink.closest('[data-testid="zone-b"]')).toBeDefined();
     expect(locationText.parentElement).not.toBe(websiteLink.parentElement);
     // LinkSimple icon should be present
     expect(screen.getByTestId('icon-link-simple')).toBeDefined();
