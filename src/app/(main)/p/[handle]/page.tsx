@@ -76,6 +76,13 @@ export default async function ProfilePage({
     (p) => p.current,
   );
 
+  const featuredSkills = (profile.skills ?? [])
+    .slice(0, 3)
+    .map((s: { rkey: string; skillName: string }) => ({
+      rkey: s.rkey,
+      skillName: s.skillName,
+    }));
+
   return (
     <>
       {deleted === '1' && <DeletedAccountModal />}
@@ -115,6 +122,7 @@ export default async function ProfilePage({
             sourceDisplayName={profile.source?.displayName}
             sourceAvatar={profile.source?.avatarUrl}
             activeApps={profile.activeApps}
+            featuredSkills={featuredSkills}
           />
           {profile.isOwnProfile && <DataTransparencyCard did={profile.did} />}
           <ProfileBody />
