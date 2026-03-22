@@ -7,6 +7,7 @@ import { AtprotoCounter } from '@/components/atproto-counter';
 import { AvatarReel } from '@/components/avatar-reel';
 import { fetchStats, fetchFeaturedProfile, fetchProfile } from '@/lib/api';
 import { IdentityCard } from '@/components/identity-card';
+import { TouchSafeCard } from '@/components/ui/touch-safe-card';
 import type { LocationValue, ProfilePosition } from '@/lib/types';
 
 export const dynamic = 'force-dynamic';
@@ -81,9 +82,9 @@ export default async function Home() {
                   featuredProfile.positions as ProfilePosition[] | undefined
                 )?.find((p: ProfilePosition) => p.current);
                 return (
-                  <Link
+                  <TouchSafeCard
                     href={`/p/${featuredProfile.handle}`}
-                    className="block rounded-xl text-left transition-transform hover:scale-[1.01] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                    className="block rounded-xl text-left transition-transform pointer-fine:hover:scale-[1.01] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                   >
                     <IdentityCard
                       did={featuredProfile.did}
@@ -108,7 +109,7 @@ export default async function Home() {
                       variant="embed"
                       hideFooter
                     />
-                  </Link>
+                  </TouchSafeCard>
                 );
               })()}
             </div>
