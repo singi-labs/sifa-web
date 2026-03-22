@@ -98,8 +98,6 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
   const atprotoLabel = isSelfHosted
     ? `Self-hosted ATProto (@${profile.handle})`
     : `${getPdsDisplayName(pdsProvider?.name ?? 'bluesky')} (@${profile.handle})`;
-  const totalCount = accounts.length + 1; // +1 for ATProto entry
-
   return (
     <section
       className="mt-8"
@@ -108,9 +106,6 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
       <div className="mb-4 flex items-center gap-2">
         <h2 className="text-xl font-semibold">
           {t('alsoFindOn', { name: profile.displayName ?? profile.handle })}
-          {totalCount > 0 && (
-            <span className="ml-2 text-sm font-normal text-muted-foreground">{totalCount}</span>
-          )}
         </h2>
         {isOwnProfile && (
           <Popover.Root>

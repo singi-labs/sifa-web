@@ -126,7 +126,7 @@ const translations: Record<string, Record<string, string>> = {
     awards: 'Awards',
     languages: 'Languages',
     otherProfiles: 'Links',
-    alsoFindOn: 'Also find {name} on',
+    alsoFindOn: 'Also find {name} on…',
     usedIn: 'Used in',
     verified: 'Verified',
     verifyHintGithub:
