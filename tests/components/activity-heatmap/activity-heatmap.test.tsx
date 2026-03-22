@@ -1,5 +1,5 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { render, screen, waitFor, act } from '@testing-library/react';
 import { ActivityHeatmap } from '../../../src/components/activity-heatmap/activity-heatmap';
 
 // Mock ResizeObserver for test environment
@@ -38,10 +38,30 @@ describe('ActivityHeatmap', () => {
     mockFetchHeatmapData.mockReset();
   });
 
-  it('renders loading skeleton initially', () => {
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it('renders loading text initially', () => {
     mockFetchHeatmapData.mockReturnValue(new Promise(() => {})); // never resolves
     render(<ActivityHeatmap handle="test.bsky.social" days={180} variant="compact" />);
-    expect(screen.getByRole('img', { name: /loading/i })).toBeDefined();
+    expect(screen.getByRole('status')).toBeDefined();
+    expect(screen.getByText('Loading activity...')).toBeDefined();
+  });
+
+  it('shows slow-loading message after 3 seconds', async () => {
+    vi.useFakeTimers();
+    mockFetchHeatmapData.mockReturnValue(new Promise(() => {})); // never resolves
+    render(<ActivityHeatmap handle="test.bsky.social" days={180} variant="compact" />);
+
+    expect(screen.getByText('Loading activity...')).toBeDefined();
+
+    await act(async () => {
+      vi.advanceTimersByTime(3000);
+    });
+
+    expect(screen.getByText("Dang, that's a lot of activity! Hold on...")).toBeDefined();
+    vi.useRealTimers();
   });
 
   it('renders content after data loads', async () => {

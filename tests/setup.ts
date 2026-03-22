@@ -243,6 +243,8 @@ const translations: Record<string, Record<string, string>> = {
     enterHandle: 'Enter a handle or DID to see a preview',
   },
   heatmap: {
+    loading: 'Loading activity...',
+    loadingSlow: "Dang, that's a lot of activity! Hold on...",
     less: 'Less',
     more: 'More',
     noActivity: 'No activity',

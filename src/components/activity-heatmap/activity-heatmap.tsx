@@ -62,13 +62,25 @@ export function ActivityHeatmap({
     [onSelectDate, selectedDate],
   );
 
+  const [loadingSlow, setLoadingSlow] = useState(false);
+
+  useEffect(() => {
+    if (!loading) return;
+    const timer = setTimeout(() => setLoadingSlow(true), 3000);
+    return () => clearTimeout(timer);
+  }, [loading]);
+
   if (loading) {
     return (
       <div
-        className="h-[136px] w-full animate-pulse rounded-lg bg-muted"
-        role="img"
-        aria-label="Loading activity heatmap"
-      />
+        className="flex h-[136px] w-full items-center justify-center rounded-lg bg-muted"
+        role="status"
+        aria-label={loadingSlow ? t('loadingSlow') : t('loading')}
+      >
+        <p className="text-sm text-muted-foreground">
+          {loadingSlow ? t('loadingSlow') : t('loading')}
+        </p>
+      </div>
     );
   }
 
