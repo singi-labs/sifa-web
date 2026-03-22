@@ -122,6 +122,7 @@ export function ActivityHeatmap({
       <div className="hidden md:block">
         <HeatmapGrid
           days={transformed}
+          daysBack={dayCount}
           onSelectDate={variant === 'full' ? handleSelectDate : undefined}
           selectedDate={selectedDate ?? null}
         />
