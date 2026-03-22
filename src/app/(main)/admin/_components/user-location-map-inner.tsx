@@ -37,9 +37,9 @@ export default function UserLocationMapInner({ locations }: UserLocationMapInner
             center={[loc.lat, loc.lng]}
             radius={radiusForCount(loc.count, maxCount)}
             pathOptions={{
-              fillColor: 'var(--color-primary, #3b82f6)',
+              fillColor: '#4b5563',
               fillOpacity: 0.6,
-              color: 'var(--color-primary, #3b82f6)',
+              color: '#4b5563',
               weight: 1,
               opacity: 0.8,
             }}
