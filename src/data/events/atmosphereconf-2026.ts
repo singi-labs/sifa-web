@@ -39,7 +39,7 @@ export const event: EventConfig = {
   url: 'https://atmosphereconf.org',
   smokesignalUrl: 'https://smokesignal.events/did:plc:lehcqqkwzcwvjvw66uthu5oq/3lte3c7x43l2e',
   speakers: [
-    // Presentations (54)
+    // Presentations (55)
     { handle: 'brittanyellich.com', speakerType: 'presentation' },
     { handle: 'knotbin.com', speakerType: 'presentation' },
     { handle: 'nonbinary.computer', speakerType: 'presentation' },
@@ -94,6 +94,7 @@ export const event: EventConfig = {
     { handle: 'bankonjustin.bsky.social', speakerType: 'presentation' },
     { handle: 'zeu.dev', speakerType: 'presentation' },
     { handle: 'anirudh.fi', speakerType: 'presentation' },
+    { handle: 'patak.cat', speakerType: 'presentation' },
     // Lightning talks (21)
     { handle: 'quillmatiq.com', speakerType: 'lightning' },
     { handle: 'immber.bsky.social', speakerType: 'lightning' },
