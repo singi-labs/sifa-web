@@ -72,6 +72,21 @@ export default async function ProfilePage({
   // Replace the API's string location with structured LocationValue for downstream components
   profile.location = location;
 
+  // Map API's skillRkeys to linkedSkills + skills on each position
+  // The API returns skillRkeys: string[] but the frontend expects linkedSkills: ProfileSkill[]
+  // and skills: SkillRef[] for the edit dialog to pre-populate correctly.
+  const skillsByRkey = new Map((profile.skills ?? []).map((s: { rkey: string }) => [s.rkey, s]));
+  for (const pos of profile.positions ?? []) {
+    const rkeys: string[] = ((pos as Record<string, unknown>).skillRkeys as string[]) ?? [];
+    pos.linkedSkills = rkeys
+      .map((rk: string) => skillsByRkey.get(rk))
+      .filter(Boolean) as typeof profile.skills;
+    pos.skills = rkeys.map((rk: string) => ({
+      uri: `at://${profile.did}/id.sifa.profile.skill/${rk}`,
+      cid: '',
+    }));
+  }
+
   const currentPosition = (profile.positions as ProfilePosition[] | undefined)?.find(
     (p) => p.current,
   );
