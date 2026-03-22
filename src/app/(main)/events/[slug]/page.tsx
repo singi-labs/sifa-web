@@ -6,16 +6,8 @@ import { fetchProfile } from '@/lib/api';
 import { fetchSmokeSignalAttendees } from '@/lib/smoke-signal';
 import { sanitize } from '@/lib/sanitize';
 import { event, SPEAKER_TYPE_LABELS } from '@/data/events/atmosphereconf-2026';
-import { EventCardGrid, type EventEntry, type FilterGroup } from './event-card-grid';
-
-function shuffle<T>(arr: T[]): T[] {
-  const copy = [...arr];
-  for (let i = copy.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [copy[i], copy[j]] = [copy[j]!, copy[i]!];
-  }
-  return copy;
-}
+import { type EventEntry, type FilterGroup } from './event-card-grid';
+import { EventPageClient } from './event-page-client';
 
 export const dynamic = 'force-static';
 export const revalidate = 3600;
@@ -114,21 +106,8 @@ export default async function EventPage({ params }: EventPageProps) {
     });
   }
 
-  // Sort: speakers first (alphabetical), then attendees (alphabetical)
-  entries.sort((a, b) => {
-    if (a.isSpeaker && !b.isSpeaker) return -1;
-    if (!a.isSpeaker && b.isSpeaker) return 1;
-    const nameA = (a.profile.displayName ?? a.profile.handle).toLowerCase();
-    const nameB = (b.profile.displayName ?? b.profile.handle).toLowerCase();
-    return nameA.localeCompare(nameB);
-  });
-
-  // Shuffle server-side so all users see the same non-alphabetical order per
-  // revalidation window. Avoids client/server hydration mismatch from Math.random().
-  const shuffledEntries = shuffle(entries);
-
-  const speakerCount = shuffledEntries.filter((e) => e.isSpeaker).length;
-  const attendeeCount = shuffledEntries.length - speakerCount;
+  const speakerCount = entries.filter((e) => e.isSpeaker).length;
+  const attendeeCount = entries.length - speakerCount;
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -199,11 +178,7 @@ export default async function EventPage({ params }: EventPageProps) {
         </div>
       </div>
 
-      <EventCardGrid
-        entries={shuffledEntries}
-        speakerCount={speakerCount}
-        attendeeCount={attendeeCount}
-      />
+      <EventPageClient entries={entries} eventSlug={event.slug} />
 
       {/* RSVP CTA */}
       <div className="mt-12 rounded-lg border border-border bg-muted/30 p-6 text-center">
