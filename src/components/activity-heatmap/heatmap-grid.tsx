@@ -38,10 +38,22 @@ function buildActivities(days: HeatmapDayData[]): {
 
   const today = new Date();
   const end = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+  // Derive start from the earliest date in the data (or fall back to 6 months)
   const start = new Date(end);
-  start.setMonth(start.getMonth() - 6);
+  if (days.length > 0) {
+    const sorted = [...days].sort((a, b) => a.date.localeCompare(b.date));
+    const earliest = new Date(sorted[0]!.date + 'T00:00:00');
+    if (!isNaN(earliest.getTime())) {
+      start.setTime(earliest.getTime());
+    } else {
+      start.setMonth(start.getMonth() - 6);
+    }
+  } else {
+    start.setMonth(start.getMonth() - 6);
+  }
+
   // Roll back to the previous Monday so the first column is full (weekStart=1).
-  // Use getDay() which returns local timezone day-of-week, matching toLocalDateStr.
   const dow = start.getDay(); // 0=Sun, 1=Mon...
   const backToMon = dow === 0 ? 6 : dow - 1;
   if (backToMon > 0) {
