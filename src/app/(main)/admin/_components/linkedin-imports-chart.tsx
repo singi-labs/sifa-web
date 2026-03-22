@@ -32,12 +32,15 @@ interface LinkedinImportsChartProps {
 }
 
 export function LinkedinImportsChart({ data, summary }: LinkedinImportsChartProps) {
+  const firstNonEmpty = data.findIndex((d) => d.successCount > 0 || d.failureCount > 0);
+  const trimmedData = firstNonEmpty === -1 ? data : data.slice(firstNonEmpty);
+
   return (
     <div className="rounded-lg border border-border bg-card p-4">
       <h2 className="mb-4 text-lg font-semibold">LinkedIn Imports</h2>
       <div className="h-72">
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={data}>
+          <BarChart data={trimmedData}>
             <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
             <XAxis
               dataKey="date"
