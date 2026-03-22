@@ -558,8 +558,8 @@
       },
       "explore": {
         "title": "Explore first",
-        "description": "Browse profiles and see what Sifa looks like.",
-        "cta": "Start exploring"
+        "description": "Find your contacts and see who's already on Sifa.",
+        "cta": "Find people"
       }
     },
     "emailBanner": {
