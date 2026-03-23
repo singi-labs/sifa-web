@@ -21,7 +21,7 @@ describe('MobileNav', () => {
   });
 
   it('renders a menu button', () => {
-    mockGetSession.mockResolvedValue(null);
+    mockGetSession.mockResolvedValue({ status: 'unauthenticated' });
     renderMobileNav();
 
     const button = screen.getByRole('button', { name: 'Open menu' });
@@ -30,7 +30,7 @@ describe('MobileNav', () => {
   });
 
   it('opens the menu on click', async () => {
-    mockGetSession.mockResolvedValue(null);
+    mockGetSession.mockResolvedValue({ status: 'unauthenticated' });
     const user = userEvent.setup();
     renderMobileNav();
 
@@ -42,7 +42,7 @@ describe('MobileNav', () => {
   });
 
   it('closes the menu on second click', async () => {
-    mockGetSession.mockResolvedValue(null);
+    mockGetSession.mockResolvedValue({ status: 'unauthenticated' });
     const user = userEvent.setup();
     renderMobileNav();
 
@@ -54,7 +54,7 @@ describe('MobileNav', () => {
   });
 
   it('closes the menu when a link is clicked', async () => {
-    mockGetSession.mockResolvedValue(null);
+    mockGetSession.mockResolvedValue({ status: 'unauthenticated' });
     const user = userEvent.setup();
     renderMobileNav();
 
@@ -65,7 +65,7 @@ describe('MobileNav', () => {
   });
 
   it('shows sign in link when not authenticated', async () => {
-    mockGetSession.mockResolvedValue(null);
+    mockGetSession.mockResolvedValue({ status: 'unauthenticated' });
     const user = userEvent.setup();
     renderMobileNav();
 
@@ -78,9 +78,12 @@ describe('MobileNav', () => {
 
   it('shows user info and actions when authenticated', async () => {
     mockGetSession.mockResolvedValue({
-      did: 'did:plc:test',
-      handle: 'alice.bsky.social',
-      displayName: 'Alice',
+      status: 'authenticated',
+      session: {
+        did: 'did:plc:test',
+        handle: 'alice.bsky.social',
+        displayName: 'Alice',
+      },
     });
     const user = userEvent.setup();
     renderMobileNav();
@@ -99,8 +102,11 @@ describe('MobileNav', () => {
 
   it('shows handle as display name when displayName is absent', async () => {
     mockGetSession.mockResolvedValue({
-      did: 'did:plc:test',
-      handle: 'bob.bsky.social',
+      status: 'authenticated',
+      session: {
+        did: 'did:plc:test',
+        handle: 'bob.bsky.social',
+      },
     });
     const user = userEvent.setup();
     renderMobileNav();

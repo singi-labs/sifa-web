@@ -8,18 +8,31 @@ export interface AuthSession {
   isNewUser?: boolean;
 }
 
-export async function getSession(): Promise<AuthSession | null> {
+export type SessionResult =
+  | { status: 'authenticated'; session: AuthSession }
+  | { status: 'unauthenticated' }
+  | { status: 'unavailable' }; // transient error — keep showing cached session
+
+export async function getSession(): Promise<SessionResult> {
   try {
     const res = await fetch(`${API_URL}/api/auth/session`, {
       credentials: 'include',
       cache: 'no-store',
     });
-    if (!res.ok) return null;
+    if (res.status === 503) {
+      return { status: 'unavailable' };
+    }
+    if (!res.ok) {
+      return { status: 'unauthenticated' };
+    }
     const data = await res.json();
-    if (!data.authenticated || !data.did || !data.handle) return null;
-    return data;
+    if (!data.authenticated || !data.did || !data.handle) {
+      return { status: 'unauthenticated' };
+    }
+    return { status: 'authenticated', session: data };
   } catch {
-    return null;
+    // Network error (API completely down) — treat as transient
+    return { status: 'unavailable' };
   }
 }
 
