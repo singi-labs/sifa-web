@@ -117,9 +117,7 @@ export function ConnectModal({
                 ? t('modalAlreadyConnected', { name: label })
                 : t('modalTitle', { name: label })}
             </DialogTitle>
-            {headline && (
-              <DialogDescription className="text-center">{headline}</DialogDescription>
-            )}
+            {headline && <DialogDescription className="text-center">{headline}</DialogDescription>}
           </div>
         </DialogHeader>
         <DialogFooter className="sm:justify-center">

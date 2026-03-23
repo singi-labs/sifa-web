@@ -17,11 +17,7 @@ export async function generateMetadata({ params }: { params: Promise<{ handle: s
   };
 }
 
-export default async function ConnectPage({
-  params,
-}: {
-  params: Promise<{ handle: string }>;
-}) {
+export default async function ConnectPage({ params }: { params: Promise<{ handle: string }> }) {
   const { handle } = await params;
   const profile = await fetchProfile(handle);
   if (!profile) notFound();
