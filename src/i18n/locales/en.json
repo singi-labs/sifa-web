@@ -701,7 +701,7 @@
       "usLawQ": "Is Sifa subject to US data laws?",
       "usLawA": "No. Sifa is operated from the Netherlands with servers in Germany. There's no US parent company. Your data is governed exclusively by EU law (GDPR). We use EU-based or self-hosted tools for all infrastructure, so no data flows to US services like Google Analytics, Cloudflare, or AWS.",
       "jobBoardQ": "Does Sifa have a job board?",
-      "jobBoardA": "Not yet. A job board integration is on the roadmap. Right now Sifa focuses on professional identity: your profile, endorsements, and cross-app activity."
+      "jobBoardA": "Not yet. A job board integration is on <roadmapLink>the roadmap</roadmapLink>. Right now Sifa focuses on professional identity: your profile, endorsements, and cross-app activity."
     },
     "ctaTitle": "Ready to own your professional identity?",
     "ctaPrimary": "Create your profile",

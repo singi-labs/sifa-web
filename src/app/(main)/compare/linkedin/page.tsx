@@ -199,7 +199,15 @@ export default async function CompareLinkedInPage() {
             {FAQ_KEYS.map((key) => (
               <div key={key} className="py-4">
                 <dt className="font-medium text-foreground">{t(`faq.${key}Q`)}</dt>
-                <dd className="mt-1 text-muted-foreground">{t(`faq.${key}A`)}</dd>
+                <dd className="mt-1 text-muted-foreground">
+                  {t.rich(`faq.${key}A`, {
+                    roadmapLink: (chunks) => (
+                      <Link href="/roadmap" className={linkClass}>
+                        {chunks}
+                      </Link>
+                    ),
+                  })}
+                </dd>
               </div>
             ))}
           </dl>
