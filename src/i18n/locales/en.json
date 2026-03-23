@@ -429,7 +429,13 @@
     "previewTitle": "Embed preview",
     "copy": "Copy",
     "copied": "Copied to clipboard",
-    "enterHandle": "Enter a handle or DID to see a preview"
+    "enterHandle": "Enter a handle or DID to see a preview",
+    "alwaysUpToDate": "Always up to date",
+    "alwaysUpToDateDescription": "The embed pulls live data from your Sifa profile and AT Protocol activity. When you update your profile, the embed updates too -- no manual changes needed.",
+    "anyProfile": "Works for any profile",
+    "anyProfileDescription": "Embed any Sifa profile, not just your own. Build a team page, speaker directory, or community member list -- like the <example>ATmosphere Conf 2026 speaker directory</example>.",
+    "comingSoon": "Coming soon",
+    "comingSoonDescription": "This is a first version of the embed. In a future update, you'll be able to choose which elements appear on the card -- like toggling skills, location, or activity badges on and off."
   },
   "notFound": {
     "title": "Page not found",
