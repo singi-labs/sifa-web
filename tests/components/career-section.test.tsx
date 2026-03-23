@@ -78,6 +78,9 @@ vi.mock('@/components/profile-edit-provider', () => ({
     updateItem: mockUpdateItem,
     removeItem: mockRemoveItem,
     updateProfile: vi.fn(),
+    editRequest: null,
+    requestEdit: vi.fn(),
+    clearEditRequest: vi.fn(),
   }),
 }));
 

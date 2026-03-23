@@ -145,9 +145,16 @@ export function IdentityCard({
   const { session } = useAuth();
   const tProfile = useTranslations('profile');
   const isEmbed = variant === 'embed';
-  const { isActualOwner, previewMode, togglePreview } = useProfileEdit();
+  const { isActualOwner, previewMode, togglePreview, editRequest, clearEditRequest } =
+    useProfileEdit();
   const isOwn = isOwnProfile || Boolean(session?.did && session.did === did);
+  const shouldOpenEdit = editRequest === 'identity' && isOwn;
   const [editing, setEditing] = useState(false);
+
+  if (shouldOpenEdit && !editing) {
+    setEditing(true);
+    clearEditRequest();
+  }
   const [copied, setCopied] = useState(false);
   const label = getDisplayLabel(displayName, handle);
 

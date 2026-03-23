@@ -16,6 +16,12 @@ interface ProfileEditContextValue {
   addItem: (key: string, item: Record<string, unknown> & { rkey: string }) => void;
   updateItem: (key: string, rkey: string, fields: Record<string, unknown>) => void;
   removeItem: (key: string, rkey: string) => void;
+  /** Which edit dialog to open, e.g. 'identity' or 'externalAccounts'. */
+  editRequest: string | null;
+  /** Request a specific edit dialog to open. */
+  requestEdit: (section: string) => void;
+  /** Clear the edit request after consuming it. */
+  clearEditRequest: () => void;
 }
 
 const ProfileEditContext = createContext<ProfileEditContextValue | null>(null);
@@ -29,6 +35,15 @@ export function ProfileEditProvider({ initialProfile, children }: ProfileEditPro
   const { session } = useAuth();
   const isActualOwner = Boolean(session?.did && session.did === initialProfile.did);
   const [previewMode, setPreviewMode] = useState(false);
+  const [editRequest, setEditRequest] = useState<string | null>(null);
+
+  const requestEdit = useCallback((section: string) => {
+    setEditRequest(section);
+  }, []);
+
+  const clearEditRequest = useCallback(() => {
+    setEditRequest(null);
+  }, []);
 
   const isOwnProfile = isActualOwner && !previewMode;
 
@@ -111,6 +126,9 @@ export function ProfileEditProvider({ initialProfile, children }: ProfileEditPro
         addItem,
         updateItem,
         removeItem,
+        editRequest,
+        requestEdit,
+        clearEditRequest,
       }}
     >
       {children}
@@ -131,6 +149,9 @@ const DEFAULT_CONTEXT: ProfileEditContextValue = {
   addItem: NO_OP,
   updateItem: NO_OP,
   removeItem: NO_OP,
+  editRequest: null,
+  requestEdit: NO_OP,
+  clearEditRequest: NO_OP,
 };
 
 export function useProfileEdit(): ProfileEditContextValue {
