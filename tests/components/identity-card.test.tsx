@@ -84,6 +84,7 @@ vi.mock('@phosphor-icons/react', () => ({
   ),
   Briefcase: (props: Record<string, unknown>) => <span data-testid="icon-briefcase" {...props} />,
   Buildings: (props: Record<string, unknown>) => <span data-testid="icon-buildings" {...props} />,
+  QrCode: (props: Record<string, unknown>) => <span data-testid="icon-qr-code" {...props} />,
   ArrowsLeftRight: (props: Record<string, unknown>) => (
     <span data-testid="icon-arrows" {...props} />
   ),
