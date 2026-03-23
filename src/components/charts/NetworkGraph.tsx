@@ -39,6 +39,8 @@ export function NetworkGraph({ nodes, edges, className }: NetworkGraphProps) {
   );
   const [hoveredNode, setHoveredNode] = useState<HoveredInfo | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const graphRef = useRef<any>(null);
   const [dimensions, setDimensions] = useState({ width: 600, height: 500 });
 
   useEffect(() => {
@@ -55,6 +57,15 @@ export function NetworkGraph({ nodes, edges, className }: NetworkGraphProps) {
     observer.observe(containerRef.current);
     return () => observer.disconnect();
   }, [mounted]);
+
+  // Configure d3 forces for better spread
+  useEffect(() => {
+    const fg = graphRef.current;
+    if (!fg) return;
+    fg.d3Force('charge')?.strength(-120);
+    fg.d3Force('link')?.distance(40);
+    fg.d3Force('center')?.strength(0.05);
+  });
 
   const isDark = resolvedTheme === 'dark';
   const colors = isDark ? CHART_COLORS.dark : CHART_COLORS.light;
@@ -76,7 +87,7 @@ export function NetworkGraph({ nodes, edges, className }: NetworkGraphProps) {
   const nodeCanvasObject = useCallback(
     (node: GNode, ctx: CanvasRenderingContext2D) => {
       const degree = (node.degree as number) ?? 1;
-      const size = Math.max(4, Math.min(16, degree * 2));
+      const size = Math.max(2, Math.min(8, 1 + Math.sqrt(degree)));
       const color = colors[Math.abs(hashCode(String(node.id ?? ''))) % colors.length];
       ctx.beginPath();
       ctx.arc(node.x ?? 0, node.y ?? 0, size, 0, 2 * Math.PI);
@@ -106,6 +117,7 @@ export function NetworkGraph({ nodes, edges, className }: NetworkGraphProps) {
     <div ref={containerRef} className={cn('relative min-h-[320px] md:min-h-[500px]', className)}>
       <div aria-hidden="true">
         <ForceGraph2D
+          ref={graphRef}
           graphData={graphData}
           width={dimensions.width}
           height={dimensions.height}
@@ -116,9 +128,9 @@ export function NetworkGraph({ nodes, edges, className }: NetworkGraphProps) {
             ctx: CanvasRenderingContext2D,
           ) => {
             const degree = (node.degree as number) ?? 1;
-            const size = Math.max(4, Math.min(16, degree * 2));
+            const size = Math.max(2, Math.min(8, 1 + Math.sqrt(degree)));
             ctx.beginPath();
-            ctx.arc(node.x ?? 0, node.y ?? 0, size + 2, 0, 2 * Math.PI);
+            ctx.arc(node.x ?? 0, node.y ?? 0, size + 3, 0, 2 * Math.PI);
             ctx.fillStyle = paintColor;
             ctx.fill();
           }}
@@ -135,7 +147,10 @@ export function NetworkGraph({ nodes, edges, className }: NetworkGraphProps) {
               setHoveredNode(null);
             }
           }}
-          cooldownTicks={100}
+          d3AlphaDecay={0.02}
+          d3VelocityDecay={0.3}
+          cooldownTicks={200}
+          warmupTicks={100}
           enableZoomInteraction={true}
           enablePanInteraction={true}
         />
