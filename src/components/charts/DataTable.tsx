@@ -31,7 +31,10 @@ export function DataTable({ columns, rows, caption }: DataTableProps) {
             {rows.map((row, i) => (
               <tr key={i} className={i % 2 === 1 ? 'bg-secondary/50' : undefined}>
                 {columns.map((col) => (
-                  <td key={col.key} className="border-b border-border px-3 py-2 text-muted-foreground">
+                  <td
+                    key={col.key}
+                    className="border-b border-border px-3 py-2 text-muted-foreground"
+                  >
                     {formatCell(row[col.key])}
                   </td>
                 ))}

@@ -64,7 +64,8 @@ export default async function InsightsPage({ params }: InsightsPageProps) {
         <div className="rounded-xl border border-border bg-secondary/30 p-8 text-center">
           <h2 className="text-lg font-semibold">Insights coming soon</h2>
           <p className="mt-2 text-sm text-muted-foreground">
-            Data is being collected. Insights will appear here once the first hourly collection completes.
+            Data is being collected. Insights will appear here once the first hourly collection
+            completes.
           </p>
         </div>
       ) : (
@@ -73,10 +74,10 @@ export default async function InsightsPage({ params }: InsightsPageProps) {
             id="pds-distribution"
             title="PDS Distribution"
             subtitle="Which PDS providers attendees use"
-            summary={`Of ${insights.attendeeCount} attendees, ${insights.pdsDistribution.find(p => p.host === 'bluesky')?.count ?? 0} use Bluesky's hosted PDS.`}
+            summary={`Of ${insights.attendeeCount} attendees, ${insights.pdsDistribution.find((p) => p.host === 'bluesky')?.count ?? 0} use Bluesky's hosted PDS.`}
           >
             <HorizontalBarChart
-              data={insights.pdsDistribution.map(p => ({ name: p.host, value: p.count }))}
+              data={insights.pdsDistribution.map((p) => ({ name: p.host, value: p.count }))}
               maxItems={12}
             />
             <DataTable
@@ -84,7 +85,7 @@ export default async function InsightsPage({ params }: InsightsPageProps) {
                 { key: 'name', label: 'Provider' },
                 { key: 'value', label: 'Count' },
               ]}
-              rows={insights.pdsDistribution.map(p => ({ name: p.host, value: p.count }))}
+              rows={insights.pdsDistribution.map((p) => ({ name: p.host, value: p.count }))}
             />
           </InsightSection>
 
@@ -94,14 +95,14 @@ export default async function InsightsPage({ params }: InsightsPageProps) {
             subtitle="When attendees created their AT Protocol accounts"
           >
             <HorizontalBarChart
-              data={insights.accountAgeDistribution.map(b => ({ name: b.label, value: b.count }))}
+              data={insights.accountAgeDistribution.map((b) => ({ name: b.label, value: b.count }))}
             />
             <DataTable
               columns={[
                 { key: 'name', label: 'Quarter' },
                 { key: 'value', label: 'Count' },
               ]}
-              rows={insights.accountAgeDistribution.map(b => ({ name: b.label, value: b.count }))}
+              rows={insights.accountAgeDistribution.map((b) => ({ name: b.label, value: b.count }))}
             />
           </InsightSection>
 
@@ -109,17 +110,17 @@ export default async function InsightsPage({ params }: InsightsPageProps) {
             id="did-method"
             title="DID Method"
             subtitle="did:plc vs did:web adoption"
-            summary={`${insights.didMethodSplit.find(d => d.method === 'did:web')?.count ?? 0} of ${insights.attendeeCount} attendees use did:web.`}
+            summary={`${insights.didMethodSplit.find((d) => d.method === 'did:web')?.count ?? 0} of ${insights.attendeeCount} attendees use did:web.`}
           >
             <DonutChart
-              data={insights.didMethodSplit.map(d => ({ name: d.method, value: d.count }))}
+              data={insights.didMethodSplit.map((d) => ({ name: d.method, value: d.count }))}
             />
             <DataTable
               columns={[
                 { key: 'name', label: 'Method' },
                 { key: 'value', label: 'Count' },
               ]}
-              rows={insights.didMethodSplit.map(d => ({ name: d.method, value: d.count }))}
+              rows={insights.didMethodSplit.map((d) => ({ name: d.method, value: d.count }))}
             />
           </InsightSection>
 
@@ -129,14 +130,14 @@ export default async function InsightsPage({ params }: InsightsPageProps) {
             subtitle="Feed generators, labelers, and more among attendees"
           >
             <HorizontalBarChart
-              data={insights.ecosystemRoles.map(r => ({ name: r.role, value: r.count }))}
+              data={insights.ecosystemRoles.map((r) => ({ name: r.role, value: r.count }))}
             />
             <DataTable
               columns={[
                 { key: 'name', label: 'Role' },
                 { key: 'value', label: 'Count' },
               ]}
-              rows={insights.ecosystemRoles.map(r => ({ name: r.role, value: r.count }))}
+              rows={insights.ecosystemRoles.map((r) => ({ name: r.role, value: r.count }))}
             />
           </InsightSection>
 
@@ -159,7 +160,7 @@ export default async function InsightsPage({ params }: InsightsPageProps) {
               ]}
               rows={insights.connectionGraph.nodes
                 .sort((a, b) => b.degree - a.degree)
-                .map(n => ({ handle: n.handle, displayName: n.displayName, degree: n.degree }))}
+                .map((n) => ({ handle: n.handle, displayName: n.displayName, degree: n.degree }))}
             />
           </InsightSection>
 
@@ -182,14 +183,14 @@ export default async function InsightsPage({ params }: InsightsPageProps) {
                   className="lg:col-span-2"
                 >
                   <TreemapChart
-                    data={insights.clientDiversity.map(c => ({ name: c.client, value: c.count }))}
+                    data={insights.clientDiversity.map((c) => ({ name: c.client, value: c.count }))}
                   />
                   <DataTable
                     columns={[
                       { key: 'name', label: 'Client' },
                       { key: 'value', label: 'Posts' },
                     ]}
-                    rows={insights.clientDiversity.map(c => ({ name: c.client, value: c.count }))}
+                    rows={insights.clientDiversity.map((c) => ({ name: c.client, value: c.count }))}
                   />
                 </InsightSection>
               )}
@@ -198,7 +199,8 @@ export default async function InsightsPage({ params }: InsightsPageProps) {
 
           {insights.postTimeline.length === 0 && (
             <div className="rounded-xl border border-dashed border-border p-6 text-center text-sm text-muted-foreground lg:col-span-2">
-              Post activity will appear here from March 26. The chart shows posts from ATmosphereConf attendees during the conference window.
+              Post activity will appear here from March 26. The chart shows posts from
+              ATmosphereConf attendees during the conference window.
             </div>
           )}
         </div>
@@ -207,9 +209,9 @@ export default async function InsightsPage({ params }: InsightsPageProps) {
       <div className="mt-12 rounded-xl border border-border bg-secondary/30 p-6 text-center">
         <h2 className="text-lg font-semibold">Your profile is in this dataset</h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          If you&apos;re attending {event.name}, your public AT Protocol profile is already
-          included in the analysis above. Claim your Sifa profile to show a richer identity
-          card on the People page.
+          If you&apos;re attending {event.name}, your public AT Protocol profile is already included
+          in the analysis above. Claim your Sifa profile to show a richer identity card on the
+          People page.
         </p>
         <div className="mt-4 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <Link
@@ -230,10 +232,23 @@ export default async function InsightsPage({ params }: InsightsPageProps) {
       <div className="mt-8 border-t border-border pt-4 text-xs text-muted-foreground/80">
         <p>
           Data from public{' '}
-          <a href="https://atproto.com" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-muted-foreground">
+          <a
+            href="https://atproto.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-2 hover:text-muted-foreground"
+          >
             AT Protocol
           </a>{' '}
-          records. Last updated: {insights ? new Date(insights.generatedAt).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'UTC' }) : 'pending'} UTC.
+          records. Last updated:{' '}
+          {insights
+            ? new Date(insights.generatedAt).toLocaleString('en-US', {
+                dateStyle: 'medium',
+                timeStyle: 'short',
+                timeZone: 'UTC',
+              })
+            : 'pending'}{' '}
+          UTC.
         </p>
       </div>
     </>

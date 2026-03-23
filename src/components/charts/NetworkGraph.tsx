@@ -110,7 +110,11 @@ export function NetworkGraph({ nodes, edges, className }: NetworkGraphProps) {
           width={dimensions.width}
           height={dimensions.height}
           nodeCanvasObject={nodeCanvasObject}
-          nodePointerAreaPaint={(node: GNode, paintColor: string, ctx: CanvasRenderingContext2D) => {
+          nodePointerAreaPaint={(
+            node: GNode,
+            paintColor: string,
+            ctx: CanvasRenderingContext2D,
+          ) => {
             const degree = (node.degree as number) ?? 1;
             const size = Math.max(4, Math.min(16, degree * 2));
             ctx.beginPath();

@@ -2,14 +2,7 @@
 
 import { useSyncExternalStore } from 'react';
 import { useTheme } from 'next-themes';
-import {
-  Area,
-  AreaChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from 'recharts';
+import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { cn } from '@/lib/utils';
 import { CHART_COLORS } from './chart-colors';
 
@@ -67,10 +60,7 @@ export function AreaTimeline({ data, className }: AreaTimelineProps) {
             tick={{ fontSize: 12, fill: 'currentColor' }}
             className="text-muted-foreground"
           />
-          <YAxis
-            tick={{ fontSize: 12, fill: 'currentColor' }}
-            className="text-muted-foreground"
-          />
+          <YAxis tick={{ fontSize: 12, fill: 'currentColor' }} className="text-muted-foreground" />
           <Tooltip content={<CustomTooltip />} />
           <Area
             type="monotone"

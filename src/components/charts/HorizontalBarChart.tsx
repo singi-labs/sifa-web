@@ -2,15 +2,7 @@
 
 import { useSyncExternalStore } from 'react';
 import { useTheme } from 'next-themes';
-import {
-  Bar,
-  BarChart,
-  Cell,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from 'recharts';
+import { Bar, BarChart, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { cn } from '@/lib/utils';
 import { CHART_COLORS, OTHER_COLOR } from './chart-colors';
 
@@ -37,11 +29,7 @@ function CustomTooltip({
   );
 }
 
-export function HorizontalBarChart({
-  data,
-  maxItems = 15,
-  className,
-}: HorizontalBarChartProps) {
+export function HorizontalBarChart({ data, maxItems = 15, className }: HorizontalBarChartProps) {
   const { resolvedTheme } = useTheme();
   const mounted = useSyncExternalStore(
     () => () => {},
@@ -85,14 +73,15 @@ export function HorizontalBarChart({
             tick={{ fontSize: 12, fill: 'currentColor' }}
             className="text-muted-foreground"
           />
-          <XAxis type="number" tick={{ fontSize: 12, fill: 'currentColor' }} className="text-muted-foreground" />
+          <XAxis
+            type="number"
+            tick={{ fontSize: 12, fill: 'currentColor' }}
+            className="text-muted-foreground"
+          />
           <Tooltip content={<CustomTooltip />} />
           <Bar dataKey="value" radius={[0, 4, 4, 0]}>
             {displayData.map((entry) => (
-              <Cell
-                key={entry.name}
-                fill={entry.isOther ? otherColor : barColor}
-              />
+              <Cell key={entry.name} fill={entry.isOther ? otherColor : barColor} />
             ))}
           </Bar>
         </BarChart>

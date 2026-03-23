@@ -22,12 +22,25 @@ function makeFakeInsights(): EventInsightsData {
     accountAgeDistribution: [{ label: '< 1 month', count: 5 }],
     ecosystemRoles: [{ role: 'poster', count: 20 }],
     connectionGraph: {
-      nodes: [{ did: 'did:plc:abc', handle: 'alice.bsky.social', displayName: 'Alice', avatar: null, degree: 3 }],
+      nodes: [
+        {
+          did: 'did:plc:abc',
+          handle: 'alice.bsky.social',
+          displayName: 'Alice',
+          avatar: null,
+          degree: 3,
+        },
+      ],
       edges: [{ source: 'did:plc:abc', target: 'did:plc:def', mutual: true }],
     },
     postTimeline: [{ timestamp: '2026-03-22T00:00:00Z', posts: 10, replies: 5, reposts: 2 }],
     clientDiversity: [{ client: 'Bluesky', count: 35 }],
-    summary: { attendeesTracked: 42, pdsProviderCount: 3, totalPosts: 100, connectedPercentage: 68 },
+    summary: {
+      attendeesTracked: 42,
+      pdsProviderCount: 3,
+      totalPosts: 100,
+      connectedPercentage: 68,
+    },
   };
 }
 

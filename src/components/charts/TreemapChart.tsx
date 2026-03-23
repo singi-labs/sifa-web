@@ -22,13 +22,31 @@ interface CustomContentProps {
   colors: readonly string[];
 }
 
-function CustomContent({ x = 0, y = 0, width = 0, height = 0, name, value, index = 0, colors }: CustomContentProps) {
+function CustomContent({
+  x = 0,
+  y = 0,
+  width = 0,
+  height = 0,
+  name,
+  value,
+  index = 0,
+  colors,
+}: CustomContentProps) {
   if (width < 4 || height < 4) return null;
   const fill = colors[index % colors.length];
   const showLabel = width > 50 && height > 30;
   return (
     <g>
-      <rect x={x} y={y} width={width} height={height} fill={fill} stroke="#fff" strokeWidth={2} rx={2} />
+      <rect
+        x={x}
+        y={y}
+        width={width}
+        height={height}
+        fill={fill}
+        stroke="#fff"
+        strokeWidth={2}
+        rx={2}
+      />
       {showLabel && (
         <>
           <text

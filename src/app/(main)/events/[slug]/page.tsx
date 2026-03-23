@@ -150,25 +150,36 @@ export default async function EventPage({ params }: EventPageProps) {
       <EventPageClient entries={entries} eventSlug={event.slug} />
 
       {insights && (
-        <section aria-label="Attendee insights preview" className="mt-12 rounded-xl border border-border bg-secondary/30 p-6">
+        <section
+          aria-label="Attendee insights preview"
+          className="mt-12 rounded-xl border border-border bg-secondary/30 p-6"
+        >
           <h2 className="text-lg font-semibold">Explore who&apos;s attending {event.name}</h2>
           <div className="mt-4 grid grid-cols-2 gap-4 text-center sm:grid-cols-4">
             <div>
-              <div className="text-2xl font-bold text-primary">{insights.summary.pdsProviderCount}</div>
+              <div className="text-2xl font-bold text-primary">
+                {insights.summary.pdsProviderCount}
+              </div>
               <div className="text-xs text-muted-foreground">PDS providers</div>
             </div>
             <div>
               <div className="text-2xl font-bold text-primary">
-                {insights.pdsDistribution.filter(p => p.isSelfHosted).reduce((sum, p) => sum + p.count, 0)}
+                {insights.pdsDistribution
+                  .filter((p) => p.isSelfHosted)
+                  .reduce((sum, p) => sum + p.count, 0)}
               </div>
               <div className="text-xs text-muted-foreground">Self-hosted PDSes</div>
             </div>
             <div>
-              <div className="text-2xl font-bold text-primary">{insights.summary.connectedPercentage}%</div>
+              <div className="text-2xl font-bold text-primary">
+                {insights.summary.connectedPercentage}%
+              </div>
               <div className="text-xs text-muted-foreground">Mutual-connected</div>
             </div>
             <div>
-              <div className="text-2xl font-bold text-primary">{insights.connectionGraph.edges.length}</div>
+              <div className="text-2xl font-bold text-primary">
+                {insights.connectionGraph.edges.length}
+              </div>
               <div className="text-xs text-muted-foreground">Follow connections</div>
             </div>
           </div>
