@@ -35,6 +35,9 @@ vi.mock('@/components/profile-edit-provider', () => ({
     addItem: vi.fn(),
     updateItem: vi.fn(),
     removeItem: vi.fn(),
+    editRequest: null,
+    requestEdit: vi.fn(),
+    clearEditRequest: vi.fn(),
   }),
 }));
 

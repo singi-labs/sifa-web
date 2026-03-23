@@ -156,6 +156,7 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
         profileKey="externalAccounts"
         isOwnProfile={isOwnProfile}
         fields={externalAccountFields}
+        editRequestKey="externalAccounts"
         toValues={externalAccountToValues}
         fromValues={
           valuesToExternalAccount as (

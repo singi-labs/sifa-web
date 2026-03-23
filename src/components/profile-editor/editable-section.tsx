@@ -80,6 +80,8 @@ interface EditableSectionProps<T extends { rkey: string }> {
     value: string | boolean,
     currentValues: Record<string, string | boolean>,
   ) => Record<string, string | boolean> | undefined;
+  /** When this matches editRequest from ProfileEditProvider, auto-open the add dialog. */
+  editRequestKey?: string;
 }
 
 type DialogState<T> = { mode: 'add' } | { mode: 'edit'; item: T };
@@ -98,9 +100,17 @@ export function EditableSection<T extends { rkey: string }>({
   disableOverflow,
   onPostSave,
   onFieldChange,
+  editRequestKey,
 }: EditableSectionProps<T>) {
-  const { profile, addItem, updateItem, removeItem } = useProfileEdit();
+  const { profile, addItem, updateItem, removeItem, editRequest, clearEditRequest } =
+    useProfileEdit();
+  const shouldOpenAdd = Boolean(editRequestKey && editRequest === editRequestKey && isOwnProfile);
   const [dialog, setDialog] = useState<DialogState<T> | null>(null);
+
+  if (shouldOpenAdd && !dialog) {
+    setDialog({ mode: 'add' });
+    clearEditRequest();
+  }
 
   const rawItems = (profile[profileKey as keyof typeof profile] as T[] | undefined) ?? [];
   const items = sortItems ? sortItems(rawItems) : rawItems;
