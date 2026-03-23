@@ -12,9 +12,6 @@ export async function generateMetadata() {
 export default async function EmbedBuilderPage() {
   const t = await getTranslations('embedBuilder');
 
-  const anyProfileDesc = t('anyProfileDescription');
-  const parts = anyProfileDesc.split(/\{exampleLinkStart\}|\{exampleLinkEnd\}/);
-
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
       <h1 className="text-2xl font-bold">{t('pageTitle')}</h1>
@@ -31,14 +28,16 @@ export default async function EmbedBuilderPage() {
         <div>
           <h3 className="font-semibold">{t('anyProfile')}</h3>
           <p className="mt-1 text-sm text-muted-foreground">
-            {parts[0]}
-            <a
-              href="https://sifa.id/events/atmosphereconf-2026"
-              className="text-primary hover:underline"
-            >
-              {parts[1]}
-            </a>
-            {parts[2]}
+            {t.rich('anyProfileDescription', {
+              example: (chunks) => (
+                <a
+                  href="https://sifa.id/events/atmosphereconf-2026"
+                  className="text-primary hover:underline"
+                >
+                  {chunks}
+                </a>
+              ),
+            })}
           </p>
         </div>
         <div>
