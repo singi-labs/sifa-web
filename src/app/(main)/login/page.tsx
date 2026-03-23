@@ -50,6 +50,8 @@ function LoginContent() {
         const data = await res.json().catch(() => null);
         if (data?.error === 'HandleNotFound') {
           setError(t('errorHandleNotFound', { handle: identifier }));
+        } else if (data?.error === 'UpstreamError' || res.status === 503) {
+          setError(t('errorUpstreamLogin'));
         } else {
           setError(data?.message ?? t('errorGeneric'));
         }
