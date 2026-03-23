@@ -302,7 +302,7 @@
     "copied": "Copied!",
     "linkCopied": "Profile link copied to clipboard",
     "embed": "Embed",
-    "connectQr": "QR",
+    "meet": "Meet",
     "unclaimed": "Unclaimed",
     "unclaimedPopupText": "This profile shows public AT Protocol data. {name} hasn't set up their Sifa profile yet.",
     "claimYourProfile": "Claim your profile",
@@ -732,5 +732,29 @@
     "signInToConnect": "Sign in to connect",
     "connected": "Connected!",
     "connectAction": "Connect"
+  },
+  "handshake": {
+    "pageTitle": "Handshake",
+    "subtitle": "Have them scan this with Sifa to confirm you met.",
+    "nextHandshake": "Next handshake",
+    "profileQrLink": "Need a QR for slides? Get a static profile link",
+    "privacyNotice": "Handshakes are stored as public data in both users' AT Protocol accounts.",
+    "confirmed": "Handshake confirmed",
+    "confirmedSubtitle": "You and {name} now have a verified meeting on record.",
+    "alreadyMet": "Already met",
+    "alreadyMetSubtitle": "You and {name} confirmed a meeting on {date}.",
+    "signInToHandshake": "Sign in to handshake",
+    "signInSubtitle": "Handshakes are verified meetings between Sifa users. Sign in to confirm you met {name}.",
+    "justFollow": "Just want to follow? View their profile instead.",
+    "selfScan": "That's your own code! Show it to someone you're meeting.",
+    "expired": "This code has expired. Ask them to refresh their screen.",
+    "usedToken": "This code has already been used. Ask them to tap Next handshake.",
+    "rateLimited": "Too many handshakes. Try again later.",
+    "error": "Something went wrong. Try again.",
+    "viewProfile": "View profile",
+    "done": "Done",
+    "confirm": "Confirm handshake",
+    "waiting": "Waiting for scan...",
+    "scanned": "Scanned by {name}!"
   }
 }
