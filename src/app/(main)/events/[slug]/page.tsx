@@ -3,9 +3,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { fetchProfile } from '@/lib/api';
+import { fetchEventInsights } from '@/lib/insights';
 import { fetchSmokeSignalAttendees } from '@/lib/smoke-signal';
 import { sanitize } from '@/lib/sanitize';
 import { event, SPEAKER_TYPE_LABELS } from '@/data/events/atmosphereconf-2026';
+import { InsightsNav } from '@/components/events/insights-nav';
 import { type EventEntry, type FilterGroup } from './event-card-grid';
 import { EventPageClient } from './event-page-client';
 
@@ -109,6 +111,8 @@ export default async function EventPage({ params }: EventPageProps) {
   const speakerCount = entries.filter((e) => e.isSpeaker).length;
   const attendeeCount = entries.length - speakerCount;
 
+  const insights = await fetchEventInsights(slug);
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Event',
@@ -135,50 +139,60 @@ export default async function EventPage({ params }: EventPageProps) {
   };
 
   return (
-    <main className="mx-auto max-w-6xl px-4 py-8">
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      {/* Header */}
-      <div className="mb-8 text-center">
-        <h1 className="text-3xl font-bold sm:text-4xl">{event.name}</h1>
-        <p className="mt-2 text-lg text-muted-foreground">
-          {event.dates} &middot; {event.location}
-        </p>
-        <p className="mt-3 text-sm text-muted-foreground">
-          Professional identity cards for speakers and{' '}
-          <a
-            href={event.smokesignalUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline underline-offset-4 hover:text-foreground"
-          >
-            Smoke Signal RSVPs
-          </a>{' '}
-          at{' '}
-          <a
-            href={event.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline underline-offset-4 hover:text-foreground"
-          >
-            {event.name}
-          </a>
-          , powered by open AT Protocol data.
-        </p>
-        <div className="mt-4">
-          <Link
-            href="/login"
-            className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-6 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            Claim your profile
-          </Link>
-        </div>
-      </div>
+      <InsightsNav slug={event.slug} activeTab="people" attendeeCount={entries.length} />
 
       <EventPageClient entries={entries} eventSlug={event.slug} />
+
+      {insights && (
+        <section
+          aria-label="Attendee insights preview"
+          className="mt-12 rounded-xl border border-border bg-secondary/30 p-6"
+        >
+          <h2 className="text-lg font-semibold">Explore who&apos;s attending {event.name}</h2>
+          <div className="mt-4 grid grid-cols-2 gap-4 text-center sm:grid-cols-4">
+            <div>
+              <div className="text-2xl font-bold text-primary">
+                {insights.summary.pdsProviderCount}
+              </div>
+              <div className="text-xs text-muted-foreground">PDS providers</div>
+            </div>
+            <div>
+              <div className="text-2xl font-bold text-primary">
+                {insights.pdsDistribution
+                  .filter((p) => p.isSelfHosted)
+                  .reduce((sum, p) => sum + p.count, 0)}
+              </div>
+              <div className="text-xs text-muted-foreground">Self-hosted PDSes</div>
+            </div>
+            <div>
+              <div className="text-2xl font-bold text-primary">
+                {insights.summary.connectedPercentage}%
+              </div>
+              <div className="text-xs text-muted-foreground">Mutual-connected</div>
+            </div>
+            <div>
+              <div className="text-2xl font-bold text-primary">
+                {insights.connectionGraph.edges.length}
+              </div>
+              <div className="text-xs text-muted-foreground">Follow connections</div>
+            </div>
+          </div>
+          <div className="mt-4 text-center">
+            <Link
+              href={`/events/${event.slug}/insights`}
+              className="text-sm font-medium text-primary hover:underline"
+            >
+              View full insights →
+            </Link>
+          </div>
+        </section>
+      )}
 
       {/* RSVP CTA */}
       <div className="mt-12 rounded-lg border border-border bg-muted/30 p-6 text-center">
@@ -225,6 +239,6 @@ export default async function EventPage({ params }: EventPageProps) {
           Embed your card on any website
         </Link>
       </div>
-    </main>
+    </>
   );
 }
