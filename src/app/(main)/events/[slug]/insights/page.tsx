@@ -76,9 +76,8 @@ export default async function InsightsPage({ params }: InsightsPageProps) {
             subtitle="Which PDS providers attendees use"
             summary={`Of ${insights.attendeeCount} attendees, ${insights.pdsDistribution.find((p) => p.host === 'bluesky')?.count ?? 0} use Bluesky's hosted PDS.`}
           >
-            <HorizontalBarChart
+            <DonutChart
               data={insights.pdsDistribution.map((p) => ({ name: p.host, value: p.count }))}
-              maxItems={12}
             />
             <DataTable
               columns={[
@@ -89,40 +88,30 @@ export default async function InsightsPage({ params }: InsightsPageProps) {
             />
           </InsightSection>
 
-          <InsightSection
-            id="account-age"
-            title="Account Age"
-            subtitle="When attendees created their AT Protocol accounts"
-          >
-            <HorizontalBarChart
-              data={insights.accountAgeDistribution.map((b) => ({ name: b.label, value: b.count }))}
-            />
-            <DataTable
-              columns={[
-                { key: 'name', label: 'Quarter' },
-                { key: 'value', label: 'Count' },
-              ]}
-              rows={insights.accountAgeDistribution.map((b) => ({ name: b.label, value: b.count }))}
-            />
-          </InsightSection>
-
-          <InsightSection
-            id="did-method"
-            title="DID Method"
-            subtitle="did:plc vs did:web adoption"
-            summary={`${insights.didMethodSplit.find((d) => d.method === 'did:web')?.count ?? 0} of ${insights.attendeeCount} attendees use did:web.`}
-          >
-            <DonutChart
-              data={insights.didMethodSplit.map((d) => ({ name: d.method, value: d.count }))}
-            />
-            <DataTable
-              columns={[
-                { key: 'name', label: 'Method' },
-                { key: 'value', label: 'Count' },
-              ]}
-              rows={insights.didMethodSplit.map((d) => ({ name: d.method, value: d.count }))}
-            />
-          </InsightSection>
+          {insights.accountAgeDistribution.length > 0 && (
+            <InsightSection
+              id="account-age"
+              title="Account Age"
+              subtitle="When attendees created their AT Protocol accounts"
+            >
+              <HorizontalBarChart
+                data={insights.accountAgeDistribution.map((b) => ({
+                  name: b.label,
+                  value: b.count,
+                }))}
+              />
+              <DataTable
+                columns={[
+                  { key: 'name', label: 'Quarter' },
+                  { key: 'value', label: 'Count' },
+                ]}
+                rows={insights.accountAgeDistribution.map((b) => ({
+                  name: b.label,
+                  value: b.count,
+                }))}
+              />
+            </InsightSection>
+          )}
 
           <InsightSection
             id="ecosystem-roles"
