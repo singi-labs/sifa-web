@@ -109,7 +109,7 @@ const APP_REGISTRY: Record<string, AppMeta> = {
     appUrl: 'https://roomy.space',
   },
   keytrace: {
-    name: 'keytrace.dev',
+    name: 'Keytrace',
     className: badgeClass('keytrace'),
     tooltipDescription: 'Identity verification on the AT Protocol.',
     appUrl: 'https://keytrace.dev',
