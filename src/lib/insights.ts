@@ -77,6 +77,7 @@ export async function fetchEventInsights(slug: string): Promise<EventInsightsDat
   try {
     const res = await fetch(`${API_URL}/api/events/${slug}/insights`, {
       next: { revalidate: 3600, tags: [`event-insights-${slug}`] },
+      signal: AbortSignal.timeout(5000),
     });
     if (!res.ok) return null;
     return (await res.json()) as EventInsightsData;
