@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og';
 
-export const alt = 'Profile on Sifa';
+export const alt = 'Profile on Sifa ID';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 export const revalidate = 43200; // 12 hours

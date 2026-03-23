@@ -6,6 +6,9 @@ export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Terms of Service',
+  openGraph: {
+    images: ['/api/og?title=Terms+of+Service'],
+  },
 };
 
 const linkClass = 'font-medium text-foreground underline-offset-4 hover:underline';

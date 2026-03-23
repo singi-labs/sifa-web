@@ -1,10 +1,13 @@
 import { ImageResponse } from 'next/og';
+import type { NextRequest } from 'next/server';
 
-export const alt = 'Sifa ID - Professional identity on the AT Protocol';
-export const size = { width: 1200, height: 630 };
-export const contentType = 'image/png';
+export const runtime = 'edge';
 
-export default function DefaultOgImage() {
+const size = { width: 1200, height: 630 };
+
+export function GET(request: NextRequest) {
+  const title = request.nextUrl.searchParams.get('title');
+
   return new ImageResponse(
     (
       <div
@@ -54,20 +57,22 @@ export default function DefaultOgImage() {
             fontSize: 64,
             fontWeight: 700,
             letterSpacing: '-0.02em',
-            marginBottom: 16,
+            marginBottom: title ? 12 : 16,
           }}
         >
           Sifa ID
         </div>
-        <div
-          style={{
-            fontSize: 28,
-            color: '#a3a3a3',
-            fontWeight: 400,
-          }}
-        >
-          Professional identity on the AT Protocol
-        </div>
+        {title && (
+          <div
+            style={{
+              fontSize: 32,
+              color: '#a3a3a3',
+              fontWeight: 500,
+            }}
+          >
+            {title}
+          </div>
+        )}
       </div>
     ),
     { ...size },

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'My Network | Sifa',
+  title: 'My Network',
   robots: { index: false, follow: false },
 };
 
