@@ -205,6 +205,8 @@ const translations: Record<string, Record<string, string>> = {
   activity: {
     title: 'Activity for {handle}',
     comingSoon: 'Activity stream is coming soon.',
+    introVisitor: 'Activity from across the AT Protocol ecosystem.',
+    introDismiss: 'Dismiss',
   },
   activityCard: {
     fallback: 'Activity on {appName}',

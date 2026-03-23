@@ -24,7 +24,7 @@ describe('GenericActivityCard', () => {
     render(<GenericActivityCard {...makeProps()} />);
 
     expect(screen.getByText('Hello world')).toBeDefined();
-    expect(screen.getByText('Bluesky')).toBeDefined();
+    expect(screen.getByText('Bluesky network')).toBeDefined();
     expect(screen.getByText('2h ago')).toBeDefined();
     expect(screen.getByTestId('activity-card-full')).toBeDefined();
   });
@@ -36,7 +36,7 @@ describe('GenericActivityCard', () => {
     expect(card).toBeDefined();
     expect(screen.getByText('Hello world')).toBeDefined();
     // Compact should not show app badge pill
-    expect(screen.queryByText('Bluesky')).toBeNull();
+    expect(screen.queryByText('Bluesky network')).toBeNull();
   });
 
   it('falls back to "Activity on [App]" when no text field found in record', () => {
@@ -44,7 +44,7 @@ describe('GenericActivityCard', () => {
       <GenericActivityCard {...makeProps({ record: { createdAt: new Date().toISOString() } })} />,
     );
 
-    expect(screen.getByText('Activity on Bluesky')).toBeDefined();
+    expect(screen.getByText('Activity on Bluesky network')).toBeDefined();
   });
 
   it('shows author when showAuthor is true', () => {

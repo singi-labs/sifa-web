@@ -8,6 +8,7 @@ import type { ActivityFeedResponse, ActivityItem } from '@/lib/api';
 import { getCardComponent } from '@/components/activity-cards/card-registry';
 import { GenericActivityCard } from '@/components/activity-cards/generic-activity-card';
 import { CardErrorBoundary } from '@/components/activity-cards/card-error-boundary';
+import { ActivityIntro } from '@/components/activity-intro';
 
 const CATEGORIES = [
   { key: 'all', labelKey: 'categoryAll' },
@@ -17,7 +18,7 @@ const CATEGORIES = [
   { key: 'Articles', labelKey: 'categoryArticles' },
   { key: 'Events', labelKey: 'categoryEvents' },
   { key: 'Links', labelKey: 'categoryLinks' },
-  { key: 'Reviews', labelKey: 'categoryReviews' },
+  { key: 'Pastes', labelKey: 'categoryPastes' },
 ] as const;
 
 interface ActivityFeedProps {
@@ -119,6 +120,8 @@ export function ActivityFeed({ handle, initialData, initialCategory }: ActivityF
 
   return (
     <div>
+      <ActivityIntro />
+
       {/* Category tabs — hidden when user has content in only one category */}
       {showCategoryTabs && (
         <div

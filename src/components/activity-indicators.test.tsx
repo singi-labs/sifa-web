@@ -14,17 +14,17 @@ vi.mock('next-intl', () => ({
 }));
 
 const mockApps: ActiveApp[] = [
-  { id: 'bluesky', name: 'Bluesky', category: 'social', recentCount: 42 },
+  { id: 'bluesky', name: 'Bluesky network', category: 'social', recentCount: 42 },
   { id: 'tangled', name: 'Tangled', category: 'dev', recentCount: 15 },
   { id: 'whitewind', name: 'Whitewind', category: 'blog', recentCount: 8 },
 ];
 
 const manyApps: ActiveApp[] = [
-  { id: 'bluesky', name: 'Bluesky', category: 'social', recentCount: 42 },
+  { id: 'bluesky', name: 'Bluesky network', category: 'social', recentCount: 42 },
   { id: 'tangled', name: 'Tangled', category: 'dev', recentCount: 15 },
   { id: 'whitewind', name: 'Whitewind', category: 'blog', recentCount: 8 },
   { id: 'frontpage', name: 'Frontpage', category: 'social', recentCount: 5 },
-  { id: 'smokesignal', name: 'Smoke Signal', category: 'events', recentCount: 3 },
+  { id: 'smokesignal', name: 'AT Protocol events', category: 'events', recentCount: 3 },
   { id: 'picosky', name: 'Picosky', category: 'social', recentCount: 2 },
   { id: 'linkat', name: 'Linkat', category: 'links', recentCount: 1 },
 ];
@@ -40,7 +40,7 @@ describe('ActivityIndicators', () => {
     const ActivityIndicators = await loadComponent();
     render(<ActivityIndicators apps={mockApps} />);
 
-    expect(screen.getByText('Bluesky')).toBeDefined();
+    expect(screen.getByText('Bluesky network')).toBeDefined();
     expect(screen.getByText('Tangled')).toBeDefined();
     expect(screen.getByText('Whitewind')).toBeDefined();
   });
@@ -65,7 +65,7 @@ describe('ActivityIndicators', () => {
     const ActivityIndicators = await loadComponent();
     render(<ActivityIndicators apps={mockApps} />);
 
-    expect(screen.getByLabelText('Active on Bluesky')).toBeDefined();
+    expect(screen.getByLabelText('Active on Bluesky network')).toBeDefined();
     expect(screen.getByLabelText('Active on Tangled')).toBeDefined();
     expect(screen.getByLabelText('Active on Whitewind')).toBeDefined();
   });
@@ -102,7 +102,7 @@ describe('ActivityIndicators', () => {
     const ActivityIndicators = await loadComponent();
     render(<ActivityIndicators apps={mockApps} onFilter={onFilter} />);
 
-    await user.click(screen.getByLabelText('Active on Bluesky'));
+    await user.click(screen.getByLabelText('Active on Bluesky network'));
     expect(onFilter).toHaveBeenCalledWith('bluesky');
   });
 
@@ -112,7 +112,7 @@ describe('ActivityIndicators', () => {
     const ActivityIndicators = await loadComponent();
     render(<ActivityIndicators apps={mockApps} activeFilter="bluesky" onFilter={onFilter} />);
 
-    await user.click(screen.getByLabelText('Active on Bluesky'));
+    await user.click(screen.getByLabelText('Active on Bluesky network'));
     expect(onFilter).toHaveBeenCalledWith(null);
   });
 
@@ -121,7 +121,7 @@ describe('ActivityIndicators', () => {
     const ActivityIndicators = await loadComponent();
     render(<ActivityIndicators apps={mockApps} activeFilter="bluesky" onFilter={onFilter} />);
 
-    const blueskyPill = screen.getByLabelText('Active on Bluesky');
+    const blueskyPill = screen.getByLabelText('Active on Bluesky network');
     expect(blueskyPill.getAttribute('aria-pressed')).toBe('true');
 
     const tangledPill = screen.getByLabelText('Active on Tangled');
@@ -132,7 +132,7 @@ describe('ActivityIndicators', () => {
     const ActivityIndicators = await loadComponent();
     render(<ActivityIndicators apps={mockApps} />);
 
-    const blueskyPill = screen.getByLabelText('Active on Bluesky');
+    const blueskyPill = screen.getByLabelText('Active on Bluesky network');
     expect(blueskyPill.tagName).toBe('SPAN');
 
     // No buttons for pills (only possible overflow button if needed)

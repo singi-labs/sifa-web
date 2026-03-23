@@ -104,12 +104,14 @@
     "categoryArticles": "Articles",
     "categoryEvents": "Events",
     "categoryLinks": "Links",
-    "categoryReviews": "Reviews",
+    "categoryPastes": "Pastes",
     "loading": "Loading activity...",
     "loadMore": "Load more",
     "loadingMore": "Loading...",
     "noActivity": "No activity found.",
-    "errorLoading": "Could not load activity."
+    "errorLoading": "Could not load activity.",
+    "introVisitor": "Activity from across the AT Protocol ecosystem.",
+    "introDismiss": "Dismiss"
   },
   "import": {
     "title": "Import from LinkedIn",
