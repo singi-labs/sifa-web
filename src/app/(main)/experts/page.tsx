@@ -7,6 +7,9 @@ export const dynamic = 'force-dynamic';
 export const metadata: Metadata = {
   title: 'Expert Directory',
   description: 'Find professionals and experts across industries and skills on Sifa.',
+  openGraph: {
+    images: ['/api/og?title=Expert+Directory'],
+  },
 };
 
 export default function ExpertsPage() {

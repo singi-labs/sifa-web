@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Admin - Sifa',
+  title: 'Admin',
 };
 
 export default function AdminLayout({

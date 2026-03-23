@@ -6,6 +6,9 @@ export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'About',
+  openGraph: {
+    images: ['/api/og?title=About'],
+  },
 };
 
 export default async function AboutPage() {

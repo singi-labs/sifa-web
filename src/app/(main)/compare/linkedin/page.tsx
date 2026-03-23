@@ -7,6 +7,9 @@ export const metadata: Metadata = {
   title: 'LinkedIn alternative with data ownership',
   description:
     'LinkedIn owns your career data. Sifa stores it in your own account, portable and yours to keep. No ads, no lock-in. See the full comparison.',
+  openGraph: {
+    images: ['/api/og?title=Sifa+vs+LinkedIn'],
+  },
 };
 
 const TABLE_ROWS = [

@@ -11,7 +11,7 @@ test.describe('SEO and meta tags', () => {
     await expect(page.locator('meta[name="twitter:card"]')).toHaveCount(1);
 
     const title = await page.title();
-    expect(title).toContain('Sifa');
+    expect(title).toContain('Sifa ID');
   });
 
   test('static pages have unique titles', async ({ page }) => {

@@ -34,15 +34,15 @@ export async function generateMetadata({ params }: EventPageProps): Promise<Meta
       canonical: `https://sifa.id/events/${event.slug}`,
     },
     openGraph: {
-      title: `${title} | Sifa`,
+      title: `${title} | Sifa ID`,
       description,
       url: `https://sifa.id/events/${event.slug}`,
-      siteName: 'Sifa',
+      siteName: 'Sifa ID',
       type: 'website',
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${title} | Sifa`,
+      title: `${title} | Sifa ID`,
       description,
     },
   };

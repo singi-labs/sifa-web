@@ -11,12 +11,12 @@ import './globals.css';
 export const metadata: Metadata = {
   metadataBase: new URL('https://sifa.id'),
   title: {
-    default: 'Sifa',
-    template: '%s | Sifa',
+    default: 'Sifa ID',
+    template: '%s | Sifa ID',
   },
   description: 'Professional identity on the AT Protocol',
   openGraph: {
-    siteName: 'Sifa',
+    siteName: 'Sifa ID',
     type: 'website',
   },
   twitter: {

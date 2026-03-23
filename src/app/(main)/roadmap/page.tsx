@@ -6,6 +6,9 @@ export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Roadmap',
+  openGraph: {
+    images: ['/api/og?title=Roadmap'],
+  },
 };
 
 type RoadmapItem = {

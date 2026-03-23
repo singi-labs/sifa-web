@@ -6,6 +6,9 @@ export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
+  openGraph: {
+    images: ['/api/og?title=Privacy+Policy'],
+  },
 };
 
 const linkClass = 'font-medium text-foreground underline-offset-4 hover:underline';

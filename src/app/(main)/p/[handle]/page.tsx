@@ -33,15 +33,15 @@ export async function generateMetadata({ params }: { params: Promise<{ handle: s
       },
     },
     openGraph: {
-      title: `${title} | Sifa`,
+      title: `${title} | Sifa ID`,
       description,
       url: canonicalUrl,
-      siteName: 'Sifa',
+      siteName: 'Sifa ID',
       type: 'profile',
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${title} | Sifa`,
+      title: `${title} | Sifa ID`,
       description,
     },
   };
