@@ -348,7 +348,7 @@ describe('IdentityCard (default / page variant)', () => {
         activeApps={[
           {
             id: 'bluesky',
-            name: 'Bluesky',
+            name: 'Bluesky network',
             category: 'Posts',
             recentCount: 10,
             latestRecordAt: null,
@@ -357,7 +357,7 @@ describe('IdentityCard (default / page variant)', () => {
       />,
     );
     expect(screen.queryByRole('list', { name: 'activeAppsLabel' })).toBeNull();
-    expect(screen.queryByText('Bluesky')).toBeNull();
+    expect(screen.queryByText('Bluesky network')).toBeNull();
   });
 });
 
@@ -480,7 +480,7 @@ describe('IdentityCard (embed variant)', () => {
         activeApps={[
           {
             id: 'bluesky',
-            name: 'Bluesky',
+            name: 'Bluesky network',
             category: 'Posts',
             recentCount: 10,
             latestRecordAt: null,
@@ -488,7 +488,7 @@ describe('IdentityCard (embed variant)', () => {
         ]}
       />,
     );
-    expect(screen.getByText('Bluesky')).toBeDefined();
+    expect(screen.getByText('Bluesky network')).toBeDefined();
   });
 
   it('does not show skills pills in embed', () => {

@@ -22,16 +22,16 @@ function badgeClass(id: string): string {
 }
 
 const APP_REGISTRY: Record<string, AppMeta> = {
-  bluesky: { name: 'Bluesky', className: badgeClass('bluesky') },
+  bluesky: { name: 'Bluesky network', className: badgeClass('bluesky') },
   whitewind: { name: 'Whitewind', className: badgeClass('whitewind') },
-  smokesignal: { name: 'Smoke Signal', className: badgeClass('smokesignal') },
+  smokesignal: { name: 'AT Protocol events', className: badgeClass('smokesignal') },
   frontpage: { name: 'Frontpage', className: badgeClass('frontpage') },
   picosky: { name: 'Picosky', className: badgeClass('picosky') },
   linkat: { name: 'Linkat', className: badgeClass('linkat') },
   pastesphere: { name: 'PasteSphere', className: badgeClass('pastesphere') },
   tangled: { name: 'Tangled', className: badgeClass('tangled') },
   flashes: { name: 'Flashes', className: badgeClass('flashes') },
-  kipclip: { name: 'KipClip', className: badgeClass('kipclip') },
+  kipclip: { name: 'AT Protocol bookmarks', className: badgeClass('kipclip') },
   standard: { name: 'Standard', className: badgeClass('standard') },
   aetheros: { name: 'Aetheros', className: badgeClass('aetheros') },
   roomy: { name: 'Roomy', className: badgeClass('roomy') },

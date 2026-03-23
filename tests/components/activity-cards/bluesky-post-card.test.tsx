@@ -136,6 +136,6 @@ describe('BlueskyPostCard', () => {
   it('shows Bluesky app badge in full variant', () => {
     render(<BlueskyPostCard {...makeProps()} />);
 
-    expect(screen.getByText('Bluesky')).toBeDefined();
+    expect(screen.getByText('Bluesky network')).toBeDefined();
   });
 });

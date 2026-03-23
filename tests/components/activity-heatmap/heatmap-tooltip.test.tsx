@@ -18,7 +18,7 @@ describe('HeatmapTooltip', () => {
     // Date should be formatted as full weekday, month day, year
     expect(screen.getByText(/Saturday, March 14, 2026/)).toBeDefined();
     // App names with counts
-    expect(screen.getByText('Bluesky')).toBeDefined();
+    expect(screen.getByText('Bluesky network')).toBeDefined();
     expect(screen.getByText('5')).toBeDefined();
     expect(screen.getByText('Tangled')).toBeDefined();
     expect(screen.getByText('3')).toBeDefined();
