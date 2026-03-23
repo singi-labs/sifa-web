@@ -587,7 +587,7 @@
     }
   },
   "compareLinkedin": {
-    "kicker": "Time to free your professional data",
+    "kicker": "Your professional data belongs to you",
     "title": "The LinkedIn alternative that gives you your data back",
     "description": "LinkedIn alternative with data ownership, Sifa",
     "metaDescription": "LinkedIn owns your career data. Sifa stores it in your own account, portable and yours to keep. No ads, no lock-in. See the full comparison.",
@@ -605,7 +605,7 @@
       },
       "portability": {
         "label": "Profile portability",
-        "linkedin": "Leave LinkedIn, lose your live profile. The export is a static archive, not a working profile.",
+        "linkedin": "Leave LinkedIn, lose your live profile. The export is a static archive.",
         "sifa": "Take your profile to any compatible app. If Sifa disappears, your data doesn't."
       },
       "signIn": {
@@ -615,7 +615,7 @@
       },
       "algorithm": {
         "label": "Algorithm",
-        "linkedin": "LinkedIn's algorithm controls your feed and who sees your profile in search, optimized for engagement.",
+        "linkedin": "LinkedIn's algorithm controls your feed and who sees your profile in search. It's optimized for engagement, not for you.",
         "sifa": "No algorithmic feed. Your profile is publicly searchable by default."
       },
       "privacy": {
@@ -626,7 +626,7 @@
       "jurisdiction": {
         "label": "Jurisdiction",
         "linkedin": "Owned by Microsoft (US). Your data falls under US jurisdiction, including the CLOUD Act. EU data residency is available, but a US parent company still governs processing.",
-        "sifa": "Built and operated from the Netherlands, all infrastructure in the EU (Germany). No US parent company. GDPR isn't a checkbox here, it's the baseline."
+        "sifa": "Built and operated from the Netherlands, all infrastructure in the EU (Germany). No US parent company. GDPR is the only law that applies."
       },
       "endorsements": {
         "label": "Endorsements",
@@ -669,8 +669,8 @@
         "sifa": "Not yet. Company pages are planned."
       }
     },
-    "acknowledgmentTitle": "An honest take",
-    "acknowledgment": "LinkedIn has a billion members, two decades of recruiter tooling, and a job marketplace we haven't built yet. We're not trying to replace all of that. Sifa exists for a different reason: to give you a professional identity that isn't controlled by a platform. Plenty of people use both, and that's fine. Both the job board and company pages are on <roadmapLink>the roadmap</roadmapLink>.",
+    "acknowledgmentTitle": "The full picture",
+    "acknowledgment": "LinkedIn has a billion members, two decades of recruiter tooling, and a job marketplace we haven't built yet. We're not trying to replace all of that. Sifa exists for a different reason: to give you a professional identity that you actually control. The job board and company pages are on <roadmapLink>the roadmap</roadmapLink>.",
     "whenLinkedinTitle": "When LinkedIn is the better choice",
     "whenLinkedin": {
       "recruiting": "You're actively job hunting and need recruiter inbox access",
@@ -683,7 +683,7 @@
     "diffEndorsementsTitle": "Endorsements with verified context",
     "diffEndorsements": "Each Sifa endorsement records how the endorser knows your work: \"worked together at [company]\", \"collaborated in [community]\", \"co-authored [project]\". Both sides confirm before it shows on your profile. No more meaningless +1s from strangers.",
     "diffEuropeTitle": "Built in Europe, not bolted on",
-    "diffEurope": "LinkedIn is owned by Microsoft, headquartered in the US. Even with EU data centers, your professional data is governed by a US parent company subject to the CLOUD Act. Sifa is built in the Netherlands, hosted in Germany, with no US parent entity. We use EU-based or self-hosted services for everything: analytics, error tracking, email. GDPR isn't a compliance checkbox for us, it's how we build.",
+    "diffEurope": "LinkedIn is owned by Microsoft, headquartered in the US. Even with EU data centers, your professional data is governed by a US parent company subject to the CLOUD Act. Sifa is built in the Netherlands, hosted in Germany, with no US parent entity. We use EU-based or self-hosted services for everything: analytics, error tracking, email. We build around GDPR from day one.",
     "diffPaywallsTitle": "No paywalls, no algorithmic feed",
     "diffPaywalls": "Who viewed your profile? Free. Full search? Free. No \"premium\" tier, no InMail credits, no connection limits. Your profile is publicly findable and no algorithm decides who sees it.",
     "faqTitle": "Frequently asked questions",
@@ -691,7 +691,7 @@
       "importQ": "Can I move my existing LinkedIn profile to Sifa?",
       "importA": "Yes. Export your LinkedIn data, upload the ZIP to Sifa, and your positions, education, and skills are imported in about 2 minutes. The ZIP is processed in your browser and never leaves your device.",
       "bothQ": "Does Sifa work if I still want to use LinkedIn?",
-      "bothA": "Yes. Sifa is an alternative, not a replacement. Plenty of people use both. Your Sifa profile gives you a portable version of your professional identity that you control regardless of what happens on any platform.",
+      "bothA": "Yes. Sifa gives you a portable version of your professional identity that you control, regardless of what happens on any platform.",
       "freeQ": "Is Sifa free?",
       "freeA": "Yes. Profiles, search, endorsements, and profile analytics are all free. There are no premium tiers.",
       "pdsQ": "What is a Personal Data Server?",
@@ -706,6 +706,6 @@
     "ctaTitle": "Ready to own your professional identity?",
     "ctaPrimary": "Create your profile",
     "ctaSecondary": "Import from LinkedIn",
-    "ctaTertiary": "View the roadmap"
+    "ctaTertiary": "See the roadmap"
   }
 }
