@@ -8,7 +8,7 @@ describe('About page', () => {
   it('renders title', async () => {
     const Page = await AboutPage();
     render(Page);
-    expect(screen.getByText('About Sifa')).toBeDefined();
+    expect(screen.getByText('About Sifa ID')).toBeDefined();
   });
 
   it('links to Singi Labs', async () => {

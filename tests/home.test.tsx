@@ -6,7 +6,7 @@ describe('Home', () => {
   it('renders heading and subtitle', async () => {
     const Page = await Home();
     render(Page);
-    expect(screen.getByText('Sifa')).toBeDefined();
+    expect(screen.getByText('Sifa ID')).toBeDefined();
     expect(screen.getByText(/Professional identity on the AT Protocol/)).toBeDefined();
   });
 

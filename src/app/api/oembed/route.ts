@@ -40,9 +40,9 @@ export async function GET(request: NextRequest) {
   const oembedResponse = {
     version: '1.0',
     type: 'rich',
-    provider_name: 'Sifa',
+    provider_name: 'Sifa ID',
     provider_url: 'https://sifa.id',
-    title: `${profile.displayName ?? profile.handle} on Sifa`,
+    title: `${profile.displayName ?? profile.handle} on Sifa ID`,
     author_name: profile.displayName ?? profile.handle,
     author_url: `https://sifa.id/p/${profile.handle}`,
     width,

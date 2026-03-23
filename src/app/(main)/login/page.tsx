@@ -118,7 +118,7 @@ function LoginContent() {
             What is an AT Protocol identity?
           </summary>
           <p className="mt-2 text-muted-foreground">
-            <strong className="text-foreground">Sifa</strong> is built on the{' '}
+            <strong className="text-foreground">Sifa ID</strong> is built on the{' '}
             <a
               href="https://atproto.com"
               target="_blank"

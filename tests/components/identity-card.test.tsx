@@ -358,9 +358,9 @@ describe('IdentityCard (embed variant)', () => {
     expect(screen.queryByText('Edit profile')).toBeNull();
   });
 
-  it('shows "View on Sifa" CTA link', () => {
+  it('shows "View on Sifa ID" CTA link', () => {
     render(<IdentityCard {...baseProps} variant="embed" />);
-    const link = screen.getByText('View on Sifa');
+    const link = screen.getByText('View on Sifa ID');
     expect(link).toBeDefined();
     expect(link.tagName).toBe('A');
     expect(link.getAttribute('href')).toBe('https://sifa.id/p/alice.bsky.social');
