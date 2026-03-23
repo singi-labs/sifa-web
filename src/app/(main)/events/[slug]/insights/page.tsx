@@ -13,7 +13,12 @@ import { TreemapChart } from '@/components/charts/TreemapChart';
 import { NetworkGraph } from '@/components/charts/NetworkGraph';
 import { DataTable } from '@/components/charts/DataTable';
 
+export const dynamic = 'force-static';
 export const revalidate = 3600;
+
+export function generateStaticParams() {
+  return [{ slug: event.slug }];
+}
 
 interface InsightsPageProps {
   params: Promise<{ slug: string }>;
