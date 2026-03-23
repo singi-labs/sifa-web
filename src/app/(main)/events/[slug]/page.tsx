@@ -90,7 +90,11 @@ export default async function EventPage({ params }: EventPageProps) {
     new Set([...event.speakers.map((s) => s.handle), ...attendeeHandles]),
   );
 
-  const profiles = await fetchAllProfiles(allHandles);
+  // Fetch profiles and insights in parallel to stay within build timeout
+  const [profiles, insights] = await Promise.all([
+    fetchAllProfiles(allHandles),
+    fetchEventInsights(slug),
+  ]);
 
   const entries: EventEntry[] = [];
   for (let i = 0; i < allHandles.length; i++) {
@@ -110,8 +114,6 @@ export default async function EventPage({ params }: EventPageProps) {
 
   const speakerCount = entries.filter((e) => e.isSpeaker).length;
   const attendeeCount = entries.length - speakerCount;
-
-  const insights = await fetchEventInsights(slug);
 
   const jsonLd = {
     '@context': 'https://schema.org',
