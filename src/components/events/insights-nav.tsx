@@ -10,7 +10,7 @@ export function InsightsNav({ slug, activeTab, attendeeCount }: InsightsNavProps
   return (
     <nav
       aria-label="Event views"
-      className="sticky top-0 z-10 -mx-4 border-b border-border bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+      className="sticky top-0 z-10 -mx-4 mb-6 border-b border-border bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60"
     >
       <div className="mx-auto flex max-w-6xl gap-6">
         <a
