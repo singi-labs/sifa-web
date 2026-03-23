@@ -13,6 +13,10 @@ import { EventPageClient } from './event-page-client';
 
 export const revalidate = 300;
 
+export function generateStaticParams() {
+  return [{ slug: event.slug }];
+}
+
 interface EventPageProps {
   params: Promise<{ slug: string }>;
 }
