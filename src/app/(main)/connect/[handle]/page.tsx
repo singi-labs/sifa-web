@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { fetchProfile } from '@/lib/api';
 import { notFound } from 'next/navigation';
 import { ConnectQR } from '@/components/connect-qr';
@@ -50,6 +51,14 @@ export default async function ConnectPage({ params }: { params: Promise<{ handle
 
         {/* QR Code */}
         <ConnectQR handle={profile.handle} avatar={profile.avatar} />
+
+        <p className="mt-4 max-w-xs text-center text-xs text-muted-foreground/60">
+          This is a public profile link. For verified in-person meetings,{' '}
+          <Link href="/meet" className="underline underline-offset-4 hover:text-muted-foreground">
+            use Handshake
+          </Link>
+          .
+        </p>
       </div>
     </div>
   );
