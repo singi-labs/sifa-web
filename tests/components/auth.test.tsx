@@ -21,7 +21,7 @@ describe('AuthProvider', () => {
   });
 
   it('provides null session when not authenticated', async () => {
-    mockGetSession.mockResolvedValue(null);
+    mockGetSession.mockResolvedValue({ status: 'unauthenticated' });
     render(
       <AuthProvider>
         <TestAuthConsumer />
@@ -34,8 +34,11 @@ describe('AuthProvider', () => {
 
   it('provides session when authenticated', async () => {
     mockGetSession.mockResolvedValue({
-      did: 'did:plc:test',
-      handle: 'alice.bsky.social',
+      status: 'authenticated',
+      session: {
+        did: 'did:plc:test',
+        handle: 'alice.bsky.social',
+      },
     });
     render(
       <AuthProvider>
@@ -54,7 +57,7 @@ describe('UserMenu', () => {
   });
 
   it('shows sign in link when not authenticated', async () => {
-    mockGetSession.mockResolvedValue(null);
+    mockGetSession.mockResolvedValue({ status: 'unauthenticated' });
     render(
       <AuthProvider>
         <UserMenu />
@@ -67,9 +70,12 @@ describe('UserMenu', () => {
 
   it('shows user avatar button when authenticated', async () => {
     mockGetSession.mockResolvedValue({
-      did: 'did:plc:test',
-      handle: 'alice.bsky.social',
-      displayName: 'Alice',
+      status: 'authenticated',
+      session: {
+        did: 'did:plc:test',
+        handle: 'alice.bsky.social',
+        displayName: 'Alice',
+      },
     });
     render(
       <AuthProvider>
@@ -84,9 +90,12 @@ describe('UserMenu', () => {
   it('opens dropdown menu on click', async () => {
     const user = userEvent.setup();
     mockGetSession.mockResolvedValue({
-      did: 'did:plc:test',
-      handle: 'alice.bsky.social',
-      displayName: 'Alice',
+      status: 'authenticated',
+      session: {
+        did: 'did:plc:test',
+        handle: 'alice.bsky.social',
+        displayName: 'Alice',
+      },
     });
     render(
       <AuthProvider>
