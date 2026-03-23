@@ -11,12 +11,7 @@ import { InsightsNav } from '@/components/events/insights-nav';
 import { type EventEntry, type FilterGroup } from './event-card-grid';
 import { EventPageClient } from './event-page-client';
 
-export const dynamic = 'force-static';
-export const revalidate = 3600;
-
-export function generateStaticParams() {
-  return [{ slug: event.slug }];
-}
+export const revalidate = 300;
 
 interface EventPageProps {
   params: Promise<{ slug: string }>;
