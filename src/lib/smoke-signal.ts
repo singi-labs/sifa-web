@@ -13,6 +13,7 @@ export async function fetchSmokeSignalAttendees(smokesignalUrl: string): Promise
       headers: {
         'User-Agent': 'Sifa/1.0 (https://sifa.id)',
       },
+      signal: AbortSignal.timeout(15000),
     });
 
     if (!res.ok) {

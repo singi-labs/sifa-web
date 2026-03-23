@@ -17,9 +17,10 @@ export async function fetchProfile(handleOrDid: string) {
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     const res = await fetch(`${API_URL}/api/profile/${encodeURIComponent(handleOrDid)}`, {
       next: { revalidate: 300, tags: [`profile-${handleOrDid}`] },
+      signal: AbortSignal.timeout(10000),
     });
     if (res.status === 429 && attempt < maxRetries) {
-      const retryAfter = parseInt(res.headers.get('retry-after') ?? '5', 10);
+      const retryAfter = Math.min(parseInt(res.headers.get('retry-after') ?? '2', 10), 3);
       await new Promise((r) => setTimeout(r, retryAfter * 1000));
       continue;
     }
