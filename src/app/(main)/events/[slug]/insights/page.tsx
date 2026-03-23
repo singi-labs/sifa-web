@@ -10,7 +10,6 @@ import { DonutChart } from '@/components/charts/DonutChart';
 import { HorizontalBarChart } from '@/components/charts/HorizontalBarChart';
 import { AreaTimeline } from '@/components/charts/AreaTimeline';
 import { TreemapChart } from '@/components/charts/TreemapChart';
-import { NetworkGraph } from '@/components/charts/NetworkGraph';
 import { DataTable } from '@/components/charts/DataTable';
 
 export const dynamic = 'force-static';
@@ -132,29 +131,6 @@ export default async function InsightsPage({ params }: InsightsPageProps) {
                 { key: 'value', label: 'Count' },
               ]}
               rows={insights.ecosystemRoles.map((r) => ({ name: r.role, value: r.count }))}
-            />
-          </InsightSection>
-
-          <InsightSection
-            id="connection-graph"
-            title="Attendee Connection Graph"
-            subtitle="Follow relationships between attendees on AT Protocol"
-            summary={`${insights.summary.connectedPercentage}% of attendees follow at least one other attendee.`}
-            className="lg:col-span-2"
-          >
-            <NetworkGraph
-              nodes={insights.connectionGraph.nodes}
-              edges={insights.connectionGraph.edges}
-            />
-            <DataTable
-              columns={[
-                { key: 'handle', label: 'Handle' },
-                { key: 'displayName', label: 'Name' },
-                { key: 'degree', label: 'Connections' },
-              ]}
-              rows={insights.connectionGraph.nodes
-                .sort((a, b) => b.degree - a.degree)
-                .map((n) => ({ handle: n.handle, displayName: n.displayName, degree: n.degree }))}
             />
           </InsightSection>
 
