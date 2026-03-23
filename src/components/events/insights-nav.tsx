@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 interface InsightsNavProps {
   slug: string;
   activeTab: 'people' | 'insights';
@@ -15,7 +13,7 @@ export function InsightsNav({ slug, activeTab, attendeeCount }: InsightsNavProps
       className="sticky top-0 z-10 -mx-4 border-b border-border bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60"
     >
       <div className="mx-auto flex max-w-6xl gap-6">
-        <Link
+        <a
           href={basePath}
           aria-current={activeTab === 'people' ? 'page' : undefined}
           className={`relative py-3 text-sm font-medium transition-colors ${
@@ -28,8 +26,8 @@ export function InsightsNav({ slug, activeTab, attendeeCount }: InsightsNavProps
           {activeTab === 'people' && (
             <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary" />
           )}
-        </Link>
-        <Link
+        </a>
+        <a
           href={`${basePath}/insights`}
           aria-current={activeTab === 'insights' ? 'page' : undefined}
           className={`relative py-3 text-sm font-medium transition-colors ${
@@ -42,7 +40,7 @@ export function InsightsNav({ slug, activeTab, attendeeCount }: InsightsNavProps
           {activeTab === 'insights' && (
             <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary" />
           )}
-        </Link>
+        </a>
       </div>
     </nav>
   );
