@@ -54,7 +54,8 @@
   },
   "home": {
     "title": "Sifa ID",
-    "subtitle": "Professional identity on the AT Protocol. Own your career narrative.",
+    "subtitle": "Own your career narrative.",
+    "subtitleAccent": "Portable, verifiable, yours.",
     "searchProfiles": "Find yourself on Sifa ID",
     "importLinkedIn": "Import from LinkedIn",
     "atprotoCountPrefix": "Do you already have a Bluesky or other AT Protocol account, like",

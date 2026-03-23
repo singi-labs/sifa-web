@@ -36,7 +36,8 @@ export default async function Home() {
         className="mb-6 hidden h-16 w-16 dark:block"
       />
       <h1 className="text-4xl font-bold tracking-tight">{t('title')}</h1>
-      <p className="mt-4 max-w-md text-lg text-muted-foreground">{t('subtitle')}</p>
+      <p className="mt-4 text-lg text-muted-foreground">{t('subtitle')}</p>
+      <p className="mt-1 text-lg font-medium text-foreground">{t('subtitleAccent')}</p>
       {stats?.atproto && (
         <AtprotoCounter
           userCount={stats.atproto.userCount}
@@ -61,7 +62,7 @@ export default async function Home() {
         </Link>
       </div>
       {/* Two-column layout on desktop when ATmosphereConf is present; collapses to single column when the promo block is removed */}
-      <div className="mt-12 grid w-full max-w-4xl grid-cols-1 gap-8 lg:grid-cols-2">
+      <div className="mt-16 grid w-full max-w-4xl grid-cols-1 gap-8 lg:grid-cols-2">
         {/* Left column: Profile of the Day + avatar reel */}
         <div className="flex flex-col items-center">
           {featuredProfile && (
