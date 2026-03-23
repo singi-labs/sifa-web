@@ -14,6 +14,7 @@ import {
 import { getAppMeta, getAppStripeColor, buildBlobUrl, resolveCardUrl } from '@/lib/atproto-apps';
 import type { ActivityCardProps } from './types';
 import { CardLink } from './card-link';
+import { ActivityTooltip } from '../activity-tooltip';
 
 /** Map collection NSID prefixes to app IDs in atproto-apps registry.
  * Must stay in sync with the verified API registry (sifa-api/src/lib/atproto-app-registry.ts).
@@ -310,11 +311,18 @@ export function GenericActivityCard({
           </div>
 
           <div className="flex items-center gap-2 border-t border-border pt-2 text-xs text-muted-foreground">
-            <span
-              className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${appMeta.className}`}
+            <ActivityTooltip
+              appName={appMeta.name}
+              tooltipDescription={appMeta.tooltipDescription}
+              tooltipNetworkNote={appMeta.tooltipNetworkNote}
+              appUrl={appMeta.appUrl}
             >
-              {appMeta.name}
-            </span>
+              <span
+                className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${appMeta.className}`}
+              >
+                {appMeta.name}
+              </span>
+            </ActivityTooltip>
             {timestamp && (
               <>
                 <span aria-hidden="true">&middot;</span>

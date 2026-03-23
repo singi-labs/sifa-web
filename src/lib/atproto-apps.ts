@@ -7,6 +7,12 @@ interface AppMeta {
   name: string;
   /** CSS variable-based classes for badge styling (bg + text) */
   className: string;
+  /** Short description shown in the badge tooltip */
+  tooltipDescription: string;
+  /** Extra context for shared-namespace apps (e.g. "Posted using a Bluesky-compatible app.") */
+  tooltipNetworkNote?: string;
+  /** Canonical URL for the app (used for outbound link in tooltip) */
+  appUrl?: string;
 }
 
 interface AppUrlPatterns {
@@ -22,21 +28,98 @@ function badgeClass(id: string): string {
 }
 
 const APP_REGISTRY: Record<string, AppMeta> = {
-  bluesky: { name: 'Bluesky network', className: badgeClass('bluesky') },
-  whitewind: { name: 'Whitewind', className: badgeClass('whitewind') },
-  smokesignal: { name: 'AT Protocol events', className: badgeClass('smokesignal') },
-  frontpage: { name: 'Frontpage', className: badgeClass('frontpage') },
-  picosky: { name: 'Picosky', className: badgeClass('picosky') },
-  linkat: { name: 'Linkat', className: badgeClass('linkat') },
-  pastesphere: { name: 'PasteSphere', className: badgeClass('pastesphere') },
-  tangled: { name: 'Tangled', className: badgeClass('tangled') },
-  flashes: { name: 'Flashes', className: badgeClass('flashes') },
-  kipclip: { name: 'AT Protocol bookmarks', className: badgeClass('kipclip') },
-  standard: { name: 'Standard', className: badgeClass('standard') },
-  aetheros: { name: 'Aetheros', className: badgeClass('aetheros') },
-  roomy: { name: 'Roomy', className: badgeClass('roomy') },
-  keytrace: { name: 'keytrace.dev', className: badgeClass('keytrace') },
-  popfeed: { name: 'Popfeed', className: badgeClass('popfeed') },
+  bluesky: {
+    name: 'Bluesky network',
+    className: badgeClass('bluesky'),
+    tooltipDescription: 'Social networking on the AT Protocol.',
+    tooltipNetworkNote: 'Posted using a Bluesky-compatible app. The specific client is unknown.',
+    appUrl: 'https://bsky.app',
+  },
+  whitewind: {
+    name: 'Whitewind',
+    className: badgeClass('whitewind'),
+    tooltipDescription: 'Long-form writing on the AT Protocol.',
+    appUrl: 'https://whtwnd.com',
+  },
+  smokesignal: {
+    name: 'AT Protocol events',
+    className: badgeClass('smokesignal'),
+    tooltipDescription: 'Events and RSVPs on the AT Protocol.',
+    tooltipNetworkNote: 'Multiple apps can create these records.',
+    appUrl: 'https://smokesignal.events',
+  },
+  frontpage: {
+    name: 'Frontpage',
+    className: badgeClass('frontpage'),
+    tooltipDescription: 'Link aggregation on the AT Protocol.',
+    appUrl: 'https://frontpage.fyi',
+  },
+  picosky: {
+    name: 'Picosky',
+    className: badgeClass('picosky'),
+    tooltipDescription: 'Public chat on the AT Protocol.',
+    appUrl: 'https://psky.social',
+  },
+  linkat: {
+    name: 'Linkat',
+    className: badgeClass('linkat'),
+    tooltipDescription: 'Link-in-bio pages on the AT Protocol.',
+    appUrl: 'https://linkat.blue',
+  },
+  pastesphere: {
+    name: 'PasteSphere',
+    className: badgeClass('pastesphere'),
+    tooltipDescription: 'Code snippets on the AT Protocol.',
+    appUrl: 'https://pastesphere.link',
+  },
+  tangled: {
+    name: 'Tangled',
+    className: badgeClass('tangled'),
+    tooltipDescription: 'Git hosting on the AT Protocol.',
+    appUrl: 'https://tangled.sh',
+  },
+  flashes: {
+    name: 'Flashes',
+    className: badgeClass('flashes'),
+    tooltipDescription: 'Photo sharing on the AT Protocol.',
+  },
+  kipclip: {
+    name: 'AT Protocol bookmarks',
+    className: badgeClass('kipclip'),
+    tooltipDescription: 'Bookmarks on the AT Protocol.',
+    tooltipNetworkNote: 'Multiple apps can create these records.',
+    appUrl: 'https://kipclip.com',
+  },
+  standard: {
+    name: 'Standard',
+    className: badgeClass('standard'),
+    tooltipDescription: 'Document publishing on the AT Protocol.',
+    appUrl: 'https://standard.site',
+  },
+  aetheros: {
+    name: 'Aetheros',
+    className: badgeClass('aetheros'),
+    tooltipDescription: 'Personal pages on the AT Protocol.',
+    appUrl: 'https://aetheros.computer',
+  },
+  roomy: {
+    name: 'Roomy',
+    className: badgeClass('roomy'),
+    tooltipDescription: 'Social spaces on the AT Protocol.',
+    appUrl: 'https://roomy.space',
+  },
+  keytrace: {
+    name: 'keytrace.dev',
+    className: badgeClass('keytrace'),
+    tooltipDescription: 'Identity verification on the AT Protocol.',
+    appUrl: 'https://keytrace.dev',
+  },
+  popfeed: {
+    name: 'Popfeed',
+    className: badgeClass('popfeed'),
+    tooltipDescription: 'Reviews and ratings on the AT Protocol.',
+    appUrl: 'https://popfeed.social',
+  },
 };
 
 const FALLBACK_CLASS = badgeClass('fallback');
@@ -110,7 +193,13 @@ const APP_URL_PATTERNS: Record<string, AppUrlPatterns> = {
 };
 
 export function getAppMeta(appId: string): AppMeta {
-  return APP_REGISTRY[appId] ?? { name: appId, className: FALLBACK_CLASS };
+  return (
+    APP_REGISTRY[appId] ?? {
+      name: appId,
+      className: FALLBACK_CLASS,
+      tooltipDescription: "Activity from an AT Protocol app that Sifa doesn't recognize yet.",
+    }
+  );
 }
 
 /** Get the CSS variable reference for an app's stripe (accent border) color */

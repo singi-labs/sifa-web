@@ -24,6 +24,7 @@ import type { Icon } from '@phosphor-icons/react';
 
 import { getAppMeta, getAppStripeColor } from '@/lib/atproto-apps';
 import type { ActiveApp } from '@/lib/types';
+import { ActivityTooltip } from './activity-tooltip';
 
 const MOBILE_MAX = 3;
 
@@ -87,28 +88,35 @@ export function ActivityIndicators({
     } as React.CSSProperties;
     const pillClasses = `${displayClass} items-center gap-1 rounded-full border px-2.5 py-0.5 text-xs font-medium transition-colors`;
 
-    if (onFilter) {
-      return (
-        <button
-          key={app.id}
-          type="button"
-          className={`${pillClasses} hover:opacity-80`}
-          style={pillStyle}
-          aria-label={label}
-          aria-pressed={activeFilter === app.id}
-          onClick={() => handleClick(app.id)}
-        >
-          <IconComponent size={14} weight="regular" aria-hidden="true" />
-          {meta.name}
-        </button>
-      );
-    }
-
-    return (
-      <span key={app.id} className={pillClasses} style={pillStyle} aria-label={label}>
+    const pill = onFilter ? (
+      <button
+        type="button"
+        className={`${pillClasses} hover:opacity-80`}
+        style={pillStyle}
+        aria-label={label}
+        aria-pressed={activeFilter === app.id}
+        onClick={() => handleClick(app.id)}
+      >
+        <IconComponent size={14} weight="regular" aria-hidden="true" />
+        {meta.name}
+      </button>
+    ) : (
+      <span className={pillClasses} style={pillStyle} aria-label={label}>
         <IconComponent size={14} weight="regular" aria-hidden="true" />
         {meta.name}
       </span>
+    );
+
+    return (
+      <ActivityTooltip
+        key={app.id}
+        appName={meta.name}
+        tooltipDescription={meta.tooltipDescription}
+        tooltipNetworkNote={meta.tooltipNetworkNote}
+        appUrl={meta.appUrl}
+      >
+        {pill}
+      </ActivityTooltip>
     );
   }
 
