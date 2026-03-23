@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { useTheme } from 'next-themes';
 import dynamic from 'next/dynamic';
 import type { NodeObject, LinkObject } from 'react-force-graph-2d';
@@ -32,14 +32,14 @@ interface HoveredInfo {
 
 export function NetworkGraph({ nodes, edges, className }: NetworkGraphProps) {
   const { resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
   const [hoveredNode, setHoveredNode] = useState<HoveredInfo | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 600, height: 500 });
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   useEffect(() => {
     if (!containerRef.current) return;

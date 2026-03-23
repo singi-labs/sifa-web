@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useSyncExternalStore } from 'react';
 import { useTheme } from 'next-themes';
 import { ResponsiveContainer, Tooltip, Treemap } from 'recharts';
 import { cn } from '@/lib/utils';
@@ -76,11 +76,11 @@ function CustomTooltip({
 
 export function TreemapChart({ data, className }: TreemapChartProps) {
   const { resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
 
   if (!data.length) return null;
 
