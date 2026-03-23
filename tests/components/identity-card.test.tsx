@@ -116,6 +116,7 @@ vi.mock('@phosphor-icons/react', () => ({
   ),
   Key: (props: Record<string, unknown>) => <span data-testid="icon-key" {...props} />,
   Star: (props: Record<string, unknown>) => <span data-testid="icon-star" {...props} />,
+  Broadcast: (props: Record<string, unknown>) => <span data-testid="icon-broadcast" {...props} />,
   CircleDashed: (props: Record<string, unknown>) => (
     <span data-testid="icon-circle-dashed" {...props} />
   ),

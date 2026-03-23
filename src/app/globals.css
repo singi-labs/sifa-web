@@ -148,6 +148,10 @@
   --app-popfeed-badge-bg: oklch(0.93 0.04 10);
   --app-popfeed-badge-text: oklch(0.38 0.12 10);
 
+  --app-streamplace-stripe: oklch(0.55 0.18 350);
+  --app-streamplace-badge-bg: oklch(0.93 0.04 350);
+  --app-streamplace-badge-text: oklch(0.38 0.12 350);
+
   --app-fallback-stripe: oklch(0.5 0.01 260);
   --app-fallback-badge-bg: oklch(0.93 0.01 260);
   --app-fallback-badge-text: oklch(0.35 0.02 260);
@@ -258,6 +262,10 @@
   --app-popfeed-stripe: oklch(0.6 0.2 10);
   --app-popfeed-badge-bg: oklch(0.25 0.06 10 / 40%);
   --app-popfeed-badge-text: oklch(0.78 0.12 10);
+
+  --app-streamplace-stripe: oklch(0.6 0.18 350);
+  --app-streamplace-badge-bg: oklch(0.25 0.06 350 / 40%);
+  --app-streamplace-badge-text: oklch(0.78 0.12 350);
 
   --app-fallback-stripe: oklch(0.55 0.01 260);
   --app-fallback-badge-bg: oklch(0.25 0.01 260 / 40%);
