@@ -302,6 +302,7 @@
     "copied": "Copied!",
     "linkCopied": "Profile link copied to clipboard",
     "embed": "Embed",
+    "connectQr": "QR",
     "unclaimed": "Unclaimed",
     "unclaimedPopupText": "This profile shows public AT Protocol data. {name} hasn't set up their Sifa profile yet.",
     "claimYourProfile": "Claim your profile",
@@ -717,5 +718,19 @@
     "ctaPrimary": "Create your profile",
     "ctaSecondary": "Import from LinkedIn",
     "ctaTertiary": "See the roadmap"
+  },
+  "connect": {
+    "pageTitle": "Connect with {name} on Sifa",
+    "pageDescription": "Scan the QR code to connect with {name} on Sifa ID.",
+    "scanToConnect": "Scan to connect on Sifa",
+    "copyLink": "Copy link",
+    "downloadQr": "Download QR",
+    "linkCopied": "Profile link copied",
+    "modalTitle": "Connect with {name}",
+    "modalAlreadyConnected": "You're already connected with {name}",
+    "modalDismiss": "View full profile",
+    "signInToConnect": "Sign in to connect",
+    "connected": "Connected!",
+    "connectAction": "Connect"
   }
 }
