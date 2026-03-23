@@ -15,6 +15,10 @@ import { DataTable } from '@/components/charts/DataTable';
 
 export const revalidate = 300;
 
+export function generateStaticParams() {
+  return [{ slug: event.slug }];
+}
+
 interface InsightsPageProps {
   params: Promise<{ slug: string }>;
 }
