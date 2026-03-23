@@ -1,5 +1,4 @@
 import { fetchProfile } from '@/lib/api';
-import { ActivityIndicators } from '@/components/activity-indicators';
 import { IdentityCard } from '@/components/identity-card';
 import { EmbedResizeEmitter } from '@/components/embed-resize-emitter';
 import type { LocationValue, ProfilePosition } from '@/lib/types';
@@ -71,11 +70,6 @@ export default async function EmbedPage({ params }: EmbedPageProps) {
         pdsProviderInfo={profile.pdsProvider}
         claimed={profile.claimed}
       />
-      {profile.activeApps && profile.activeApps.length > 0 && (
-        <div className="px-6 pb-2">
-          <ActivityIndicators apps={profile.activeApps} maxVisible={2} />
-        </div>
-      )}
     </div>
   );
 }

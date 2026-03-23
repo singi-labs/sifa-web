@@ -53,18 +53,30 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const refresh = useCallback(async () => {
     if (!session) setIsLoading(true);
-    const s = await getSession();
-    setSession(s);
-    setCachedSession(s);
+    const result = await getSession();
+    if (result.status === 'authenticated') {
+      setSession(result.session);
+      setCachedSession(result.session);
+    } else if (result.status === 'unauthenticated') {
+      setSession(null);
+      setCachedSession(null);
+    }
+    // status === 'unavailable': keep current session, don't clear cache
     setIsLoading(false);
   }, [session]);
 
   useEffect(() => {
     let cancelled = false;
-    getSession().then((s) => {
+    getSession().then((result) => {
       if (!cancelled) {
-        setSession(s);
-        setCachedSession(s);
+        if (result.status === 'authenticated') {
+          setSession(result.session);
+          setCachedSession(result.session);
+        } else if (result.status === 'unauthenticated') {
+          setSession(null);
+          setCachedSession(null);
+        }
+        // 'unavailable': keep cached session from useState initializer
         setIsLoading(false);
       }
     });

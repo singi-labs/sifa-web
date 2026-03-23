@@ -19,6 +19,32 @@ export default async function EmbedBuilderPage() {
       <div className="mt-8">
         <EmbedBuilder />
       </div>
+
+      <div className="mt-12 grid gap-6 sm:grid-cols-3">
+        <div>
+          <h3 className="font-semibold">{t('alwaysUpToDate')}</h3>
+          <p className="mt-1 text-sm text-muted-foreground">{t('alwaysUpToDateDescription')}</p>
+        </div>
+        <div>
+          <h3 className="font-semibold">{t('anyProfile')}</h3>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {t.rich('anyProfileDescription', {
+              example: (chunks) => (
+                <a
+                  href="https://sifa.id/events/atmosphereconf-2026"
+                  className="text-primary hover:underline"
+                >
+                  {chunks}
+                </a>
+              ),
+            })}
+          </p>
+        </div>
+        <div>
+          <h3 className="font-semibold">{t('comingSoon')}</h3>
+          <p className="mt-1 text-sm text-muted-foreground">{t('comingSoonDescription')}</p>
+        </div>
+      </div>
     </div>
   );
 }

@@ -24,6 +24,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { FollowButton } from '@/components/follow-button';
 import { ProfileEditDialog } from '@/components/profile-edit-dialog';
+import { ActivityIndicators } from '@/components/activity-indicators';
 import { useAuth } from '@/components/auth-provider';
 import type {
   ActiveApp,
@@ -124,7 +125,7 @@ export function IdentityCard({
   atprotoFollowersCount: _atprotoFollowersCount,
   trustStats: _trustStats = [],
   verifiedAccounts = [],
-  activeApps: _activeApps = [],
+  activeApps = [],
   pdsProviderInfo: _pdsProviderInfo,
   claimed,
   isOwnProfile,
@@ -496,6 +497,13 @@ export function IdentityCard({
               {t('editProfile')}
             </button>
           )}
+        </div>
+      )}
+
+      {/* Active-on badges (embed only, inside the card border) */}
+      {isEmbed && activeApps.length > 0 && (
+        <div className="px-0 pt-3">
+          <ActivityIndicators apps={activeApps} maxVisible={2} />
         </div>
       )}
 

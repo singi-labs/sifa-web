@@ -89,6 +89,33 @@ vi.mock('@phosphor-icons/react', () => ({
   ),
   UserCheck: (props: Record<string, unknown>) => <span data-testid="icon-user-check" {...props} />,
   UserPlus: (props: Record<string, unknown>) => <span data-testid="icon-user-plus" {...props} />,
+  ChatCircle: (props: Record<string, unknown>) => (
+    <span data-testid="icon-chat-circle" {...props} />
+  ),
+  GitBranch: (props: Record<string, unknown>) => <span data-testid="icon-git-branch" {...props} />,
+  CalendarBlank: (props: Record<string, unknown>) => (
+    <span data-testid="icon-calendar" {...props} />
+  ),
+  Camera: (props: Record<string, unknown>) => <span data-testid="icon-camera" {...props} />,
+  Article: (props: Record<string, unknown>) => <span data-testid="icon-article" {...props} />,
+  Newspaper: (props: Record<string, unknown>) => <span data-testid="icon-newspaper" {...props} />,
+  ChatsCircle: (props: Record<string, unknown>) => (
+    <span data-testid="icon-chats-circle" {...props} />
+  ),
+  Clipboard: (props: Record<string, unknown>) => <span data-testid="icon-clipboard" {...props} />,
+  BookmarkSimple: (props: Record<string, unknown>) => (
+    <span data-testid="icon-bookmark" {...props} />
+  ),
+  FileText: (props: Record<string, unknown>) => <span data-testid="icon-file-text" {...props} />,
+  Globe: (props: Record<string, unknown>) => <span data-testid="icon-globe" {...props} />,
+  UsersThree: (props: Record<string, unknown>) => (
+    <span data-testid="icon-users-three" {...props} />
+  ),
+  Key: (props: Record<string, unknown>) => <span data-testid="icon-key" {...props} />,
+  Star: (props: Record<string, unknown>) => <span data-testid="icon-star" {...props} />,
+  CircleDashed: (props: Record<string, unknown>) => (
+    <span data-testid="icon-circle-dashed" {...props} />
+  ),
 }));
 
 // Mock sonner
@@ -445,7 +472,7 @@ describe('IdentityCard (embed variant)', () => {
     expect(screen.queryByText(/followers/)).toBeNull();
   });
 
-  it('does not show active apps in embed', () => {
+  it('shows active apps badges in embed', () => {
     render(
       <IdentityCard
         {...baseProps}
@@ -461,8 +488,7 @@ describe('IdentityCard (embed variant)', () => {
         ]}
       />,
     );
-    expect(screen.queryByRole('list', { name: 'activeAppsLabel' })).toBeNull();
-    expect(screen.queryByText('Bluesky')).toBeNull();
+    expect(screen.getByText('Bluesky')).toBeDefined();
   });
 
   it('does not show skills pills in embed', () => {

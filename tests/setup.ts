@@ -319,7 +319,7 @@ vi.mock('next-intl/server', () => ({
 
 // Mock auth
 vi.mock('@/lib/auth', () => ({
-  getSession: vi.fn().mockResolvedValue(null),
+  getSession: vi.fn().mockResolvedValue({ status: 'unauthenticated' }),
   getLoginUrl: () => '/api/auth/login',
   getLogoutUrl: () => '/api/auth/logout',
 }));
