@@ -67,8 +67,9 @@ describe('PositionLinkList', () => {
       <PositionLinkList positions={positions} linkedPositionRkeys={['pos2']} onToggle={onToggle} />,
     );
 
+    // pos2 is linked so it sorts first
     const checkboxes = screen.getAllByRole('checkbox');
-    await user.click(checkboxes[1]!);
+    await user.click(checkboxes[0]!);
     expect(onToggle).toHaveBeenCalledWith('pos2', false);
   });
 
@@ -102,6 +103,91 @@ describe('PositionLinkList', () => {
 
     expect(screen.getByLabelText('Senior Engineer at Stripe (2022 - Present)')).toBeDefined();
     expect(screen.getByLabelText('Software Developer at Acme (2019 - 2022)')).toBeDefined();
+  });
+
+  it('sorts linked positions first, then by date descending', () => {
+    const onToggle = vi.fn();
+    render(
+      <PositionLinkList positions={positions} linkedPositionRkeys={['pos3']} onToggle={onToggle} />,
+    );
+
+    const checkboxes = screen.getAllByRole('checkbox');
+    // pos3 is linked so it comes first despite being oldest
+    expect((checkboxes[0] as HTMLInputElement).checked).toBe(true);
+    expect(screen.getByLabelText('Junior Dev at StartupCo (2017 - 2019)')).toBeDefined();
+  });
+
+  it('shows filter input when 10+ positions exist', () => {
+    const manyPositions: ProfilePosition[] = Array.from({ length: 12 }, (_, i) => ({
+      rkey: `pos${i}`,
+      companyName: `Company ${i}`,
+      title: `Role ${i}`,
+      startDate: `${2010 + i}-01`,
+      current: false,
+    }));
+    const onToggle = vi.fn();
+    render(
+      <PositionLinkList positions={manyPositions} linkedPositionRkeys={[]} onToggle={onToggle} />,
+    );
+
+    expect(screen.getByLabelText('Filter positions')).toBeDefined();
+  });
+
+  it('does not show filter input when fewer than 10 positions', () => {
+    const onToggle = vi.fn();
+    render(<PositionLinkList positions={positions} linkedPositionRkeys={[]} onToggle={onToggle} />);
+
+    expect(screen.queryByLabelText('Filter positions')).toBeNull();
+  });
+
+  it('filters positions by title or company name', async () => {
+    const user = userEvent.setup();
+    const manyPositions: ProfilePosition[] = [
+      ...Array.from({ length: 9 }, (_, i) => ({
+        rkey: `filler${i}`,
+        companyName: `Filler Co ${i}`,
+        title: `Filler Role ${i}`,
+        startDate: `${2010 + i}-01`,
+        current: false,
+      })),
+      {
+        rkey: 'target',
+        companyName: 'Stripe',
+        title: 'Engineer',
+        startDate: '2023-01',
+        current: true,
+      },
+    ];
+    const onToggle = vi.fn();
+    render(
+      <PositionLinkList positions={manyPositions} linkedPositionRkeys={[]} onToggle={onToggle} />,
+    );
+
+    const filterInput = screen.getByLabelText('Filter positions');
+    await user.type(filterInput, 'Stripe');
+
+    const checkboxes = screen.getAllByRole('checkbox');
+    expect(checkboxes).toHaveLength(1);
+    expect(screen.getByText('Engineer at Stripe (2023 - Present)')).toBeDefined();
+  });
+
+  it('shows empty message when filter matches nothing', async () => {
+    const user = userEvent.setup();
+    const manyPositions: ProfilePosition[] = Array.from({ length: 10 }, (_, i) => ({
+      rkey: `pos${i}`,
+      companyName: `Company ${i}`,
+      title: `Role ${i}`,
+      startDate: `${2010 + i}-01`,
+      current: false,
+    }));
+    const onToggle = vi.fn();
+    render(
+      <PositionLinkList positions={manyPositions} linkedPositionRkeys={[]} onToggle={onToggle} />,
+    );
+
+    await user.type(screen.getByLabelText('Filter positions'), 'zzzzz');
+    expect(screen.getByText('No matching positions')).toBeDefined();
+    expect(screen.queryAllByRole('checkbox')).toHaveLength(0);
   });
 
   it('passes axe accessibility checks', async () => {
