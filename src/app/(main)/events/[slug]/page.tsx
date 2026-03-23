@@ -11,6 +11,7 @@ import { InsightsNav } from '@/components/events/insights-nav';
 import { type EventEntry, type FilterGroup } from './event-card-grid';
 import { EventPageClient } from './event-page-client';
 
+export const dynamic = 'force-static';
 export const revalidate = 300;
 
 export function generateStaticParams() {

@@ -13,6 +13,7 @@ import { TreemapChart } from '@/components/charts/TreemapChart';
 import { NetworkGraph } from '@/components/charts/NetworkGraph';
 import { DataTable } from '@/components/charts/DataTable';
 
+export const dynamic = 'force-static';
 export const revalidate = 300;
 
 export function generateStaticParams() {
