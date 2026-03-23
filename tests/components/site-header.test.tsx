@@ -15,8 +15,8 @@ describe('SiteHeader', () => {
   it('renders the Sifa logo and name', () => {
     renderHeader();
 
-    expect(screen.getByText('Sifa')).toBeDefined();
-    expect(screen.getByRole('link', { name: 'Sifa home' })).toBeDefined();
+    expect(screen.getByText('Sifa ID')).toBeDefined();
+    expect(screen.getByRole('link', { name: 'Sifa ID home' })).toBeDefined();
   });
 
   it('renders desktop navigation links', () => {

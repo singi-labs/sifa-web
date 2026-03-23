@@ -7,7 +7,7 @@
     "connections": "{count, plural, one {# connection} other {# connections}}",
     "followers": "{count, plural, one {# follower} other {# followers}}",
     "following": "Following {count}",
-    "home": "Sifa home",
+    "home": "Sifa ID home",
     "search": "Search",
     "import": "Import",
     "findPeople": "Find People",
@@ -18,13 +18,13 @@
     "privacy": "Privacy",
     "terms": "Terms",
     "roadmap": "Roadmap",
-    "compare": "Sifa vs LinkedIn",
+    "compare": "Sifa ID vs LinkedIn",
     "builtBy": "Built by",
     "poweredByAtproto": "Powered by the AT Protocol",
     "switchToLight": "Switch to light mode",
     "switchToDark": "Switch to dark mode",
     "skipToContent": "Skip to main content",
-    "betaBanner": "Sifa is pre-alpha software",
+    "betaBanner": "Sifa ID is pre-alpha software",
     "betaBannerInfoLabel": "What this means",
     "betaBannerDetail": "This is basically our live dev server. Your profile data is safe in your AT Protocol account, but features and preferences may change before launch.",
     "betaBannerReportLink": "Report issues on GitHub",
@@ -53,9 +53,9 @@
     "clearFilter": "Clear date"
   },
   "home": {
-    "title": "Sifa",
+    "title": "Sifa ID",
     "subtitle": "Professional identity on the AT Protocol. Own your career narrative.",
-    "searchProfiles": "Find yourself on Sifa",
+    "searchProfiles": "Find yourself on Sifa ID",
     "importLinkedIn": "Import from LinkedIn",
     "atprotoCountPrefix": "Do you already have a Bluesky or other AT Protocol account, like",
     "atprotoCountSuffix": "others?",
@@ -112,7 +112,7 @@
   },
   "import": {
     "title": "Import from LinkedIn",
-    "subtitle": "Bring your professional history to Sifa. Your LinkedIn ZIP is extracted in your browser and never leaves your device.",
+    "subtitle": "Bring your professional history to Sifa ID. Your LinkedIn ZIP is extracted in your browser and never leaves your device.",
     "uploadStep": "Upload",
     "previewStep": "Review",
     "confirmStep": "Import",
@@ -303,7 +303,7 @@
     "unclaimedPopupText": "This profile shows public AT Protocol data. {name} hasn't set up their Sifa profile yet.",
     "claimYourProfile": "Claim your profile",
     "roleAt": "at",
-    "viewOnSifa": "View on Sifa",
+    "viewOnSifa": "View on Sifa ID",
     "followers": "{count} followers",
     "followersOnBluesky": "{count} followers on Bluesky",
     "pdsProvider": "on {provider}",
@@ -323,7 +323,7 @@
     "statusTitle": "Search is in alpha",
     "statusIntro": "We're actively building search. Here's what works today and what's coming next.",
     "comingSoonLabel": "Coming soon",
-    "sifaGroupTitle": "Sifa profiles",
+    "sifaGroupTitle": "Sifa ID profiles",
     "sifaGroupDone": {
       "nameHeadline": "Search by name and headline",
       "bio": "Search by bio / about text",
@@ -356,9 +356,9 @@
     "errorUpstream": "Sign-in failed due to a temporary issue with the identity provider. Please try again."
   },
   "about": {
-    "title": "About Sifa",
+    "title": "About Sifa ID",
     "introTitle": "Professional identity you actually own",
-    "intro": "Sifa is a professional identity network built on the AT Protocol, the same open network behind Bluesky. Your career history, skills, and endorsements live in your own data server, not in ours. Switch providers, leave Sifa, or build your own client. Your data stays yours.",
+    "intro": "Sifa ID is a professional identity network built on the AT Protocol, the same open network behind Bluesky. Your career history, skills, and endorsements live in your own data server, not in ours. Switch providers, leave Sifa, or build your own client. Your data stays yours.",
     "whyTitle": "Why we built this",
     "why": "LinkedIn controls the professional identity of close to a billion people. If they lock your account, your career history disappears. If they change their API, every tool that depends on it breaks. Professional identity is too important to live inside one company's database.",
     "howTitle": "How it works",
@@ -381,7 +381,7 @@
   "privacy": {
     "title": "Privacy Policy",
     "lastUpdated": "Last updated: March 20, 2026",
-    "introPrefix": "Sifa is operated by",
+    "introPrefix": "Sifa ID is operated by",
     "introFoundedBy": ", founded by",
     "introSuffix": "and based in the Netherlands. We built Sifa on the AT Protocol because professional identity data shouldn't be controlled by a single platform. This policy explains what data we handle and how.",
     "dataStorageTitle": "Your data, your PDS",
@@ -418,7 +418,7 @@
     "viewRawData": "View your raw data"
   },
   "embedBuilder": {
-    "pageTitle": "Embed a Sifa Profile Card",
+    "pageTitle": "Embed a Sifa ID Profile Card",
     "pageDescription": "Add a live professional profile card to any website with a single line of code.",
     "pageSubtitle": "Add a live professional profile card to any website with a single line of code.",
     "identifierLabel": "Handle or DID",
@@ -442,7 +442,7 @@
   "terms": {
     "title": "Terms of Service",
     "lastUpdated": "Last updated: March 2026",
-    "introPrefix": "Sifa is operated by",
+    "introPrefix": "Sifa ID is operated by",
     "introFoundedBy": ", founded by",
     "introSuffix": "and based in the Netherlands. By using Sifa, you agree to the following terms.",
     "serviceTitle": "The service",
@@ -500,7 +500,7 @@
       "multiAccountLinking": "Multi-account linking"
     },
     "disclaimer": "This roadmap reflects our current thinking and priorities. Items may shift in order, change scope, or be replaced as we learn more. No dates are promised.",
-    "contributeTitle": "Help shape Sifa",
+    "contributeTitle": "Help shape Sifa ID",
     "contributeBody": "Sifa is built in the open. If you have an idea, ran into a bug, or want to contribute code, we'd love to hear from you.",
     "suggestIdea": "Suggest an idea",
     "reportBug": "Report a bug",
@@ -551,9 +551,9 @@
     "notOwnProfile": "You can only manage activity visibility for your own profile."
   },
   "welcome": {
-    "pageTitle": "Welcome | Sifa",
-    "title": "Welcome to Sifa, {displayName}",
-    "titleGeneric": "Welcome to Sifa",
+    "pageTitle": "Welcome | Sifa ID",
+    "title": "Welcome to Sifa ID, {displayName}",
+    "titleGeneric": "Welcome to Sifa ID",
     "subtitle": "Your professional identity, owned by you. Choose how to get started.",
     "skipForNow": "Skip for now",
     "paths": {
@@ -589,14 +589,14 @@
   "compareLinkedin": {
     "kicker": "Your professional data belongs to you",
     "title": "The LinkedIn alternative that gives you your data back",
-    "description": "LinkedIn alternative with data ownership, Sifa",
-    "metaDescription": "LinkedIn owns your career data. Sifa stores it in your own account, portable and yours to keep. No ads, no lock-in. See the full comparison.",
+    "description": "LinkedIn alternative with data ownership, Sifa ID",
+    "metaDescription": "LinkedIn owns your career data. Sifa ID stores it in your own account, portable and yours to keep. No ads, no lock-in. See the full comparison.",
     "subhead": "Your career history, skills, and endorsements live in your own data account, not on someone else's servers. Portable, verifiable, yours to keep. Built in the Netherlands, hosted in Germany, funded by no one but ourselves.",
     "heroCta": "Import your LinkedIn profile in 2 minutes",
     "lastUpdated": "Last updated: March 2026",
     "tableCaption": "How they compare",
     "colLinkedin": "LinkedIn",
-    "colSifa": "Sifa",
+    "colSifa": "Sifa ID",
     "table": {
       "data": {
         "label": "Your data",

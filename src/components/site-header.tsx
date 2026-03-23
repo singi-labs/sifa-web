@@ -32,7 +32,7 @@ export function SiteHeader() {
               height={28}
               className="hidden h-7 w-7 dark:block"
             />
-            <span className="text-lg font-semibold">Sifa</span>
+            <span className="text-lg font-semibold">Sifa ID</span>
           </Link>
 
           <nav className="hidden items-center gap-1 md:flex" aria-label={t('mainNav')}>
