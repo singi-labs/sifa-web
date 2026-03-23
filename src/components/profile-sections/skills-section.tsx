@@ -61,16 +61,21 @@ export function SkillsSection({ isOwnProfile }: SkillsSectionProps) {
       const skillRef = buildSkillRef(skillRkey);
       const currentSkills = position.skills ?? [];
 
+      // Optimistic update: apply immediately so checkbox feels instant
+      const updatedSkills = linked
+        ? [...currentSkills, skillRef]
+        : currentSkills.filter((s) => s.uri !== skillRef.uri);
+      updateItem('positions', positionRkey, { skills: updatedSkills });
+
       const result = linked
         ? await linkSkillToPosition(position, skillRef)
         : await unlinkSkillFromPosition(position, skillRef);
 
       if (result.success) {
-        const updatedSkills = linked
-          ? [...currentSkills, skillRef]
-          : currentSkills.filter((s) => s.uri !== skillRef.uri);
-        updateItem('positions', positionRkey, { skills: updatedSkills });
+        toast.success('Saved');
       } else {
+        // Revert optimistic update on failure
+        updateItem('positions', positionRkey, { skills: currentSkills });
         toast.error(result.error ?? 'Failed to update position');
       }
     },

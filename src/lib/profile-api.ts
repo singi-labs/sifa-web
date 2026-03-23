@@ -279,6 +279,23 @@ export async function searchSkills(query: string, limit = 10): Promise<SkillSugg
   }
 }
 
+function buildPositionPayload(
+  position: ProfilePosition,
+  skills: SkillRef[],
+): Record<string, unknown> {
+  return {
+    companyName: position.companyName,
+    title: position.title,
+    description: position.description,
+    startDate: position.startDate,
+    endDate: position.endDate,
+    // Send undefined instead of null so JSON.stringify strips it
+    location: position.location ?? undefined,
+    current: position.current,
+    skills,
+  };
+}
+
 export async function linkSkillToPosition(
   position: ProfilePosition,
   skillRef: SkillRef,
@@ -286,16 +303,10 @@ export async function linkSkillToPosition(
   const currentSkills = position.skills ?? [];
   const alreadyLinked = currentSkills.some((s) => s.uri === skillRef.uri);
   if (alreadyLinked) return { success: true };
-  return updatePosition(position.rkey, {
-    companyName: position.companyName,
-    title: position.title,
-    description: position.description,
-    startDate: position.startDate,
-    endDate: position.endDate,
-    location: position.location,
-    current: position.current,
-    skills: [...currentSkills, skillRef],
-  });
+  return updatePosition(
+    position.rkey,
+    buildPositionPayload(position, [...currentSkills, skillRef]),
+  );
 }
 
 export async function unlinkSkillFromPosition(
@@ -303,16 +314,13 @@ export async function unlinkSkillFromPosition(
   skillRef: SkillRef,
 ): Promise<WriteResult> {
   const currentSkills = position.skills ?? [];
-  return updatePosition(position.rkey, {
-    companyName: position.companyName,
-    title: position.title,
-    description: position.description,
-    startDate: position.startDate,
-    endDate: position.endDate,
-    location: position.location,
-    current: position.current,
-    skills: currentSkills.filter((s) => s.uri !== skillRef.uri),
-  });
+  return updatePosition(
+    position.rkey,
+    buildPositionPayload(
+      position,
+      currentSkills.filter((s) => s.uri !== skillRef.uri),
+    ),
+  );
 }
 
 export async function createEndorsement(data: {
