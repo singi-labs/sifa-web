@@ -596,11 +596,11 @@ export function IdentityCard({
           {isOwn && (
             <>
               <Link
-                href={`/connect/${encodeURIComponent(handle)}`}
+                href="/meet"
                 className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }))}
               >
                 <QrCode className="mr-1.5 h-4 w-4" weight="bold" aria-hidden="true" />
-                {t('connectQr')}
+                {t('meet')}
               </Link>
               <Link
                 href={`/embed?handle=${encodeURIComponent(handle)}`}
