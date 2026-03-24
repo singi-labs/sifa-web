@@ -88,7 +88,11 @@ export function ConferenceHandshakeBanner() {
               </span>
               <span>
                 Tap Meet on your profile, or go to{' '}
-                <Link href="/meet" onClick={() => setDialogOpen(false)} className="font-medium text-primary underline underline-offset-2">
+                <Link
+                  href="/meet"
+                  onClick={() => setDialogOpen(false)}
+                  className="font-medium text-primary underline underline-offset-2"
+                >
                   sifa.id/meet
                 </Link>
               </span>
