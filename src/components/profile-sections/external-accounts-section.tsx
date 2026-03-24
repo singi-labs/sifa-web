@@ -2,13 +2,14 @@
 
 import { useCallback, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
-import { CheckCircle, Star, Info } from '@phosphor-icons/react';
+import { CheckCircle, Star, Info, EyeSlash } from '@phosphor-icons/react';
 import { Popover } from '@base-ui/react/popover';
 import { toast } from 'sonner';
 import {
   setExternalAccountPrimary,
   unsetExternalAccountPrimary,
   fetchExternalAccounts,
+  hideKeytraceClaim,
 } from '@/lib/profile-api';
 import { useProfileEdit } from '@/components/profile-edit-provider';
 import {
@@ -25,6 +26,7 @@ import { getPlatformInfo, PLATFORM_OPTIONS } from '@/lib/platforms';
 import { Favicon } from '@/components/ui/favicon';
 import { PdsIcon } from '@/components/pds-icon';
 import { pdsProviderFromApi, detectPdsProvider, getPdsDisplayName } from '@/lib/pds-utils';
+import { VerificationPopover } from './verification-popover';
 
 interface ExternalAccountsSectionProps {
   accounts: ExternalAccount[];
@@ -35,6 +37,11 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
   const t = useTranslations('sections');
   const tEdit = useTranslations('profileEdit');
   const { profile, updateItem, updateProfile } = useProfileEdit();
+
+  const keytraceOnlyAccounts = useMemo(
+    () => accounts.filter((a) => a.source === 'keytrace'),
+    [accounts],
+  );
 
   const externalAccountFields = useMemo(
     () => getExternalAccountFields(profile.handle, t),
@@ -62,6 +69,19 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
       }
     },
     [accounts, updateItem, tEdit],
+  );
+
+  const handleHideKeytrace = useCallback(
+    async (rkey: string) => {
+      const result = await hideKeytraceClaim(rkey);
+      if (result.success) {
+        updateProfile({
+          externalAccounts: accounts.filter((a) => a.rkey !== rkey),
+        });
+        toast.success(t('hideLink'));
+      }
+    },
+    [accounts, updateProfile, t],
   );
 
   const handleFieldChange = useCallback(
@@ -98,6 +118,48 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
   const atprotoLabel = isSelfHosted
     ? `Self-hosted ATProto (@${profile.handle})`
     : `${getPdsDisplayName(pdsProvider?.name ?? 'bluesky')} (@${profile.handle})`;
+
+  const renderAccountRow = (acc: ExternalAccount) => {
+    const platform = getPlatformInfo(acc.platform);
+    const Icon = platform.icon;
+    const displayLabel = acc.label ?? platform.label;
+    const usesFavicon = acc.platform === 'website';
+    const isVerified = acc.verified || acc.keytraceVerified;
+
+    return (
+      <div className="flex items-center gap-3">
+        {usesFavicon ? (
+          <Favicon url={acc.url} size={20} className="shrink-0 text-muted-foreground" />
+        ) : (
+          <Icon size={20} weight="fill" className="shrink-0 text-muted-foreground" />
+        )}
+        <a
+          href={acc.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-medium underline-offset-4 hover:underline"
+        >
+          {displayLabel}
+        </a>
+        {isVerified && (
+          <VerificationPopover
+            verified={acc.verified}
+            verifiedVia={acc.verifiedVia}
+            keytraceVerified={acc.keytraceVerified}
+          />
+        )}
+        {acc.primary && !isOwnProfile && (
+          <Star
+            size={16}
+            weight="fill"
+            className="shrink-0 text-amber-500 dark:text-amber-400"
+            aria-label={tEdit('primaryLink')}
+          />
+        )}
+      </div>
+    );
+  };
+
   return (
     <section
       className="mt-8"
@@ -126,7 +188,7 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
           </Popover.Root>
         )}
       </div>
-      {/* ATProto identity — always shown, verified via AT Protocol */}
+      {/* ATProto identity -- always shown, verified via AT Protocol */}
       <div className="mb-4 flex items-center gap-3">
         <PdsIcon
           provider={pdsProvider?.name ?? 'bluesky'}
@@ -165,10 +227,8 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
         onPostSave={handlePostSave}
         onFieldChange={handleFieldChange}
         renderEntry={(acc, controls) => {
-          const platform = getPlatformInfo(acc.platform);
-          const Icon = platform.icon;
-          const displayLabel = acc.label ?? platform.label;
-          const usesFavicon = acc.platform === 'website';
+          // Keytrace-only entries are rendered separately below
+          if (acc.source === 'keytrace') return null;
 
           const starToggle = isOwnProfile ? (
             <button
@@ -193,45 +253,32 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
               isOwnProfile={isOwnProfile}
               onEdit={controls?.onEdit ?? (() => {})}
               onDelete={controls?.onDelete ?? (() => {})}
-              entryLabel={displayLabel}
+              entryLabel={acc.label ?? getPlatformInfo(acc.platform).label}
               trailingContent={starToggle}
             >
-              <div className="flex items-center gap-3">
-                {usesFavicon ? (
-                  <Favicon url={acc.url} size={20} className="shrink-0 text-muted-foreground" />
-                ) : (
-                  <Icon size={20} weight="fill" className="shrink-0 text-muted-foreground" />
-                )}
-                <a
-                  href={acc.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-medium underline-offset-4 hover:underline"
-                >
-                  {displayLabel}
-                </a>
-                {acc.verified && (
-                  <CheckCircle
-                    size={16}
-                    weight="fill"
-                    className="shrink-0 text-green-600 dark:text-green-400"
-                    aria-label={t('verified')}
-                  />
-                )}
-
-                {acc.primary && !isOwnProfile && (
-                  <Star
-                    size={16}
-                    weight="fill"
-                    className="shrink-0 text-amber-500 dark:text-amber-400"
-                    aria-label={tEdit('primaryLink')}
-                  />
-                )}
-              </div>
+              {renderAccountRow(acc)}
             </EditableEntry>
           );
         }}
       />
+
+      {/* Keytrace-only accounts -- read-only, with hide option for owner */}
+      {keytraceOnlyAccounts.map((acc) => (
+        <div key={acc.rkey} className="flex items-center justify-between py-2">
+          {renderAccountRow(acc)}
+          {isOwnProfile && (
+            <button
+              type="button"
+              onClick={() => void handleHideKeytrace(acc.rkey)}
+              className="shrink-0 rounded-full p-1 text-muted-foreground transition-colors hover:text-foreground"
+              aria-label={t('hideLink')}
+              title={t('hideLink')}
+            >
+              <EyeSlash size={16} weight="regular" />
+            </button>
+          )}
+        </div>
+      ))}
     </section>
   );
 }
