@@ -86,7 +86,12 @@ export function ConferenceHandshakeBanner() {
               <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
                 1
               </span>
-              <span>{t('explainerStep1')}</span>
+              <span>
+                Tap Meet on your profile, or go to{' '}
+                <Link href="/meet" className="font-medium text-primary underline underline-offset-2">
+                  sifa.id/meet
+                </Link>
+              </span>
             </li>
             <li className="flex gap-3">
               <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
