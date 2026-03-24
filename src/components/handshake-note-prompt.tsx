@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
@@ -29,6 +29,13 @@ export function HandshakeNotePrompt({
   const [showTextarea, setShowTextarea] = useState(false);
   const [content, setContent] = useState('');
   const [saving, setSaving] = useState(false);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    if (showTextarea) {
+      textareaRef.current?.focus();
+    }
+  }, [showTextarea]);
 
   const handleSave = useCallback(async () => {
     if (!content.trim()) return;
@@ -77,6 +84,7 @@ export function HandshakeNotePrompt({
       {showTextarea ? (
         <div className="mt-3">
           <textarea
+            ref={textareaRef}
             value={content}
             onChange={(e) => setContent(e.target.value)}
             maxLength={500}
