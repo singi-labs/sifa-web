@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
-import { CheckCircle, Handshake, SignIn } from '@phosphor-icons/react';
+import { Handshake, SignIn } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/components/auth-provider';
 import { HandshakeNotePrompt } from '@/components/handshake-note-prompt';
@@ -136,6 +136,7 @@ export function HandshakeScanner({ token }: HandshakeScannerProps) {
 
       (await res.json()) as ConfirmResponse;
       setStatus('confirmed');
+      navigator.vibrate?.(200);
       trackEvent('handshake-confirmed-scanner');
     } catch {
       setErrorKind('generic');
@@ -191,7 +192,7 @@ export function HandshakeScanner({ token }: HandshakeScannerProps) {
     return (
       <div className="flex min-h-[calc(100dvh-4rem)] flex-col items-center justify-center px-4 py-12">
         <div className="flex max-w-sm flex-col items-center gap-4 text-center">
-          <CheckCircle className="h-16 w-16 text-green-600" weight="fill" />
+          <Handshake className="h-16 w-16 animate-scale-in text-green-600" weight="fill" />
           <h1 className="text-xl font-semibold">{t('confirmed')}</h1>
           <p className="text-sm text-muted-foreground">
             {t('confirmedSubtitle', { name: displayerName })}
@@ -212,9 +213,6 @@ export function HandshakeScanner({ token }: HandshakeScannerProps) {
               </Button>
             </Link>
           )}
-          <Link href="/" className="text-sm text-muted-foreground underline underline-offset-2">
-            {t('done')}
-          </Link>
         </div>
       </div>
     );

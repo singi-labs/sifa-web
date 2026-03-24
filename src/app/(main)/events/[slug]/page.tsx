@@ -238,6 +238,21 @@ export default async function EventPage({ params }: EventPageProps) {
         </a>
       </div>
 
+      {/* Handshake promo */}
+      <div className="mt-12 rounded-lg border border-primary/20 bg-primary/5 p-6 text-center">
+        <h2 className="text-lg font-semibold">Meeting someone at {event.name}?</h2>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Use Handshake to record verified in-person meetings. Show your QR code, they scan it, and
+          you&apos;re connected as an IRL meeting on both your profiles.
+        </p>
+        <Link
+          href="/meet"
+          className="mt-3 inline-flex h-9 items-center justify-center gap-2 rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+        >
+          Open Meet page
+        </Link>
+      </div>
+
       {/* Footer CTAs */}
       <div className="mt-12 flex flex-col items-center gap-3 border-t border-border pt-8 text-center">
         <Link href="/login" className="text-sm font-medium text-primary hover:underline">

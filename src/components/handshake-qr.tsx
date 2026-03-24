@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
-import { ArrowsClockwise, CheckCircle } from '@phosphor-icons/react';
+import { ArrowsClockwise, Handshake as HandshakeIcon, Info, QrCode } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 import { HandshakeNotePrompt } from '@/components/handshake-note-prompt';
 import { trackEvent } from '@/lib/analytics';
@@ -42,6 +42,7 @@ export function HandshakeQR({ handle, avatar }: HandshakeQRProps) {
   const [pendingNotes, setPendingNotes] = useState<
     Array<{ did: string; name: string; handle?: string; avatar?: string }>
   >([]);
+  const [meetingCount, setMeetingCount] = useState(0);
 
   const qrSize = 256;
 
@@ -113,6 +114,7 @@ export function HandshakeQR({ handle, avatar }: HandshakeQRProps) {
                 meetingToken: statusData.meetingToken,
               });
               setStatus('confirmed');
+              navigator.vibrate?.(200);
               trackEvent('handshake-confirmed-displayer', { handle });
 
               // Fetch scanner profile for note prompt
@@ -164,6 +166,15 @@ export function HandshakeQR({ handle, avatar }: HandshakeQRProps) {
   useEffect(() => {
     void generateToken();
 
+    // Fetch meeting count
+    fetch(`${API_URL}/api/meet/list`, { credentials: 'include' })
+      .then(async (res) => {
+        if (!res.ok) return;
+        const data = (await res.json()) as { meetings: unknown[] };
+        setMeetingCount(data.meetings.length);
+      })
+      .catch(() => {});
+
     return () => {
       stopPolling();
       if (autoRefreshRef.current) {
@@ -186,6 +197,11 @@ export function HandshakeQR({ handle, avatar }: HandshakeQRProps) {
 
   return (
     <div className="flex flex-col items-center gap-6">
+      {/* Meeting count */}
+      {meetingCount > 0 && (
+        <p className="text-sm text-white/60">{t('metCount', { count: meetingCount })}</p>
+      )}
+
       {/* QR Code */}
       <div className="relative rounded-2xl bg-white p-4">
         {status === 'confirmed' ? (
@@ -193,7 +209,7 @@ export function HandshakeQR({ handle, avatar }: HandshakeQRProps) {
             className="flex flex-col items-center justify-center gap-3"
             style={{ width: qrSize, height: qrSize }}
           >
-            <CheckCircle className="h-16 w-16 text-green-600" weight="fill" />
+            <HandshakeIcon className="h-16 w-16 animate-scale-in text-green-600" weight="fill" />
             <p className="text-center text-lg font-semibold text-gray-900">{t('confirmed')}</p>
             <p className="text-center text-sm text-gray-600">
               {t('confirmedSubtitle', {
@@ -258,8 +274,18 @@ export function HandshakeQR({ handle, avatar }: HandshakeQRProps) {
         {t('nextHandshake')}
       </Button>
 
+      {/* Scan theirs */}
+      <p className="text-center text-xs text-white/40">
+        <QrCode className="mr-1 inline h-3.5 w-3.5" weight="bold" aria-hidden="true" />
+        {t('scanTheirs')}?{' '}
+        <span className="text-white/60">Point your phone camera at their QR code.</span>
+      </p>
+
       {/* Privacy notice */}
-      <p className="max-w-xs text-center text-xs text-white/50">{t('privacyNotice')}</p>
+      <p className="max-w-xs text-center text-xs text-white/50" title={t('privacyNoticeDetail')}>
+        {t('privacyNotice')}{' '}
+        <Info className="inline h-3 w-3 text-white/40" weight="bold" aria-hidden="true" />
+      </p>
 
       {/* Profile QR link */}
       <a
