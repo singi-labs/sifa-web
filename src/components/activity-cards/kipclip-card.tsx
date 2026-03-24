@@ -4,6 +4,7 @@ import { Bookmark } from '@phosphor-icons/react';
 import { getAppMeta, getAppStripeColor, resolveCardUrl } from '@/lib/atproto-apps';
 import type { ActivityCardProps } from './types';
 import { CardLink } from './card-link';
+import { AppPill } from '../app-pill';
 
 function formatRelativeTime(dateString: string): string {
   const date = new Date(dateString);
@@ -104,11 +105,7 @@ export function KipClipCard({ record, compact, authorHandle }: ActivityCardProps
           </div>
 
           <div className="flex items-center gap-2 border-t border-border pt-2 text-xs text-muted-foreground">
-            <span
-              className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${appMeta.className}`}
-            >
-              {appMeta.name}
-            </span>
+            <AppPill appId="kipclip" name={appMeta.name} />
             {timestamp && (
               <>
                 <span aria-hidden="true">&middot;</span>

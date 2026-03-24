@@ -40,7 +40,7 @@ export function SuggestionsBanner() {
   };
 
   return (
-    <div className="mb-6 flex items-center justify-between gap-4 rounded-lg border border-border bg-muted/50 px-4 py-3">
+    <div className="mb-6 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded-lg border border-border bg-muted/50 px-4 py-3">
       <p className="text-sm">
         <span className="font-medium">{count} new people</span> you follow on Bluesky or Tangled are
         on Sifa.

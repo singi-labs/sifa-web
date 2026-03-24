@@ -4,6 +4,7 @@ import { ShieldCheck, Key } from '@phosphor-icons/react';
 import { getAppMeta, getAppStripeColor, resolveCardUrl } from '@/lib/atproto-apps';
 import type { ActivityCardProps } from './types';
 import { CardLink } from './card-link';
+import { AppPill } from '../app-pill';
 
 /** Platform type icons — maps keytrace claim types to display info */
 const PLATFORM_INFO: Record<string, { label: string; icon: string }> = {
@@ -133,11 +134,7 @@ export function KeytraceCard({ record, compact, authorHandle }: ActivityCardProp
           </div>
 
           <div className="flex items-center gap-2 border-t border-border pt-2 text-xs text-muted-foreground">
-            <span
-              className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${appMeta.className}`}
-            >
-              {appMeta.name}
-            </span>
+            <AppPill appId="keytrace" name={appMeta.name} />
             {timestamp && (
               <>
                 <span aria-hidden="true">&middot;</span>

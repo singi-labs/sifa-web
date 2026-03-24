@@ -4,11 +4,9 @@ import { Calendar, MapPin, CheckCircle, Star } from '@phosphor-icons/react';
 import { getAppMeta } from '@/lib/atproto-apps';
 import type { ActivityCardProps } from './types';
 import { CardLink } from './card-link';
+import { AppPill, getAppPillStyle } from '../app-pill';
 
 const STRIPE_COLOR = '#ea580c';
-
-const SMOKESIGNAL_BADGE_CLASS =
-  'bg-orange-100 text-orange-800 dark:bg-orange-900/40 dark:text-orange-300';
 
 interface EventMeta {
   name?: string;
@@ -191,7 +189,8 @@ export function EventRsvpCard({ record: rawRecord, compact }: ActivityCardProps)
             <div className="min-w-0 flex-1">
               <div className="mb-1 flex flex-wrap items-center gap-2">
                 <span
-                  className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${SMOKESIGNAL_BADGE_CLASS}`}
+                  className="inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-medium"
+                  style={getAppPillStyle('smokesignal')}
                   data-testid="event-rsvp-status-badge"
                 >
                   <RsvpIcon className="h-3.5 w-3.5" weight="bold" aria-hidden="true" />
@@ -228,11 +227,7 @@ export function EventRsvpCard({ record: rawRecord, compact }: ActivityCardProps)
           </div>
 
           <div className="flex items-center gap-2 border-t border-border pt-2 text-xs text-muted-foreground">
-            <span
-              className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${appMeta.className}`}
-            >
-              {appMeta.name}
-            </span>
+            <AppPill appId="smokesignal" name={appMeta.name} />
             {timestamp && (
               <>
                 <span aria-hidden="true">&middot;</span>
