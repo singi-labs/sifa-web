@@ -16,7 +16,7 @@ import {
 import { useAuth } from '@/components/auth-provider';
 
 const STORAGE_KEY = 'sifa-conference-banner-dismissed';
-const CONFERENCE_START = new Date('2026-03-26T00:00:00Z');
+const CONFERENCE_START = new Date('2026-03-24T00:00:00Z');
 const CONFERENCE_END = new Date('2026-03-30T00:00:00Z');
 
 function getWasDismissed() {
