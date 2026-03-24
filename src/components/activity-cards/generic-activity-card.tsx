@@ -15,6 +15,7 @@ import { getAppMeta, getAppStripeColor, buildBlobUrl, resolveCardUrl } from '@/l
 import type { ActivityCardProps } from './types';
 import { CardLink } from './card-link';
 import { ActivityTooltip } from '../activity-tooltip';
+import { AppPill } from '../app-pill';
 
 /** Map collection NSID prefixes to app IDs in atproto-apps registry.
  * Must stay in sync with the verified API registry (sifa-api/src/lib/atproto-app-registry.ts).
@@ -38,6 +39,7 @@ const COLLECTION_TO_APP: Record<string, string> = {
   'dev.keytrace.': 'keytrace',
   'social.popfeed.': 'popfeed',
   'app.popsky.': 'popfeed',
+  'place.stream.': 'streamplace',
   'id.sifa.': 'sifa',
   'forum.barazo.': 'barazo',
 };
@@ -147,8 +149,8 @@ function extractImageBlob(
   const fromImage = extractFromBlobRef(record.image);
   if (fromImage) return fromImage;
 
-  // Pattern 2: record.thumbnail
-  const fromThumb = extractFromBlobRef(record.thumbnail);
+  // Pattern 2: record.thumbnail or record.thumb (e.g. Streamplace)
+  const fromThumb = extractFromBlobRef(record.thumbnail ?? record.thumb);
   if (fromThumb) return fromThumb;
 
   // Pattern 3: record.images[0].image (e.g. Bluesky embed images)
@@ -317,11 +319,7 @@ export function GenericActivityCard({
               tooltipNetworkNote={appMeta.tooltipNetworkNote}
               appUrl={appMeta.appUrl}
             >
-              <span
-                className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${appMeta.className}`}
-              >
-                {appMeta.name}
-              </span>
+              <AppPill appId={appId} name={appMeta.name} />
             </ActivityTooltip>
             {timestamp && (
               <>
