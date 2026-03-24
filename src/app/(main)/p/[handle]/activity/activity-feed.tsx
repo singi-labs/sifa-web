@@ -19,6 +19,7 @@ const CATEGORIES = [
   { key: 'Events', labelKey: 'categoryEvents' },
   { key: 'Links', labelKey: 'categoryLinks' },
   { key: 'Pastes', labelKey: 'categoryPastes' },
+  { key: 'Video', labelKey: 'categoryVideo' },
 ] as const;
 
 interface ActivityFeedProps {

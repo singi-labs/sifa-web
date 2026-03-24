@@ -52,7 +52,7 @@ export function AtprotoCounter({
   const formatted = displayCount.toLocaleString('en-US');
 
   return (
-    <div className="mt-6 max-w-lg text-center">
+    <div className="mt-6 max-w-xl text-center">
       <p className="text-sm text-muted-foreground">
         {prefix}{' '}
         <span className="text-base font-semibold tabular-nums text-foreground">{formatted}</span>{' '}

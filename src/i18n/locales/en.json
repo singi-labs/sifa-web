@@ -105,6 +105,7 @@
     "categoryEvents": "Events",
     "categoryLinks": "Links",
     "categoryPastes": "Pastes",
+    "categoryVideo": "Video",
     "loading": "Loading activity...",
     "loadMore": "Load more",
     "loadingMore": "Loading...",
@@ -302,6 +303,7 @@
     "copied": "Copied!",
     "linkCopied": "Profile link copied to clipboard",
     "embed": "Embed",
+    "meet": "Meet",
     "unclaimed": "Unclaimed",
     "unclaimedPopupText": "This profile shows public AT Protocol data. {name} hasn't set up their Sifa profile yet.",
     "claimYourProfile": "Claim your profile",
@@ -418,7 +420,7 @@
   },
   "dataTransparency": {
     "title": "Your data on the AT Protocol",
-    "body": "Your professional profile is stored in your Personal Data Server (PDS). This data is public and portable -- you can inspect exactly what is stored and take it to any compatible provider.",
+    "body": "Your professional profile is stored in your Personal Data Server (PDS). This data is public and portable. You can inspect exactly what is stored and take it to any compatible provider.",
     "viewRawData": "View your raw data"
   },
   "embedBuilder": {
@@ -434,11 +436,11 @@
     "copied": "Copied to clipboard",
     "enterHandle": "Enter a handle or DID to see a preview",
     "alwaysUpToDate": "Always up to date",
-    "alwaysUpToDateDescription": "The embed pulls live data from your Sifa profile and AT Protocol activity. When you update your profile, the embed updates too -- no manual changes needed.",
+    "alwaysUpToDateDescription": "The embed pulls live data from your Sifa profile and AT Protocol activity. When you update your profile, the embed updates too. No manual changes needed.",
     "anyProfile": "Works for any profile",
-    "anyProfileDescription": "Embed any Sifa profile, not just your own. Build a team page, speaker directory, or community member list -- like the <example>ATmosphere Conf 2026 speaker directory</example>.",
+    "anyProfileDescription": "Embed any Sifa profile, not just your own. Build a team page, speaker directory, or community member list. See the <example>ATmosphere Conf 2026 speaker directory</example> for an example.",
     "comingSoon": "Coming soon",
-    "comingSoonDescription": "This is a first version of the embed. In a future update, you'll be able to choose which elements appear on the card -- like toggling skills, location, or activity badges on and off."
+    "comingSoonDescription": "This is a first version of the embed. In a future update, you'll be able to choose which elements appear on the card, like toggling skills, location, or activity badges on and off."
   },
   "notFound": {
     "title": "Page not found",
@@ -536,7 +538,7 @@
   },
   "privacyRemoval": {
     "title": "Request Profile Removal",
-    "description": "You can request the removal of your profile and activity data from Sifa. This removes your data from our database and prevents Sifa from displaying or scanning your profile in the future. The data itself remains in your AT Protocol account -- Sifa cannot modify or delete your PDS records.",
+    "description": "You can request the removal of your profile and activity data from Sifa. This removes your data from our database and prevents Sifa from displaying or scanning your profile in the future. The data itself remains in your AT Protocol account. Sifa cannot modify or delete your PDS records.",
     "inputLabel": "Your AT Protocol handle or DID",
     "inputPlaceholder": "alice.bsky.social or did:plc:...",
     "submitButton": "Request Removal",
@@ -551,7 +553,7 @@
   },
   "activitySettings": {
     "title": "Activity Visibility",
-    "description": "Choose which ATproto apps appear on your Sifa profile. Hiding an app removes it from your profile page -- it does not delete the data from the AT Protocol.",
+    "description": "Choose which ATproto apps appear on your Sifa profile. Hiding an app only removes it from your profile page. It does not delete the data from the AT Protocol.",
     "backToProfile": "Back to profile",
     "toggleLabel": "Show {app} on profile",
     "updateSuccess": "Visibility updated.",
@@ -717,5 +719,43 @@
     "ctaPrimary": "Create your profile",
     "ctaSecondary": "Import from LinkedIn",
     "ctaTertiary": "See the roadmap"
+  },
+  "connect": {
+    "pageTitle": "Connect with {name} on Sifa",
+    "pageDescription": "Scan the QR code to connect with {name} on Sifa ID.",
+    "scanToConnect": "Scan to connect on Sifa",
+    "copyLink": "Copy link",
+    "downloadQr": "Download QR",
+    "linkCopied": "Profile link copied",
+    "modalTitle": "Connect with {name}",
+    "modalAlreadyConnected": "You're already connected with {name}",
+    "modalDismiss": "View full profile",
+    "signInToConnect": "Sign in to connect",
+    "connected": "Connected!",
+    "connectAction": "Connect"
+  },
+  "handshake": {
+    "pageTitle": "Handshake",
+    "subtitle": "Have them scan this with Sifa to confirm you met.",
+    "nextHandshake": "Next handshake",
+    "profileQrLink": "Need a QR for slides? Get a static profile link",
+    "privacyNotice": "Handshakes are stored as public data in both users' AT Protocol accounts.",
+    "confirmed": "Handshake confirmed",
+    "confirmedSubtitle": "You and {name} now have a verified meeting on record.",
+    "alreadyMet": "Already met",
+    "alreadyMetSubtitle": "You and {name} confirmed a meeting on {date}.",
+    "signInToHandshake": "Sign in to handshake",
+    "signInSubtitle": "Handshakes are verified meetings between Sifa users. Sign in to confirm you met {name}.",
+    "justFollow": "Just want to follow? View their profile instead.",
+    "selfScan": "That's your own code! Show it to someone you're meeting.",
+    "expired": "This code has expired. Ask them to refresh their screen.",
+    "usedToken": "This code has already been used. Ask them to tap Next handshake.",
+    "rateLimited": "Too many handshakes. Try again later.",
+    "error": "Something went wrong. Try again.",
+    "viewProfile": "View profile",
+    "done": "Done",
+    "confirm": "Confirm handshake",
+    "waiting": "Waiting for scan...",
+    "scanned": "Scanned by {name}!"
   }
 }

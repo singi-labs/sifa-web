@@ -120,6 +120,12 @@ const APP_REGISTRY: Record<string, AppMeta> = {
     tooltipDescription: 'Reviews and ratings on the AT Protocol.',
     appUrl: 'https://popfeed.social',
   },
+  streamplace: {
+    name: 'Streamplace',
+    className: badgeClass('streamplace'),
+    tooltipDescription: 'Livestreaming on the AT Protocol.',
+    appUrl: 'https://stream.place',
+  },
 };
 
 const FALLBACK_CLASS = badgeClass('fallback');
@@ -141,6 +147,7 @@ const APP_ICONS: Record<string, string> = {
   roomy: 'UsersThree',
   keytrace: 'Key',
   popfeed: 'Star',
+  streamplace: 'Broadcast',
 };
 
 /** Get the Phosphor icon component name for an app */
@@ -188,6 +195,9 @@ const APP_URL_PATTERNS: Record<string, AppUrlPatterns> = {
   popfeed: {
     urlPattern: 'https://popfeed.social/profile/{handle}',
     profileUrlPattern: 'https://popfeed.social/profile/{handle}',
+  },
+  streamplace: {
+    profileUrlPattern: 'https://stream.place/{handle}',
   },
   // picosky, flashes, standard, aetheros, roomy: no web URLs — cards are not clickable
 };
