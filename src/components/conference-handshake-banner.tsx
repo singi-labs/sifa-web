@@ -50,7 +50,11 @@ export function ConferenceHandshakeBanner() {
         className="relative border-b border-primary/20 bg-primary/5 px-4 py-2 text-center text-sm font-medium text-foreground"
       >
         <div className="mx-auto flex max-w-5xl items-center justify-center gap-2">
-          <Handshake className="h-4 w-4 shrink-0" weight="fill" aria-hidden="true" />
+          <Handshake
+            className="hidden h-4 w-4 shrink-0 sm:block"
+            weight="fill"
+            aria-hidden="true"
+          />
           <p>{t('conferenceBanner')}</p>
           <button
             type="button"
