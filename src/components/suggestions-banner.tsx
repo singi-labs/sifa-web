@@ -40,24 +40,22 @@ export function SuggestionsBanner() {
   };
 
   return (
-    <div className="mb-6 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded-lg border border-border bg-muted/50 px-4 py-3">
+    <div className="relative mb-6 rounded-lg border border-border bg-muted/50 px-4 py-3 pr-10">
+      <button
+        type="button"
+        onClick={handleDismiss}
+        className="absolute right-2 top-2 rounded-md p-1 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+        aria-label="Dismiss banner"
+      >
+        <X className="size-4" weight="bold" aria-hidden="true" />
+      </button>
       <p className="text-sm">
         <span className="font-medium">{count} new people</span> you follow on Bluesky or Tangled are
         on Sifa.
       </p>
-      <div className="flex items-center gap-2">
-        <Link href="/find-people" className="text-sm font-medium text-primary hover:underline">
-          Show me who
-        </Link>
-        <button
-          type="button"
-          onClick={handleDismiss}
-          className="rounded-md p-1 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-          aria-label="Dismiss banner"
-        >
-          <X className="size-4" weight="bold" aria-hidden="true" />
-        </button>
-      </div>
+      <Link href="/find-people" className="mt-1 inline-block text-sm font-medium text-primary hover:underline">
+        Show me who
+      </Link>
     </div>
   );
 }
