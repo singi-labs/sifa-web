@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { fetchProfile } from '@/lib/api';
 import { fetchEventInsights } from '@/lib/insights';
-import { fetchSmokeSignalAttendees } from '@/lib/smoke-signal';
+import { fetchEventAttendees } from '@/lib/event-attendees';
 import { sanitize } from '@/lib/sanitize';
 import { event, SPEAKER_TYPE_LABELS } from '@/data/events/atmosphereconf-2026';
 import { InsightsNav } from '@/components/events/insights-nav';
@@ -75,7 +75,6 @@ export default async function EventPage({ params }: EventPageProps) {
   const { slug } = await params;
   if (slug !== event.slug) notFound();
 
-  const speakerHandles = new Set(event.speakers.map((s) => s.handle));
   const speakerBadgeMap = new Map(
     event.speakers.map((s) => [s.handle, SPEAKER_TYPE_LABELS[s.speakerType]]),
   );
@@ -83,32 +82,42 @@ export default async function EventPage({ params }: EventPageProps) {
     event.speakers.map((s) => [s.handle, s.speakerType as FilterGroup]),
   );
 
-  const attendeeHandles = await fetchSmokeSignalAttendees(event.smokesignalUrl);
+  // Fetch RSVP attendee DIDs from sifa-api (sourced from Jetstream firehose)
+  const attendeeDids = await fetchEventAttendees(slug);
 
-  // Deduplicate: merge speakers and attendees, speakers take priority
-  const allHandles = Array.from(
-    new Set([...event.speakers.map((s) => s.handle), ...attendeeHandles]),
-  );
-
-  // Fetch profiles and insights in parallel to stay within build timeout
-  const [profiles, insights] = await Promise.all([
-    fetchAllProfiles(allHandles),
+  // Fetch speaker profiles (by handle) and attendee profiles (by DID) in parallel
+  const [speakerProfiles, attendeeProfiles, insights] = await Promise.all([
+    fetchAllProfiles(event.speakers.map((s) => s.handle)),
+    fetchAllProfiles(attendeeDids),
     fetchEventInsights(slug),
   ]);
 
+  // Build entries from speakers first, then attendees (deduped by handle)
   const entries: EventEntry[] = [];
-  for (let i = 0; i < allHandles.length; i++) {
-    const handle = allHandles[i]!;
-    const profile = profiles[i];
+  const seenHandles = new Set<string>();
+
+  for (let i = 0; i < event.speakers.length; i++) {
+    const speaker = event.speakers[i]!;
+    const profile = speakerProfiles[i];
     if (!profile) continue;
 
-    const isSpeaker = speakerHandles.has(handle);
-
+    seenHandles.add(speaker.handle);
     entries.push({
       profile,
-      badge: speakerBadgeMap.get(handle),
-      isSpeaker,
-      group: isSpeaker ? (speakerTypeMap.get(handle) ?? 'presentation') : 'attendee',
+      badge: speakerBadgeMap.get(speaker.handle),
+      isSpeaker: true,
+      group: speakerTypeMap.get(speaker.handle) ?? 'presentation',
+    });
+  }
+
+  for (const profile of attendeeProfiles) {
+    if (!profile || seenHandles.has(profile.handle)) continue;
+    seenHandles.add(profile.handle);
+    entries.push({
+      profile,
+      badge: undefined,
+      isSpeaker: false,
+      group: 'attendee',
     });
   }
 

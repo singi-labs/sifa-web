@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  revalidateTag('smoke-signal-attendees', 'max');
+  revalidateTag('event-attendees', 'max');
   revalidatePath('/events/atmosphereconf-2026', 'page');
   revalidatePath('/events/atmosphereconf-2026/unconference', 'page');
 
