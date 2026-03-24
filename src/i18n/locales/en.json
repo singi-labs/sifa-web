@@ -756,6 +756,20 @@
     "done": "Done",
     "confirm": "Confirm handshake",
     "waiting": "Waiting for scan...",
-    "scanned": "Scanned by {name}!"
+    "scanned": "Scanned by {name}!",
+    "addNotePrompt": "Want to add a note about meeting {name}?",
+    "eventContext": "You both had an RSVP for {event} that day",
+    "eventContextSelf": "You had an RSVP for {event} that day"
+  },
+  "peopleNotes": {
+    "addNote": "Add note",
+    "editNote": "Edit note",
+    "deleteNote": "Delete note",
+    "notePlaceholder": "e.g. Met at ATmosphereConf, talked about frontend architecture",
+    "notePrivacy": "This data will be stored securely on Sifa servers and NOT in your public PDS. But still, don't write things in here that would be awkward if they came out.",
+    "noteSaved": "Note saved",
+    "noteDeleted": "Note deleted",
+    "save": "Save",
+    "cancel": "Cancel"
   }
 }

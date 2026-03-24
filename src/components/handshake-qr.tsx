@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 import { ArrowsClockwise, CheckCircle } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
+import { HandshakeNotePrompt } from '@/components/handshake-note-prompt';
 import { trackEvent } from '@/lib/analytics';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3100';
@@ -38,6 +39,9 @@ export function HandshakeQR({ handle, avatar }: HandshakeQRProps) {
   const [scanResult, setScanResult] = useState<ScanResult | null>(null);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const autoRefreshRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [pendingNotes, setPendingNotes] = useState<
+    Array<{ did: string; name: string; handle?: string; avatar?: string }>
+  >([]);
 
   const qrSize = 256;
 
@@ -110,6 +114,33 @@ export function HandshakeQR({ handle, avatar }: HandshakeQRProps) {
               });
               setStatus('confirmed');
               trackEvent('handshake-confirmed-displayer', { handle });
+
+              // Fetch scanner profile for note prompt
+              fetch(`${API_URL}/api/profile/${encodeURIComponent(statusData.scannerDid)}`)
+                .then(async (profileRes) => {
+                  if (!profileRes.ok) return;
+                  const profileData = (await profileRes.json()) as {
+                    handle?: string;
+                    displayName?: string;
+                    avatar?: string;
+                  };
+                  setPendingNotes((prev) => [
+                    ...prev,
+                    {
+                      did: statusData.scannerDid!,
+                      name: profileData.displayName ?? profileData.handle ?? statusData.scannerDid!,
+                      handle: profileData.handle,
+                      avatar: profileData.avatar,
+                    },
+                  ]);
+                })
+                .catch(() => {
+                  // Fallback: add with DID as name
+                  setPendingNotes((prev) => [
+                    ...prev,
+                    { did: statusData.scannerDid!, name: statusData.scannerDid! },
+                  ]);
+                });
 
               // Auto-generate new token after 3 seconds
               autoRefreshRef.current = setTimeout(() => {
@@ -237,6 +268,18 @@ export function HandshakeQR({ handle, avatar }: HandshakeQRProps) {
       >
         {t('profileQrLink')}
       </a>
+
+      {/* Pending note prompts */}
+      {pendingNotes.map((note) => (
+        <HandshakeNotePrompt
+          key={note.did}
+          subjectDid={note.did}
+          subjectHandle={note.handle}
+          subjectName={note.name}
+          subjectAvatar={note.avatar}
+          onDismiss={() => setPendingNotes((prev) => prev.filter((n) => n.did !== note.did))}
+        />
+      ))}
     </div>
   );
 }

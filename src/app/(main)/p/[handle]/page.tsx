@@ -10,6 +10,7 @@ import { ProfileBody } from '@/components/profile-body';
 import { UnclaimedBanner } from '@/components/unclaimed-banner';
 import { DeletedAccountModal } from '@/components/deleted-account-modal';
 import { ConnectModal } from '@/components/connect-modal';
+import { ProfileNote } from '@/components/profile-note';
 
 export async function generateMetadata({ params }: { params: Promise<{ handle: string }> }) {
   const { handle } = await params;
@@ -151,6 +152,7 @@ export default async function ProfilePage({
             activeApps={profile.activeApps}
             featuredSkills={featuredSkills}
           />
+          {!profile.isOwnProfile && <ProfileNote did={profile.did} />}
           {profile.isOwnProfile && <DataTransparencyCard did={profile.did} />}
           <ProfileBody />
         </ProfileEditProvider>
