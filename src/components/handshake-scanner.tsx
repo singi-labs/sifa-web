@@ -39,12 +39,12 @@ interface ErrorResponse {
   existingDate?: string;
 }
 
-function decodeTokenPayload(token: string): { sub?: string; nonce?: string } {
+function decodeTokenPayload(token: string): { did?: string; nonce?: string } {
   try {
     const parts = token.split('.');
     const payload = parts.length === 3 ? (parts[1] ?? token) : token;
     const base64 = payload.replace(/-/g, '+').replace(/_/g, '/');
-    return JSON.parse(atob(base64)) as { sub?: string; nonce?: string };
+    return JSON.parse(atob(base64)) as { did?: string; nonce?: string };
   } catch {
     return {};
   }
@@ -75,7 +75,7 @@ export function HandshakeScanner({ token }: HandshakeScannerProps) {
   const [notePromptDismissed, setNotePromptDismissed] = useState(false);
 
   // Decode token to get displayer DID
-  const { sub: displayerDid } = decodeTokenPayload(token);
+  const { did: displayerDid } = decodeTokenPayload(token);
   const [displayer, setDisplayer] = useState<DisplayerInfo | null>(
     displayerDid ? { did: displayerDid } : null,
   );
