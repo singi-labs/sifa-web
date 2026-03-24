@@ -42,7 +42,7 @@ const APP_REGISTRY: Record<string, AppMeta> = {
     appUrl: 'https://whtwnd.com',
   },
   smokesignal: {
-    name: 'AT Protocol events',
+    name: 'Events',
     className: badgeClass('smokesignal'),
     tooltipDescription: 'Events and RSVPs on the AT Protocol.',
     tooltipNetworkNote: 'Multiple apps can create these records.',
@@ -109,7 +109,7 @@ const APP_REGISTRY: Record<string, AppMeta> = {
     appUrl: 'https://roomy.space',
   },
   keytrace: {
-    name: 'keytrace.dev',
+    name: 'Keytrace',
     className: badgeClass('keytrace'),
     tooltipDescription: 'Identity verification on the AT Protocol.',
     appUrl: 'https://keytrace.dev',

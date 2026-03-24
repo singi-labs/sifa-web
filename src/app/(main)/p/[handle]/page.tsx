@@ -9,6 +9,7 @@ import { ProfileEditProvider } from '@/components/profile-edit-provider';
 import { ProfileBody } from '@/components/profile-body';
 import { UnclaimedBanner } from '@/components/unclaimed-banner';
 import { DeletedAccountModal } from '@/components/deleted-account-modal';
+import { ConnectModal } from '@/components/connect-modal';
 
 export async function generateMetadata({ params }: { params: Promise<{ handle: string }> }) {
   const { handle } = await params;
@@ -52,10 +53,10 @@ export default async function ProfilePage({
   searchParams,
 }: {
   params: Promise<{ handle: string }>;
-  searchParams: Promise<{ deleted?: string }>;
+  searchParams: Promise<{ deleted?: string; connect?: string }>;
 }) {
   const { handle } = await params;
-  const { deleted } = await searchParams;
+  const { deleted, connect } = await searchParams;
   const profile = await fetchProfile(handle);
   if (!profile) notFound();
 
@@ -101,6 +102,17 @@ export default async function ProfilePage({
   return (
     <>
       {deleted === '1' && <DeletedAccountModal />}
+      {connect === '1' && (
+        <ConnectModal
+          did={profile.did}
+          handle={profile.handle}
+          displayName={profile.displayName}
+          avatar={profile.avatar}
+          headline={profile.headline}
+          isOwnProfile={profile.isOwnProfile}
+          isFollowing={profile.isFollowing}
+        />
+      )}
       {!profile.claimed && <UnclaimedBanner />}
       <div className="mx-auto max-w-4xl px-4 py-8">
         <script
