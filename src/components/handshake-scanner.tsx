@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import { CheckCircle, Handshake, SignIn } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/components/auth-provider';
+import { HandshakeNotePrompt } from '@/components/handshake-note-prompt';
 import { trackEvent } from '@/lib/analytics';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3100';
@@ -71,6 +72,7 @@ export function HandshakeScanner({ token }: HandshakeScannerProps) {
   const [status, setStatus] = useState<Status>('idle');
   const [errorKind, setErrorKind] = useState<ErrorKind | null>(null);
   const [alreadyMetDate, setAlreadyMetDate] = useState<string | null>(null);
+  const [notePromptDismissed, setNotePromptDismissed] = useState(false);
 
   // Decode token to get displayer DID
   const { sub: displayerDid } = decodeTokenPayload(token);
@@ -188,6 +190,15 @@ export function HandshakeScanner({ token }: HandshakeScannerProps) {
           <p className="text-sm text-muted-foreground">
             {t('confirmedSubtitle', { name: displayerName })}
           </p>
+          {!notePromptDismissed && displayer && (
+            <HandshakeNotePrompt
+              subjectDid={displayer.did}
+              subjectHandle={displayer.handle}
+              subjectName={displayerName}
+              subjectAvatar={displayer.avatar}
+              onDismiss={() => setNotePromptDismissed(true)}
+            />
+          )}
           {displayerHandle && (
             <Link href={`/p/${encodeURIComponent(displayerHandle)}`}>
               <Button variant="outline" size="sm">

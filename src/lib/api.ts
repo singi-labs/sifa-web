@@ -386,3 +386,20 @@ export async function updateActivityVisibility(appId: string, visible: boolean):
   });
   return res.ok;
 }
+
+export interface MeetingEntry {
+  subjectDid: string;
+  meetingToken: string;
+  createdAt: string;
+  note: string | null;
+  eventContext: Array<{ slug: string; name: string; bothRsvped: boolean }>;
+}
+
+export async function fetchMeetings(): Promise<MeetingEntry[]> {
+  const res = await fetch(`${API_URL}/api/meet/list`, {
+    credentials: 'include',
+  });
+  if (!res.ok) return [];
+  const data = (await res.json()) as { meetings: MeetingEntry[] };
+  return data.meetings;
+}

@@ -5,9 +5,18 @@ import Link from 'next/link';
 import { Users } from '@phosphor-icons/react';
 import { useAuth } from '@/components/auth-provider';
 import { useRequireAuth } from '@/hooks/use-require-auth';
+import { Handshake } from '@phosphor-icons/react';
 import { SuggestionCard } from '@/components/suggestion-card';
+import { MeetingCard } from '@/components/meeting-card';
 import { Button, buttonVariants } from '@/components/ui/button';
-import { fetchFollowing, unfollowUser, type FollowProfile } from '@/lib/api';
+import {
+  fetchFollowing,
+  fetchMeetings,
+  fetchProfile,
+  unfollowUser,
+  type FollowProfile,
+  type MeetingEntry,
+} from '@/lib/api';
 import { toast } from 'sonner';
 
 const SOURCES = ['all', 'sifa', 'bluesky', 'tangled'] as const;
@@ -19,6 +28,11 @@ export default function MyNetworkPage() {
   const [follows, setFollows] = useState<FollowProfile[]>([]);
   const [loading, setLoading] = useState(true);
   const [cursor, setCursor] = useState<string | undefined>();
+  const [meetingsData, setMeetingsData] = useState<MeetingEntry[]>([]);
+  const [meetingProfiles, setMeetingProfiles] = useState<
+    Map<string, { handle?: string; displayName?: string; avatar?: string }>
+  >(new Map());
+  const [meetingsVersion, setMeetingsVersion] = useState(0);
 
   useEffect(() => {
     if (!session) return;
@@ -34,6 +48,37 @@ export default function MyNetworkPage() {
       cancelled = true;
     };
   }, [session, source]);
+
+  // Fetch meetings
+  useEffect(() => {
+    if (!session) return;
+    let cancelled = false;
+    fetchMeetings().then(async (list) => {
+      if (cancelled) return;
+      setMeetingsData(list);
+      // Resolve profiles
+      const profiles = new Map<
+        string,
+        { handle?: string; displayName?: string; avatar?: string }
+      >();
+      await Promise.all(
+        list.map(async (m) => {
+          const p = await fetchProfile(m.subjectDid);
+          if (p) {
+            profiles.set(m.subjectDid, {
+              handle: p.handle,
+              displayName: p.displayName,
+              avatar: p.avatar,
+            });
+          }
+        }),
+      );
+      if (!cancelled) setMeetingProfiles(profiles);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [session, meetingsVersion]);
 
   const loadMore = useCallback(() => {
     if (!session || !cursor) return;
@@ -85,6 +130,34 @@ export default function MyNetworkPage() {
             : 'People you follow'}
         </p>
       </div>
+
+      {/* People you've met */}
+      {meetingsData.length > 0 && (
+        <section className="mt-6">
+          <h2 className="mb-3 flex items-center gap-1.5 text-sm font-semibold text-muted-foreground">
+            <Handshake className="h-4 w-4" weight="fill" aria-hidden="true" />
+            People you&apos;ve met ({meetingsData.length})
+          </h2>
+          <div className="space-y-2">
+            {meetingsData.map((m) => {
+              const profile = meetingProfiles.get(m.subjectDid);
+              return (
+                <MeetingCard
+                  key={m.meetingToken}
+                  subjectDid={m.subjectDid}
+                  handle={profile?.handle}
+                  displayName={profile?.displayName}
+                  avatarUrl={profile?.avatar}
+                  metAt={m.createdAt}
+                  note={m.note}
+                  eventContext={m.eventContext}
+                  onNoteUpdated={() => setMeetingsVersion((v) => v + 1)}
+                />
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       {/* Source filter tabs */}
       <div className="mt-4 flex gap-2">
