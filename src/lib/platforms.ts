@@ -11,6 +11,7 @@ import {
   MastodonLogo,
 } from '@phosphor-icons/react';
 import type { IconWeight } from '@phosphor-icons/react';
+import { SubstackIcon } from './substack-icon';
 
 interface PlatformInfo {
   label: string;
@@ -24,6 +25,7 @@ const PLATFORM_MAP: Record<string, PlatformInfo> = {
   youtube: { label: 'YouTube', icon: YoutubeLogo },
   twitter: { label: 'X (Twitter)', icon: TwitterLogo },
   instagram: { label: 'Instagram', icon: InstagramLogo },
+  substack: { label: 'Substack', icon: SubstackIcon },
   website: { label: 'Website', icon: Globe },
   rss: { label: 'RSS', icon: RssSimple },
   fediverse: { label: 'Fediverse', icon: MastodonLogo },
