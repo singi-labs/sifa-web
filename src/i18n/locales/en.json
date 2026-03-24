@@ -750,7 +750,7 @@
     "selfScan": "That's your own code! Show it to someone you're meeting.",
     "expired": "This code has expired. Ask them to refresh their screen.",
     "usedToken": "This code has already been used. Ask them to tap Next handshake.",
-    "rateLimited": "Too many handshakes. Try again later.",
+    "rateLimited": "Too many handshakes (limit: 30/hour). Try again later.",
     "error": "Something went wrong. Try again.",
     "viewProfile": "View profile",
     "done": "Done",
