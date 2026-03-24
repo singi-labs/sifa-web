@@ -127,28 +127,26 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
         )}
       </div>
       {/* ATProto identity — always shown, verified via AT Protocol */}
-      <div className="mb-4">
-        <li className="flex items-center gap-3">
-          <PdsIcon
-            provider={pdsProvider?.name ?? 'bluesky'}
-            host={pdsProvider?.host}
-            className="h-5 w-5 shrink-0 text-muted-foreground"
-          />
-          <a
-            href={atprotoUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-medium underline-offset-4 hover:underline"
-          >
-            {atprotoLabel}
-          </a>
-          <CheckCircle
-            size={16}
-            weight="fill"
-            className="shrink-0 text-green-600 dark:text-green-400"
-            aria-label={t('verified')}
-          />
-        </li>
+      <div className="mb-4 flex items-center gap-3">
+        <PdsIcon
+          provider={pdsProvider?.name ?? 'bluesky'}
+          host={pdsProvider?.host}
+          className="h-5 w-5 shrink-0 text-muted-foreground"
+        />
+        <a
+          href={atprotoUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-medium underline-offset-4 hover:underline"
+        >
+          {atprotoLabel}
+        </a>
+        <CheckCircle
+          size={16}
+          weight="fill"
+          className="shrink-0 text-green-600 dark:text-green-400"
+          aria-label={t('verified')}
+        />
       </div>
 
       <EditableSection<ExternalAccount>
@@ -198,11 +196,11 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
               entryLabel={displayLabel}
               trailingContent={starToggle}
             >
-              <li className="flex items-center gap-3">
+              <div className="flex items-center gap-3">
                 {usesFavicon ? (
                   <Favicon url={acc.url} size={20} className="shrink-0 text-muted-foreground" />
                 ) : (
-                  <Icon size={20} weight="regular" className="shrink-0 text-muted-foreground" />
+                  <Icon size={20} weight="fill" className="shrink-0 text-muted-foreground" />
                 )}
                 <a
                   href={acc.url}
@@ -229,7 +227,7 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
                     aria-label={tEdit('primaryLink')}
                   />
                 )}
-              </li>
+              </div>
             </EditableEntry>
           );
         }}

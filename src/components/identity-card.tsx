@@ -240,7 +240,7 @@ export function IdentityCard({
                       <span>
                         {formatLocation(location)}
                         {location.countryCode && (
-                          <span className="ml-0.5" role="img" aria-label={location.countryCode}>
+                          <span className="ml-1" role="img" aria-label={location.countryCode}>
                             {countryCodeToFlag(location.countryCode)}
                           </span>
                         )}
@@ -510,14 +510,14 @@ export function IdentityCard({
 
       {/* Active-on badges (embed only, inside the card border) */}
       {isEmbed && activeApps.length > 0 && (
-        <div className="px-0 pt-3">
+        <div className="mt-3">
           <ActivityIndicators apps={activeApps} maxVisible={2} />
         </div>
       )}
 
       {/* Action buttons (page) or "View on Sifa" CTA (embed) */}
       {isEmbed && !hideFooter && (
-        <div className="mt-4 flex items-center justify-between border-t border-border pt-3">
+        <div className="mt-3 flex items-center justify-between border-t border-border pt-3">
           <a
             href={`https://sifa.id/p/${handle}`}
             target="_blank"
