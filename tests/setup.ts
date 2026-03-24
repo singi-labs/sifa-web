@@ -137,6 +137,14 @@ const translations: Record<string, Record<string, string>> = {
       "Add your Sifa profile URL to one of your Fediverse profile metadata fields. We'll verify the link automatically when you save.",
     verifyHintRss:
       'Add a link with rel="me" pointing to your Sifa profile URL on your feed\'s HTML page. We\'ll verify the link automatically when you save.',
+    verificationMethods: 'Verification methods',
+    verifiedViaKeytrace: 'Verified via Keytrace',
+    verifiedViaRelMe: 'Verified via rel=me link',
+    verifiedViaDns: 'Verified via DNS record',
+    verifiedViaMeta: 'Verified via meta tag',
+    hideLink: 'Hide from profile',
+    unhideLink: 'Show on profile',
+    keytraceManaged: 'Managed via Keytrace',
   },
   editor: {
     save: 'Save',

@@ -53,10 +53,11 @@ describe('ExternalAccountsSection', () => {
   });
 
   it('shows verified checkmark for verified accounts', () => {
-    const acc = { ...baseAccount, verified: true };
+    const acc = { ...baseAccount, verified: true, verifiedVia: 'rel-me' };
     withProvider(<ExternalAccountsSection accounts={[acc]} />, { externalAccounts: [acc] });
-    // Bluesky entry + the verified GitHub account = 2 verified badges
-    expect(screen.getAllByLabelText('Verified').length).toBe(2);
+    // Bluesky ATProto entry has "Verified" label, verified GitHub account has "Verification methods" popover
+    expect(screen.getAllByLabelText('Verified').length).toBe(1);
+    expect(screen.getAllByLabelText('Verification methods').length).toBe(1);
   });
 
   it('shows no badge for verifiable but unverified accounts', () => {
