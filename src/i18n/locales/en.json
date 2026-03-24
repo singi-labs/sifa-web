@@ -775,10 +775,10 @@
     "conferenceBanner": "At ATmosphereConf? Use Handshake to connect with people you meet.",
     "conferenceBannerCta": "How it works",
     "explainerTitle": "How Handshake works",
-    "explainerStep1": "Open your Meet page",
+    "explainerStep1": "Tap Meet on your profile, or go to sifa.id/meet",
     "explainerStep2": "Show your QR code to someone you're talking to",
     "explainerStep3": "They scan it with their phone camera",
-    "explainerStep4": "Both of you confirm -- you're now connected as an IRL meeting"
+    "explainerStep4": "Both of you confirm and you're connected as a verified IRL meeting"
   },
   "peopleNotes": {
     "addNote": "Add note",
