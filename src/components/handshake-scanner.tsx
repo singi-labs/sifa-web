@@ -163,7 +163,9 @@ export function HandshakeScanner({ token }: HandshakeScannerProps) {
             </>
           ) : (
             <>
-              <h1 className="text-xl font-semibold">{t(errorKind)}</h1>
+              <h1 className="text-xl font-semibold">
+                {t(errorKind === 'generic' ? 'error' : errorKind)}
+              </h1>
             </>
           )}
 
