@@ -24,7 +24,7 @@ const manyApps: ActiveApp[] = [
   { id: 'tangled', name: 'Tangled', category: 'dev', recentCount: 15 },
   { id: 'whitewind', name: 'Whitewind', category: 'blog', recentCount: 8 },
   { id: 'frontpage', name: 'Frontpage', category: 'social', recentCount: 5 },
-  { id: 'smokesignal', name: 'AT Protocol events', category: 'events', recentCount: 3 },
+  { id: 'smokesignal', name: 'Events', category: 'events', recentCount: 3 },
   { id: 'picosky', name: 'Picosky', category: 'social', recentCount: 2 },
   { id: 'linkat', name: 'Linkat', category: 'links', recentCount: 1 },
 ];
