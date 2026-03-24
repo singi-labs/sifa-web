@@ -299,7 +299,7 @@ export function GenericActivityCard({
                 <div className="mt-2">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={buildBlobUrl(authorDid, imageBlob.cid)}
+                    src={buildBlobUrl(did, imageBlob.cid)}
                     alt=""
                     className="max-h-48 rounded-md object-cover"
                     loading="lazy"
