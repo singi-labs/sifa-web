@@ -81,7 +81,7 @@ export function ProfileNote({ did }: ProfileNoteProps) {
   }, [did, tn]);
 
   // Don't render for own profile or when not authenticated
-  if (!session || loading) return null;
+  if (!session || loading || session.did === did) return null;
 
   if (editing) {
     return (
