@@ -111,7 +111,7 @@ export function ConferenceHandshakeBanner() {
             <Link href="/meet">
               <Button size="sm">
                 <Handshake className="mr-1.5 h-4 w-4" weight="bold" aria-hidden="true" />
-                Open Meet page
+                Go to sifa.id/meet
               </Button>
             </Link>
           </DialogFooter>
