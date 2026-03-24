@@ -771,6 +771,7 @@
     "eventContextSelf": "You had an RSVP for {event} that day",
     "scanTheirs": "Scan theirs",
     "readyForNext": "Ready for next",
+    "metCountOne": "You've met 1 person",
     "metCount": "You've met {count} people",
     "conferenceBanner": "At ATmosphereConf? Use Handshake to connect with people you meet.",
     "conferenceBannerCta": "How it works",
