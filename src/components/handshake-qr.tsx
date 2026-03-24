@@ -199,7 +199,9 @@ export function HandshakeQR({ handle, avatar }: HandshakeQRProps) {
     <div className="flex flex-col items-center gap-6">
       {/* Meeting count */}
       {meetingCount > 0 && (
-        <p className="text-sm text-white/60">{t('metCount', { count: meetingCount })}</p>
+        <p className="text-sm text-white/60">
+          {meetingCount === 1 ? t('metCountOne') : t('metCount', { count: meetingCount })}
+        </p>
       )}
 
       {/* QR Code */}
