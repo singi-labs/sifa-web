@@ -158,6 +158,12 @@ export interface ExternalAccount {
   verifiable: boolean;
   verified: boolean;
   verifiedVia?: string | null;
+  source?: 'sifa' | 'keytrace';
+  keytraceVerified?: boolean;
+  keytraceClaim?: {
+    rkey: string;
+    claimedAt: string;
+  };
 }
 
 export interface FeedItem {
