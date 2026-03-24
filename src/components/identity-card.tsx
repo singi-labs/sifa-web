@@ -17,6 +17,7 @@ import {
   LinkSimple,
   Briefcase,
   Buildings,
+  QrCode,
 } from '@phosphor-icons/react';
 import { useProfileEdit } from '@/components/profile-edit-provider';
 import { ConnectionBadge } from '@/components/events/connection-badge';
@@ -593,13 +594,19 @@ export function IdentityCard({
             )}
           </Button>
           {isOwn && (
-            <Link
-              href={`/embed?handle=${encodeURIComponent(handle)}`}
-              className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }))}
-            >
-              <Code className="mr-1.5 h-4 w-4" weight="bold" aria-hidden="true" />
-              {t('embed')}
-            </Link>
+            <>
+              <Link href="/meet" className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }))}>
+                <QrCode className="mr-1.5 h-4 w-4" weight="bold" aria-hidden="true" />
+                {t('meet')}
+              </Link>
+              <Link
+                href={`/embed?handle=${encodeURIComponent(handle)}`}
+                className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }))}
+              >
+                <Code className="mr-1.5 h-4 w-4" weight="bold" aria-hidden="true" />
+                {t('embed')}
+              </Link>
+            </>
           )}
         </div>
       )}
