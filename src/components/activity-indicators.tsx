@@ -18,6 +18,7 @@ import {
   UsersThree,
   Key,
   Star,
+  Broadcast,
   CircleDashed,
 } from '@phosphor-icons/react';
 import type { Icon } from '@phosphor-icons/react';
@@ -44,6 +45,7 @@ const ICON_MAP: Record<string, Icon> = {
   roomy: UsersThree,
   keytrace: Key,
   popfeed: Star,
+  streamplace: Broadcast,
 };
 
 interface ActivityIndicatorsProps {
