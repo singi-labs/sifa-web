@@ -4,6 +4,7 @@ import { Butterfly } from '@phosphor-icons/react';
 import { getAppMeta, getAppStripeColor } from '@/lib/atproto-apps';
 import type { ActivityCardProps } from './types';
 import { CardLink } from './card-link';
+import { AppPill } from '../app-pill';
 
 const STRIPE_COLOR = getAppStripeColor('bluesky');
 
@@ -234,11 +235,7 @@ export function BlueskyPostCard({
           </div>
 
           <div className="flex items-center gap-2 border-t border-border pt-2 text-xs text-muted-foreground">
-            <span
-              className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${appMeta.className}`}
-            >
-              {appMeta.name}
-            </span>
+            <AppPill appId="bluesky" name={appMeta.name} />
             {timestamp && (
               <>
                 <span aria-hidden="true">&middot;</span>

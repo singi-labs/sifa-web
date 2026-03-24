@@ -1,14 +1,12 @@
 'use client';
 
 import { GitBranch, Code } from '@phosphor-icons/react';
-import { getAppMeta, getAppStripeColor, resolveCardUrl } from '@/lib/atproto-apps';
+import { getAppStripeColor, resolveCardUrl } from '@/lib/atproto-apps';
 import type { ActivityCardProps } from './types';
 import { CardLink } from './card-link';
+import { AppPill } from '../app-pill';
 
 const TANGLED_STRIPE = getAppStripeColor('tangled');
-const tangledMeta = getAppMeta('tangled');
-const TANGLED_BADGE_CLASS = tangledMeta.className;
-
 /** Language badge styling — uses fallback app color tokens */
 const LANGUAGE_BADGE_CLASS =
   'bg-[var(--app-fallback-badge-bg)] text-[var(--app-fallback-badge-text)]';
@@ -178,11 +176,7 @@ export function TangledCard({ record, collection, compact, authorHandle }: Activ
           </div>
 
           <div className="flex items-center gap-2 border-t border-border pt-2 text-xs text-muted-foreground">
-            <span
-              className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${TANGLED_BADGE_CLASS}`}
-            >
-              Tangled
-            </span>
+            <AppPill appId="tangled" name="Tangled" />
             {timestamp && (
               <>
                 <span aria-hidden="true">&middot;</span>
