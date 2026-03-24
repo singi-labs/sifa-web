@@ -218,12 +218,12 @@ export function getAppStripeColor(appId: string): string {
 }
 
 /**
- * Build a URL to fetch a blob from a user's PDS via the Bluesky relay.
- * Works for users on Bluesky's PDS. For self-hosted PDS users, the URL
- * may not resolve — callers should handle fetch failures gracefully.
+ * Build a URL to fetch a blob via the Bluesky CDN.
+ * Uses cdn.bsky.app which serves blobs from all PDS instances
+ * (Bluesky-hosted and self-hosted) via the relay network.
  */
 export function buildBlobUrl(did: string, cid: string): string {
-  return `https://bsky.social/xrpc/com.atproto.sync.getBlob?did=${encodeURIComponent(did)}&cid=${encodeURIComponent(cid)}`;
+  return `https://cdn.bsky.app/img/feed_thumbnail/plain/${encodeURIComponent(did)}/${encodeURIComponent(cid)}@jpeg`;
 }
 
 function interpolatePattern(
