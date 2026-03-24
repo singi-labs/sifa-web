@@ -52,16 +52,20 @@ function decodeTokenPayload(token: string): { did?: string; nonce?: string } {
 
 function mapErrorCode(code: string | undefined, httpStatus: number): ErrorKind {
   switch (code) {
-    case 'SELF_SCAN':
+    case 'InvalidRequest':
       return 'selfScan';
-    case 'TOKEN_EXPIRED':
+    case 'TokenExpired':
       return 'expired';
-    case 'TOKEN_USED':
+    case 'TokenUsed':
+    case 'InvalidToken':
       return 'usedToken';
-    case 'ALREADY_MET':
+    case 'AlreadyMet':
       return 'alreadyMet';
+    case 'RateLimited':
+      return 'rateLimited';
     default:
       if (httpStatus === 429) return 'rateLimited';
+      if (httpStatus === 409) return 'alreadyMet';
       return 'generic';
   }
 }
@@ -163,7 +167,9 @@ export function HandshakeScanner({ token }: HandshakeScannerProps) {
             </>
           ) : (
             <>
-              <h1 className="text-xl font-semibold">{t(errorKind)}</h1>
+              <h1 className="text-xl font-semibold">
+                {t(errorKind === 'generic' ? 'error' : errorKind)}
+              </h1>
             </>
           )}
 
