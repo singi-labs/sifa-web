@@ -113,7 +113,10 @@ export function DailyChart({ data, groups, className }: DailyChartProps) {
             tick={{ fontSize: 12, fill: 'currentColor' }}
             className="text-muted-foreground"
           />
-          <Tooltip content={<CustomTooltip />} labelFormatter={formatDate} />
+          <Tooltip
+            content={<CustomTooltip />}
+            labelFormatter={(label) => formatDate(String(label))}
+          />
           <Legend
             onClick={(e) => {
               if (e.dataKey) toggleGroup(String(e.dataKey));
