@@ -62,7 +62,7 @@ export function SkillEditDialog({
     if (!skillName.trim()) return;
     setSaving(true);
     setError(null);
-    const result = await onSave({ skillName: skillName.trim(), category });
+    const result = await onSave({ name: skillName.trim(), category });
     setSaving(false);
     if (result.success) {
       trackEvent('profile-edit', { section: 'skill' });
@@ -94,11 +94,11 @@ export function SkillEditDialog({
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="edit-skillName" className="mb-1 block text-sm font-medium">
+            <label htmlFor="edit-skill-name" className="mb-1 block text-sm font-medium">
               Skill<span className="text-destructive"> *</span>
             </label>
             <SkillCombobox
-              id="edit-skillName"
+              id="edit-skill-name"
               value={skillName}
               category={category}
               onChange={handleSkillChange}

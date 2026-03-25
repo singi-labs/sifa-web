@@ -70,7 +70,7 @@ export function processLinkedInCsvFiles(csvFiles: Map<string, string>): ImportPr
   if (positionsCsv) {
     preview.positions = parseCsv(positionsCsv)
       .map(mapPositionsCsv)
-      .filter((p) => p.companyName && p.title);
+      .filter((p) => p.company && p.title);
   }
 
   const educationCsv = csvFiles.get('Education.csv');
@@ -84,7 +84,7 @@ export function processLinkedInCsvFiles(csvFiles: Map<string, string>): ImportPr
   if (skillsCsv) {
     preview.skills = parseCsv(skillsCsv)
       .map(mapSkillsCsv)
-      .filter((s) => s.skillName);
+      .filter((s) => s.name);
   }
 
   const certificationsCsv = csvFiles.get('Certifications.csv');

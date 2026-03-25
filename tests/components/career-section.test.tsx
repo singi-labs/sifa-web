@@ -35,18 +35,17 @@ const mockUpdateItem = vi.fn();
 const mockRemoveItem = vi.fn();
 
 const skillsOnProfile: ProfileSkill[] = [
-  { rkey: 'sk1', skillName: 'TypeScript', category: 'Technical' },
-  { rkey: 'sk2', skillName: 'React', category: 'Frontend' },
+  { rkey: 'sk1', name: 'TypeScript', category: 'Technical' },
+  { rkey: 'sk2', name: 'React', category: 'Frontend' },
 ];
 
 const positionsWithSkills: ProfilePosition[] = [
   {
     rkey: 'pos1',
     title: 'Senior Developer',
-    companyName: 'Acme Corp',
-    startDate: '2022-01',
-    endDate: '2024-06',
-    current: false,
+    company: 'Acme Corp',
+    startedAt: '2022-01',
+    endedAt: '2024-06',
     description: 'Built software',
     linkedSkills: [skillsOnProfile[0]!],
     skills: [{ uri: 'at://did:plc:test/id.sifa.profile.skill/sk1', cid: '' }],
@@ -54,10 +53,9 @@ const positionsWithSkills: ProfilePosition[] = [
   {
     rkey: 'pos2',
     title: 'Junior Developer',
-    companyName: 'Startup Inc',
-    startDate: '2020-03',
-    endDate: '2021-12',
-    current: false,
+    company: 'Startup Inc',
+    startedAt: '2020-03',
+    endedAt: '2021-12',
   },
 ];
 

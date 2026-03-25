@@ -2,11 +2,10 @@ import type { LocationValue } from '@/lib/types';
 import { formatLocation } from '@/lib/location-utils';
 
 interface ProfilePosition {
-  current?: boolean;
-  companyName?: string;
+  company?: string;
   title?: string;
-  startDate?: string;
-  endDate?: string;
+  startedAt?: string;
+  endedAt?: string;
   description?: string;
 }
 
@@ -17,7 +16,7 @@ interface ProfileEducation {
 }
 
 interface ProfileSkill {
-  skillName?: string;
+  name?: string;
 }
 
 interface ProfileCertification {
@@ -71,7 +70,7 @@ const identity: Sanitizer = (input: string) => input;
 
 export function buildPersonJsonLd(profile: ProfileData, sanitizer: Sanitizer = identity) {
   const s = sanitizer;
-  const currentPosition = profile.positions?.find((p) => p.current);
+  const currentPosition = profile.positions?.find((p) => !p.endedAt);
 
   // Collect sameAs URLs from verified accounts and website
   const sameAs: string[] = [];
@@ -140,16 +139,16 @@ export function buildPersonJsonLd(profile: ProfileData, sanitizer: Sanitizer = i
     }),
     ...(profile.positions?.length && {
       worksFor: profile.positions
-        .filter((p) => p.companyName)
+        .filter((p) => p.company)
         .map((p) => ({
           '@type': 'Organization' as const,
-          name: s(p.companyName!),
+          name: s(p.company!),
           ...(p.title && {
             member: {
               '@type': 'OrganizationRole' as const,
               roleName: s(p.title),
-              ...(p.startDate && { startDate: p.startDate }),
-              ...(p.endDate && { endDate: p.endDate }),
+              ...(p.startedAt && { startDate: p.startedAt }),
+              ...(p.endedAt && { endDate: p.endedAt }),
             },
           }),
         })),
@@ -185,7 +184,7 @@ export function buildPersonJsonLd(profile: ProfileData, sanitizer: Sanitizer = i
       knowsLanguage: profile.languages.filter((l) => l.language).map((l) => l.language!),
     }),
     ...(profile.skills?.length && {
-      knowsAbout: profile.skills.map((sk) => (sk.skillName ? s(sk.skillName) : undefined)),
+      knowsAbout: profile.skills.map((sk) => (sk.name ? s(sk.name) : undefined)),
     }),
     ...(sameAs.length > 0 && { sameAs }),
   };
@@ -214,11 +213,11 @@ export function buildMetaDescription(profile: ProfileData): string {
     parts.push(profile.headline);
   }
 
-  const currentPosition = profile.positions?.find((p) => p.current);
+  const currentPosition = profile.positions?.find((p) => !p.endedAt);
   if (currentPosition) {
     const positionParts: string[] = [];
     if (currentPosition.title) positionParts.push(currentPosition.title);
-    if (currentPosition.companyName) positionParts.push(`at ${currentPosition.companyName}`);
+    if (currentPosition.company) positionParts.push(`at ${currentPosition.company}`);
     if (positionParts.length > 0) parts.push(positionParts.join(' '));
   }
 

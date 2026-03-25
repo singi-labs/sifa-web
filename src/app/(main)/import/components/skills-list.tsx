@@ -22,12 +22,12 @@ export function SkillsList({ skills, duplicateIndices, onRemove }: SkillsListPro
           variant={duplicateIndices.has(i) ? 'outline' : 'secondary'}
           className="gap-1.5"
         >
-          {skill.skillName}
+          {skill.name}
           <button
             type="button"
             className="ms-1 text-muted-foreground hover:text-foreground"
             onClick={() => onRemove(i)}
-            aria-label={`Remove ${skill.skillName}`}
+            aria-label={`Remove ${skill.name}`}
           >
             &times;
           </button>

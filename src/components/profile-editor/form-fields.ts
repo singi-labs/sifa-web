@@ -5,12 +5,12 @@ export const EDUCATION_FIELDS: FieldDef[] = [
   { name: 'institution', label: 'Institution', required: true, placeholder: 'University name' },
   { name: 'degree', label: 'Degree', placeholder: 'BSc, MSc, PhD...' },
   { name: 'fieldOfStudy', label: 'Field of Study', placeholder: 'Computer Science' },
-  { name: 'startDate', label: 'Start Date', type: 'month' },
-  { name: 'endDate', label: 'End Date', type: 'month' },
+  { name: 'startedAt', label: 'Start Date', type: 'month' },
+  { name: 'endedAt', label: 'End Date', type: 'month' },
 ];
 
 export const SKILL_FIELDS: FieldDef[] = [
-  { name: 'skillName', label: 'Skill', required: true, placeholder: 'TypeScript' },
+  { name: 'name', label: 'Skill', required: true, placeholder: 'TypeScript' },
   { name: 'category', label: 'Category', placeholder: 'Frontend, Backend, DevOps...' },
 ];
 

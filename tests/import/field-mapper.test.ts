@@ -22,11 +22,11 @@ describe('LinkedIn field mapper', () => {
       };
 
       const result = mapPositionsCsv(csvRow);
-      expect(result.companyName).toBe('Acme Corp');
+      expect(result.company).toBe('Acme Corp');
       expect(result.title).toBe('Senior Engineer');
       expect(result.description).toBe('Built things');
-      expect(result.startDate).toBe('2020-01');
-      expect(result.endDate).toBe('2023-12');
+      expect(result.startedAt).toBe('2020-01');
+      expect(result.endedAt).toBe('2023-12');
     });
 
     it('handles current position (no end date)', () => {
@@ -38,8 +38,7 @@ describe('LinkedIn field mapper', () => {
       };
 
       const result = mapPositionsCsv(csvRow);
-      expect(result.endDate).toBeUndefined();
-      expect(result.current).toBe(true);
+      expect(result.endedAt).toBeUndefined();
     });
 
     it('handles missing optional fields', () => {
@@ -94,7 +93,7 @@ describe('LinkedIn field mapper', () => {
       };
 
       const result = mapSkillsCsv(csvRow);
-      expect(result.skillName).toBe('TypeScript');
+      expect(result.name).toBe('TypeScript');
     });
   });
 

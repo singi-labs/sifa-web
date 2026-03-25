@@ -46,22 +46,21 @@ describe('CompletionBar', () => {
       headline: 'Dev',
       about: 'Hi',
       positions: [
-        { rkey: '1', companyName: 'Co', title: 'Eng', startDate: '2020', current: true },
+        { rkey: '1', company: 'Co', title: 'Eng', startedAt: '2020' },
         {
           rkey: '2',
-          companyName: 'Co2',
+          company: 'Co2',
           title: 'Jr',
-          startDate: '2018',
-          endDate: '2020',
-          current: false,
+          startedAt: '2018',
+          endedAt: '2020',
         },
       ],
       skills: [
-        { rkey: '1', skillName: 'TS' },
-        { rkey: '2', skillName: 'React' },
-        { rkey: '3', skillName: 'Node' },
+        { rkey: '1', name: 'TS' },
+        { rkey: '2', name: 'React' },
+        { rkey: '3', name: 'Node' },
       ],
-      education: [{ rkey: '1', institution: 'MIT', startDate: '2016' }],
+      education: [{ rkey: '1', institution: 'MIT', startedAt: '2016' }],
       website: 'https://example.com',
     };
     const { container } = render(<CompletionBar profile={profile} />);

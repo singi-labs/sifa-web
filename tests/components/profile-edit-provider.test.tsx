@@ -59,18 +59,18 @@ describe('ProfileEditProvider', () => {
 
   it('addItem appends to the array', () => {
     const profile = makeProfile({
-      skills: [{ rkey: 's1', skillName: 'TypeScript' }],
+      skills: [{ rkey: 's1', name: 'TypeScript' }],
     });
     const { result } = renderHook(() => useProfileEdit(), {
       wrapper: wrapper(profile),
     });
 
     act(() => {
-      result.current.addItem('skills', { rkey: 's2', skillName: 'Rust' });
+      result.current.addItem('skills', { rkey: 's2', name: 'Rust' });
     });
 
     expect(result.current.profile.skills).toHaveLength(2);
-    expect(result.current.profile.skills[1]?.skillName).toBe('Rust');
+    expect(result.current.profile.skills[1]?.name).toBe('Rust');
   });
 
   it('addItem works on optional arrays that start undefined', () => {
@@ -89,8 +89,8 @@ describe('ProfileEditProvider', () => {
   it('updateItem changes a specific item by rkey', () => {
     const profile = makeProfile({
       positions: [
-        { rkey: 'p1', title: 'Dev', companyName: 'Acme', startDate: '2020-01', current: true },
-        { rkey: 'p2', title: 'Lead', companyName: 'Beta', startDate: '2022-01', current: false },
+        { rkey: 'p1', title: 'Dev', company: 'Acme', startedAt: '2020-01' },
+        { rkey: 'p2', title: 'Lead', company: 'Beta', startedAt: '2022-01' },
       ],
     });
     const { result } = renderHook(() => useProfileEdit(), {

@@ -14,9 +14,9 @@ import { PreviewStep } from './components/preview-step';
 import { ConfirmStep } from './components/confirm-step';
 
 export interface ExistingProfileData {
-  positions: Array<{ companyName: string; title: string; startDate?: string }>;
+  positions: Array<{ company: string; title: string; startedAt?: string }>;
   education: Array<{ institution: string; degree?: string | null }>;
-  skills: Array<{ skillName: string }>;
+  skills: Array<{ name: string }>;
 }
 
 type Step = 'upload' | 'preview' | 'confirm';

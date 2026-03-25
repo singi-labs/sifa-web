@@ -8,7 +8,7 @@ import type { ProfileSkill } from '@/lib/types';
 function makeSkill(overrides: Partial<ProfileSkill> = {}): ProfileSkill {
   return {
     rkey: 'abc123',
-    skillName: 'TypeScript',
+    name: 'TypeScript',
     ...overrides,
   };
 }
@@ -108,8 +108,8 @@ describe('SkillChip', () => {
     const { container } = render(
       <div>
         <SkillChip skill={makeSkill()} />
-        <SkillChip skill={makeSkill({ endorsed: true, skillName: 'React', rkey: 'r1' })} />
-        <SkillChip skill={makeSkill({ activityBacked: true, skillName: 'Node.js', rkey: 'r2' })} />
+        <SkillChip skill={makeSkill({ endorsed: true, name: 'React', rkey: 'r1' })} />
+        <SkillChip skill={makeSkill({ activityBacked: true, name: 'Node.js', rkey: 'r2' })} />
       </div>,
     );
     const results = await axe(container);

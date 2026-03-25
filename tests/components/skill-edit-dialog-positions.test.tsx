@@ -28,18 +28,16 @@ vi.mock('@/components/skill-combobox', () => ({
 const positions: ProfilePosition[] = [
   {
     rkey: 'pos1',
-    companyName: 'Stripe',
+    company: 'Stripe',
     title: 'Senior Engineer',
-    startDate: '2022-01',
-    current: true,
+    startedAt: '2022-01',
   },
   {
     rkey: 'pos2',
-    companyName: 'Acme',
+    company: 'Acme',
     title: 'Developer',
-    startDate: '2019-06',
-    endDate: '2022-01',
-    current: false,
+    startedAt: '2019-06',
+    endedAt: '2022-01',
   },
 ];
 

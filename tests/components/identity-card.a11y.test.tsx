@@ -80,8 +80,8 @@ describe('IdentityCard accessibility', () => {
         headline="Senior Engineer"
         claimed={true}
         featuredSkills={[
-          { rkey: 's1', skillName: 'TypeScript' },
-          { rkey: 's2', skillName: 'React' },
+          { rkey: 's1', name: 'TypeScript' },
+          { rkey: 's2', name: 'React' },
         ]}
       />,
     );

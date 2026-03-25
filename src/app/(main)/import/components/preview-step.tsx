@@ -42,12 +42,12 @@ export function PreviewStep({ preview, existingData, onConfirm, onBack }: Previe
     if (!existingData) return new Set<number>();
     const keys = new Set(
       existingData.positions.map(
-        (p) => `${normalize(p.companyName)}|${normalize(p.title)}|${normalize(p.startDate)}`,
+        (p) => `${normalize(p.company)}|${normalize(p.title)}|${normalize(p.startedAt)}`,
       ),
     );
     const dupes = new Set<number>();
     data.positions.forEach((p, i) => {
-      if (keys.has(`${normalize(p.companyName)}|${normalize(p.title)}|${normalize(p.startDate)}`)) {
+      if (keys.has(`${normalize(p.company)}|${normalize(p.title)}|${normalize(p.startedAt)}`)) {
         dupes.add(i);
       }
     });
@@ -70,10 +70,10 @@ export function PreviewStep({ preview, existingData, onConfirm, onBack }: Previe
 
   const duplicateSkills = useMemo(() => {
     if (!existingData) return new Set<number>();
-    const keys = new Set(existingData.skills.map((s) => normalize(s.skillName)));
+    const keys = new Set(existingData.skills.map((s) => normalize(s.name)));
     const dupes = new Set<number>();
     data.skills.forEach((s, i) => {
-      if (keys.has(normalize(s.skillName))) {
+      if (keys.has(normalize(s.name))) {
         dupes.add(i);
       }
     });

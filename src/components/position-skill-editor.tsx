@@ -47,12 +47,12 @@ export function PositionSkillEditor({
         <div className="mb-2 flex flex-wrap gap-1.5" role="list" aria-label="Linked skills">
           {linkedSkills.map((skill) => (
             <Badge key={skill.rkey} variant="secondary" className="gap-1" role="listitem">
-              {skill.skillName}
+              {skill.name}
               <button
                 type="button"
                 className="inline-flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-destructive/20 hover:text-destructive"
                 onClick={() => onRemove(skill.rkey)}
-                aria-label={`Remove ${skill.skillName}`}
+                aria-label={`Remove ${skill.name}`}
               >
                 <X className="h-2.5 w-2.5" weight="bold" aria-hidden="true" />
               </button>

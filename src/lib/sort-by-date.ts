@@ -48,11 +48,22 @@ export function sortByDateDesc<T>(items: T[], extract: DateExtractor<T>): T[] {
 
 /**
  * Convenience extractor for items that use `startDate` / `endDate` fields directly.
+ * Used by volunteering, projects, and other sections that still use startDate/endDate.
  */
 export function dateRangeExtractor<
   T extends { startDate?: string; endDate?: string; current?: boolean },
 >(item: T): DateRange {
   return { startDate: item.startDate, endDate: item.endDate, current: item.current };
+}
+
+/**
+ * Extractor for lexicon-aligned items that use `startedAt` / `endedAt` fields.
+ * Used by positions and education (current derived from !endedAt).
+ */
+export function lexiconDateExtractor<T extends { startedAt?: string; endedAt?: string }>(
+  item: T,
+): DateRange {
+  return { startDate: item.startedAt, endDate: item.endedAt, current: !item.endedAt };
 }
 
 /**

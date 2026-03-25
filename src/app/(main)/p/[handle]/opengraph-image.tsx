@@ -16,7 +16,7 @@ interface ProfileData {
   locationCountry?: string;
   locationRegion?: string;
   locationCity?: string;
-  positions?: { title?: string; companyName?: string; current?: boolean }[];
+  positions?: { title?: string; company?: string; endedAt?: string }[];
 }
 
 async function fetchAvatarDataUrl(url: string): Promise<string | null> {
@@ -72,10 +72,10 @@ export default async function ProfileOgImage({ params }: { params: Promise<{ han
   }
 
   const displayName = profile.displayName ?? profile.handle;
-  const current = profile.positions?.find((p) => p.current);
+  const currentPos = profile.positions?.find((p) => !p.endedAt);
   const roleAtCompany =
-    current && current.title && current.companyName
-      ? `${current.title} at ${current.companyName}`
+    currentPos && currentPos.title && currentPos.company
+      ? `${currentPos.title} at ${currentPos.company}`
       : null;
   const headline = profile.headline ?? '';
   const avatarDataUrl = profile.avatar ? await fetchAvatarDataUrl(profile.avatar) : null;

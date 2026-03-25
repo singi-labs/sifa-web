@@ -39,13 +39,13 @@ function getCompletionItems(profile: Profile): CompletionItem[] {
     {
       key: 'current-position',
       label: 'Add your current position',
-      completed: profile.positions.some((p) => p.current),
+      completed: profile.positions.some((p) => !p.endedAt),
       scrollTo: '#career',
     },
     {
       key: 'past-position',
       label: 'Add a past position',
-      completed: profile.positions.filter((p) => !p.current).length > 0,
+      completed: profile.positions.filter((p) => p.endedAt).length > 0,
       scrollTo: '#career',
     },
     {

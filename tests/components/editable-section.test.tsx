@@ -20,8 +20,8 @@ vi.mock('@/components/profile-edit-provider', () => ({
       positions: [],
       education: [],
       skills: [
-        { rkey: 'sk1', skillName: 'TypeScript', category: 'Frontend' },
-        { rkey: 'sk2', skillName: 'Rust', category: 'Backend' },
+        { rkey: 'sk1', name: 'TypeScript', category: 'Frontend' },
+        { rkey: 'sk2', name: 'Rust', category: 'Backend' },
       ],
     },
     addItem: mockAddItem,
@@ -54,34 +54,34 @@ vi.mock('@/lib/profile-api', () => ({
 
 interface TestSkill {
   rkey: string;
-  skillName: string;
+  name: string;
   category: string;
 }
 
 const SKILL_FIELDS: FieldDef[] = [
-  { name: 'skillName', label: 'Skill Name', required: true },
+  { name: 'name', label: 'Skill Name', required: true },
   { name: 'category', label: 'Category' },
 ];
 
 const toValues = (item: TestSkill): Record<string, string | boolean> => ({
-  skillName: item.skillName,
+  name: item.name,
   category: item.category ?? '',
 });
 
 const fromValues = (values: Record<string, string | boolean>): Omit<TestSkill, 'rkey'> => ({
-  skillName: values.skillName as string,
+  name: values.name as string,
   category: (values.category as string) || '',
 });
 
 const renderEntry = (item: TestSkill, controls?: { onEdit: () => void; onDelete: () => void }) => (
   <div>
-    <span>{item.skillName}</span>
+    <span>{item.name}</span>
     {controls && (
       <>
-        <button onClick={controls.onEdit} aria-label={`Edit ${item.skillName}`}>
+        <button onClick={controls.onEdit} aria-label={`Edit ${item.name}`}>
           Edit
         </button>
-        <button onClick={controls.onDelete} aria-label={`Delete ${item.skillName}`}>
+        <button onClick={controls.onDelete} aria-label={`Delete ${item.name}`}>
           Delete
         </button>
       </>

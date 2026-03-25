@@ -81,7 +81,7 @@ export default async function Home() {
                   : null;
                 const currentPosition = (
                   featuredProfile.positions as ProfilePosition[] | undefined
-                )?.find((p: ProfilePosition) => p.current);
+                )?.find((p: ProfilePosition) => !p.endedAt);
                 return (
                   <TouchSafeCard
                     href={`/p/${featuredProfile.handle}`}
@@ -96,7 +96,7 @@ export default async function Home() {
                       headline={featuredProfile.headline}
                       about={featuredProfile.about}
                       currentRole={currentPosition?.title}
-                      currentCompany={currentPosition?.companyName}
+                      currentCompany={currentPosition?.company}
                       location={location}
                       website={featuredProfile.website}
                       openTo={featuredProfile.openTo}

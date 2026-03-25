@@ -55,27 +55,24 @@ function optionalUrl(value: string | undefined): string | undefined {
 // ── Positions.csv → id.sifa.profile.position ──────────────────────────
 
 export interface SifaPosition {
-  companyName: string;
+  company: string;
   title: string;
   description?: string;
-  startDate?: string;
-  endDate?: string;
-  current?: boolean;
+  startedAt?: string;
+  endedAt?: string;
   location?: LocationValue;
 }
 
 export function mapPositionsCsv(row: Record<string, string>): SifaPosition {
-  const endDate = parseLinkedInDate(row['Finished On']);
-  const startDate = parseLinkedInDate(row['Started On']);
-  const current = startDate !== undefined && endDate === undefined ? true : undefined;
+  const endedAt = parseLinkedInDate(row['Finished On']);
+  const startedAt = parseLinkedInDate(row['Started On']);
 
   return {
-    companyName: row['Company Name']?.trim() ?? '',
+    company: row['Company Name']?.trim() ?? '',
     title: row['Title']?.trim() ?? '',
     description: restoreLineBreaks(optional(row['Description'])),
-    startDate,
-    endDate,
-    ...(current ? { current } : {}),
+    startedAt,
+    endedAt,
     location: row['Location'] ? (parseLocationString(row['Location']) ?? undefined) : undefined,
   };
 }
@@ -108,8 +105,8 @@ export interface SifaEducation {
   institution: string;
   degree?: string;
   description?: string;
-  startDate?: string;
-  endDate?: string;
+  startedAt?: string;
+  endedAt?: string;
 }
 
 export function mapEducationCsv(row: Record<string, string>): SifaEducation {
@@ -117,20 +114,20 @@ export function mapEducationCsv(row: Record<string, string>): SifaEducation {
     institution: row['School Name']?.trim() ?? '',
     degree: optional(row['Degree Name']),
     description: restoreLineBreaks(optional(row['Notes'])),
-    startDate: parseLinkedInDate(row['Start Date']),
-    endDate: parseLinkedInDate(row['End Date']),
+    startedAt: parseLinkedInDate(row['Start Date']),
+    endedAt: parseLinkedInDate(row['End Date']),
   };
 }
 
 // ── Skills.csv → id.sifa.profile.skill ────────────────────────────────
 
 export interface SifaSkill {
-  skillName: string;
+  name: string;
 }
 
 export function mapSkillsCsv(row: Record<string, string>): SifaSkill {
   return {
-    skillName: row['Name']?.trim() ?? '',
+    name: row['Name']?.trim() ?? '',
   };
 }
 

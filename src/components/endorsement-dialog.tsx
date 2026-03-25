@@ -9,19 +9,14 @@ import type { EndorsementData } from '@/lib/types';
 import { trackEvent } from '@/lib/analytics';
 
 export interface EndorsementDialogProps {
-  skillName: string;
+  name: string;
   skillRkey: string;
   targetDid: string;
   onClose: () => void;
   onSubmit: (data: EndorsementData) => Promise<void>;
 }
 
-export function EndorsementDialog({
-  skillName,
-  skillRkey,
-  onClose,
-  onSubmit,
-}: EndorsementDialogProps) {
+export function EndorsementDialog({ name, skillRkey, onClose, onSubmit }: EndorsementDialogProps) {
   const t = useTranslations('endorsement');
   const tEditor = useTranslations('editor');
   const [relationshipContext, setRelationshipContext] = useState('');
@@ -58,12 +53,12 @@ export function EndorsementDialog({
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
       role="dialog"
-      aria-label={t('endorseSkill', { skillName })}
+      aria-label={t('endorseSkill', { name })}
       aria-modal="true"
     >
       <div className="mx-4 w-full max-w-lg rounded-lg border border-border bg-card p-6 shadow-lg">
         <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-lg font-semibold">{t('endorseSkill', { skillName })}</h3>
+          <h3 className="text-lg font-semibold">{t('endorseSkill', { name })}</h3>
           <Button
             variant="ghost"
             size="sm"

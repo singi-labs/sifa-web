@@ -42,7 +42,7 @@ export default async function EmbedPage({ params }: EmbedPageProps) {
     : null;
 
   const currentPosition = (profile.positions as ProfilePosition[] | undefined)?.find(
-    (p) => p.current,
+    (p) => !p.endedAt,
   );
 
   return (
@@ -58,7 +58,7 @@ export default async function EmbedPage({ params }: EmbedPageProps) {
         headline={profile.headline}
         about={profile.about}
         currentRole={currentPosition?.title}
-        currentCompany={currentPosition?.companyName}
+        currentCompany={currentPosition?.company}
         location={location}
         website={profile.website}
         openTo={profile.openTo}
