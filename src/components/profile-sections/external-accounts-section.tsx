@@ -114,11 +114,25 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
     ? `Self-hosted ATProto (@${profile.handle})`
     : `${getPdsDisplayName(pdsProvider?.name ?? 'bluesky')} (@${profile.handle})`;
 
+  const cleanUrlForDisplay = (url: string): string => {
+    try {
+      const parsed = new URL(url);
+      const host = parsed.hostname.replace(/^www\./, '');
+      const path = parsed.pathname.replace(/\/$/, '');
+      return path && path !== '/' ? `${host}${path}` : host;
+    } catch {
+      // Handle non-URL values like "dns:gui.do"
+      return url.replace(/^dns:/, '');
+    }
+  };
+
   const renderAccountRow = (acc: ExternalAccount) => {
     const platform = getPlatformInfo(acc.platform);
     const Icon = platform.icon;
-    const displayLabel = acc.label ?? platform.label;
-    const usesFavicon = acc.platform === 'website';
+    const isGenericPlatform = !acc.label && (acc.platform === 'website' || acc.platform === 'dns');
+    const displayLabel =
+      acc.label ?? (isGenericPlatform ? cleanUrlForDisplay(acc.url) : platform.label);
+    const usesFavicon = isGenericPlatform;
     const isVerified = acc.verified || acc.keytraceVerified;
 
     return (
@@ -237,8 +251,8 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
             ) : undefined;
 
             return (
-              <div className="flex items-center justify-between py-2">
-                {renderAccountRow(acc)}
+              <div className="flex items-start gap-2">
+                <div className="min-w-0 flex-1">{renderAccountRow(acc)}</div>
                 {hideButton}
               </div>
             );
