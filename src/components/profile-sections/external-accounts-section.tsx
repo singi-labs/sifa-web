@@ -38,11 +38,6 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
   const tEdit = useTranslations('profileEdit');
   const { profile, updateItem, updateProfile } = useProfileEdit();
 
-  const keytraceOnlyAccounts = useMemo(
-    () => accounts.filter((a) => a.source === 'keytrace'),
-    [accounts],
-  );
-
   const externalAccountFields = useMemo(
     () => getExternalAccountFields(profile.handle, t),
     [profile.handle, t],
@@ -227,8 +222,27 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
         onPostSave={handlePostSave}
         onFieldChange={handleFieldChange}
         renderEntry={(acc, controls) => {
-          // Keytrace-only entries are rendered separately below
-          if (acc.source === 'keytrace') return null;
+          // Keytrace-only entries: read-only, no edit/delete/primary, hide option for owner
+          if (acc.source === 'keytrace') {
+            const hideButton = isOwnProfile ? (
+              <button
+                type="button"
+                onClick={() => void handleHideKeytrace(acc.rkey)}
+                className="shrink-0 rounded-full p-1 text-muted-foreground transition-colors hover:text-foreground"
+                aria-label={t('hideLink')}
+                title={t('hideLink')}
+              >
+                <EyeSlash size={16} weight="regular" />
+              </button>
+            ) : undefined;
+
+            return (
+              <div className="flex items-center justify-between py-2">
+                {renderAccountRow(acc)}
+                {hideButton}
+              </div>
+            );
+          }
 
           const starToggle = isOwnProfile ? (
             <button
@@ -261,24 +275,6 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
           );
         }}
       />
-
-      {/* Keytrace-only accounts -- read-only, with hide option for owner */}
-      {keytraceOnlyAccounts.map((acc) => (
-        <div key={acc.rkey} className="flex items-center justify-between py-2">
-          {renderAccountRow(acc)}
-          {isOwnProfile && (
-            <button
-              type="button"
-              onClick={() => void handleHideKeytrace(acc.rkey)}
-              className="shrink-0 rounded-full p-1 text-muted-foreground transition-colors hover:text-foreground"
-              aria-label={t('hideLink')}
-              title={t('hideLink')}
-            >
-              <EyeSlash size={16} weight="regular" />
-            </button>
-          )}
-        </div>
-      ))}
     </section>
   );
 }
