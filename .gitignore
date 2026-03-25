@@ -49,4 +49,3 @@ yarn-error.log*
 next-env.d.ts
 
 # Stats data (generated)
-public/data/plc-stats.json
