@@ -22,7 +22,7 @@ import {
   valuesToExternalAccount,
 } from '@/components/profile-editor/section-converters';
 import type { ExternalAccount } from '@/lib/types';
-import { getPlatformInfo, PLATFORM_OPTIONS } from '@/lib/platforms';
+import { getPlatformInfo, isKnownPlatform, PLATFORM_OPTIONS } from '@/lib/platforms';
 import { Favicon } from '@/components/ui/favicon';
 import { PdsIcon } from '@/components/pds-icon';
 import { pdsProviderFromApi, detectPdsProvider, getPdsDisplayName } from '@/lib/pds-utils';
@@ -129,10 +129,12 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
   const renderAccountRow = (acc: ExternalAccount) => {
     const platform = getPlatformInfo(acc.platform);
     const Icon = platform.icon;
-    const isGenericPlatform = !acc.label && (acc.platform === 'website' || acc.platform === 'dns');
+    const useUrlAsLabel =
+      !acc.label &&
+      (acc.platform === 'website' || acc.platform === 'dns' || !isKnownPlatform(acc.platform));
     const displayLabel =
-      acc.label ?? (isGenericPlatform ? cleanUrlForDisplay(acc.url) : platform.label);
-    const usesFavicon = isGenericPlatform;
+      acc.label ?? (useUrlAsLabel ? cleanUrlForDisplay(acc.url) : platform.label);
+    const usesFavicon = useUrlAsLabel;
     const isVerified = acc.verified || acc.keytraceVerified;
 
     return (
