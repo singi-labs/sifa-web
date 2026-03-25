@@ -89,9 +89,12 @@ export default async function ProfilePage({
     }));
   }
 
-  const currentPosition = (profile.positions as ProfilePosition[] | undefined)?.find(
-    (p) => !p.endedAt,
-  );
+  const currentPositions =
+    (profile.positions as ProfilePosition[] | undefined)?.filter((p) => !p.endedAt) ?? [];
+  const currentPosition =
+    currentPositions.find((p) => p.primary) ??
+    currentPositions.sort((a, b) => (b.startedAt ?? '').localeCompare(a.startedAt ?? ''))[0] ??
+    null;
 
   const featuredSkills = (profile.skills ?? [])
     .slice(0, 3)

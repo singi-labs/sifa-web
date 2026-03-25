@@ -35,7 +35,7 @@ export function CareerSection({ isOwnProfile }: CareerSectionProps) {
 
   const positions = sortByDateDesc(profile.positions, lexiconDateExtractor);
 
-  const currentPositions = positions.filter((p) => p.current);
+  const currentPositions = positions.filter((p) => !p.endedAt);
   const hasPrimary = currentPositions.some((p) => p.primary);
   const showNudge = isOwnProfile && currentPositions.length >= 2 && !hasPrimary;
 
@@ -137,7 +137,7 @@ export function CareerSection({ isOwnProfile }: CareerSectionProps) {
               : undefined;
 
             const starToggle =
-              isOwnProfile && pos.current ? (
+              isOwnProfile && !pos.endedAt ? (
                 <button
                   type="button"
                   onClick={() => void handleTogglePrimary(pos)}
