@@ -148,9 +148,7 @@ describe('SkillsSection', () => {
   });
 
   it('never displays endorsement count', () => {
-    const skills = [
-      { rkey: '1', name: 'TypeScript', category: 'technical', endorsementCount: 5 },
-    ];
+    const skills = [{ rkey: '1', name: 'TypeScript', category: 'technical', endorsementCount: 5 }];
     withProvider(<SkillsSection skills={skills} />, { skills });
     expect(screen.queryByText('5')).toBeNull();
   });

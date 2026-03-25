@@ -60,9 +60,9 @@ export function dateRangeExtractor<
  * Extractor for lexicon-aligned items that use `startedAt` / `endedAt` fields.
  * Used by positions and education (current derived from !endedAt).
  */
-export function lexiconDateExtractor<
-  T extends { startedAt?: string; endedAt?: string },
->(item: T): DateRange {
+export function lexiconDateExtractor<T extends { startedAt?: string; endedAt?: string }>(
+  item: T,
+): DateRange {
   return { startDate: item.startedAt, endDate: item.endedAt, current: !item.endedAt };
 }
 

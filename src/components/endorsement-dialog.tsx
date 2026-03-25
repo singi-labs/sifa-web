@@ -16,12 +16,7 @@ export interface EndorsementDialogProps {
   onSubmit: (data: EndorsementData) => Promise<void>;
 }
 
-export function EndorsementDialog({
-  name,
-  skillRkey,
-  onClose,
-  onSubmit,
-}: EndorsementDialogProps) {
+export function EndorsementDialog({ name, skillRkey, onClose, onSubmit }: EndorsementDialogProps) {
   const t = useTranslations('endorsement');
   const tEditor = useTranslations('editor');
   const [relationshipContext, setRelationshipContext] = useState('');

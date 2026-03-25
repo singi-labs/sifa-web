@@ -81,9 +81,7 @@ describe('ProfileBody', () => {
   it('renders career section when positions exist', () => {
     const profile: Profile = {
       ...baseProfile,
-      positions: [
-        { rkey: '1', company: 'Acme', title: 'Engineer', startedAt: '2020' },
-      ],
+      positions: [{ rkey: '1', company: 'Acme', title: 'Engineer', startedAt: '2020' }],
     };
     renderWithProvider(profile);
     expect(screen.getByText('Career')).toBeDefined();
@@ -95,9 +93,7 @@ describe('ProfileBody', () => {
       ...baseProfile,
       headline: 'Software Engineer',
       about: 'Summary',
-      positions: [
-        { rkey: '1', company: 'Acme', title: 'Engineer', startedAt: '2020' },
-      ],
+      positions: [{ rkey: '1', company: 'Acme', title: 'Engineer', startedAt: '2020' }],
       education: [{ rkey: '1', institution: 'MIT', startedAt: '2016' }],
     };
     renderWithProvider(profile);
@@ -108,9 +104,7 @@ describe('ProfileBody', () => {
   it('hides section nav when fewer than 3 sections', () => {
     const profile: Profile = {
       ...baseProfile,
-      positions: [
-        { rkey: '1', company: 'Acme', title: 'Engineer', startedAt: '2020' },
-      ],
+      positions: [{ rkey: '1', company: 'Acme', title: 'Engineer', startedAt: '2020' }],
     };
     renderWithProvider(profile);
     expect(screen.queryByRole('navigation', { name: 'Profile sections' })).toBeNull();
