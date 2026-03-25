@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useSyncExternalStore } from 'react';
+import { useMemo, useState, useSyncExternalStore } from 'react';
 import { useTheme } from 'next-themes';
 import { Bar, BarChart, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { cn } from '@/lib/utils';
@@ -84,6 +84,18 @@ export function DailyChart({ data, groups, className }: DailyChartProps) {
     });
   };
 
+  const visibleGroups = groups.filter((g) => !hiddenGroups.has(g.id));
+
+  const maxVisible = useMemo(() => {
+    if (visibleGroups.length === 0) return 1;
+    let max = 0;
+    for (const point of data) {
+      const sum = visibleGroups.reduce((acc, g) => acc + (Number(point[g.id]) || 0), 0);
+      if (sum > max) max = sum;
+    }
+    return Math.ceil(max * 1.1);
+  }, [data, visibleGroups]);
+
   if (!mounted || !data.length) {
     return <div className={cn('min-h-[300px]', className)} />;
   }
@@ -100,7 +112,7 @@ export function DailyChart({ data, groups, className }: DailyChartProps) {
   return (
     <div className={cn('min-h-[300px]', className)}>
       <ResponsiveContainer width="100%" height={300}>
-        <BarChart data={data} margin={{ top: 10, right: 20, bottom: 0, left: 10 }}>
+        <BarChart data={data} margin={{ top: 10, right: 20, bottom: 0, left: 20 }}>
           <XAxis
             dataKey="date"
             tickFormatter={formatDate}
@@ -112,6 +124,13 @@ export function DailyChart({ data, groups, className }: DailyChartProps) {
             tickFormatter={formatYAxis}
             tick={{ fontSize: 12, fill: 'currentColor' }}
             className="text-muted-foreground"
+            domain={[0, maxVisible]}
+            label={{
+              value: 'Identities',
+              angle: -90,
+              position: 'insideLeft',
+              style: { textAnchor: 'middle', fill: 'currentColor', fontSize: 12 },
+            }}
           />
           <Tooltip
             content={<CustomTooltip />}
