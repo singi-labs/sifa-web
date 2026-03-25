@@ -16,7 +16,8 @@
     "test:e2e:ui": "playwright test --ui",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "prepare": "husky"
+    "prepare": "husky",
+    "build:stats": "tsx scripts/build-stats-data.ts"
   },
   "dependencies": {
     "@base-ui/react": "1.2.0",
@@ -78,6 +79,7 @@
     "lint-staged": "16.4.0",
     "prettier": "3.5.3",
     "tailwindcss": "4.2.1",
+    "tsx": "4.19.4",
     "typescript": "5.9.3",
     "vitest": "4.0.18",
     "vitest-axe": "1.0.0-pre.5"
