@@ -134,7 +134,7 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
       (acc.platform === 'website' || acc.platform === 'dns' || !isKnownPlatform(acc.platform));
     const displayLabel =
       acc.label ?? (useUrlAsLabel ? cleanUrlForDisplay(acc.url) : platform.label);
-    const usesFavicon = useUrlAsLabel;
+    const usesFavicon = acc.platform === 'website' || useUrlAsLabel;
     const isVerified = acc.verified || acc.keytraceVerified;
 
     return (
