@@ -5,8 +5,8 @@ interface Education {
   institution: string;
   degree?: string;
   fieldOfStudy?: string;
-  startDate?: string;
-  endDate?: string;
+  startedAt?: string;
+  endedAt?: string;
 }
 
 export async function EducationSection({ education }: { education: Education[] }) {
@@ -27,9 +27,9 @@ export async function EducationSection({ education }: { education: Education[] }
                 {edu.fieldOfStudy ? `, ${sanitize(edu.fieldOfStudy)}` : ''}
               </p>
             )}
-            {(edu.startDate || edu.endDate) && (
+            {(edu.startedAt || edu.endedAt) && (
               <p className="text-xs text-muted-foreground">
-                {edu.startDate} - {edu.endDate ?? 'Present'}
+                {edu.startedAt} - {edu.endedAt ?? 'Present'}
               </p>
             )}
           </div>

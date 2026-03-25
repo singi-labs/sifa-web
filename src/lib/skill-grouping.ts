@@ -46,7 +46,7 @@ export function groupSkillsByCategory(skills: ProfileSkill[]): [string, ProfileS
     groupSkills.sort((a, b) => {
       const countDiff = (b.endorsementCount ?? 0) - (a.endorsementCount ?? 0);
       if (countDiff !== 0) return countDiff;
-      return a.skillName.localeCompare(b.skillName);
+      return a.name.localeCompare(b.name);
     });
   }
 

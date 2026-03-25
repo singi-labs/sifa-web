@@ -165,7 +165,7 @@ export function SkillsSection({ isOwnProfile }: SkillsSectionProps) {
       {dialog && (
         <SkillEditDialog
           title={dialog.mode === 'add' ? `Add ${t('skills')}` : `Edit ${t('skills')}`}
-          initialSkillName={dialog.mode === 'edit' ? dialog.item.skillName : undefined}
+          initialSkillName={dialog.mode === 'edit' ? dialog.item.name : undefined}
           initialCategory={dialog.mode === 'edit' ? dialog.item.category : undefined}
           isEditMode={dialog.mode === 'edit'}
           profileSkills={skills}

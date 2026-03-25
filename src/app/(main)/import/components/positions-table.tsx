@@ -35,9 +35,9 @@ export function PositionsTable({ positions, duplicateIndices, onRemove }: Positi
                 )
               )}
             </div>
-            <p className="text-sm text-muted-foreground">{pos.companyName}</p>
+            <p className="text-sm text-muted-foreground">{pos.company}</p>
             <p className="text-xs text-muted-foreground">
-              {pos.startDate ?? '?'} &ndash; {pos.current ? 'Present' : (pos.endDate ?? '?')}
+              {pos.startedAt ?? '?'} &ndash; {pos.endedAt ?? 'Present'}
             </p>
           </div>
           <Button
@@ -45,7 +45,7 @@ export function PositionsTable({ positions, duplicateIndices, onRemove }: Positi
             size="sm"
             className="h-7 w-7 shrink-0 p-0 text-muted-foreground hover:text-destructive"
             onClick={() => onRemove(i)}
-            aria-label={`Remove ${pos.title} at ${pos.companyName}`}
+            aria-label={`Remove ${pos.title} at ${pos.company}`}
           >
             <X className="h-4 w-4" weight="bold" aria-hidden="true" />
           </Button>

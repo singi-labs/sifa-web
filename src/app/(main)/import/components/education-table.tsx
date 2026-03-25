@@ -37,7 +37,7 @@ export function EducationTable({ education, duplicateIndices, onRemove }: Educat
             </div>
             {edu.degree && <p className="text-sm text-muted-foreground">{edu.degree}</p>}
             <p className="text-xs text-muted-foreground">
-              {edu.startDate ?? '?'} &ndash; {edu.endDate ?? '?'}
+              {edu.startedAt ?? '?'} &ndash; {edu.endedAt ?? '?'}
             </p>
           </div>
           <Button

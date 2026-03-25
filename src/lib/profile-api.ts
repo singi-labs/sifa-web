@@ -292,14 +292,13 @@ function buildPositionPayload(
   skills: SkillRef[],
 ): Record<string, unknown> {
   return {
-    companyName: position.companyName,
+    company: position.company,
     title: position.title,
     description: position.description,
-    startDate: position.startDate,
-    endDate: position.endDate,
+    startedAt: position.startedAt,
+    endedAt: position.endedAt,
     // Send undefined instead of null so JSON.stringify strips it
     location: position.location ?? undefined,
-    current: position.current,
     skills,
   };
 }

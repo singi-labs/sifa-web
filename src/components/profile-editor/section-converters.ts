@@ -27,8 +27,8 @@ export function educationToValues(item: ProfileEducation): Record<string, string
     institution: item.institution,
     degree: item.degree ?? '',
     fieldOfStudy: item.fieldOfStudy ?? '',
-    startDate: toMonth(item.startDate),
-    endDate: toMonth(item.endDate),
+    startedAt: toMonth(item.startedAt),
+    endedAt: toMonth(item.endedAt),
   };
 }
 
@@ -39,8 +39,8 @@ export function valuesToEducation(
     institution: values.institution as string,
     degree: optStr(values.degree),
     fieldOfStudy: optStr(values.fieldOfStudy),
-    startDate: optStr(values.startDate),
-    endDate: optStr(values.endDate),
+    startedAt: optStr(values.startedAt),
+    endedAt: optStr(values.endedAt),
   };
 }
 
@@ -48,7 +48,7 @@ export function valuesToEducation(
 
 export function skillToValues(item: ProfileSkill): Record<string, string | boolean> {
   return {
-    skillName: item.skillName,
+    name: item.name,
     category: item.category ?? '',
   };
 }
@@ -57,7 +57,7 @@ export function valuesToSkill(
   values: Record<string, string | boolean>,
 ): Omit<ProfileSkill, 'rkey' | 'endorsementCount'> {
   return {
-    skillName: values.skillName as string,
+    name: values.name as string,
     category: optStr(values.category),
   };
 }

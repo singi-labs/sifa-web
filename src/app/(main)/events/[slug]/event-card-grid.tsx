@@ -63,7 +63,7 @@ export function EventCardGrid({ entries, connections }: EventCardGridProps) {
           : null;
 
         const currentPosition = (profile.positions as ProfilePosition[] | undefined)?.find(
-          (p: ProfilePosition) => p.current,
+          (p: ProfilePosition) => !p.endedAt,
         );
 
         return (
@@ -83,7 +83,7 @@ export function EventCardGrid({ entries, connections }: EventCardGridProps) {
               headline={profile.headline}
               about={profile.about}
               currentRole={currentPosition?.title}
-              currentCompany={currentPosition?.companyName}
+              currentCompany={currentPosition?.company}
               location={location}
               website={profile.website}
               openTo={profile.openTo}

@@ -14,11 +14,10 @@ interface PositionLinkListProps {
   disabled?: boolean;
 }
 
-function formatDateRange(startDate: string, endDate?: string, current?: boolean): string {
-  const start = startDate.slice(0, 4);
-  if (current) return `${start} - Present`;
-  if (endDate) return `${start} - ${endDate.slice(0, 4)}`;
-  return start;
+function formatDateRange(startedAt: string, endedAt?: string): string {
+  const start = startedAt.slice(0, 4);
+  if (!endedAt) return `${start} - Present`;
+  return `${start} - ${endedAt.slice(0, 4)}`;
 }
 
 export function PositionLinkList({
@@ -37,7 +36,7 @@ export function PositionLinkList({
       const bLinked = linked.has(b.rkey) ? 0 : 1;
       if (aLinked !== bLinked) return aLinked - bLinked;
       // Within each group, sort by start date descending (recent first)
-      return b.startDate.localeCompare(a.startDate);
+      return b.startedAt.localeCompare(a.startedAt);
     });
   }, [positions, linkedPositionRkeys]);
 
@@ -45,7 +44,7 @@ export function PositionLinkList({
     if (!filter) return sorted;
     const q = filter.toLowerCase();
     return sorted.filter(
-      (p) => p.title.toLowerCase().includes(q) || p.companyName.toLowerCase().includes(q),
+      (p) => p.title.toLowerCase().includes(q) || p.company.toLowerCase().includes(q),
     );
   }, [sorted, filter]);
 
@@ -78,7 +77,7 @@ export function PositionLinkList({
       <div className="max-h-[18.5rem] space-y-0.5 overflow-y-auto">
         {filtered.map((position) => {
           const isLinked = linkedPositionRkeys.includes(position.rkey);
-          const label = `${position.title} at ${position.companyName} (${formatDateRange(position.startDate, position.endDate, position.current)})`;
+          const label = `${position.title} at ${position.company} (${formatDateRange(position.startedAt, position.endedAt)})`;
           const checkboxId = `position-link-${position.rkey}`;
 
           return (

@@ -61,18 +61,18 @@ export function SkillCombobox({
   // Layer 1: filter profile skills client-side (instant, no debounce)
   const profileMatches = useMemo(() => {
     if (!profileSkills || query.trim().length < 2) return [];
-    return profileSkills.filter((s) => matchesQuery(s.skillName, query.trim()));
+    return profileSkills.filter((s) => matchesQuery(s.name, query.trim()));
   }, [profileSkills, query]);
 
   // Layer 2: API results, deduplicated against profile matches
   const globalSuggestions = useMemo(() => {
-    const profileNames = new Set(profileMatches.map((s) => s.skillName.toLowerCase()));
+    const profileNames = new Set(profileMatches.map((s) => s.name.toLowerCase()));
     return apiResults.filter((s) => !profileNames.has(s.canonicalName.toLowerCase()));
   }, [apiResults, profileMatches]);
 
   // Build flat option list for keyboard navigation
   const hasExactMatch =
-    profileMatches.some((s) => s.skillName.toLowerCase() === query.trim().toLowerCase()) ||
+    profileMatches.some((s) => s.name.toLowerCase() === query.trim().toLowerCase()) ||
     globalSuggestions.some((r) => r.canonicalName.toLowerCase() === query.trim().toLowerCase());
   const showAddNew = query.trim().length >= 2 && !hasExactMatch;
   const totalOptions = profileMatches.length + globalSuggestions.length + (showAddNew ? 1 : 0);
@@ -115,9 +115,9 @@ export function SkillCombobox({
   };
 
   const handleSelectProfileSkill = (skill: ProfileSkill) => {
-    setQuery(skill.skillName);
-    onChange(skill.skillName, skill.category ?? '');
-    onSelect?.(skill.skillName, skill.category ?? '');
+    setQuery(skill.name);
+    onChange(skill.name, skill.category ?? '');
+    onSelect?.(skill.name, skill.category ?? '');
     setApiResults([]);
     setIsOpen(false);
     setActiveIndex(-1);
@@ -247,7 +247,7 @@ export function SkillCombobox({
                     onKeyDown={() => {}} // keyboard handled by combobox input
                     tabIndex={-1}
                   >
-                    <span className="font-medium">{skill.skillName}</span>
+                    <span className="font-medium">{skill.name}</span>
                     {skill.category && (
                       <span className="ml-2 text-xs text-muted-foreground">{skill.category}</span>
                     )}

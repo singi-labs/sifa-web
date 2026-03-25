@@ -90,14 +90,14 @@ export default async function ProfilePage({
   }
 
   const currentPosition = (profile.positions as ProfilePosition[] | undefined)?.find(
-    (p) => p.current,
+    (p) => !p.endedAt,
   );
 
   const featuredSkills = (profile.skills ?? [])
     .slice(0, 3)
-    .map((s: { rkey: string; skillName: string }) => ({
+    .map((s: { rkey: string; name: string }) => ({
       rkey: s.rkey,
-      skillName: s.skillName,
+      name: s.name,
     }));
 
   return (
@@ -132,7 +132,7 @@ export default async function ProfilePage({
             headline={profile.headline}
             about={profile.about}
             currentRole={currentPosition?.title}
-            currentCompany={currentPosition?.companyName}
+            currentCompany={currentPosition?.company}
             location={location}
             website={profile.website}
             openTo={profile.openTo}

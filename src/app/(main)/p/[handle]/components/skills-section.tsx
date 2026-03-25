@@ -2,7 +2,7 @@ import { getTranslations } from 'next-intl/server';
 import { PublicSkillChips } from './public-skill-chips';
 
 interface Skill {
-  skillName: string;
+  name: string;
   category?: string;
   endorsed?: boolean;
   activityBacked?: boolean;

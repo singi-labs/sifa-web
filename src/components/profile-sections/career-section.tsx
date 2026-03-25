@@ -9,7 +9,7 @@ import { SectionOverflow } from '@/components/ui/section-overflow';
 import { PositionEditDialog, positionFormToData } from '@/components/position-edit-dialog';
 import { useProfileEdit } from '@/components/profile-edit-provider';
 import { createPosition, updatePosition, deletePosition } from '@/lib/profile-api';
-import { sortByDateDesc, dateRangeExtractor } from '@/lib/sort-by-date';
+import { sortByDateDesc, lexiconDateExtractor } from '@/lib/sort-by-date';
 import { Badge } from '@/components/ui/badge';
 import type { ProfilePosition, ProfileSkill, SkillRef, LocationValue } from '@/lib/types';
 
@@ -25,7 +25,7 @@ export function CareerSection({ isOwnProfile }: CareerSectionProps) {
   const { profile, addItem, updateItem, removeItem } = useProfileEdit();
   const [dialog, setDialog] = useState<DialogState | null>(null);
 
-  const positions = sortByDateDesc(profile.positions, dateRangeExtractor);
+  const positions = sortByDateDesc(profile.positions, lexiconDateExtractor);
 
   const handleSave = useCallback(
     async (
@@ -101,12 +101,12 @@ export function CareerSection({ isOwnProfile }: CareerSectionProps) {
                 isOwnProfile={isOwnProfile}
                 onEdit={controls?.onEdit ?? (() => {})}
                 onDelete={controls?.onDelete ?? (() => {})}
-                entryLabel={`${pos.title} at ${pos.companyName}`}
+                entryLabel={`${pos.title} at ${pos.company}`}
               >
                 <TimelineEntry
                   title={pos.title}
-                  subtitle={pos.companyName}
-                  dateRange={formatDateRange(pos.startDate, pos.endDate, pos.current)}
+                  subtitle={pos.company}
+                  dateRange={formatDateRange(pos.startedAt, pos.endedAt)}
                   description={pos.description}
                   isLast={false}
                 >
@@ -130,11 +130,10 @@ export function CareerSection({ isOwnProfile }: CareerSectionProps) {
   );
 }
 
-function formatDateRange(start: string, end?: string, current?: boolean): string {
+function formatDateRange(start: string, end?: string): string {
   const s = formatTimelineDate(start);
-  if (current) return `${s} - Present`;
-  if (end) return `${s} - ${formatTimelineDate(end)}`;
-  return s;
+  if (!end) return `${s} - Present`;
+  return `${s} - ${formatTimelineDate(end)}`;
 }
 
 interface PositionSkillChipsProps {
@@ -148,7 +147,7 @@ function PositionSkillChips({ skills }: PositionSkillChipsProps) {
     <div className="mt-2 flex flex-wrap gap-1" aria-label="Position skills">
       {skills.map((skill) => (
         <Badge key={skill.rkey} variant="outline" className="text-xs">
-          {skill.skillName}
+          {skill.name}
         </Badge>
       ))}
     </div>

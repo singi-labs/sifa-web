@@ -76,7 +76,7 @@ export function SkillChip({ skill, showCategory, editable, onEdit, onDelete }: S
         {showCategory && skill.category && (
           <span className="mr-1 text-muted-foreground">{skill.category}:</span>
         )}
-        {skill.skillName}
+        {skill.name}
         {state === 'endorsed' && (
           <CheckCircle
             className="ml-1 h-3 w-3 text-muted-foreground"
@@ -101,7 +101,7 @@ export function SkillChip({ skill, showCategory, editable, onEdit, onDelete }: S
               e.stopPropagation();
               onDelete();
             }}
-            aria-label={`Remove ${skill.skillName}`}
+            aria-label={`Remove ${skill.name}`}
           >
             <X className="h-3 w-3" weight="bold" aria-hidden="true" />
           </button>

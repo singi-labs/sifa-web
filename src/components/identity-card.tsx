@@ -67,7 +67,7 @@ const PREFERRED_WORKPLACE_LABEL_KEYS: Record<string, string> = {
 
 interface FeaturedSkill {
   rkey: string;
-  skillName: string;
+  name: string;
 }
 
 interface IdentityCardProps {
@@ -428,7 +428,7 @@ export function IdentityCard({
                   {featuredSkills.slice(0, 3).map((skill) => (
                     <li key={skill.rkey}>
                       <Badge variant="secondary" className="px-2 py-0.5 text-xs">
-                        {skill.skillName}
+                        {skill.name}
                       </Badge>
                     </li>
                   ))}

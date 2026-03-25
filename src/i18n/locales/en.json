@@ -477,7 +477,7 @@
     "disclaimerBody": "Sifa is provided as-is during the pre-alpha period. We don't guarantee uptime or feature stability. Your data in your PDS stays under your control regardless of Sifa's availability. If something breaks, your professional identity doesn't break with it."
   },
   "endorsement": {
-    "endorseSkill": "Endorse {skillName}",
+    "endorseSkill": "Endorse {name}",
     "endorsementContext": "How do you know this person's expertise?",
     "workedTogether": "Worked together at...",
     "collaboratedIn": "Collaborated in...",

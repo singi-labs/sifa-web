@@ -38,10 +38,10 @@ export function PositionEditDialog({ title, position, onSave, onCancel }: Positi
 
   const [values, setValues] = useState<Record<string, string | boolean>>(() => ({
     title: position?.title ?? '',
-    companyName: position?.companyName ?? '',
-    startDate: toMonth(position?.startDate),
-    endDate: toMonth(position?.endDate),
-    current: position?.current ?? false,
+    company: position?.company ?? '',
+    startedAt: toMonth(position?.startedAt),
+    endedAt: toMonth(position?.endedAt),
+    current: position ? !position.endedAt : false,
     description: position?.description ?? '',
   }));
 
@@ -59,13 +59,13 @@ export function PositionEditDialog({ title, position, onSave, onCancel }: Positi
   const handleAddSkill = useCallback(
     async (skillName: string, category: string) => {
       // Check if already linked
-      if (linkedSkills.some((s) => s.skillName.toLowerCase() === skillName.toLowerCase())) {
+      if (linkedSkills.some((s) => s.name.toLowerCase() === skillName.toLowerCase())) {
         return;
       }
 
       // Check if skill exists on user's profile
       const existingSkill = profile.skills.find(
-        (s) => s.skillName.toLowerCase() === skillName.toLowerCase(),
+        (s) => s.name.toLowerCase() === skillName.toLowerCase(),
       );
 
       if (existingSkill) {
@@ -81,14 +81,14 @@ export function PositionEditDialog({ title, position, onSave, onCancel }: Positi
 
       // Create new skill record, then link it
       const result = await createSkill({
-        skillName,
+        name: skillName,
         category: category || undefined,
       });
 
       if (result.success && result.rkey) {
         const newSkill: ProfileSkill = {
           rkey: result.rkey,
-          skillName,
+          name: skillName,
           category: category || undefined,
         };
         setLinkedSkills((prev) => [...prev, newSkill]);
@@ -207,38 +207,38 @@ function PositionFormFields({
         />
       </div>
       <div>
-        <label htmlFor="edit-companyName" className="mb-1 block text-sm font-medium">
+        <label htmlFor="edit-company" className="mb-1 block text-sm font-medium">
           Company<span className="text-destructive"> *</span>
         </label>
         <Input
-          id="edit-companyName"
-          value={values.companyName as string}
-          onChange={(e) => onUpdate('companyName', e.target.value)}
+          id="edit-company"
+          value={values.company as string}
+          onChange={(e) => onUpdate('company', e.target.value)}
           required
           placeholder="Acme Corp"
         />
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label htmlFor="edit-startDate" className="mb-1 block text-sm font-medium">
+          <label htmlFor="edit-startedAt" className="mb-1 block text-sm font-medium">
             Start Date<span className="text-destructive"> *</span>
           </label>
           <MonthPicker
-            id="edit-startDate"
-            value={values.startDate as string}
-            onChange={(v) => onUpdate('startDate', v)}
+            id="edit-startedAt"
+            value={values.startedAt as string}
+            onChange={(v) => onUpdate('startedAt', v)}
             required
           />
         </div>
         {!values.current && (
           <div>
-            <label htmlFor="edit-endDate" className="mb-1 block text-sm font-medium">
+            <label htmlFor="edit-endedAt" className="mb-1 block text-sm font-medium">
               End Date
             </label>
             <MonthPicker
-              id="edit-endDate"
-              value={values.endDate as string}
-              onChange={(v) => onUpdate('endDate', v)}
+              id="edit-endedAt"
+              value={values.endedAt as string}
+              onChange={(v) => onUpdate('endedAt', v)}
             />
           </div>
         )}
@@ -252,7 +252,7 @@ function PositionFormFields({
           onChange={(e) => {
             onUpdate('current', e.target.checked);
             if (e.target.checked) {
-              onUpdate('endDate', '');
+              onUpdate('endedAt', '');
             }
           }}
         />
@@ -289,10 +289,9 @@ export function positionFormToData(
 ): Record<string, unknown> {
   return {
     title: values.title as string,
-    companyName: values.companyName as string,
-    startDate: values.startDate as string,
-    endDate: (values.endDate as string) || undefined,
-    current: values.current as boolean,
+    company: values.company as string,
+    startedAt: values.startedAt as string,
+    endedAt: (values.endedAt as string) || undefined,
     location: location ?? undefined,
     description: (values.description as string) || undefined,
     skills: skillRefs.length > 0 ? skillRefs : undefined,

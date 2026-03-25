@@ -7,7 +7,7 @@ import {
   educationToValues,
   valuesToEducation,
 } from '@/components/profile-editor/section-converters';
-import { sortByDateDesc, dateRangeExtractor } from '@/lib/sort-by-date';
+import { sortByDateDesc, lexiconDateExtractor } from '@/lib/sort-by-date';
 import type { ProfileEducation, ProfileCourse } from '@/lib/types';
 
 interface EducationSectionProps {
@@ -36,10 +36,10 @@ export function EducationSection({ education, courses = [], isOwnProfile }: Educ
         }
         collection="id.sifa.profile.education"
         maxVisible={3}
-        sortItems={(items) => sortByDateDesc(items, dateRangeExtractor)}
+        sortItems={(items) => sortByDateDesc(items, lexiconDateExtractor)}
         renderEntry={(edu, controls) => {
           const subtitle = [edu.degree, edu.fieldOfStudy].filter(Boolean).join(', ');
-          const dateRange = formatEduDateRange(edu.startDate, edu.endDate);
+          const dateRange = formatEduDateRange(edu.startedAt, edu.endedAt);
           const relatedCourses = courses.filter((c) => c.institution === edu.institution);
 
           return (

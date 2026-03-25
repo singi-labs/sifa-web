@@ -13,15 +13,9 @@ const toMonth = (v: string | undefined): string => {
 
 export const POSITION_FIELDS: FieldDef[] = [
   { name: 'title', label: 'Job Title', required: true, placeholder: 'Software Engineer' },
-  { name: 'companyName', label: 'Company', required: true, placeholder: 'Acme Corp' },
-  { name: 'startDate', label: 'Start Date', type: 'month', required: true },
-  { name: 'endDate', label: 'End Date', type: 'month' },
-  {
-    name: 'current',
-    label: 'Current Position',
-    type: 'checkbox',
-    placeholder: 'I currently work here',
-  },
+  { name: 'company', label: 'Company', required: true, placeholder: 'Acme Corp' },
+  { name: 'startedAt', label: 'Start Date', type: 'month', required: true },
+  { name: 'endedAt', label: 'End Date', type: 'month' },
   { name: 'location', label: 'Location', placeholder: 'Amsterdam, Netherlands' },
   {
     name: 'description',
@@ -34,10 +28,9 @@ export const POSITION_FIELDS: FieldDef[] = [
 export function positionToValues(pos: ProfilePosition): Record<string, string | boolean> {
   return {
     title: pos.title,
-    companyName: pos.companyName,
-    startDate: toMonth(pos.startDate),
-    endDate: toMonth(pos.endDate),
-    current: pos.current,
+    company: pos.company,
+    startedAt: toMonth(pos.startedAt),
+    endedAt: toMonth(pos.endedAt),
     location: pos.location ? formatLocation(pos.location) : '',
     description: pos.description ?? '',
   };
@@ -48,10 +41,9 @@ export function valuesToPosition(
 ): Omit<ProfilePosition, 'rkey'> {
   return {
     title: values.title as string,
-    companyName: values.companyName as string,
-    startDate: values.startDate as string,
-    endDate: (values.endDate as string) || undefined,
-    current: values.current as boolean,
+    company: values.company as string,
+    startedAt: values.startedAt as string,
+    endedAt: (values.endedAt as string) || undefined,
     location: (values.location as string)
       ? (parseLocationString(values.location as string) ?? undefined)
       : undefined,
