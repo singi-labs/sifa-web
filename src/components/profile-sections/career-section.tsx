@@ -35,6 +35,10 @@ export function CareerSection({ isOwnProfile }: CareerSectionProps) {
 
   const positions = sortByDateDesc(profile.positions, lexiconDateExtractor);
 
+  const currentPositions = positions.filter((p) => p.current);
+  const hasPrimary = currentPositions.some((p) => p.primary);
+  const showNudge = isOwnProfile && currentPositions.length >= 2 && !hasPrimary;
+
   const handleSave = useCallback(
     async (
       values: Record<string, string | boolean>,
@@ -117,6 +121,12 @@ export function CareerSection({ isOwnProfile }: CareerSectionProps) {
         isOwnProfile={isOwnProfile}
         onAdd={() => setDialog({ mode: 'add' })}
       >
+        {showNudge && (
+          <div className="mb-3 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-200">
+            <Star size={14} weight="fill" className="mr-1 inline-block text-amber-500" />
+            {tEdit('multiplePrimaryNudge')}
+          </div>
+        )}
         <SectionOverflow maxVisible={3} disableOverflow={isOwnProfile}>
           {positions.map((pos) => {
             const controls = isOwnProfile
