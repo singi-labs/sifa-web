@@ -14,13 +14,12 @@ export interface SkillRef {
 
 export interface ProfilePosition {
   rkey: string;
-  companyName: string;
+  company: string;
   title: string;
   description?: string;
-  startDate: string;
-  endDate?: string;
+  startedAt: string;
+  endedAt?: string;
   location?: LocationValue | null;
-  current: boolean;
   skills?: SkillRef[];
   linkedSkills?: ProfileSkill[];
 }
@@ -30,13 +29,13 @@ export interface ProfileEducation {
   institution: string;
   degree?: string;
   fieldOfStudy?: string;
-  startDate?: string;
-  endDate?: string;
+  startedAt?: string;
+  endedAt?: string;
 }
 
 export interface ProfileSkill {
   rkey: string;
-  skillName: string;
+  name: string;
   category?: string;
   endorsementCount?: number; // keep for internal logic, never display
   endorsed?: boolean; // true if at least one confirmed mutual endorsement
