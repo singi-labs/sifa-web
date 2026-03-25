@@ -22,6 +22,7 @@ export interface ProfilePosition {
   location?: LocationValue | null;
   skills?: SkillRef[];
   linkedSkills?: ProfileSkill[];
+  primary?: boolean;
 }
 
 export interface ProfileEducation {
