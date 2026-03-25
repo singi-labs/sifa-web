@@ -38,6 +38,10 @@ export function getPlatformInfo(platform: string): PlatformInfo {
   return PLATFORM_MAP[platform] ?? PLATFORM_MAP.website!;
 }
 
+export function isKnownPlatform(platform: string): boolean {
+  return platform in PLATFORM_MAP;
+}
+
 /** Platforms available in the "Add Links" dropdown (excludes Bluesky — auto-derived from AT Protocol identity). */
 export const PLATFORM_OPTIONS = Object.entries(PLATFORM_MAP)
   .filter(([value]) => value !== 'bluesky')
