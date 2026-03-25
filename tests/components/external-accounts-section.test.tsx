@@ -96,4 +96,22 @@ describe('ExternalAccountsSection', () => {
     expect(link.getAttribute('target')).toBe('_blank');
     expect(link.getAttribute('rel')).toContain('noopener');
   });
+
+  it('renders favicon for website accounts even when label is set', () => {
+    const acc: ExternalAccount = {
+      rkey: '2',
+      platform: 'website',
+      url: 'https://hacdias.com',
+      label: 'Personal Website',
+      verifiable: true,
+      verified: false,
+    };
+    withProvider(<ExternalAccountsSection accounts={[acc]} />, { externalAccounts: [acc] });
+    // Should render an img (favicon) not a generic Globe SVG icon
+    const link = screen.getByRole('link', { name: 'Personal Website' });
+    const row = link.closest('div');
+    const img = row?.querySelector('img');
+    expect(img).toBeDefined();
+    expect(img).not.toBeNull();
+  });
 });
