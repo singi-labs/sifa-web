@@ -9,6 +9,7 @@ import {
   Globe,
   RssSimple,
   MastodonLogo,
+  LinkSimple,
 } from '@phosphor-icons/react';
 import type { IconWeight } from '@phosphor-icons/react';
 import { SubstackIcon } from './substack-icon';
@@ -26,6 +27,8 @@ const PLATFORM_MAP: Record<string, PlatformInfo> = {
   twitter: { label: 'X (Twitter)', icon: TwitterLogo },
   instagram: { label: 'Instagram', icon: InstagramLogo },
   substack: { label: 'Substack', icon: SubstackIcon },
+  tangled: { label: 'Tangled', icon: LinkSimple },
+  dns: { label: 'Domain', icon: Globe },
   website: { label: 'Website', icon: Globe },
   rss: { label: 'RSS', icon: RssSimple },
   fediverse: { label: 'Fediverse', icon: MastodonLogo },
