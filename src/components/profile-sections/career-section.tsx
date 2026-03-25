@@ -8,7 +8,14 @@ import { SectionEditor, EditableEntry } from '@/components/profile-editor';
 import { SectionOverflow } from '@/components/ui/section-overflow';
 import { PositionEditDialog, positionFormToData } from '@/components/position-edit-dialog';
 import { useProfileEdit } from '@/components/profile-edit-provider';
-import { createPosition, updatePosition, deletePosition } from '@/lib/profile-api';
+import { Star } from '@phosphor-icons/react';
+import {
+  createPosition,
+  updatePosition,
+  deletePosition,
+  setPositionPrimary,
+  unsetPositionPrimary,
+} from '@/lib/profile-api';
 import { sortByDateDesc, lexiconDateExtractor } from '@/lib/sort-by-date';
 import { Badge } from '@/components/ui/badge';
 import type { ProfilePosition, ProfileSkill, SkillRef, LocationValue } from '@/lib/types';
@@ -22,6 +29,7 @@ interface CareerSectionProps {
 
 export function CareerSection({ isOwnProfile }: CareerSectionProps) {
   const t = useTranslations('sections');
+  const tEdit = useTranslations('profileEdit');
   const { profile, addItem, updateItem, removeItem } = useProfileEdit();
   const [dialog, setDialog] = useState<DialogState | null>(null);
 
@@ -78,6 +86,28 @@ export function CareerSection({ isOwnProfile }: CareerSectionProps) {
     [t, removeItem],
   );
 
+  const handleTogglePrimary = useCallback(
+    async (pos: ProfilePosition) => {
+      const newPrimary = !pos.primary;
+      const result = newPrimary
+        ? await setPositionPrimary(pos.rkey)
+        : await unsetPositionPrimary(pos.rkey);
+
+      if (result.success) {
+        if (newPrimary) {
+          for (const other of positions) {
+            if (other.rkey !== pos.rkey && other.primary) {
+              updateItem('positions', other.rkey, { primary: false });
+            }
+          }
+        }
+        updateItem('positions', pos.rkey, { primary: newPrimary });
+        toast.success(newPrimary ? tEdit('setPrimaryPosition') : tEdit('removePrimaryPosition'));
+      }
+    },
+    [positions, updateItem, tEdit],
+  );
+
   if (!positions.length && !isOwnProfile) return null;
 
   return (
@@ -95,6 +125,27 @@ export function CareerSection({ isOwnProfile }: CareerSectionProps) {
                   onDelete: () => handleDelete(pos.rkey),
                 }
               : undefined;
+
+            const starToggle =
+              isOwnProfile && pos.current ? (
+                <button
+                  type="button"
+                  onClick={() => void handleTogglePrimary(pos)}
+                  className={`shrink-0 rounded-full p-1 transition-colors ${
+                    pos.primary
+                      ? 'text-amber-500 hover:text-amber-600 dark:text-amber-400 dark:hover:text-amber-300'
+                      : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                  aria-label={
+                    pos.primary ? tEdit('removePrimaryPosition') : tEdit('setPrimaryPosition')
+                  }
+                  aria-pressed={pos.primary}
+                  title={pos.primary ? tEdit('removePrimaryPosition') : tEdit('setPrimaryPosition')}
+                >
+                  <Star size={16} weight={pos.primary ? 'fill' : 'regular'} />
+                </button>
+              ) : undefined;
+
             return (
               <EditableEntry
                 key={pos.rkey}
@@ -102,6 +153,7 @@ export function CareerSection({ isOwnProfile }: CareerSectionProps) {
                 onEdit={controls?.onEdit ?? (() => {})}
                 onDelete={controls?.onDelete ?? (() => {})}
                 entryLabel={`${pos.title} at ${pos.company}`}
+                trailingContent={starToggle}
               >
                 <TimelineEntry
                   title={pos.title}
