@@ -73,8 +73,8 @@ describe('Design system color alignment', () => {
           location: { country: 'NL' },
         },
         positions: [
-          { companyName: 'Acme', title: 'Dev', startDate: '2020-01' },
-          { companyName: 'NewCo', title: 'Lead', startDate: '2022-06' },
+          { company: 'Acme', title: 'Dev', startedAt: '2020-01' },
+          { company: 'NewCo', title: 'Lead', startedAt: '2022-06' },
         ],
         education: [],
         skills: [],
@@ -88,7 +88,7 @@ describe('Design system color alignment', () => {
       };
 
       const existingData = {
-        positions: [{ companyName: 'Acme', title: 'Dev', startDate: '2020-01' }],
+        positions: [{ company: 'Acme', title: 'Dev', startedAt: '2020-01' }],
         education: [],
         skills: [],
       };
@@ -115,7 +115,7 @@ describe('Design system color alignment', () => {
           headline: 'Dev',
           location: { country: 'NL' },
         },
-        positions: [{ companyName: 'NewCo', title: 'Lead', startDate: '2022-06' }],
+        positions: [{ company: 'NewCo', title: 'Lead', startedAt: '2022-06' }],
         education: [],
         skills: [],
         certifications: [],
@@ -128,7 +128,7 @@ describe('Design system color alignment', () => {
       };
 
       const existingData = {
-        positions: [{ companyName: 'OtherCo', title: 'Other', startDate: '2019-01' }],
+        positions: [{ company: 'OtherCo', title: 'Other', startedAt: '2019-01' }],
         education: [],
         skills: [],
       };
@@ -151,8 +151,8 @@ describe('Design system color alignment', () => {
       const { PositionsTable } = await import('@/app/(main)/import/components/positions-table');
 
       const positions = [
-        { companyName: 'Acme', title: 'Dev', startDate: '2020-01' },
-        { companyName: 'NewCo', title: 'Lead', startDate: '2022-06' },
+        { company: 'Acme', title: 'Dev', startedAt: '2020-01' },
+        { company: 'NewCo', title: 'Lead', startedAt: '2022-06' },
       ];
 
       // Index 0 is duplicate, so index 1 should show "New" badge
@@ -209,7 +209,7 @@ describe('Design system color alignment', () => {
 
       const preview = {
         profile: null,
-        positions: [{ companyName: 'Acme', title: 'Dev', startDate: '2020-01' }],
+        positions: [{ company: 'Acme', title: 'Dev', startedAt: '2020-01' }],
         education: [],
         skills: [],
         certifications: [],
@@ -250,8 +250,8 @@ describe('Design system color alignment', () => {
       const preview = {
         profile: null,
         positions: [
-          { companyName: 'Acme', title: 'Dev', startDate: '2020-01' },
-          { companyName: 'NewCo', title: 'Lead', startDate: '2022-06' },
+          { company: 'Acme', title: 'Dev', startedAt: '2020-01' },
+          { company: 'NewCo', title: 'Lead', startedAt: '2022-06' },
         ],
         education: [],
         skills: [],

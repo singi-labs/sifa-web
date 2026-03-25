@@ -64,13 +64,12 @@ describe('CareerSection', () => {
     const positions = [
       {
         rkey: '1',
-        companyName: 'Acme',
+        company: 'Acme',
         title: 'Junior',
-        startDate: '2018-01',
-        endDate: '2020-01',
-        current: false,
+        startedAt: '2018-01',
+        endedAt: '2020-01',
       },
-      { rkey: '2', companyName: 'Acme', title: 'Senior', startDate: '2020-01', current: true },
+      { rkey: '2', company: 'Acme', title: 'Senior', startedAt: '2020-01' },
     ];
     withProvider(<CareerSection positions={positions} />, { positions });
     expect(screen.getByText('Career')).toBeDefined();
@@ -92,8 +91,8 @@ describe('EducationSection', () => {
         institution: 'MIT',
         degree: 'BSc',
         fieldOfStudy: 'CS',
-        startDate: '2016',
-        endDate: '2020',
+        startedAt: '2016',
+        endedAt: '2020',
       },
     ];
     withProvider(<EducationSection education={education} />, { education });
@@ -103,7 +102,7 @@ describe('EducationSection', () => {
   });
 
   it('folds in related courses', () => {
-    const education = [{ rkey: '1', institution: 'MIT', startDate: '2016' }];
+    const education = [{ rkey: '1', institution: 'MIT', startedAt: '2016' }];
     withProvider(
       <EducationSection
         education={education}
@@ -119,8 +118,8 @@ describe('EducationSection', () => {
 describe('SkillsSection', () => {
   it('renders skills as badges', () => {
     const skills = [
-      { rkey: '1', skillName: 'TypeScript', category: 'technical' },
-      { rkey: '2', skillName: 'React', category: 'technical' },
+      { rkey: '1', name: 'TypeScript', category: 'technical' },
+      { rkey: '2', name: 'React', category: 'technical' },
     ];
     withProvider(<SkillsSection skills={skills} />, { skills });
     expect(screen.getByText('TypeScript')).toBeDefined();
@@ -129,7 +128,7 @@ describe('SkillsSection', () => {
   });
 
   it('shows category as group heading, not inline on chip', () => {
-    const skills = [{ rkey: '1', skillName: 'React', category: 'creative' }];
+    const skills = [{ rkey: '1', name: 'React', category: 'creative' }];
     withProvider(<SkillsSection skills={skills} />, { skills });
     // Category is displayed as a group heading, not inline on the chip
     expect(screen.getByRole('heading', { level: 3 }).textContent).toBe('Creative');
@@ -140,7 +139,7 @@ describe('SkillsSection', () => {
   });
 
   it('does not show category separator when no category', () => {
-    const skills = [{ rkey: '1', skillName: 'TypeScript' }];
+    const skills = [{ rkey: '1', name: 'TypeScript' }];
     withProvider(<SkillsSection skills={skills} />, { skills });
     const badge =
       screen.getByText('TypeScript').closest('[class*="badge"]') ??
@@ -150,7 +149,7 @@ describe('SkillsSection', () => {
 
   it('never displays endorsement count', () => {
     const skills = [
-      { rkey: '1', skillName: 'TypeScript', category: 'technical', endorsementCount: 5 },
+      { rkey: '1', name: 'TypeScript', category: 'technical', endorsementCount: 5 },
     ];
     withProvider(<SkillsSection skills={skills} />, { skills });
     expect(screen.queryByText('5')).toBeNull();
@@ -158,9 +157,9 @@ describe('SkillsSection', () => {
 
   it('displays groups in defined category order', () => {
     const skills = [
-      { rkey: '1', skillName: 'Drawing', category: 'creative' },
-      { rkey: '2', skillName: 'TypeScript', category: 'technical' },
-      { rkey: '3', skillName: 'Empathy', category: 'interpersonal' },
+      { rkey: '1', name: 'Drawing', category: 'creative' },
+      { rkey: '2', name: 'TypeScript', category: 'technical' },
+      { rkey: '3', name: 'Empathy', category: 'interpersonal' },
     ];
     withProvider(<SkillsSection skills={skills} />, { skills });
 
@@ -171,8 +170,8 @@ describe('SkillsSection', () => {
 
   it('places uncategorized skills under "Other" at the end', () => {
     const skills = [
-      { rkey: '1', skillName: 'TypeScript', category: 'technical' },
-      { rkey: '2', skillName: 'Mystery' },
+      { rkey: '1', name: 'TypeScript', category: 'technical' },
+      { rkey: '2', name: 'Mystery' },
     ];
     withProvider(<SkillsSection skills={skills} />, { skills });
 
@@ -182,7 +181,7 @@ describe('SkillsSection', () => {
   });
 
   it('does not render empty category groups', () => {
-    const skills = [{ rkey: '1', skillName: 'TypeScript', category: 'technical' }];
+    const skills = [{ rkey: '1', name: 'TypeScript', category: 'technical' }];
     withProvider(<SkillsSection skills={skills} />, { skills });
 
     const headings = screen.getAllByRole('heading', { level: 3 });
@@ -192,8 +191,8 @@ describe('SkillsSection', () => {
 
   it('renders h3 heading elements for category names', () => {
     const skills = [
-      { rkey: '1', skillName: 'TypeScript', category: 'technical' },
-      { rkey: '2', skillName: 'Sales', category: 'business' },
+      { rkey: '1', name: 'TypeScript', category: 'technical' },
+      { rkey: '2', name: 'Sales', category: 'business' },
     ];
     withProvider(<SkillsSection skills={skills} />, { skills });
 

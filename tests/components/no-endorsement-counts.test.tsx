@@ -25,9 +25,9 @@ function withProvider(ui: React.ReactElement, profile: Partial<Profile> = {}) {
 describe('No endorsement counts displayed', () => {
   it('does not render endorsementCount in skills section', () => {
     const skills = [
-      { rkey: '1', skillName: 'TypeScript', endorsementCount: 42 },
-      { rkey: '2', skillName: 'React', endorsementCount: 15 },
-      { rkey: '3', skillName: 'Node.js', endorsementCount: 0 },
+      { rkey: '1', name: 'TypeScript', endorsementCount: 42 },
+      { rkey: '2', name: 'React', endorsementCount: 15 },
+      { rkey: '3', name: 'Node.js', endorsementCount: 0 },
     ];
     withProvider(<SkillsSection skills={skills} />, { skills });
 
@@ -42,7 +42,7 @@ describe('No endorsement counts displayed', () => {
   });
 
   it('does not render any numeric endorsement indicators on skill badges', () => {
-    const skills = [{ rkey: '1', skillName: 'Python', endorsementCount: 100 }];
+    const skills = [{ rkey: '1', name: 'Python', endorsementCount: 100 }];
     withProvider(<SkillsSection skills={skills} />, { skills });
 
     // The number 100 should not appear anywhere

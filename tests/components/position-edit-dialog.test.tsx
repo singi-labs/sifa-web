@@ -23,8 +23,8 @@ const mockProfile = {
   positions: [],
   education: [],
   skills: [
-    { rkey: 'sk1', skillName: 'TypeScript', category: 'Technical' },
-    { rkey: 'sk2', skillName: 'React', category: 'Frontend' },
+    { rkey: 'sk1', name: 'TypeScript', category: 'Technical' },
+    { rkey: 'sk2', name: 'React', category: 'Frontend' },
   ] as ProfileSkill[],
 };
 
@@ -83,12 +83,11 @@ describe('PositionEditDialog', () => {
     const position: ProfilePosition = {
       rkey: 'pos1',
       title: 'Senior Dev',
-      companyName: 'Acme Corp',
-      startDate: '2023-01',
-      endDate: '2024-06',
-      current: false,
+      company: 'Acme Corp',
+      startedAt: '2023-01',
+      endedAt: '2024-06',
       description: 'Built things',
-      linkedSkills: [{ rkey: 'sk1', skillName: 'TypeScript', category: 'Technical' }],
+      linkedSkills: [{ rkey: 'sk1', name: 'TypeScript', category: 'Technical' }],
       skills: [{ uri: 'at://did:plc:test123/id.sifa.profile.skill/sk1', cid: 'abc' }],
     };
 
@@ -133,10 +132,9 @@ describe('PositionEditDialog', () => {
     const position: ProfilePosition = {
       rkey: 'pos1',
       title: 'Dev',
-      companyName: 'Co',
-      startDate: '2023-01',
-      current: false,
-      linkedSkills: [{ rkey: 'sk1', skillName: 'TypeScript', category: 'Technical' }],
+      company: 'Co',
+      startedAt: '2023-01',
+      linkedSkills: [{ rkey: 'sk1', name: 'TypeScript', category: 'Technical' }],
       skills: [{ uri: 'at://did:plc:test123/id.sifa.profile.skill/sk1', cid: '' }],
     };
 
@@ -176,7 +174,7 @@ describe('PositionEditDialog', () => {
 
     await waitFor(() => {
       expect(mockCreateSkill).toHaveBeenCalledWith({
-        skillName: 'GraphQL',
+        name: 'GraphQL',
         category: 'Technical',
       });
     });
@@ -195,8 +193,8 @@ describe('PositionEditDialog', () => {
 
     await user.type(screen.getByLabelText(/Job Title/), 'Engineer');
     await user.type(screen.getByLabelText(/Company/), 'Acme');
-    await user.selectOptions(document.getElementById('edit-startDate')!, '01');
-    await user.selectOptions(document.getElementById('edit-startDate-year')!, '2024');
+    await user.selectOptions(document.getElementById('edit-startedAt')!, '01');
+    await user.selectOptions(document.getElementById('edit-startedAt-year')!, '2024');
 
     await user.click(screen.getByText('Save'));
 
@@ -209,7 +207,7 @@ describe('PositionEditDialog', () => {
         unknown,
       ];
       expect(values.title).toBe('Engineer');
-      expect(values.companyName).toBe('Acme');
+      expect(values.company).toBe('Acme');
       expect(Array.isArray(skillRefs)).toBe(true);
       expect(Array.isArray(linkedSkills)).toBe(true);
       expect(location).toBeNull();
@@ -240,28 +238,27 @@ describe('PositionEditDialog', () => {
     const position: ProfilePosition = {
       rkey: 'pos1',
       title: 'Dev',
-      companyName: 'Co',
-      startDate: '2023-01',
-      endDate: '2024-06',
-      current: false,
+      company: 'Co',
+      startedAt: '2023-01',
+      endedAt: '2024-06',
     };
 
     render(<PositionEditDialog {...defaultProps} onSave={onSave} position={position} />);
 
     // End date has values in the month/year selects
-    expect((document.getElementById('edit-endDate') as HTMLSelectElement).value).toBe('06');
-    expect((document.getElementById('edit-endDate-year') as HTMLSelectElement).value).toBe('2024');
+    expect((document.getElementById('edit-endedAt') as HTMLSelectElement).value).toBe('06');
+    expect((document.getElementById('edit-endedAt-year') as HTMLSelectElement).value).toBe('2024');
 
     // Check "I currently work here"
     await user.click(screen.getByLabelText(/I currently work here/));
 
-    // Save and verify endDate was cleared
+    // Save and verify endedAt was cleared
     await user.click(screen.getByText('Save'));
 
     await waitFor(() => {
       expect(onSave).toHaveBeenCalled();
       const [values] = onSave.mock.calls[0] as [Record<string, string | boolean>];
-      expect(values.endDate).toBe('');
+      expect(values.endedAt).toBe('');
       expect(values.current).toBe(true);
     });
   });
@@ -271,10 +268,9 @@ describe('PositionEditDialog', () => {
     const position: ProfilePosition = {
       rkey: 'pos1',
       title: 'Dev',
-      companyName: 'Co',
-      startDate: '2023-01',
-      current: false,
-      linkedSkills: [{ rkey: 'sk1', skillName: 'TypeScript', category: 'Technical' }],
+      company: 'Co',
+      startedAt: '2023-01',
+      linkedSkills: [{ rkey: 'sk1', name: 'TypeScript', category: 'Technical' }],
       skills: [{ uri: 'at://did:plc:test123/id.sifa.profile.skill/sk1', cid: '' }],
     };
 

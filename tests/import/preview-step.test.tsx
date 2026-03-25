@@ -19,9 +19,9 @@ const fullPreview: ImportPreview = {
     headline: 'Engineer',
     location: { country: 'Amsterdam' },
   },
-  positions: [{ companyName: 'Acme', title: 'Senior Dev', startDate: '2024-01', current: true }],
+  positions: [{ company: 'Acme', title: 'Senior Dev', startedAt: '2024-01' }],
   education: [{ institution: 'TU Delft', degree: 'MSc CS' }],
-  skills: [{ skillName: 'TypeScript' }],
+  skills: [{ name: 'TypeScript' }],
   certifications: [{ name: 'AWS Solutions Architect' }],
   projects: [],
   volunteering: [],
@@ -46,9 +46,9 @@ const emptyPreview: ImportPreview = {
 };
 
 const existingData: ExistingProfileData = {
-  positions: [{ companyName: 'Acme', title: 'Senior Dev', startDate: '2024-01' }],
+  positions: [{ company: 'Acme', title: 'Senior Dev', startedAt: '2024-01' }],
   education: [{ institution: 'TU Delft', degree: 'MSc CS' }],
-  skills: [{ skillName: 'TypeScript' }],
+  skills: [{ name: 'TypeScript' }],
 };
 
 describe('PreviewStep', () => {
@@ -167,7 +167,7 @@ describe('PreviewStep', () => {
 
   it('shows existing-data info alert when existing data but no duplicates', () => {
     const nonMatchingExisting: ExistingProfileData = {
-      positions: [{ companyName: 'Other Corp', title: 'Manager', startDate: '2020-01' }],
+      positions: [{ company: 'Other Corp', title: 'Manager', startedAt: '2020-01' }],
       education: [],
       skills: [],
     };
@@ -188,7 +188,7 @@ describe('PreviewStep', () => {
     const positionsOnly: ImportPreview = {
       ...emptyPreview,
       profile: null,
-      positions: [{ companyName: 'Acme', title: 'Dev', startDate: '2023-01', current: true }],
+      positions: [{ company: 'Acme', title: 'Dev', startedAt: '2023-01' }],
     };
 
     render(

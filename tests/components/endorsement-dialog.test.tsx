@@ -5,7 +5,7 @@ import { axe } from 'vitest-axe';
 import { EndorsementDialog } from '@/components/endorsement-dialog';
 
 const defaultProps = {
-  skillName: 'TypeScript',
+  name: 'TypeScript',
   skillRkey: 'abc123',
   targetDid: 'did:plc:target',
   onClose: vi.fn(),

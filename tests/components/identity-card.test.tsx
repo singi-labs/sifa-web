@@ -256,9 +256,9 @@ describe('IdentityCard (default / page variant)', () => {
       <IdentityCard
         {...baseProps}
         featuredSkills={[
-          { rkey: 's1', skillName: 'TypeScript' },
-          { rkey: 's2', skillName: 'AT Protocol' },
-          { rkey: 's3', skillName: 'React' },
+          { rkey: 's1', name: 'TypeScript' },
+          { rkey: 's2', name: 'AT Protocol' },
+          { rkey: 's3', name: 'React' },
         ]}
       />,
     );
@@ -501,7 +501,7 @@ describe('IdentityCard (embed variant)', () => {
       <IdentityCard
         {...baseProps}
         variant="embed"
-        featuredSkills={[{ rkey: 's1', skillName: 'TypeScript' }]}
+        featuredSkills={[{ rkey: 's1', name: 'TypeScript' }]}
       />,
     );
     expect(screen.queryByText('TypeScript')).toBeNull();

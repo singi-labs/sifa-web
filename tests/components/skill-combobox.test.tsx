@@ -295,9 +295,9 @@ describe('SkillCombobox', () => {
 
   describe('profile skills layer', () => {
     const profileSkills = [
-      { rkey: 'sk1', skillName: 'TypeScript', category: 'Technical' },
-      { rkey: 'sk2', skillName: 'React', category: 'Frontend' },
-      { rkey: 'sk3', skillName: 'Python', category: 'Technical' },
+      { rkey: 'sk1', name: 'TypeScript', category: 'Technical' },
+      { rkey: 'sk2', name: 'React', category: 'Frontend' },
+      { rkey: 'sk3', name: 'Python', category: 'Technical' },
     ];
 
     it('shows profile skills instantly without API call', async () => {

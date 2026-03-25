@@ -192,7 +192,7 @@ describe('SkillEditDialog', () => {
       await user.click(saveButton);
 
       expect(onSave).toHaveBeenCalledWith({
-        skillName: 'React',
+        name: 'React',
         category: 'creative',
       });
     });

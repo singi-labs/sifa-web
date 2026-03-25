@@ -19,19 +19,19 @@ const mockPreview: ImportPreview = {
   },
   positions: [
     {
-      companyName: 'Acme Corp',
+      company: 'Acme Corp',
       title: 'Developer',
-      startDate: '2020-01',
+      startedAt: '2020-01',
     },
   ],
   education: [
     {
       institution: 'MIT',
       degree: 'BSc',
-      startDate: '2016',
+      startedAt: '2016',
     },
   ],
-  skills: [{ skillName: 'TypeScript' }, { skillName: 'React' }],
+  skills: [{ name: 'TypeScript' }, { name: 'React' }],
   certifications: [],
   projects: [],
   volunteering: [],

@@ -7,9 +7,9 @@ describe('JSON-LD generation', () => {
       handle: 'alice.bsky.social',
       headline: 'Senior Engineer',
       about: 'Building things',
-      positions: [{ companyName: 'Acme', current: true }],
+      positions: [{ company: 'Acme' }],
       education: [{ institution: 'MIT' }],
-      skills: [{ skillName: 'TypeScript' }],
+      skills: [{ name: 'TypeScript' }],
     });
 
     expect(ld['@type']).toBe('Person');
@@ -83,13 +83,12 @@ describe('JSON-LD generation', () => {
     const ld = buildPersonJsonLd({
       handle: 'alice.bsky.social',
       positions: [
-        { companyName: 'Acme', title: 'CTO', current: true, startDate: '2023-01' },
+        { company: 'Acme', title: 'CTO', startedAt: '2023-01' },
         {
-          companyName: 'OldCorp',
+          company: 'OldCorp',
           title: 'Engineer',
-          current: false,
-          startDate: '2020-03',
-          endDate: '2022-12',
+          startedAt: '2020-03',
+          endedAt: '2022-12',
         },
       ],
       education: [],
@@ -121,7 +120,7 @@ describe('JSON-LD generation', () => {
   it('falls back to current position title for jobTitle when no headline', () => {
     const ld = buildPersonJsonLd({
       handle: 'alice.bsky.social',
-      positions: [{ companyName: 'Acme', title: 'CTO', current: true }],
+      positions: [{ company: 'Acme', title: 'CTO' }],
     });
 
     expect(ld.jobTitle).toBe('CTO');
@@ -264,9 +263,9 @@ describe('Full-profile integration', () => {
       avatar: 'https://cdn.example.com/alice.jpg',
       website: 'https://alice.dev',
       location: { city: 'Amsterdam', country: 'Netherlands', countryCode: 'NL' },
-      positions: [{ companyName: 'Acme', title: 'CTO', current: true, startDate: '2023-01' }],
+      positions: [{ company: 'Acme', title: 'CTO', startedAt: '2023-01' }],
       education: [{ institution: 'MIT', degree: 'MSc', fieldOfStudy: 'Computer Science' }],
-      skills: [{ skillName: 'TypeScript' }, { skillName: 'Leadership' }],
+      skills: [{ name: 'TypeScript' }, { name: 'Leadership' }],
       certifications: [
         {
           name: 'AWS SA Pro',
@@ -301,7 +300,7 @@ describe('Meta description generation', () => {
     const desc = buildMetaDescription({
       handle: 'alice.bsky.social',
       headline: 'Senior Engineer',
-      positions: [{ companyName: 'Acme', title: 'Senior Engineer', current: true }],
+      positions: [{ company: 'Acme', title: 'Senior Engineer' }],
     });
     expect(desc).toContain('Senior Engineer');
     expect(desc).toContain('at Acme');

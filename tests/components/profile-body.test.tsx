@@ -82,7 +82,7 @@ describe('ProfileBody', () => {
     const profile: Profile = {
       ...baseProfile,
       positions: [
-        { rkey: '1', companyName: 'Acme', title: 'Engineer', startDate: '2020', current: true },
+        { rkey: '1', company: 'Acme', title: 'Engineer', startedAt: '2020' },
       ],
     };
     renderWithProvider(profile);
@@ -96,9 +96,9 @@ describe('ProfileBody', () => {
       headline: 'Software Engineer',
       about: 'Summary',
       positions: [
-        { rkey: '1', companyName: 'Acme', title: 'Engineer', startDate: '2020', current: true },
+        { rkey: '1', company: 'Acme', title: 'Engineer', startedAt: '2020' },
       ],
-      education: [{ rkey: '1', institution: 'MIT', startDate: '2016' }],
+      education: [{ rkey: '1', institution: 'MIT', startedAt: '2016' }],
     };
     renderWithProvider(profile);
     const navs = screen.getAllByRole('navigation', { name: 'Profile sections' });
@@ -109,7 +109,7 @@ describe('ProfileBody', () => {
     const profile: Profile = {
       ...baseProfile,
       positions: [
-        { rkey: '1', companyName: 'Acme', title: 'Engineer', startDate: '2020', current: true },
+        { rkey: '1', company: 'Acme', title: 'Engineer', startedAt: '2020' },
       ],
     };
     renderWithProvider(profile);
@@ -119,7 +119,7 @@ describe('ProfileBody', () => {
   it('renders all extended sections when populated', () => {
     const profile: Profile = {
       ...baseProfile,
-      skills: [{ rkey: '1', skillName: 'TypeScript' }],
+      skills: [{ rkey: '1', name: 'TypeScript' }],
       projects: [{ rkey: '1', name: 'My Project', startDate: '2023' }],
       languages: [{ rkey: '1', language: 'English', proficiency: 'native' }],
     };

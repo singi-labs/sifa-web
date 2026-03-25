@@ -271,7 +271,7 @@ const translations: Record<string, Record<string, string>> = {
     clearFilter: 'Clear date',
   },
   endorsement: {
-    endorseSkill: 'Endorse {skillName}',
+    endorseSkill: 'Endorse {name}',
     endorsementContext: "How do you know this person's expertise?",
     workedTogether: 'Worked together at...',
     collaboratedIn: 'Collaborated in...',

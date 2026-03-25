@@ -8,26 +8,23 @@ import type { ProfilePosition } from '@/lib/types';
 const positions: ProfilePosition[] = [
   {
     rkey: 'pos1',
-    companyName: 'Stripe',
+    company: 'Stripe',
     title: 'Senior Engineer',
-    startDate: '2022-01',
-    current: true,
+    startedAt: '2022-01',
   },
   {
     rkey: 'pos2',
-    companyName: 'Acme',
+    company: 'Acme',
     title: 'Software Developer',
-    startDate: '2019-06',
-    endDate: '2022-01',
-    current: false,
+    startedAt: '2019-06',
+    endedAt: '2022-01',
   },
   {
     rkey: 'pos3',
-    companyName: 'StartupCo',
+    company: 'StartupCo',
     title: 'Junior Dev',
-    startDate: '2017-03',
-    endDate: '2019-06',
-    current: false,
+    startedAt: '2017-03',
+    endedAt: '2019-06',
   },
 ];
 
@@ -120,10 +117,9 @@ describe('PositionLinkList', () => {
   it('shows filter input when 10+ positions exist', () => {
     const manyPositions: ProfilePosition[] = Array.from({ length: 12 }, (_, i) => ({
       rkey: `pos${i}`,
-      companyName: `Company ${i}`,
+      company: `Company ${i}`,
       title: `Role ${i}`,
-      startDate: `${2010 + i}-01`,
-      current: false,
+      startedAt: `${2010 + i}-01`,
     }));
     const onToggle = vi.fn();
     render(
@@ -145,17 +141,15 @@ describe('PositionLinkList', () => {
     const manyPositions: ProfilePosition[] = [
       ...Array.from({ length: 9 }, (_, i) => ({
         rkey: `filler${i}`,
-        companyName: `Filler Co ${i}`,
+        company: `Filler Co ${i}`,
         title: `Filler Role ${i}`,
-        startDate: `${2010 + i}-01`,
-        current: false,
+        startedAt: `${2010 + i}-01`,
       })),
       {
         rkey: 'target',
-        companyName: 'Stripe',
+        company: 'Stripe',
         title: 'Engineer',
-        startDate: '2023-01',
-        current: true,
+        startedAt: '2023-01',
       },
     ];
     const onToggle = vi.fn();
@@ -175,10 +169,9 @@ describe('PositionLinkList', () => {
     const user = userEvent.setup();
     const manyPositions: ProfilePosition[] = Array.from({ length: 10 }, (_, i) => ({
       rkey: `pos${i}`,
-      companyName: `Company ${i}`,
+      company: `Company ${i}`,
       title: `Role ${i}`,
-      startDate: `${2010 + i}-01`,
-      current: false,
+      startedAt: `${2010 + i}-01`,
     }));
     const onToggle = vi.fn();
     render(

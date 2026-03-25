@@ -42,10 +42,9 @@ describe('Profile page components', () => {
     const jsx = await ExperienceSection({
       positions: [
         {
-          companyName: 'Acme',
+          company: 'Acme',
           title: 'Engineer',
-          startDate: '2020-01',
-          current: true,
+          startedAt: '2020-01',
         },
       ],
     });
@@ -67,8 +66,8 @@ describe('Profile page components', () => {
           institution: 'MIT',
           degree: 'BSc',
           fieldOfStudy: 'Computer Science',
-          startDate: '2016',
-          endDate: '2020',
+          startedAt: '2016',
+          endedAt: '2020',
         },
       ],
     });
@@ -85,7 +84,7 @@ describe('Profile page components', () => {
 
   it('SkillsSection renders skills as badges', async () => {
     const jsx = await SkillsSection({
-      skills: [{ skillName: 'TypeScript' }, { skillName: 'React' }],
+      skills: [{ name: 'TypeScript' }, { name: 'React' }],
     });
     render(jsx);
     expect(screen.getByText('TypeScript')).toBeDefined();

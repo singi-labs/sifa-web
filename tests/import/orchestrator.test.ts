@@ -21,11 +21,11 @@ describe('Import orchestrator', () => {
     const preview = processLinkedInCsvFiles(csvFiles);
 
     expect(preview.positions).toHaveLength(1);
-    expect(preview.positions[0]?.companyName).toBe('Acme Corp');
+    expect(preview.positions[0]?.company).toBe('Acme Corp');
     expect(preview.education).toHaveLength(1);
     expect(preview.education[0]?.institution).toBe('MIT');
     expect(preview.skills).toHaveLength(2);
-    expect(preview.skills[0]?.skillName).toBe('TypeScript');
+    expect(preview.skills[0]?.name).toBe('TypeScript');
     expect(preview.profile?.headline).toBe('Senior Eng');
   });
 
@@ -94,10 +94,10 @@ describe('Import orchestrator', () => {
     const preview = processLinkedInCsvFiles(csvFiles);
 
     expect(preview.positions).toHaveLength(1);
-    expect(preview.positions[0]?.companyName).toBe('Acme');
+    expect(preview.positions[0]?.company).toBe('Acme');
     expect(preview.education).toHaveLength(1);
     expect(preview.education[0]?.institution).toBe('MIT');
     expect(preview.skills).toHaveLength(1);
-    expect(preview.skills[0]?.skillName).toBe('TypeScript');
+    expect(preview.skills[0]?.name).toBe('TypeScript');
   });
 });

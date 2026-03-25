@@ -195,32 +195,29 @@ describe('Position form helpers', () => {
     const values = positionToValues({
       rkey: '1',
       title: 'Engineer',
-      companyName: 'Acme',
-      startDate: '2020-01',
-      current: true,
+      company: 'Acme',
+      startedAt: '2020-01',
     });
     expect(values.title).toBe('Engineer');
-    expect(values.companyName).toBe('Acme');
-    expect(values.current).toBe(true);
+    expect(values.company).toBe('Acme');
   });
 
   it('converts form values to position', () => {
     const pos = valuesToPosition({
       title: 'Engineer',
-      companyName: 'Acme',
-      startDate: '2020-01',
-      endDate: '',
-      current: true,
+      company: 'Acme',
+      startedAt: '2020-01',
+      endedAt: '',
       location: '',
       description: '',
     });
     expect(pos.title).toBe('Engineer');
-    expect(pos.endDate).toBeUndefined();
+    expect(pos.endedAt).toBeUndefined();
     expect(pos.location).toBeUndefined();
   });
 
   it('has correct number of fields', () => {
-    expect(POSITION_FIELDS.length).toBe(7);
+    expect(POSITION_FIELDS.length).toBe(6);
   });
 });
 
@@ -248,8 +245,8 @@ describe('Section converters', () => {
         institution: 'MIT',
         degree: 'BSc',
         fieldOfStudy: 'CS',
-        startDate: '2018-09',
-        endDate: '2022-06',
+        startedAt: '2018-09',
+        endedAt: '2022-06',
       };
       const values = educationToValues(original);
       expect(values.institution).toBe('MIT');
@@ -259,8 +256,8 @@ describe('Section converters', () => {
       expect(result.institution).toBe('MIT');
       expect(result.degree).toBe('BSc');
       expect(result.fieldOfStudy).toBe('CS');
-      expect(result.startDate).toBe('2018-09');
-      expect(result.endDate).toBe('2022-06');
+      expect(result.startedAt).toBe('2018-09');
+      expect(result.endedAt).toBe('2022-06');
     });
 
     it('converts empty optional strings to undefined', () => {
@@ -270,24 +267,24 @@ describe('Section converters', () => {
       const result = valuesToEducation(values);
       expect(result.degree).toBeUndefined();
       expect(result.fieldOfStudy).toBeUndefined();
-      expect(result.startDate).toBeUndefined();
-      expect(result.endDate).toBeUndefined();
+      expect(result.startedAt).toBeUndefined();
+      expect(result.endedAt).toBeUndefined();
     });
   });
 
   describe('skill round-trip', () => {
     it('converts skill to values and back', () => {
-      const original = { rkey: 's1', skillName: 'TypeScript', category: 'technical' };
+      const original = { rkey: 's1', name: 'TypeScript', category: 'technical' };
       const values = skillToValues(original);
-      expect(values.skillName).toBe('TypeScript');
+      expect(values.name).toBe('TypeScript');
 
       const result = valuesToSkill(values);
-      expect(result.skillName).toBe('TypeScript');
+      expect(result.name).toBe('TypeScript');
       expect(result.category).toBe('technical');
     });
 
     it('converts empty category to undefined', () => {
-      const result = valuesToSkill({ skillName: 'Rust', category: '' });
+      const result = valuesToSkill({ name: 'Rust', category: '' });
       expect(result.category).toBeUndefined();
     });
   });
