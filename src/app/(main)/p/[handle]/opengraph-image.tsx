@@ -16,7 +16,7 @@ interface ProfileData {
   locationCountry?: string;
   locationRegion?: string;
   locationCity?: string;
-  positions?: { title?: string; companyName?: string; current?: boolean }[];
+  positions?: { title?: string; company?: string; endedAt?: string }[];
 }
 
 async function fetchAvatarDataUrl(url: string): Promise<string | null> {
