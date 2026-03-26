@@ -75,9 +75,19 @@ export function CumulativeChart({ data, groups, className }: CumulativeChartProp
     });
   };
 
-  const visibleGroups = groups.filter((g) => !hiddenGroups.has(g.id));
+  const filteredData = useMemo(() => {
+    if (hiddenGroups.size === 0) return data;
+    return data.map((point) => {
+      const copy = { ...point };
+      for (const id of hiddenGroups) {
+        copy[id] = 0;
+      }
+      return copy;
+    });
+  }, [data, hiddenGroups]);
 
   const maxVisible = useMemo(() => {
+    const visibleGroups = groups.filter((g) => !hiddenGroups.has(g.id));
     if (visibleGroups.length === 0) return 1;
     let max = 0;
     for (const point of data) {
@@ -85,7 +95,7 @@ export function CumulativeChart({ data, groups, className }: CumulativeChartProp
       if (sum > max) max = sum;
     }
     return Math.ceil(max * 1.1);
-  }, [data, visibleGroups]);
+  }, [data, groups, hiddenGroups]);
 
   if (!mounted || !data.length) {
     return <div className={cn('min-h-[320px]', className)} />;
@@ -103,7 +113,7 @@ export function CumulativeChart({ data, groups, className }: CumulativeChartProp
   return (
     <div className={cn('min-h-[320px]', className)}>
       <ResponsiveContainer width="100%" height={320}>
-        <AreaChart data={data} margin={{ top: 10, right: 20, bottom: 0, left: 20 }}>
+        <AreaChart data={filteredData} margin={{ top: 10, right: 20, bottom: 0, left: 20 }}>
           <XAxis
             dataKey="month"
             tick={{ fontSize: 12, fill: 'currentColor' }}
@@ -142,7 +152,6 @@ export function CumulativeChart({ data, groups, className }: CumulativeChartProp
           />
           {groups.map((group, index) => {
             const color = getColor(group.id, index);
-            const isHidden = hiddenGroups.has(group.id);
             return (
               <Area
                 key={group.id}
@@ -152,33 +161,11 @@ export function CumulativeChart({ data, groups, className }: CumulativeChartProp
                 stackId="1"
                 stroke={color}
                 fill={color}
-                fillOpacity={isHidden ? 0 : 0.6}
-                strokeOpacity={isHidden ? 0 : 1}
-                hide={false}
+                fillOpacity={0.6}
+                strokeOpacity={1}
               />
             );
           })}
-          {/* Render hidden groups with zero opacity so stack integrity is maintained */}
-          {visibleGroups.length !== groups.length &&
-            groups
-              .filter((g) => hiddenGroups.has(g.id))
-              .map((group, index) => {
-                const color = getColor(group.id, index);
-                return (
-                  <Area
-                    key={`hidden-${group.id}`}
-                    type="monotone"
-                    dataKey={group.id}
-                    name={group.label}
-                    stackId="hidden"
-                    stroke={color}
-                    fill={color}
-                    fillOpacity={0}
-                    strokeOpacity={0}
-                    legendType="none"
-                  />
-                );
-              })}
         </AreaChart>
       </ResponsiveContainer>
     </div>

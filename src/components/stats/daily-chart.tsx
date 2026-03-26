@@ -84,9 +84,19 @@ export function DailyChart({ data, groups, className }: DailyChartProps) {
     });
   };
 
-  const visibleGroups = groups.filter((g) => !hiddenGroups.has(g.id));
+  const filteredData = useMemo(() => {
+    if (hiddenGroups.size === 0) return data;
+    return data.map((point) => {
+      const copy = { ...point };
+      for (const id of hiddenGroups) {
+        copy[id] = 0;
+      }
+      return copy;
+    });
+  }, [data, hiddenGroups]);
 
   const maxVisible = useMemo(() => {
+    const visibleGroups = groups.filter((g) => !hiddenGroups.has(g.id));
     if (visibleGroups.length === 0) return 1;
     let max = 0;
     for (const point of data) {
@@ -94,7 +104,7 @@ export function DailyChart({ data, groups, className }: DailyChartProps) {
       if (sum > max) max = sum;
     }
     return Math.ceil(max * 1.1);
-  }, [data, visibleGroups]);
+  }, [data, groups, hiddenGroups]);
 
   if (!mounted || !data.length) {
     return <div className={cn('min-h-[300px]', className)} />;
@@ -112,7 +122,7 @@ export function DailyChart({ data, groups, className }: DailyChartProps) {
   return (
     <div className={cn('min-h-[300px]', className)}>
       <ResponsiveContainer width="100%" height={300}>
-        <BarChart data={data} margin={{ top: 10, right: 20, bottom: 0, left: 20 }}>
+        <BarChart data={filteredData} margin={{ top: 10, right: 20, bottom: 0, left: 20 }}>
           <XAxis
             dataKey="date"
             tickFormatter={formatDate}
@@ -156,16 +166,8 @@ export function DailyChart({ data, groups, className }: DailyChartProps) {
           />
           {groups.map((group, index) => {
             const color = getColor(group.id, index);
-            const isHidden = hiddenGroups.has(group.id);
             return (
-              <Bar
-                key={group.id}
-                dataKey={group.id}
-                name={group.label}
-                stackId="1"
-                fill={color}
-                opacity={isHidden ? 0 : 1}
-              />
+              <Bar key={group.id} dataKey={group.id} name={group.label} stackId="1" fill={color} />
             );
           })}
         </BarChart>
