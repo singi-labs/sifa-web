@@ -20,7 +20,6 @@ const STATIC_PAGES: {
   { path: '/privacy', changeFrequency: 'monthly', priority: 0.3 },
   { path: '/terms', changeFrequency: 'monthly', priority: 0.3 },
   { path: '/experts', changeFrequency: 'weekly', priority: 0.7 },
-  { path: '/find-people', changeFrequency: 'weekly', priority: 0.6 },
   { path: '/search', changeFrequency: 'weekly', priority: 0.6 },
 ];
 

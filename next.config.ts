@@ -48,6 +48,11 @@ const nextConfig: NextConfig = {
         destination: '/p/:handle',
         permanent: true,
       },
+      {
+        source: '/find-people',
+        destination: '/search',
+        permanent: true,
+      },
     ];
   },
   async headers() {

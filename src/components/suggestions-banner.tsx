@@ -46,7 +46,7 @@ export function SuggestionsBanner() {
         on Sifa.
       </p>
       <div className="flex items-center gap-2">
-        <Link href="/find-people" className="text-sm font-medium text-primary hover:underline">
+        <Link href="/search" className="text-sm font-medium text-primary hover:underline">
           Show me who
         </Link>
         <button

@@ -65,7 +65,7 @@ jobs:
               src/app/\(embed\)/*)                    PAGES="$PAGES,embed" ;;
               src/app/\(main\)/search/*)              PAGES="$PAGES,search" ;;
               src/app/\(main\)/experts/*)             PAGES="$PAGES,experts" ;;
-              src/app/\(main\)/find-people/*)         PAGES="$PAGES,search" ;;
+
             esac
           done <<< "$CHANGED"
 

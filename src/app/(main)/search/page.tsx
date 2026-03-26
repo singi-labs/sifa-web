@@ -5,6 +5,7 @@ export const dynamic = 'force-dynamic';
 import { ProfileCard } from '@/components/profile-card';
 import { SearchInput } from './search-input';
 import { SearchStatus } from './search-status';
+import { SuggestionsSection } from './suggestions-section';
 
 interface SearchPageProps {
   searchParams: Promise<{ q?: string }>;
@@ -18,7 +19,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-8">
-      <h1 className="mb-6 text-2xl font-bold">Search</h1>
+      <h1 className="mb-6 text-2xl font-bold">{t('title')}</h1>
       <SearchInput defaultValue={query} />
 
       <div className="mt-6 space-y-3">
@@ -39,7 +40,9 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         ))}
       </div>
 
-      <SearchStatus />
+      {!query && <SearchStatus />}
+
+      <SuggestionsSection />
     </main>
   );
 }

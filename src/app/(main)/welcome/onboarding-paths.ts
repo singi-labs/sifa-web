@@ -46,7 +46,7 @@ export const onboardingPaths: OnboardingPath[] = [
     hero: false,
     iconName: 'Compass',
     iconSize: 32,
-    href: '/find-people',
+    href: '/search',
     buttonVariant: 'ghost',
     buttonSize: 'default',
     order: 3,

@@ -18,7 +18,7 @@ import { toast } from 'sonner';
 
 const SOURCES = ['all', 'bluesky', 'tangled'] as const;
 
-export default function FindPeoplePage() {
+export function SuggestionsSection() {
   const { session, isLoading: authLoading } = useAuth();
   const { requireAuth } = useRequireAuth();
   const [source, setSource] = useState<string>('all');
@@ -138,26 +138,15 @@ export default function FindPeoplePage() {
     [requireAuth],
   );
 
-  if (authLoading) return null;
-
-  if (!session) {
-    return (
-      <main className="mx-auto max-w-3xl px-4 py-8">
-        <h1 className="text-2xl font-bold">Find People</h1>
-        <p className="mt-2 text-muted-foreground">
-          Sign in to discover people you know from other AT Protocol services.
-        </p>
-      </main>
-    );
-  }
+  if (authLoading || !session) return null;
 
   return (
-    <main className="mx-auto max-w-3xl px-4 py-8">
+    <section className="mt-10 border-t border-border pt-8">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold">Find People</h1>
-          <p className="mt-1 text-muted-foreground">
-            Discover people you know from other AT Protocol services
+          <h2 className="text-xl font-bold">People you may know</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            From your follows on other AT Protocol services
           </p>
         </div>
         <Button variant="outline" size="sm" onClick={handleSync} disabled={syncing}>
@@ -217,10 +206,10 @@ export default function FindPeoplePage() {
         <>
           {/* On Sifa */}
           {onSifa.length > 0 && (
-            <section className="mt-6">
-              <h2 className="mb-3 text-sm font-semibold text-muted-foreground">
+            <div className="mt-6">
+              <h3 className="mb-3 text-sm font-semibold text-muted-foreground">
                 On Sifa ({onSifa.length})
-              </h2>
+              </h3>
               <div className="space-y-2">
                 {onSifa.map((s) => (
                   <SuggestionCard
@@ -239,15 +228,15 @@ export default function FindPeoplePage() {
                   />
                 ))}
               </div>
-            </section>
+            </div>
           )}
 
           {/* Not yet on Sifa */}
           {notOnSifa.length > 0 && (
-            <section className="mt-6">
-              <h2 className="mb-3 text-sm font-semibold text-muted-foreground">
+            <div className="mt-6">
+              <h3 className="mb-3 text-sm font-semibold text-muted-foreground">
                 Not yet on Sifa ({notOnSifa.length})
-              </h2>
+              </h3>
               <div className="space-y-2">
                 {notOnSifa.map((s) => (
                   <SuggestionCard
@@ -263,7 +252,7 @@ export default function FindPeoplePage() {
                   />
                 ))}
               </div>
-            </section>
+            </div>
           )}
 
           {/* Load more */}
@@ -276,6 +265,6 @@ export default function FindPeoplePage() {
           )}
         </>
       )}
-    </main>
+    </section>
   );
 }
