@@ -809,7 +809,7 @@
     "pdsHostsTooltip": "Unique Personal Data Server endpoints that have registered at least one did:plc identity. A PDS stores user data and can be self-hosted by anyone.",
     "lastUpdated": "Last updated",
     "lastUpdatedTooltip": "When this data was last refreshed from the PLC directory.",
-    "cumulativeTitle": "Cumulative identity growth",
+    "cumulativeTitle": "Cumulative identity (did:plc) growth",
     "dailyTitle": "Daily new identities (last 90 days)",
     "pdsTableTitle": "All PDS providers",
     "pdsColumn": "PDS",
