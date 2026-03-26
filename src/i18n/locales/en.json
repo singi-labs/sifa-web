@@ -823,7 +823,7 @@
     "methodologyPdsTitle": "What is a PDS?",
     "methodologyPds": "A Personal Data Server stores your AT Protocol data: posts, profile, follows, and more. Bluesky runs the largest PDS cluster (the mushroom-named servers like morel, cortinarius, etc.), but anyone can run their own.",
     "methodologyReachableTitle": "What does \"reachable\" mean?",
-    "methodologyReachable": "We sample handles from each PDS and check if they resolve back to their DID via the AT Protocol's identity system. If the handle resolves, the account is functional. If not, the PDS may be offline, the account deleted, or the DID was never properly set up.",
+    "methodologyReachable": "We sample handles from each PDS and check if they resolve back to their DID via the AT Protocol's identity system. If the handle resolves, the account is functional. Most unreachable identities come from spam PDS hosts that mass-register DIDs without serving real content (e.g. pds.trump.com registered over 17 million DIDs with 0% reachability). Other reasons include deleted or suspended accounts, PDS hosts that went offline, or DIDs that were never properly set up.",
     "methodologyCollectionTitle": "How is this data collected?",
     "methodologyCollection": "We crawl the PLC directory's public export API daily, counting new identity registrations per PDS provider. The crawl uses the plc.wtf community mirror to avoid impacting the primary directory. Reachability is checked by sampling handles and resolving them via the public API."
   }
