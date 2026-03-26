@@ -62,9 +62,16 @@ export function EventCardGrid({ entries, connections }: EventCardGridProps) {
             }
           : null;
 
-        const currentPosition = (profile.positions as ProfilePosition[] | undefined)?.find(
-          (p: ProfilePosition) => !p.endedAt,
-        );
+        const currentPositions =
+          (profile.positions as ProfilePosition[] | undefined)?.filter(
+            (p: ProfilePosition) => !p.endedAt,
+          ) ?? [];
+        const currentPosition =
+          currentPositions.find((p: ProfilePosition) => p.primary) ??
+          currentPositions.sort((a: ProfilePosition, b: ProfilePosition) =>
+            (b.startedAt ?? '').localeCompare(a.startedAt ?? ''),
+          )[0] ??
+          null;
 
         return (
           <Link

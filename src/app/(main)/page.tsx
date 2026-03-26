@@ -79,9 +79,16 @@ export default async function Home() {
                       city: featuredProfile.locationCity ?? undefined,
                     }
                   : null;
-                const currentPosition = (
-                  featuredProfile.positions as ProfilePosition[] | undefined
-                )?.find((p: ProfilePosition) => !p.endedAt);
+                const currentPositions =
+                  (featuredProfile.positions as ProfilePosition[] | undefined)?.filter(
+                    (p: ProfilePosition) => !p.endedAt,
+                  ) ?? [];
+                const currentPosition =
+                  currentPositions.find((p: ProfilePosition) => p.primary) ??
+                  currentPositions.sort((a: ProfilePosition, b: ProfilePosition) =>
+                    (b.startedAt ?? '').localeCompare(a.startedAt ?? ''),
+                  )[0] ??
+                  null;
                 return (
                   <TouchSafeCard
                     href={`/p/${featuredProfile.handle}`}

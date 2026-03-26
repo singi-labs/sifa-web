@@ -248,6 +248,14 @@ export async function unsetExternalAccountPrimary(rkey: string): Promise<WriteRe
   return apiRequest(`/api/profile/external-accounts/${encodeURIComponent(rkey)}/primary`, 'DELETE');
 }
 
+export async function setPositionPrimary(rkey: string): Promise<WriteResult> {
+  return apiRequest(`/api/profile/position/${encodeURIComponent(rkey)}/primary`, 'PUT');
+}
+
+export async function unsetPositionPrimary(rkey: string): Promise<WriteResult> {
+  return apiRequest(`/api/profile/position/${encodeURIComponent(rkey)}/primary`, 'DELETE');
+}
+
 export async function hideKeytraceClaim(rkey: string): Promise<WriteResult> {
   return apiRequest(`/api/profile/keytrace-claims/${encodeURIComponent(rkey)}/hide`, 'POST');
 }

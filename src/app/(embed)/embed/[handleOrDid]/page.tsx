@@ -41,9 +41,12 @@ export default async function EmbedPage({ params }: EmbedPageProps) {
       }
     : null;
 
-  const currentPosition = (profile.positions as ProfilePosition[] | undefined)?.find(
-    (p) => !p.endedAt,
-  );
+  const currentPositions =
+    (profile.positions as ProfilePosition[] | undefined)?.filter((p) => !p.endedAt) ?? [];
+  const currentPosition =
+    currentPositions.find((p) => p.primary) ??
+    currentPositions.sort((a, b) => (b.startedAt ?? '').localeCompare(a.startedAt ?? ''))[0] ??
+    null;
 
   return (
     <div className="bg-transparent p-2">
