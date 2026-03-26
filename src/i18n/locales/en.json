@@ -10,7 +10,7 @@
     "home": "Sifa ID home",
     "search": "Search",
     "import": "Import",
-    "findPeople": "Find People",
+
     "myNetwork": "My Network",
     "mainNav": "Main navigation",
     "footerNav": "Footer navigation",
@@ -336,6 +336,7 @@
     "dismiss": "Dismiss"
   },
   "search": {
+    "title": "Search",
     "placeholder": "Search by name, headline, or AT Protocol handle",
     "noResults": "No results found for \"{query}\"",
     "statusTitle": "Search is in alpha",

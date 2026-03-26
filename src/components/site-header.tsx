@@ -38,15 +38,9 @@ export function SiteHeader() {
           <nav className="hidden items-center gap-1 md:flex" aria-label={t('mainNav')}>
             <Link
               href="/search"
-              className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-            >
-              {t('search')}
-            </Link>
-            <Link
-              href="/find-people"
               className="flex items-center rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
             >
-              {t('findPeople')}
+              {t('search')}
               <SuggestionBadge />
             </Link>
             {session && (

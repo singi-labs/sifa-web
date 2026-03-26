@@ -55,7 +55,7 @@ vi.mock('sonner', () => ({
   },
 }));
 
-import FindPeoplePage from '@/app/(main)/find-people/page';
+import { SuggestionsSection } from '@/app/(main)/search/suggestions-section';
 
 // Ensure localStorage is available in test env
 const localStorageMock = {
@@ -68,18 +68,18 @@ const localStorageMock = {
 };
 Object.defineProperty(window, 'localStorage', { value: localStorageMock, writable: true });
 
-describe('Find People page', () => {
+describe('SuggestionsSection', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it('renders the page heading', async () => {
-    render(<FindPeoplePage />);
-    expect(screen.getByText(/find people/i)).toBeDefined();
+  it('renders the section heading', async () => {
+    render(<SuggestionsSection />);
+    expect(screen.getByText(/people you may know/i)).toBeDefined();
   });
 
   it('renders suggestions after loading', async () => {
-    render(<FindPeoplePage />);
+    render(<SuggestionsSection />);
     expect(await screen.findByText('Alice')).toBeDefined();
   });
 });

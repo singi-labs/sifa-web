@@ -188,8 +188,8 @@ export default function MyNetworkPage() {
               Follow people you know from Bluesky or Tangled to build your professional network.
             </p>
           </div>
-          <Link href="/find-people" className={buttonVariants()}>
-            Find People
+          <Link href="/search" className={buttonVariants()}>
+            Search
           </Link>
         </div>
       ) : (
@@ -249,14 +249,14 @@ export default function MyNetworkPage() {
             </div>
           )}
 
-          {/* Find People CTA */}
+          {/* Search CTA */}
           <div className="mt-8 rounded-lg border border-border p-4 text-center">
             <p className="text-sm text-muted-foreground">Looking for someone?</p>
             <Link
-              href="/find-people"
+              href="/search"
               className={buttonVariants({ variant: 'outline', size: 'sm', className: 'mt-2' })}
             >
-              Find People
+              Search
             </Link>
           </div>
         </>
