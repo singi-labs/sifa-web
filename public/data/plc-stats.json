@@ -1,8 +1,8 @@
 {
-  "generated": "2026-03-25T15:23:30.786Z",
+  "generated": "2026-03-26T07:04:38.834Z",
   "summary": {
     "totalDids": 79770682,
-    "reachableDids": 45134264,
+    "reachableDids": 59250025,
     "totalPdsHosts": 15688,
     "dataThrough": "2026-03-11"
   },
@@ -11,7 +11,7 @@
       "id": "bluesky",
       "label": "Bluesky",
       "totalCreates": 59748652,
-      "reachablePct": 94
+      "reachablePct": 95
     },
     {
       "id": "pds-trump-com",
@@ -23,7 +23,7 @@
       "id": "atproto-brid-gy",
       "label": "atproto.brid.gy",
       "totalCreates": 101258,
-      "reachablePct": 20
+      "reachablePct": 80
     },
     {
       "id": "social-kabcash-com",
@@ -35,31 +35,31 @@
       "id": "blacksky-app",
       "label": "blacksky.app",
       "totalCreates": 32591,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "id": "klatch-app",
       "label": "klatch.app",
       "totalCreates": 19635,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "id": "weleadsmm-com",
       "label": "weleadsmm.com",
       "totalCreates": 14344,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "id": "pds-si46-world",
       "label": "pds.si46.world",
       "totalCreates": 11093,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "id": "blueski-social",
       "label": "blueski.social",
       "totalCreates": 10070,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "id": "other",
@@ -1786,31 +1786,31 @@
       "pds": "https://morel.us-east.host.bsky.network",
       "creates": 15895281,
       "pct": 19.9262,
-      "reachablePct": 20
+      "reachablePct": 96
     },
     {
       "pds": "https://bsky.social",
       "creates": 2026867,
       "pct": 2.5409,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://plc.surge.sh/gallery",
       "creates": 1769329,
       "pct": 2.218,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://leccinum.us-west.host.bsky.network",
       "creates": 658655,
       "pct": 0.8257,
-      "reachablePct": 80
+      "reachablePct": 85
     },
     {
       "pds": "https://agrocybe.us-west.host.bsky.network",
       "creates": 658103,
       "pct": 0.825,
-      "reachablePct": 100
+      "reachablePct": 85
     },
     {
       "pds": "https://cortinarius.us-west.host.bsky.network",
@@ -1822,175 +1822,175 @@
       "pds": "https://pholiota.us-west.host.bsky.network",
       "creates": 657024,
       "pct": 0.8236,
-      "reachablePct": 80
+      "reachablePct": 95
     },
     {
       "pds": "https://calocybe.us-west.host.bsky.network",
       "creates": 657001,
       "pct": 0.8236,
-      "reachablePct": 100
+      "reachablePct": 95
     },
     {
       "pds": "https://gomphidius.us-west.host.bsky.network",
       "creates": 656922,
       "pct": 0.8235,
-      "reachablePct": 80
+      "reachablePct": 100
     },
     {
       "pds": "https://hebeloma.us-west.host.bsky.network",
       "creates": 656545,
       "pct": 0.823,
-      "reachablePct": 80
+      "reachablePct": 95
     },
     {
       "pds": "https://entoloma.us-west.host.bsky.network",
       "creates": 656418,
       "pct": 0.8229,
-      "reachablePct": 80
+      "reachablePct": 85
     },
     {
       "pds": "https://hygrophorus.us-west.host.bsky.network",
       "creates": 656087,
       "pct": 0.8225,
-      "reachablePct": 100
+      "reachablePct": 95
     },
     {
       "pds": "https://bankera.us-west.host.bsky.network",
       "creates": 655710,
       "pct": 0.822,
-      "reachablePct": 100
+      "reachablePct": 85
     },
     {
       "pds": "https://conocybe.us-west.host.bsky.network",
       "creates": 557101,
       "pct": 0.6984,
-      "reachablePct": 80
+      "reachablePct": null
     },
     {
       "pds": "https://hydnum.us-west.host.bsky.network",
       "creates": 556605,
       "pct": 0.6978,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://maitake.us-west.host.bsky.network",
       "creates": 555758,
       "pct": 0.6967,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://chaga.us-west.host.bsky.network",
       "creates": 555744,
       "pct": 0.6967,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://agaric.us-west.host.bsky.network",
       "creates": 555697,
       "pct": 0.6966,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://verpa.us-west.host.bsky.network",
       "creates": 555205,
       "pct": 0.696,
-      "reachablePct": 80
+      "reachablePct": null
     },
     {
       "pds": "https://lepista.us-west.host.bsky.network",
       "creates": 554941,
       "pct": 0.6957,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://blewit.us-west.host.bsky.network",
       "creates": 554938,
       "pct": 0.6957,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://boletus.us-west.host.bsky.network",
       "creates": 554126,
       "pct": 0.6946,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://russula.us-west.host.bsky.network",
       "creates": 552946,
       "pct": 0.6932,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://blusher.us-east.host.bsky.network",
       "creates": 521989,
       "pct": 0.6544,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://yellowfoot.us-west.host.bsky.network",
       "creates": 520687,
       "pct": 0.6527,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://psathyrella.us-west.host.bsky.network",
       "creates": 502771,
       "pct": 0.6303,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://hollowfoot.us-west.host.bsky.network",
       "creates": 502602,
       "pct": 0.6301,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://fuzzyfoot.us-west.host.bsky.network",
       "creates": 502131,
       "pct": 0.6295,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://panus.us-west.host.bsky.network",
       "creates": 501913,
       "pct": 0.6292,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://mazegill.us-west.host.bsky.network",
       "creates": 500959,
       "pct": 0.628,
-      "reachablePct": 80
+      "reachablePct": null
     },
     {
       "pds": "https://coral.us-east.host.bsky.network",
       "creates": 492318,
       "pct": 0.6172,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://lobster.us-east.host.bsky.network",
       "creates": 491878,
       "pct": 0.6166,
-      "reachablePct": 80
+      "reachablePct": null
     },
     {
       "pds": "https://woodear.us-west.host.bsky.network",
       "creates": 491611,
       "pct": 0.6163,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://magic.us-west.host.bsky.network",
       "creates": 490099,
       "pct": 0.6144,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://pioppino.us-west.host.bsky.network",
       "creates": 488926,
       "pct": 0.6129,
-      "reachablePct": 80
+      "reachablePct": 100
     },
     {
       "pds": "https://waxcap.us-west.host.bsky.network",
@@ -2014,19 +2014,19 @@
       "pds": "https://goldenear.us-west.host.bsky.network",
       "creates": 487206,
       "pct": 0.6108,
-      "reachablePct": 100
+      "reachablePct": 90
     },
     {
       "pds": "https://rooter.us-west.host.bsky.network",
       "creates": 486908,
       "pct": 0.6104,
-      "reachablePct": 100
+      "reachablePct": 95
     },
     {
       "pds": "https://dapperling.us-west.host.bsky.network",
       "creates": 486866,
       "pct": 0.6103,
-      "reachablePct": 100
+      "reachablePct": 90
     },
     {
       "pds": "https://suillus.us-west.host.bsky.network",
@@ -2038,13 +2038,13 @@
       "pds": "https://mottlegill.us-west.host.bsky.network",
       "creates": 486556,
       "pct": 0.6099,
-      "reachablePct": 100
+      "reachablePct": 85
     },
     {
       "pds": "https://grisette.us-west.host.bsky.network",
       "creates": 486550,
       "pct": 0.6099,
-      "reachablePct": 100
+      "reachablePct": 85
     },
     {
       "pds": "https://mycena.us-west.host.bsky.network",
@@ -2056,169 +2056,169 @@
       "pds": "https://shaggymane.us-west.host.bsky.network",
       "creates": 479150,
       "pct": 0.6007,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://matsutake.us-west.host.bsky.network",
       "creates": 479122,
       "pct": 0.6006,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://chanterelle.us-west.host.bsky.network",
       "creates": 478840,
       "pct": 0.6003,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://oysterling.us-west.host.bsky.network",
       "creates": 478643,
       "pct": 0.6,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://milkcap.us-west.host.bsky.network",
       "creates": 478590,
       "pct": 0.6,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://woodtuft.us-west.host.bsky.network",
       "creates": 478546,
       "pct": 0.5999,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://bracket.us-west.host.bsky.network",
       "creates": 478418,
       "pct": 0.5997,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://gomphus.us-west.host.bsky.network",
       "creates": 478383,
       "pct": 0.5997,
-      "reachablePct": 80
+      "reachablePct": null
     },
     {
       "pds": "https://scalycap.us-west.host.bsky.network",
       "creates": 478108,
       "pct": 0.5994,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://stinkhorn.us-west.host.bsky.network",
       "creates": 477829,
       "pct": 0.599,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://cremini.us-west.host.bsky.network",
       "creates": 477528,
       "pct": 0.5986,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://witchesbutter.us-west.host.bsky.network",
       "creates": 477418,
       "pct": 0.5985,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://button.us-west.host.bsky.network",
       "creates": 477224,
       "pct": 0.5982,
-      "reachablePct": 80
+      "reachablePct": null
     },
     {
       "pds": "https://cordyceps.us-west.host.bsky.network",
       "creates": 475565,
       "pct": 0.5962,
-      "reachablePct": 80
+      "reachablePct": null
     },
     {
       "pds": "https://scarletina.us-east.host.bsky.network",
       "creates": 475138,
       "pct": 0.5956,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://helvella.us-east.host.bsky.network",
       "creates": 474535,
       "pct": 0.5949,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://reishi.us-east.host.bsky.network",
       "creates": 474327,
       "pct": 0.5946,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://meadow.us-east.host.bsky.network",
       "creates": 474319,
       "pct": 0.5946,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://earthstar.us-east.host.bsky.network",
       "creates": 474103,
       "pct": 0.5943,
-      "reachablePct": 80
+      "reachablePct": null
     },
     {
       "pds": "https://splitgill.us-east.host.bsky.network",
       "creates": 473784,
       "pct": 0.5939,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://velvetfoot.us-east.host.bsky.network",
       "creates": 473781,
       "pct": 0.5939,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://panthercap.us-east.host.bsky.network",
       "creates": 473650,
       "pct": 0.5938,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://truffle.us-east.host.bsky.network",
       "creates": 473447,
       "pct": 0.5935,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://parasol.us-east.host.bsky.network",
       "creates": 473122,
       "pct": 0.5931,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://ganoderma.us-west.host.bsky.network",
       "creates": 472597,
       "pct": 0.5924,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://phellinus.us-west.host.bsky.network",
       "creates": 469693,
       "pct": 0.5888,
-      "reachablePct": 80
+      "reachablePct": 95
     },
     {
       "pds": "https://auriporia.us-west.host.bsky.network",
       "creates": 469267,
       "pct": 0.5883,
-      "reachablePct": 80
+      "reachablePct": 100
     },
     {
       "pds": "https://chalciporus.us-west.host.bsky.network",
       "creates": 469204,
       "pct": 0.5882,
-      "reachablePct": 80
+      "reachablePct": 100
     },
     {
       "pds": "https://rhizopogon.us-west.host.bsky.network",
@@ -2236,37 +2236,37 @@
       "pds": "https://poisonpie.us-west.host.bsky.network",
       "creates": 462009,
       "pct": 0.5792,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://fibercap.us-west.host.bsky.network",
       "creates": 461615,
       "pct": 0.5787,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://brittlegill.us-west.host.bsky.network",
       "creates": 460722,
       "pct": 0.5776,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://shimeji.us-east.host.bsky.network",
       "creates": 316349,
       "pct": 0.3966,
-      "reachablePct": 100
+      "reachablePct": 95
     },
     {
       "pds": "https://amanita.us-east.host.bsky.network",
       "creates": 316346,
       "pct": 0.3966,
-      "reachablePct": 80
+      "reachablePct": 90
     },
     {
       "pds": "https://shiitake.us-east.host.bsky.network",
       "creates": 316275,
       "pct": 0.3965,
-      "reachablePct": 80
+      "reachablePct": 100
     },
     {
       "pds": "https://oyster.us-east.host.bsky.network",
@@ -2278,13 +2278,13 @@
       "pds": "https://puffball.us-east.host.bsky.network",
       "creates": 316242,
       "pct": 0.3964,
-      "reachablePct": 100
+      "reachablePct": 85
     },
     {
       "pds": "https://lionsmane.us-east.host.bsky.network",
       "creates": 316107,
       "pct": 0.3963,
-      "reachablePct": 100
+      "reachablePct": 95
     },
     {
       "pds": "https://inkcap.us-east.host.bsky.network",
@@ -2296,43 +2296,43 @@
       "pds": "https://porcini.us-east.host.bsky.network",
       "creates": 315602,
       "pct": 0.3956,
-      "reachablePct": 100
+      "reachablePct": 95
     },
     {
       "pds": "https://enoki.us-east.host.bsky.network",
       "creates": 315450,
       "pct": 0.3954,
-      "reachablePct": 100
+      "reachablePct": 95
     },
     {
       "pds": "https://stropharia.us-west.host.bsky.network",
       "creates": 171496,
       "pct": 0.215,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://jellybaby.us-east.host.bsky.network",
       "creates": 171215,
       "pct": 0.2146,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "(empty)",
       "creates": 164316,
       "pct": 0.206,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://atproto.brid.gy",
       "creates": 101258,
       "pct": 0.1269,
-      "reachablePct": 20
+      "reachablePct": 80
     },
     {
       "pds": "https://example.test",
       "creates": 81861,
       "pct": 0.1026,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://social.kabcash.com",
@@ -2344,637 +2344,637 @@
       "pds": "http://127.0.0.1:25000",
       "creates": 40306,
       "pct": 0.0505,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://blacksky.app",
       "creates": 32591,
       "pct": 0.0409,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://randomly-generated.ngrok-free.app",
       "creates": 28246,
       "pct": 0.0354,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://klatch.app",
       "creates": 19635,
       "pct": 0.0246,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://weleadsmm.com",
       "creates": 14344,
       "pct": 0.018,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://uwu",
       "creates": 11712,
       "pct": 0.0147,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://pds.si46.world",
       "creates": 11093,
       "pct": 0.0139,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://blueski.social",
       "creates": 10070,
       "pct": 0.0126,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://atp.referendumapp.com",
       "creates": 9499,
       "pct": 0.0119,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://gems.xyz",
       "creates": 7245,
       "pct": 0.0091,
-      "reachablePct": 60
+      "reachablePct": null
     },
     {
       "pds": "https://pds.sprk.so",
       "creates": 6598,
       "pct": 0.0083,
-      "reachablePct": 40
+      "reachablePct": null
     },
     {
       "pds": "https://follow-sqky.one-plz.cool",
       "creates": 6483,
       "pct": 0.0081,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "http://localhost:25000",
       "creates": 6020,
       "pct": 0.0075,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://example.com",
       "creates": 5952,
       "pct": 0.0075,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://pds.test",
       "creates": 5656,
       "pct": 0.0071,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://pds.invalid",
       "creates": 5416,
       "pct": 0.0068,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://stems.social",
       "creates": 5044,
       "pct": 0.0063,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://keik.info",
       "creates": 4217,
       "pct": 0.0053,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://at.aesthetic.computer",
       "creates": 4204,
       "pct": 0.0053,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://tngl.sh",
       "creates": 4046,
       "pct": 0.0051,
-      "reachablePct": 80
+      "reachablePct": 100
     },
     {
       "pds": "https://pds.bsky.yinzcloud.net",
       "creates": 2908,
       "pct": 0.0036,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://skystack.xyz",
       "creates": 2661,
       "pct": 0.0033,
-      "reachablePct": 60
+      "reachablePct": null
     },
     {
       "pds": "https://bsky.aenead.net",
       "creates": 2379,
       "pct": 0.003,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://bbi.to",
       "creates": 2196,
       "pct": 0.0028,
-      "reachablePct": 40
+      "reachablePct": null
     },
     {
       "pds": "https://hopefoundatione.org",
       "creates": 1938,
       "pct": 0.0024,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://stmediaserver3.site",
       "creates": 1867,
       "pct": 0.0023,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://x.mt.social",
       "creates": 1705,
       "pct": 0.0021,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://boobee.blue",
       "creates": 1685,
       "pct": 0.0021,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://bstt.duckdns.org",
       "creates": 1636,
       "pct": 0.0021,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://clouve.net",
       "creates": 1619,
       "pct": 0.002,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://pds.cannect.space",
       "creates": 1513,
       "pct": 0.0019,
-      "reachablePct": 40
+      "reachablePct": null
     },
     {
       "pds": "https://pds.1440.news",
       "creates": 1383,
       "pct": 0.0017,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://dev-frosting.social",
       "creates": 1373,
       "pct": 0.0017,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://at.app.wafrn.net",
       "creates": 1236,
       "pct": 0.0015,
-      "reachablePct": 60
+      "reachablePct": null
     },
     {
       "pds": "https://dev-atp.referendumapp.com",
       "creates": 1201,
       "pct": 0.0015,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://bskyalt.com",
       "creates": 1090,
       "pct": 0.0014,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://pds.letspds.org",
       "creates": 1012,
       "pct": 0.0013,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://pds.taitran.app",
       "creates": 1004,
       "pct": 0.0013,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://pds.stockage.quebec",
       "creates": 1001,
       "pct": 0.0013,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://eurosky.social",
       "creates": 942,
       "pct": 0.0012,
-      "reachablePct": 80
+      "reachablePct": null
     },
     {
       "pds": "https://test.pds.local",
       "creates": 923,
       "pct": 0.0012,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://esnoticia.online",
       "creates": 911,
       "pct": 0.0011,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://staging.rizzler.social",
       "creates": 888,
       "pct": 0.0011,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://pds.louisvillebsky.app",
       "creates": 845,
       "pct": 0.0011,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://skeetcentral.com",
       "creates": 820,
       "pct": 0.001,
-      "reachablePct": 40
+      "reachablePct": null
     },
     {
       "pds": "https://bs.k4zka.online",
       "creates": 800,
       "pct": 0.001,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://si46.homes",
       "creates": 799,
       "pct": 0.001,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://surf.social",
       "creates": 798,
       "pct": 0.001,
-      "reachablePct": 80
+      "reachablePct": 0
     },
     {
       "pds": "https://node.nobody.network",
       "creates": 794,
       "pct": 0.001,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://bsky.global",
       "creates": 780,
       "pct": 0.001,
-      "reachablePct": 20
+      "reachablePct": null
     },
     {
       "pds": "https://roomy.chat",
       "creates": 763,
       "pct": 0.001,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://novum.social",
       "creates": 738,
       "pct": 0.0009,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://cannect.space",
       "creates": 732,
       "pct": 0.0009,
-      "reachablePct": 20
+      "reachablePct": null
     },
     {
       "pds": "http://127.0.0.1:25123",
       "creates": 720,
       "pct": 0.0009,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://impulsionaai.com.br",
       "creates": 716,
       "pct": 0.0009,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "http://localhost:2583",
       "creates": 685,
       "pct": 0.0009,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://tor0n.to",
       "creates": 670,
       "pct": 0.0008,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://votes.kevinhayeswilson.com",
       "creates": 636,
       "pct": 0.0008,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://haruhwa.com",
       "creates": 605,
       "pct": 0.0008,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://bsky.test",
       "creates": 602,
       "pct": 0.0008,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://pds.tophhie.cloud",
       "creates": 522,
       "pct": 0.0007,
-      "reachablePct": 40
+      "reachablePct": null
     },
     {
       "pds": "https://bsx.admat.at",
       "creates": 491,
       "pct": 0.0006,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://fttp.cc",
       "creates": 484,
       "pct": 0.0006,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://jarlix.ngrok.dev",
       "creates": 475,
       "pct": 0.0006,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://jpd.memory-design.xyz",
       "creates": 467,
       "pct": 0.0006,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://waverly.social",
       "creates": 437,
       "pct": 0.0005,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://peedee.es",
       "creates": 407,
       "pct": 0.0005,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://bskyi.social",
       "creates": 398,
       "pct": 0.0005,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "http://localhost:3000",
       "creates": 396,
       "pct": 0.0005,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://api.mulgez.com",
       "creates": 364,
       "pct": 0.0005,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://pds.aesthetic.computer",
       "creates": 346,
       "pct": 0.0004,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://bssky.social",
       "creates": 331,
       "pct": 0.0004,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://pds.wsocial.network",
       "creates": 318,
       "pct": 0.0004,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://blam.pw",
       "creates": 306,
       "pct": 0.0004,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://pds-dev.wsocial.dev",
       "creates": 292,
       "pct": 0.0004,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://pds-stage.wsocial.dev",
       "creates": 291,
       "pct": 0.0004,
-      "reachablePct": 20
+      "reachablePct": null
     },
     {
       "pds": "https://staging.host.bsky.network",
       "creates": 286,
       "pct": 0.0004,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://selfhosted.social",
       "creates": 277,
       "pct": 0.0003,
-      "reachablePct": 80
+      "reachablePct": null
     },
     {
       "pds": "https://nihilist.cloud",
       "creates": 269,
       "pct": 0.0003,
-      "reachablePct": 40
+      "reachablePct": null
     },
     {
       "pds": "https://fed01.dns.navy",
       "creates": 266,
       "pct": 0.0003,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://alt.ripperoni.com",
       "creates": 265,
       "pct": 0.0003,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://gaza.click",
       "creates": 241,
       "pct": 0.0003,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://marta.fail",
       "creates": 238,
       "pct": 0.0003,
-      "reachablePct": 80
+      "reachablePct": null
     },
     {
       "pds": "https://stg.waverly.social",
       "creates": 237,
       "pct": 0.0003,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://mathis.bio",
       "creates": 232,
       "pct": 0.0003,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://shxre.social",
       "creates": 220,
       "pct": 0.0003,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://npmx.social",
       "creates": 208,
       "pct": 0.0003,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://dev.frosting.social",
       "creates": 203,
       "pct": 0.0003,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://ailakks.me",
       "creates": 201,
       "pct": 0.0003,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://pds-eu-west4.test.certified.app",
       "creates": 196,
       "pct": 0.0002,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://pds-stage.wsocial.eu",
       "creates": 196,
       "pct": 0.0002,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://srv865737.hstgr.cloud",
       "creates": 195,
       "pct": 0.0002,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://foodd.dynv6.net",
       "creates": 189,
       "pct": 0.0002,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://lathsecret.com",
       "creates": 188,
       "pct": 0.0002,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://testpds.wizardry.systems",
       "creates": 184,
       "pct": 0.0002,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://foxter.fun",
       "creates": 183,
       "pct": 0.0002,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://stmediaserver.site",
       "creates": 175,
       "pct": 0.0002,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://bebs.dedyn.io",
       "creates": 175,
       "pct": 0.0002,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "http://127.0.0.1:25127",
       "creates": 171,
       "pct": 0.0002,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://stbb.duckdns.org",
       "creates": 169,
       "pct": 0.0002,
-      "reachablePct": 60
+      "reachablePct": null
     },
     {
       "pds": "https://bsky.bestofmodels.blog",
       "creates": 169,
       "pct": 0.0002,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://gumby.social",
       "creates": 165,
       "pct": 0.0002,
-      "reachablePct": 20
+      "reachablePct": null
     },
     {
       "pds": "https://mybluesky.link",
       "creates": 161,
       "pct": 0.0002,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://pdsss.dynv6.net",
       "creates": 160,
       "pct": 0.0002,
-      "reachablePct": 0
+      "reachablePct": null
     },
     {
       "pds": "https://climateai.org",
       "creates": 159,
       "pct": 0.0002,
-      "reachablePct": 100
+      "reachablePct": null
     },
     {
       "pds": "https://fed01.v6.army",
       "creates": 157,
       "pct": 0.0002,
-      "reachablePct": 0
+      "reachablePct": null
     }
   ]
 }

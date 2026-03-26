@@ -395,13 +395,37 @@ function main(): void {
 
   // Summary totals
   const totalDids = pdsRows.reduce((s, r) => s + r.creates, 0);
-  let reachableDids = 0;
+  const totalPdsHosts = pdsRows.length;
+
+  // Compute reachable DIDs with smart defaults for untested PDS hosts:
+  // 1. Tested PDS: use their actual reachability rate
+  // 2. Untested Bluesky PDS: use the average rate from tested Bluesky clusters
+  // 3. Untested non-Bluesky PDS: assume reachable (they're tiny)
+  let blueskyTestedSamples = 0;
+  let blueskyReachableSamples = 0;
   for (const r of pdsRows) {
-    if (r.reachablePct !== null && r.samplesTested !== null && r.samplesTested > 0) {
-      reachableDids += Math.round(r.creates * (r.reachablePct / 100));
+    if (isBluesky(r.pds) && r.samplesTested !== null && r.samplesTested > 0) {
+      blueskyTestedSamples += r.samplesTested;
+      blueskyReachableSamples += r.samplesReachable ?? 0;
     }
   }
-  const totalPdsHosts = pdsRows.length;
+  const blueskyAvgRate =
+    blueskyTestedSamples > 0 ? blueskyReachableSamples / blueskyTestedSamples : 0.9;
+
+  let reachableDids = 0;
+  for (const r of pdsRows) {
+    const hasTested = r.samplesTested !== null && r.samplesTested > 0;
+    if (hasTested) {
+      // Use actual reachability rate
+      reachableDids += Math.round(r.creates * ((r.reachablePct ?? 0) / 100));
+    } else if (isBluesky(r.pds)) {
+      // Untested Bluesky cluster: use average from tested Bluesky clusters
+      reachableDids += Math.round(r.creates * blueskyAvgRate);
+    } else {
+      // Untested non-Bluesky (tiny PDS): assume reachable
+      reachableDids += r.creates;
+    }
+  }
 
   // Latest date in daily data
   const allDates = dailyRows.map((r) => r.date).sort();
