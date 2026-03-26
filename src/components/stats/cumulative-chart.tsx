@@ -138,7 +138,7 @@ export function CumulativeChart({ data, groups, className }: CumulativeChartProp
             }}
             formatter={(value, entry) => (
               <span
-                className="cursor-pointer select-none text-sm"
+                className="cursor-pointer select-none rounded px-1 py-0.5 text-sm transition-colors hover:bg-muted"
                 style={{
                   color: hiddenGroups.has(String(entry.dataKey))
                     ? 'var(--muted-foreground)'
@@ -168,6 +168,9 @@ export function CumulativeChart({ data, groups, className }: CumulativeChartProp
           })}
         </AreaChart>
       </ResponsiveContainer>
+      <p className="mt-1 text-center text-xs text-muted-foreground">
+        Click a label to show or hide it
+      </p>
     </div>
   );
 }
