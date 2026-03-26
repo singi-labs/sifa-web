@@ -67,10 +67,10 @@ function renderStars(rating: number): React.ReactNode {
   );
 }
 
-function resolveCollectionType(collection: string): 'review' | 'post' | 'list' | 'other' {
+function resolveCollectionType(collection: string): 'review' | 'post' | 'note' | 'other' {
   if (collection.endsWith('.review')) return 'review';
   if (collection.endsWith('.post')) return 'post';
-  if (collection.endsWith('.list')) return 'list';
+  if (collection.endsWith('.note')) return 'note';
   return 'other';
 }
 
@@ -110,8 +110,8 @@ export function PopfeedCard({
   const actionLabel =
     collectionType === 'review'
       ? `Reviewed${mediaLabel ? ` a ${mediaLabel.toLowerCase()}` : ''}`
-      : collectionType === 'list'
-        ? 'Created a list'
+      : collectionType === 'note'
+        ? `Noted on${mediaLabel ? ` a ${mediaLabel.toLowerCase()}` : ''}`
         : `Posted about${mediaLabel ? ` a ${mediaLabel.toLowerCase()}` : ''}`;
 
   if (compact) {
@@ -179,7 +179,7 @@ export function PopfeedCard({
                   {text}
                 </p>
               )}
-              {text && collectionType === 'post' && (
+              {text && (collectionType === 'post' || collectionType === 'note') && (
                 <p className="mt-1 text-sm leading-relaxed">{text}</p>
               )}
             </div>
