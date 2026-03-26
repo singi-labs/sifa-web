@@ -825,6 +825,9 @@
     "methodologyReachableTitle": "What does \"reachable\" mean?",
     "methodologyReachable": "We sample handles from each PDS and check if they resolve back to their DID via the AT Protocol's identity system. If the handle resolves, the account is functional. Most unreachable identities come from spam PDS hosts that mass-register DIDs without serving real content (e.g. pds.trump.com registered over 17 million DIDs with 0% reachability). Other reasons include deleted or suspended accounts, PDS hosts that went offline, or DIDs that were never properly set up.",
     "methodologyCollectionTitle": "How is this data collected?",
-    "methodologyCollection": "We crawl the PLC directory's public export API daily, counting new identity registrations per PDS provider. The crawl uses the plc.wtf community mirror to avoid impacting the primary directory. Reachability is checked by sampling handles and resolving them via the public API."
+    "methodologyCollection": "We crawl the PLC directory's public export API daily, counting new identity registrations per PDS provider. The crawl uses the plc.wtf community mirror to avoid impacting the primary directory. Reachability is checked by sampling handles and resolving them via the public API.",
+    "methodologyComparisonTitle": "Why do these numbers differ from other trackers?",
+    "methodologyComparisonBefore": "You may notice different numbers on other AT Protocol trackers like ",
+    "methodologyComparisonAfter": ". The difference comes down to what gets counted. We count all identities registered in the PLC directory, including those on spam PDS hosts and inactive accounts. Other trackers typically query each PDS directly and only count accounts marked as active, which excludes deleted, suspended, and deactivated accounts. Neither approach is wrong; they measure different things. We show total registrations and reachability to give a complete picture of the network, including its spam problem."
   }
 }
