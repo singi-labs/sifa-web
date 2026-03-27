@@ -24,14 +24,19 @@ test.describe('Login page', () => {
   test('has AT Protocol explainer details', async ({ page }) => {
     await page.goto('/login');
 
+    // "Why do I create an account somewhere else?" expandable
     const details = page.locator('details');
     await expect(details).toBeVisible();
 
     // Expand the details
     await details.locator('summary').click();
 
-    // Should contain links to AT Protocol resources
-    const atprotoLink = details.locator('a[href*="atproto"]');
+    // Should contain the explanation text
+    const explanation = details.locator('p');
+    await expect(explanation).toBeVisible();
+
+    // AT Protocol provider link should be visible on the page (outside details)
+    const atprotoLink = page.locator('a[href*="atproto"]');
     const count = await atprotoLink.count();
     expect(count).toBeGreaterThan(0);
   });

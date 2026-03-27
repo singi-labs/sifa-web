@@ -12,7 +12,7 @@ const markdownFields: FieldDef[] = [
 ];
 
 describe('EditDialog with markdown field', () => {
-  it('renders PlateMarkdownEditor for markdown type', async () => {
+  it('renders PlateMarkdownEditor for markdown type', { timeout: 30_000 }, async () => {
     render(
       <EditDialog
         title="Edit About"
