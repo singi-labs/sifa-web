@@ -74,9 +74,7 @@ export function SembleCard({ record, collection, authorHandle, compact }: Activi
             aria-hidden="true"
           />
           <span className="min-w-0 flex-1 truncate text-sm">{actionLabel}</span>
-          {timestamp && (
-            <span className="shrink-0 text-xs text-muted-foreground">{timestamp}</span>
-          )}
+          {timestamp && <span className="shrink-0 text-xs text-muted-foreground">{timestamp}</span>}
         </div>
       </CardLink>
     );
@@ -117,8 +115,8 @@ export function SembleCard({ record, collection, authorHandle, compact }: Activi
                   {visitedStops.length > 0 && (
                     <span className="text-muted-foreground">
                       {' '}
-                      &middot; {visitedStops.length}{' '}
-                      {visitedStops.length === 1 ? 'stop' : 'stops'} visited
+                      &middot; {visitedStops.length} {visitedStops.length === 1 ? 'stop' : 'stops'}{' '}
+                      visited
                     </span>
                   )}
                 </p>
