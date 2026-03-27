@@ -6,7 +6,7 @@ const translations: Record<string, Record<string, string>> = {
   common: {
     follow: 'Follow',
     unfollow: 'Unfollow',
-    signIn: 'Sign in',
+    signIn: 'Sign in / Register',
     signOut: 'Sign out',
     home: 'Sifa ID home',
     search: 'Search',

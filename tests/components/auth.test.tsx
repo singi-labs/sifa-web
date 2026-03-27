@@ -64,7 +64,7 @@ describe('UserMenu', () => {
       </AuthProvider>,
     );
     await waitFor(() => {
-      expect(screen.getByText('Sign in')).toBeDefined();
+      expect(screen.getByText('Sign in / Register')).toBeDefined();
     });
   });
 
