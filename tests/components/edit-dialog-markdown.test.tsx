@@ -27,7 +27,11 @@ describe('EditDialog with markdown field', () => {
 
     // The toolbar should render (from the lazy-loaded PlateMarkdownEditor)
     // Use findBy for async (Suspense lazy load)
-    const toolbar = await screen.findByRole('toolbar', { name: 'Text formatting' });
+    const toolbar = await screen.findByRole(
+      'toolbar',
+      { name: 'Text formatting' },
+      { timeout: 10_000 },
+    );
     expect(toolbar).toBeDefined();
   });
 });

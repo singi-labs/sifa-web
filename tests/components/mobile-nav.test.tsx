@@ -72,7 +72,7 @@ describe('MobileNav', () => {
     await user.click(screen.getByRole('button', { name: 'Open menu' }));
 
     await waitFor(() => {
-      expect(screen.getByRole('link', { name: 'Sign in' })).toBeDefined();
+      expect(screen.getByRole('link', { name: 'Sign in / Register' })).toBeDefined();
     });
   });
 
@@ -97,7 +97,7 @@ describe('MobileNav', () => {
     expect(screen.getByRole('link', { name: /View profile/ })).toBeDefined();
     expect(screen.queryByRole('link', { name: /Edit profile/ })).toBeNull();
     expect(screen.getByRole('button', { name: /Sign out/ })).toBeDefined();
-    expect(screen.queryByRole('link', { name: 'Sign in' })).toBeNull();
+    expect(screen.queryByRole('link', { name: 'Sign in / Register' })).toBeNull();
   });
 
   it('shows handle as display name when displayName is absent', async () => {
