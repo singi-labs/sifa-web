@@ -126,6 +126,12 @@ const APP_REGISTRY: Record<string, AppMeta> = {
     tooltipDescription: 'Livestreaming on the AT Protocol.',
     appUrl: 'https://stream.place',
   },
+  semble: {
+    name: 'Semble',
+    className: badgeClass('semble'),
+    tooltipDescription: 'Social knowledge trails on the AT Protocol.',
+    appUrl: 'https://semble.so',
+  },
 };
 
 const FALLBACK_CLASS = badgeClass('fallback');
@@ -148,6 +154,7 @@ const APP_ICONS: Record<string, string> = {
   keytrace: 'Key',
   popfeed: 'Star',
   streamplace: 'Broadcast',
+  semble: 'Path',
 };
 
 /** Get the Phosphor icon component name for an app */
@@ -198,6 +205,9 @@ const APP_URL_PATTERNS: Record<string, AppUrlPatterns> = {
   },
   streamplace: {
     profileUrlPattern: 'https://stream.place/{handle}',
+  },
+  semble: {
+    profileUrlPattern: 'https://semble.so/profile/{handle}',
   },
   // picosky, flashes, standard, aetheros, roomy: no web URLs — cards are not clickable
 };
