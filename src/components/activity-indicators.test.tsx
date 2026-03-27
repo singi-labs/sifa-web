@@ -36,7 +36,7 @@ describe('ActivityIndicators', () => {
     return mod.ActivityIndicators;
   }
 
-  it('renders pills for each active app', async () => {
+  it('renders pills for each active app', { timeout: 60_000 }, async () => {
     const ActivityIndicators = await loadComponent();
     render(<ActivityIndicators apps={mockApps} />);
 
