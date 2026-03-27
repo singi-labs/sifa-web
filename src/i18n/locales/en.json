@@ -24,7 +24,7 @@
     "switchToLight": "Switch to light mode",
     "switchToDark": "Switch to dark mode",
     "skipToContent": "Skip to main content",
-    "betaBanner": "Sifa ID is pre-alpha software",
+    "betaBanner": "Sifa ID is alpha software",
     "betaBannerInfoLabel": "What this means",
     "betaBannerDetail": "This is basically our live dev server. Your profile data is safe in your AT Protocol account, but features and preferences may change before launch.",
     "betaBannerReportLink": "Report issues on GitHub",
@@ -480,7 +480,7 @@
     "contentTitle": "Content",
     "contentBody": "You're responsible for the accuracy and legality of the profile information you publish. Sifa may remove content from its interface that violates applicable law or community guidelines. Removal from Sifa doesn't delete data from your PDS.",
     "disclaimerTitle": "Disclaimer",
-    "disclaimerBody": "Sifa is provided as-is during the pre-alpha period. We don't guarantee uptime or feature stability. Your data in your PDS stays under your control regardless of Sifa's availability. If something breaks, your professional identity doesn't break with it."
+    "disclaimerBody": "Sifa is provided as-is during the alpha period. We don't guarantee uptime or feature stability. Your data in your PDS stays under your control regardless of Sifa's availability. If something breaks, your professional identity doesn't break with it."
   },
   "endorsement": {
     "endorseSkill": "Endorse {name}",

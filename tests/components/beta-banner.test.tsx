@@ -8,11 +8,11 @@ describe('BetaBanner', () => {
     sessionStorage.clear();
   });
 
-  it('renders the pre-alpha message', () => {
+  it('renders the alpha message', () => {
     render(<BetaBanner />);
 
     expect(screen.getByRole('status')).toBeDefined();
-    expect(screen.getByText(/Sifa is pre-alpha/)).toBeDefined();
+    expect(screen.getByText(/Sifa is alpha/)).toBeDefined();
   });
 
   it('has an info button and a dismiss button', () => {
