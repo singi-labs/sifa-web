@@ -1,6 +1,6 @@
 'use client';
 
-import { Path } from '@phosphor-icons/react';
+import { Path, CheckCircle, Footprints } from '@phosphor-icons/react';
 import { getAppMeta, getAppStripeColor, resolveCardUrl } from '@/lib/atproto-apps';
 import type { ActivityCardProps } from './types';
 import { CardLink } from './card-link';
@@ -25,17 +25,40 @@ function formatRelativeTime(dateString: string): string {
   return `${Math.floor(months / 12)}y ago`;
 }
 
-export function SembleCard({ record, authorHandle, compact }: ActivityCardProps) {
+type RecordType = 'trail' | 'completion' | 'walk';
+
+function detectRecordType(collection: string): RecordType {
+  if (collection.endsWith('.completion')) return 'completion';
+  if (collection.endsWith('.walk')) return 'walk';
+  return 'trail';
+}
+
+export function SembleCard({ record, collection, authorHandle, compact }: ActivityCardProps) {
   const appMeta = getAppMeta('semble');
   const stripeColor = getAppStripeColor('semble');
+  const recordType = detectRecordType(collection);
   const createdAt = typeof record.createdAt === 'string' ? record.createdAt : null;
   const timestamp = createdAt ? formatRelativeTime(createdAt) : '';
   const cardUrl = resolveCardUrl('semble', { handle: authorHandle });
 
+  // Trail records have rich data
   const title = typeof record.title === 'string' ? record.title : null;
   const description = typeof record.description === 'string' ? record.description : null;
   const stops = Array.isArray(record.stops) ? record.stops : [];
   const accentColor = typeof record.accentColor === 'string' ? record.accentColor : null;
+
+  // Walk records have visited stops
+  const visitedStops = Array.isArray(record.visitedStops) ? record.visitedStops : [];
+
+  const IconComponent =
+    recordType === 'completion' ? CheckCircle : recordType === 'walk' ? Footprints : Path;
+
+  const actionLabel =
+    recordType === 'completion'
+      ? 'Completed a trail'
+      : recordType === 'walk'
+        ? 'Explored a trail'
+        : (title ?? 'Created a trail');
 
   if (compact) {
     return (
@@ -45,13 +68,15 @@ export function SembleCard({ record, authorHandle, compact }: ActivityCardProps)
           style={{ borderLeftColor: accentColor ?? stripeColor }}
           data-testid="activity-card-compact"
         >
-          <Path
+          <IconComponent
             className="h-5 w-5 shrink-0 text-muted-foreground"
             weight="regular"
             aria-hidden="true"
           />
-          <span className="min-w-0 flex-1 truncate text-sm">{title ?? 'Research trail'}</span>
-          {timestamp && <span className="shrink-0 text-xs text-muted-foreground">{timestamp}</span>}
+          <span className="min-w-0 flex-1 truncate text-sm">{actionLabel}</span>
+          {timestamp && (
+            <span className="shrink-0 text-xs text-muted-foreground">{timestamp}</span>
+          )}
         </div>
       </CardLink>
     );
@@ -66,19 +91,36 @@ export function SembleCard({ record, authorHandle, compact }: ActivityCardProps)
       >
         <div className="flex flex-1 flex-col gap-2 p-4">
           <div className="flex items-start gap-3">
-            <Path
+            <IconComponent
               className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground"
               weight="regular"
               aria-hidden="true"
             />
             <div className="min-w-0 flex-1">
-              {title && <p className="text-sm font-medium">{title}</p>}
-              {description && description !== title && (
-                <p className="mt-0.5 text-sm text-muted-foreground">{description}</p>
+              {recordType === 'trail' && (
+                <>
+                  {title && <p className="text-sm font-medium">{title}</p>}
+                  {description && description !== title && (
+                    <p className="mt-0.5 text-sm text-muted-foreground">{description}</p>
+                  )}
+                  {stops.length > 0 && (
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      {stops.length} {stops.length === 1 ? 'stop' : 'stops'}
+                    </p>
+                  )}
+                </>
               )}
-              {stops.length > 0 && (
-                <p className="mt-1 text-xs text-muted-foreground">
-                  {stops.length} {stops.length === 1 ? 'stop' : 'stops'}
+              {recordType === 'completion' && <p className="text-sm">Completed a trail</p>}
+              {recordType === 'walk' && (
+                <p className="text-sm">
+                  Explored a trail
+                  {visitedStops.length > 0 && (
+                    <span className="text-muted-foreground">
+                      {' '}
+                      &middot; {visitedStops.length}{' '}
+                      {visitedStops.length === 1 ? 'stop' : 'stops'} visited
+                    </span>
+                  )}
                 </p>
               )}
             </div>
