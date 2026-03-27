@@ -51,9 +51,7 @@ export function SembleCard({ record, authorHandle, compact }: ActivityCardProps)
             aria-hidden="true"
           />
           <span className="min-w-0 flex-1 truncate text-sm">{title ?? 'Research trail'}</span>
-          {timestamp && (
-            <span className="shrink-0 text-xs text-muted-foreground">{timestamp}</span>
-          )}
+          {timestamp && <span className="shrink-0 text-xs text-muted-foreground">{timestamp}</span>}
         </div>
       </CardLink>
     );
