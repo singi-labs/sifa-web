@@ -202,7 +202,7 @@ function LoginContent() {
   const providerCards = (
     <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-3">
       {PROVIDERS.map((provider) => (
-        <div key={provider.id} className="relative">
+        <div key={provider.id} className="relative flex flex-col">
           {provider.recommended && (
             <span className="absolute -top-2 left-1/2 -translate-x-1/2 rounded-full bg-primary px-2 py-0.5 text-xs font-medium text-primary-foreground">
               {t('providerRecommended')}
@@ -212,7 +212,7 @@ function LoginContent() {
             type="button"
             onClick={() => void handleSignup(provider)}
             disabled={signupLoading !== null}
-            className="flex w-full flex-col items-center rounded-lg border border-border bg-background p-4 pt-5 transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+            className="flex w-full flex-1 flex-col items-center justify-center rounded-lg border border-border bg-background p-4 pt-5 transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
           >
             <ProviderIcon id={provider.id} />
             <span className="mt-2 text-sm font-medium">{provider.name}</span>
@@ -231,7 +231,7 @@ function LoginContent() {
             href={provider.readMoreUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-1 block text-center text-xs text-primary underline hover:text-primary/80"
+            className="mt-1 block py-1 text-center text-xs text-primary underline hover:text-primary/80"
           >
             {t('providerReadMore')}
           </a>
