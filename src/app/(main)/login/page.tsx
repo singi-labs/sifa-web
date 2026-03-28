@@ -231,7 +231,7 @@ function LoginContent() {
             href={provider.readMoreUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-1 block text-center text-xs text-muted-foreground underline hover:text-foreground"
+            className="mt-1 block text-center text-xs text-primary underline hover:text-primary/80"
           >
             {t('providerReadMore')}
           </a>
