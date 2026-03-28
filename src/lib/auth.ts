@@ -44,6 +44,10 @@ export function getOAuthLoginUrl(): string {
   return `${API_URL}/oauth/login`;
 }
 
+export function getOAuthSignupUrl(): string {
+  return `${API_URL}/oauth/signup`;
+}
+
 export async function logout(): Promise<void> {
   await fetch(`${API_URL}/oauth/logout`, {
     method: 'POST',

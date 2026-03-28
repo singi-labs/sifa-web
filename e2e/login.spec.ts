@@ -36,13 +36,18 @@ test.describe('Login page', () => {
     await expect(explanation).toBeVisible();
   });
 
-  test('shows account creation options', async ({ page }) => {
+  test('shows provider signup buttons', async ({ page }) => {
     await page.goto('/login');
 
-    // Links to create AT Protocol accounts (Bluesky, Blacksky, Eurosky)
-    const accountLinks = page.locator('a[target="_blank"]');
-    const count = await accountLinks.count();
-    expect(count, 'Should have external account creation links').toBeGreaterThanOrEqual(3);
+    // Provider cards are now buttons (prompt=create flow)
+    const providerButtons = page.locator('button[type="button"]');
+    const count = await providerButtons.count();
+    expect(count, 'Should have provider signup buttons').toBeGreaterThanOrEqual(3);
+
+    // Each provider has a "Read more" link
+    const readMoreLinks = page.locator('a[target="_blank"]');
+    const linkCount = await readMoreLinks.count();
+    expect(linkCount, 'Should have read more links').toBeGreaterThanOrEqual(3);
   });
 });
 
