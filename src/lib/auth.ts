@@ -6,6 +6,7 @@ export interface AuthSession {
   displayName?: string;
   avatar?: string;
   isNewUser?: boolean;
+  hasMeetScope?: boolean;
 }
 
 export type SessionResult =
@@ -53,4 +54,24 @@ export async function logout(): Promise<void> {
     method: 'POST',
     credentials: 'include',
   });
+}
+
+/**
+ * Request re-authorization with expanded scopes (e.g. for /meet).
+ * Stores returnTo in sessionStorage so the user lands back on the
+ * right page after the OAuth redirect.
+ */
+export async function requestReauth(returnTo: string): Promise<string | null> {
+  sessionStorage.setItem('auth_returnTo', returnTo);
+  try {
+    const res = await fetch(`${API_URL}/oauth/reauth`, {
+      method: 'POST',
+      credentials: 'include',
+    });
+    if (!res.ok) return null;
+    const data = (await res.json()) as { redirectUrl: string };
+    return data.redirectUrl;
+  } catch {
+    return null;
+  }
 }

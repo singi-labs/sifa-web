@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { useAuth } from '@/components/auth-provider';
 import { HandshakeNotePrompt } from '@/components/handshake-note-prompt';
 import { trackEvent } from '@/lib/analytics';
+import { requestReauth } from '@/lib/auth';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3100';
 
@@ -18,7 +19,14 @@ interface HandshakeScannerProps {
 }
 
 type Status = 'idle' | 'confirming' | 'confirmed' | 'error';
-type ErrorKind = 'selfScan' | 'expired' | 'usedToken' | 'rateLimited' | 'alreadyMet' | 'generic';
+type ErrorKind =
+  | 'selfScan'
+  | 'expired'
+  | 'usedToken'
+  | 'rateLimited'
+  | 'alreadyMet'
+  | 'scopeInsufficient'
+  | 'generic';
 
 interface DisplayerInfo {
   did: string;
@@ -63,9 +71,12 @@ function mapErrorCode(code: string | undefined, httpStatus: number): ErrorKind {
       return 'alreadyMet';
     case 'RateLimited':
       return 'rateLimited';
+    case 'ScopeInsufficient':
+      return 'scopeInsufficient';
     default:
       if (httpStatus === 429) return 'rateLimited';
       if (httpStatus === 409) return 'alreadyMet';
+      if (httpStatus === 403) return 'scopeInsufficient';
       return 'generic';
   }
 }
@@ -149,9 +160,23 @@ export function HandshakeScanner({ token }: HandshakeScannerProps) {
   const displayerHandle = displayer?.handle;
   const isAuthenticated = session !== null;
 
+  const [isReauthing, setIsReauthing] = useState(false);
+
+  const handleReauth = useCallback(async () => {
+    setIsReauthing(true);
+    const redirectUrl = await requestReauth(`/meet?token=${token}`);
+    if (redirectUrl) {
+      window.location.href = redirectUrl;
+    } else {
+      setIsReauthing(false);
+      toast.error(t('error'));
+    }
+  }, [token, t]);
+
   // Error state
   if (status === 'error' && errorKind) {
     const isAlreadyMet = errorKind === 'alreadyMet';
+    const isScopeInsufficient = errorKind === 'scopeInsufficient';
     return (
       <div className="flex min-h-[calc(100dvh-4rem)] flex-col items-center justify-center px-4 py-12">
         <div className="flex max-w-sm flex-col items-center gap-4 text-center">
@@ -165,6 +190,16 @@ export function HandshakeScanner({ token }: HandshakeScannerProps) {
                   date: alreadyMetDate ? new Date(alreadyMetDate).toLocaleDateString() : '',
                 })}
               </p>
+            </>
+          ) : isScopeInsufficient ? (
+            <>
+              <SignIn className="h-16 w-16 text-primary" weight="fill" />
+              <h1 className="text-xl font-semibold">{t('scopeInsufficient')}</h1>
+              <p className="text-sm text-muted-foreground">{t('scopeInsufficientSubtitle')}</p>
+              <Button onClick={handleReauth} disabled={isReauthing} size="lg">
+                <SignIn className="mr-1.5 h-5 w-5" weight="bold" aria-hidden="true" />
+                {isReauthing ? '...' : t('grantPermissions')}
+              </Button>
             </>
           ) : (
             <>
