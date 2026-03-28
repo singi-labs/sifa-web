@@ -71,8 +71,12 @@ function LoginContent() {
     }
   }, [session, isLoading, returnTo]);
 
-  if (session && !isLoading) {
-    return null;
+  if (isLoading || session) {
+    return (
+      <div className="mx-auto max-w-md px-4 py-12">
+        <div className="h-8 w-8 animate-pulse rounded-full bg-muted" />
+      </div>
+    );
   }
 
   const handleProviderClick = () => {
