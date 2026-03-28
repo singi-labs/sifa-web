@@ -805,7 +805,10 @@
     "explainerStep1": "Tap Meet on your profile, or go to sifa.id/meet",
     "explainerStep2": "Show your QR code to someone you're talking to",
     "explainerStep3": "They scan it with their phone camera",
-    "explainerStep4": "Both of you confirm and you're connected as a verified IRL meeting"
+    "explainerStep4": "Both of you confirm and you're connected as a verified IRL meeting",
+    "scopeInsufficient": "Permission needed",
+    "scopeInsufficientSubtitle": "Handshake needs permission to write meeting records to your AT Protocol account. Tap below to grant access.",
+    "grantPermissions": "Grant permissions"
   },
   "peopleNotes": {
     "addNote": "Add note",

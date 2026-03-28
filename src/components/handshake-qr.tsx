@@ -8,6 +8,7 @@ import { ArrowsClockwise, Handshake as HandshakeIcon, Info, QrCode } from '@phos
 import { Button } from '@/components/ui/button';
 import { HandshakeNotePrompt } from '@/components/handshake-note-prompt';
 import { trackEvent } from '@/lib/analytics';
+import { requestReauth } from '@/lib/auth';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3100';
 
@@ -16,7 +17,7 @@ interface HandshakeQRProps {
   avatar?: string;
 }
 
-type Status = 'loading' | 'ready' | 'waiting' | 'confirmed' | 'error';
+type Status = 'loading' | 'ready' | 'waiting' | 'confirmed' | 'error' | 'scope-needed';
 
 interface ScanResult {
   scannerDid: string;
@@ -66,6 +67,13 @@ export function HandshakeQR({ handle, avatar }: HandshakeQRProps) {
         credentials: 'include',
       });
       if (!res.ok) {
+        if (res.status === 403) {
+          const data = (await res.json().catch(() => ({}))) as { error?: string };
+          if (data.error === 'ScopeInsufficient') {
+            setStatus('scope-needed');
+            return;
+          }
+        }
         if (res.status === 429) {
           toast.error(t('rateLimited'));
         } else {
@@ -204,6 +212,19 @@ export function HandshakeQR({ handle, avatar }: HandshakeQRProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const [isReauthing, setIsReauthing] = useState(false);
+
+  const handleReauth = useCallback(async () => {
+    setIsReauthing(true);
+    const redirectUrl = await requestReauth('/meet');
+    if (redirectUrl) {
+      window.location.href = redirectUrl;
+    } else {
+      setIsReauthing(false);
+      toast.error(t('error'));
+    }
+  }, [t]);
+
   const handleNextHandshake = useCallback(() => {
     if (autoRefreshRef.current) {
       clearTimeout(autoRefreshRef.current);
@@ -224,54 +245,71 @@ export function HandshakeQR({ handle, avatar }: HandshakeQRProps) {
         </p>
       )}
 
+      {/* Scope upgrade prompt */}
+      {status === 'scope-needed' && (
+        <div className="flex max-w-xs flex-col items-center gap-4 text-center">
+          <p className="text-sm text-white/80">{t('scopeInsufficientSubtitle')}</p>
+          <Button
+            onClick={handleReauth}
+            disabled={isReauthing}
+            size="lg"
+            className="border-white/20 bg-white/10 text-white hover:bg-white/20 hover:text-white"
+          >
+            {isReauthing ? '...' : t('grantPermissions')}
+          </Button>
+        </div>
+      )}
+
       {/* QR Code */}
-      <div className="relative rounded-2xl bg-white p-4">
-        {status === 'confirmed' ? (
-          <div
-            className="flex flex-col items-center justify-center gap-3"
-            style={{ width: qrSize, height: qrSize }}
-          >
-            <HandshakeIcon className="h-16 w-16 animate-scale-in text-green-600" weight="fill" />
-            <p className="text-center text-lg font-semibold text-gray-900">{t('confirmed')}</p>
-            <p className="text-center text-sm text-gray-600">
-              {t('confirmedSubtitle', {
-                name: scanResult?.scannerName ?? 'them',
-              })}
-            </p>
-          </div>
-        ) : status === 'loading' ? (
-          <div
-            className="flex items-center justify-center"
-            style={{ width: qrSize, height: qrSize }}
-          >
-            <ArrowsClockwise className="h-8 w-8 animate-spin text-gray-400" weight="bold" />
-          </div>
-        ) : token ? (
-          <QRCodeSVG
-            value={qrUrl}
-            size={qrSize}
-            level="H"
-            marginSize={0}
-            imageSettings={
-              avatar
-                ? {
-                    src: avatar,
-                    height: 48,
-                    width: 48,
-                    excavate: true,
-                  }
-                : undefined
-            }
-          />
-        ) : (
-          <div
-            className="flex items-center justify-center"
-            style={{ width: qrSize, height: qrSize }}
-          >
-            <p className="text-sm text-gray-500">{t('error')}</p>
-          </div>
-        )}
-      </div>
+      {status !== 'scope-needed' && (
+        <div className="relative rounded-2xl bg-white p-4">
+          {status === 'confirmed' ? (
+            <div
+              className="flex flex-col items-center justify-center gap-3"
+              style={{ width: qrSize, height: qrSize }}
+            >
+              <HandshakeIcon className="h-16 w-16 animate-scale-in text-green-600" weight="fill" />
+              <p className="text-center text-lg font-semibold text-gray-900">{t('confirmed')}</p>
+              <p className="text-center text-sm text-gray-600">
+                {t('confirmedSubtitle', {
+                  name: scanResult?.scannerName ?? 'them',
+                })}
+              </p>
+            </div>
+          ) : status === 'loading' ? (
+            <div
+              className="flex items-center justify-center"
+              style={{ width: qrSize, height: qrSize }}
+            >
+              <ArrowsClockwise className="h-8 w-8 animate-spin text-gray-400" weight="bold" />
+            </div>
+          ) : token ? (
+            <QRCodeSVG
+              value={qrUrl}
+              size={qrSize}
+              level="H"
+              marginSize={0}
+              imageSettings={
+                avatar
+                  ? {
+                      src: avatar,
+                      height: 48,
+                      width: 48,
+                      excavate: true,
+                    }
+                  : undefined
+              }
+            />
+          ) : (
+            <div
+              className="flex items-center justify-center"
+              style={{ width: qrSize, height: qrSize }}
+            >
+              <p className="text-sm text-gray-500">{t('error')}</p>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Status text */}
       <p className="text-center text-sm text-white/70">
