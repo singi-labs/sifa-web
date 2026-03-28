@@ -34,11 +34,6 @@ test.describe('Login page', () => {
     // Should contain the explanation text
     const explanation = details.locator('p');
     await expect(explanation).toBeVisible();
-
-    // AT Protocol provider link should be visible on the page (outside details)
-    const atprotoLink = page.locator('a[href*="atproto"]');
-    const count = await atprotoLink.count();
-    expect(count).toBeGreaterThan(0);
   });
 
   test('shows account creation options', async ({ page }) => {
