@@ -204,7 +204,7 @@ function LoginContent() {
       {PROVIDERS.map((provider) => (
         <div key={provider.id} className="relative">
           {provider.recommended && (
-            <span className="absolute -top-2 left-1/2 -translate-x-1/2 rounded-full bg-primary px-2 py-0.5 text-[10px] font-medium text-primary-foreground">
+            <span className="absolute -top-2 left-1/2 -translate-x-1/2 rounded-full bg-primary px-2 py-0.5 text-xs font-medium text-primary-foreground">
               {t('providerRecommended')}
             </span>
           )}
@@ -217,9 +217,9 @@ function LoginContent() {
             <ProviderIcon id={provider.id} />
             <span className="mt-2 text-sm font-medium">{provider.name}</span>
             <span className="text-xs text-muted-foreground">{t(provider.descriptionKey)}</span>
-            <span className="text-[10px] text-muted-foreground/70">{t(provider.countryKey)}</span>
+            <span className="text-xs text-muted-foreground">{t(provider.countryKey)}</span>
             {provider.requiresInvite && (
-              <span className="mt-1 text-[10px] text-muted-foreground">
+              <span className="mt-1 text-xs text-muted-foreground">
                 {t('providerRequiresInvite')}
               </span>
             )}
@@ -231,7 +231,7 @@ function LoginContent() {
             href={provider.readMoreUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-1 block text-center text-[10px] text-muted-foreground/70 underline hover:text-muted-foreground"
+            className="mt-1 block text-center text-xs text-muted-foreground underline hover:text-foreground"
           >
             {t('providerReadMore')}
           </a>
