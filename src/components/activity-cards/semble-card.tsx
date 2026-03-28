@@ -1,6 +1,6 @@
 'use client';
 
-import { Path, CheckCircle, Footprints } from '@phosphor-icons/react';
+import { Path, CheckCircle, Footprints, BookmarkSimple, Note } from '@phosphor-icons/react';
 import { getAppMeta, getAppStripeColor, resolveCardUrl } from '@/lib/atproto-apps';
 import type { ActivityCardProps } from './types';
 import { CardLink } from './card-link';
@@ -25,9 +25,21 @@ function formatRelativeTime(dateString: string): string {
   return `${Math.floor(months / 12)}y ago`;
 }
 
-type RecordType = 'trail' | 'completion' | 'walk';
+function extractDomain(url: string): string {
+  try {
+    const parsed = new URL(url);
+    return parsed.hostname.replace(/^www\./, '');
+  } catch {
+    return url;
+  }
+}
 
-function detectRecordType(collection: string): RecordType {
+type RecordType = 'trail' | 'completion' | 'walk' | 'card-url' | 'card-note';
+
+function detectRecordType(collection: string, record: Record<string, unknown>): RecordType {
+  if (collection === 'network.cosmik.card') {
+    return record.type === 'NOTE' ? 'card-note' : 'card-url';
+  }
   if (collection.endsWith('.completion')) return 'completion';
   if (collection.endsWith('.walk')) return 'walk';
   return 'trail';
@@ -36,33 +48,68 @@ function detectRecordType(collection: string): RecordType {
 export function SembleCard({ record, collection, authorHandle, compact }: ActivityCardProps) {
   const appMeta = getAppMeta('semble');
   const stripeColor = getAppStripeColor('semble');
-  const recordType = detectRecordType(collection);
+  const recordType = detectRecordType(collection, record);
   const createdAt = typeof record.createdAt === 'string' ? record.createdAt : null;
   const timestamp = createdAt ? formatRelativeTime(createdAt) : '';
-  const cardUrl = resolveCardUrl('semble', { handle: authorHandle });
 
-  // Trail records have rich data
+  // Trail records
   const title = typeof record.title === 'string' ? record.title : null;
   const description = typeof record.description === 'string' ? record.description : null;
   const stops = Array.isArray(record.stops) ? record.stops : [];
   const accentColor = typeof record.accentColor === 'string' ? record.accentColor : null;
 
-  // Walk records have visited stops
+  // Walk records
   const visitedStops = Array.isArray(record.visitedStops) ? record.visitedStops : [];
 
-  const IconComponent =
-    recordType === 'completion' ? CheckCircle : recordType === 'walk' ? Footprints : Path;
+  // Card records (network.cosmik.card)
+  const content =
+    typeof record.content === 'object' && record.content !== null
+      ? (record.content as Record<string, unknown>)
+      : null;
+  const metadata =
+    content && typeof content.metadata === 'object' && content.metadata !== null
+      ? (content.metadata as Record<string, unknown>)
+      : null;
+  const cardUrl = typeof content?.url === 'string' ? content.url : null;
+  const cardTitle = typeof metadata?.title === 'string' ? metadata.title : null;
+  const cardDescription = typeof metadata?.description === 'string' ? metadata.description : null;
+  const cardText = typeof content?.text === 'string' ? content.text : null;
+  const domain = cardUrl ? extractDomain(cardUrl) : null;
 
-  const actionLabel =
-    recordType === 'completion'
-      ? 'Completed a trail'
-      : recordType === 'walk'
-        ? 'Explored a trail'
-        : (title ?? 'Created a trail');
+  const profileUrl = resolveCardUrl('semble', { handle: authorHandle });
+  // For card-url items, link to the bookmarked URL; otherwise link to Semble profile
+  const linkUrl = recordType === 'card-url' && cardUrl ? cardUrl : profileUrl;
+
+  const IconComponent =
+    recordType === 'card-url'
+      ? BookmarkSimple
+      : recordType === 'card-note'
+        ? Note
+        : recordType === 'completion'
+          ? CheckCircle
+          : recordType === 'walk'
+            ? Footprints
+            : Path;
+
+  // Compact label
+  const compactLabel =
+    recordType === 'card-url'
+      ? (cardTitle ?? domain ?? 'Saved a link')
+      : recordType === 'card-note'
+        ? cardText
+          ? cardText.slice(0, 80)
+          : 'Saved a note'
+        : recordType === 'completion'
+          ? 'Completed a trail'
+          : recordType === 'walk'
+            ? 'Explored a trail'
+            : (title ?? 'Created a trail');
+
+  const linkLabel = recordType === 'card-url' && domain ? `View on ${domain}` : 'View on Semble';
 
   if (compact) {
     return (
-      <CardLink href={cardUrl} label="View on Semble">
+      <CardLink href={linkUrl} label={linkLabel}>
         <div
           className="flex items-center gap-3 rounded-md border-l-4 px-3 py-2 transition-colors hover:bg-muted/50"
           style={{ borderLeftColor: accentColor ?? stripeColor }}
@@ -73,7 +120,7 @@ export function SembleCard({ record, collection, authorHandle, compact }: Activi
             weight="regular"
             aria-hidden="true"
           />
-          <span className="min-w-0 flex-1 truncate text-sm">{actionLabel}</span>
+          <span className="min-w-0 flex-1 truncate text-sm">{compactLabel}</span>
           {timestamp && <span className="shrink-0 text-xs text-muted-foreground">{timestamp}</span>}
         </div>
       </CardLink>
@@ -81,7 +128,7 @@ export function SembleCard({ record, collection, authorHandle, compact }: Activi
   }
 
   return (
-    <CardLink href={cardUrl} label="View on Semble">
+    <CardLink href={linkUrl} label={linkLabel}>
       <div
         className="flex overflow-hidden rounded-lg border-l-4 bg-card transition-colors hover:bg-muted/50"
         style={{ borderLeftColor: accentColor ?? stripeColor }}
@@ -95,6 +142,20 @@ export function SembleCard({ record, collection, authorHandle, compact }: Activi
               aria-hidden="true"
             />
             <div className="min-w-0 flex-1">
+              {recordType === 'card-url' && (
+                <>
+                  {cardTitle && <p className="text-sm font-medium">{cardTitle}</p>}
+                  {cardDescription && (
+                    <p className="mt-0.5 line-clamp-2 text-sm text-muted-foreground">
+                      {cardDescription}
+                    </p>
+                  )}
+                  {domain && <p className="mt-1 text-xs text-muted-foreground">{domain}</p>}
+                </>
+              )}
+              {recordType === 'card-note' && (
+                <p className="line-clamp-3 text-sm">{cardText ?? 'Note'}</p>
+              )}
               {recordType === 'trail' && (
                 <>
                   {title && <p className="text-sm font-medium">{title}</p>}

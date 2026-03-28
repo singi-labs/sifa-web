@@ -34,3 +34,4 @@ registerCard('dev.keytrace.claim', KeytraceCard);
 registerCard('community.lexicon.bookmarks.bookmark', KipClipCard);
 registerCard('social.popfeed.feed.*', PopfeedCard);
 registerCard('app.sidetrail.*', SembleCard);
+registerCard('network.cosmik.card', SembleCard);
