@@ -1,10 +1,10 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { fetchHeatmapData } from '@/lib/api';
 import type { HeatmapResponse } from '@/lib/api';
-import { transformHeatmapData } from './heatmap-colors';
+import { transformHeatmapData, filterHeatmapData } from './heatmap-colors';
 import { HeatmapGrid } from './heatmap-grid';
 import { HeatmapBars } from './heatmap-bars';
 import { HeatmapLegend } from './heatmap-legend';
@@ -63,12 +63,38 @@ export function ActivityHeatmap({
   );
 
   const [loadingSlow, setLoadingSlow] = useState(false);
+  const [hiddenApps, setHiddenApps] = useState<Set<string>>(new Set());
+
+  const toggleApp = useCallback((appId: string) => {
+    setHiddenApps((prev) => {
+      const next = new Set(prev);
+      if (next.has(appId)) {
+        next.delete(appId);
+      } else {
+        next.add(appId);
+      }
+      return next;
+    });
+  }, []);
 
   useEffect(() => {
     if (!loading) return;
     const timer = setTimeout(() => setLoadingSlow(true), 3000);
     return () => clearTimeout(timer);
   }, [loading]);
+
+  const computed = useMemo(() => {
+    if (!data || data.days.length === 0) return null;
+    const transformed = transformHeatmapData(data.days, data.thresholds);
+    const appTotals = data.appTotals.map((a) => ({
+      appId: a.appId,
+      appName: getAppMeta(a.appId).name,
+      total: a.total,
+    }));
+    const filteredDays = filterHeatmapData(transformed, hiddenApps, data.thresholds);
+    const visibleAppTotals = appTotals.filter((a) => !hiddenApps.has(a.appId));
+    return { filteredDays, appTotals, visibleAppTotals };
+  }, [data, hiddenApps]);
 
   if (loading) {
     return (
@@ -84,9 +110,7 @@ export function ActivityHeatmap({
     );
   }
 
-  const isEmpty = !data || data.days.length === 0;
-
-  if (isEmpty) {
+  if (!computed) {
     return (
       <div className="flex h-[136px] w-full items-center justify-center rounded-lg border border-dashed">
         <p className="text-sm text-muted-foreground">{t('emptyState')}</p>
@@ -94,15 +118,10 @@ export function ActivityHeatmap({
     );
   }
 
-  const transformed = transformHeatmapData(data.days, data.thresholds);
-  const totalActions = data.days.reduce((sum, d) => sum + d.total, 0);
+  const { filteredDays, appTotals, visibleAppTotals } = computed;
+  const totalActions = filteredDays.reduce((sum, d) => sum + d.total, 0);
   const monthCount = Math.round(dayCount / 30);
-  const mostActiveApp = computeMostActiveApp(data.appTotals);
-  const appTotals = data.appTotals.map((a) => ({
-    appId: a.appId,
-    appName: getAppMeta(a.appId).name,
-    total: a.total,
-  }));
+  const mostActiveApp = computeMostActiveApp(visibleAppTotals);
 
   return (
     <div>
@@ -113,7 +132,7 @@ export function ActivityHeatmap({
             totalActions={totalActions}
             months={monthCount}
             mostActiveApp={mostActiveApp}
-            appCount={appTotals.length}
+            appCount={visibleAppTotals.length}
           />
         </div>
       )}
@@ -121,21 +140,31 @@ export function ActivityHeatmap({
       {/* Desktop: calendar grid */}
       <div className="hidden md:block">
         <HeatmapGrid
-          days={transformed}
+          days={filteredDays}
           daysBack={dayCount}
           onSelectDate={variant === 'full' ? handleSelectDate : undefined}
           selectedDate={selectedDate ?? null}
         />
         <div className="mt-3">
-          <HeatmapLegend appTotals={appTotals} showAppKey={variant === 'full'} />
+          <HeatmapLegend
+            appTotals={appTotals}
+            showAppKey={variant === 'full'}
+            hiddenApps={hiddenApps}
+            onToggleApp={toggleApp}
+          />
         </div>
       </div>
 
       {/* Mobile: stacked bars */}
       <div className="md:hidden">
-        <HeatmapBars days={transformed} />
+        <HeatmapBars days={filteredDays} />
         <div className="mt-3">
-          <HeatmapLegend appTotals={appTotals} showAppKey={variant === 'full'} />
+          <HeatmapLegend
+            appTotals={appTotals}
+            showAppKey={variant === 'full'}
+            hiddenApps={hiddenApps}
+            onToggleApp={toggleApp}
+          />
         </div>
       </div>
     </div>

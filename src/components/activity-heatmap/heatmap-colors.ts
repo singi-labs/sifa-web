@@ -67,3 +67,28 @@ export function transformHeatmapData(
     secondaryApp: getSecondaryApp(day.apps),
   }));
 }
+
+/**
+ * Filter heatmap data to exclude hidden apps.
+ * Recalculates totals, dominant/secondary apps, and intensity levels.
+ */
+export function filterHeatmapData(
+  days: HeatmapDayData[],
+  hiddenApps: Set<string>,
+  thresholds: [number, number, number, number],
+): HeatmapDayData[] {
+  if (hiddenApps.size === 0) return days;
+
+  return days.map((day) => {
+    const filteredApps = day.apps.filter((a) => !hiddenApps.has(a.appId));
+    const total = filteredApps.reduce((sum, a) => sum + a.count, 0);
+    return {
+      date: day.date,
+      total,
+      apps: filteredApps,
+      dominantApp: getDominantApp(filteredApps),
+      level: countToLevel(total, thresholds),
+      secondaryApp: getSecondaryApp(filteredApps),
+    };
+  });
+}
