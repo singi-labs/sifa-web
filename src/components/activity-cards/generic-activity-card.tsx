@@ -41,6 +41,7 @@ const COLLECTION_TO_APP: Record<string, string> = {
   'app.popsky.': 'popfeed',
   'place.stream.': 'streamplace',
   'app.sidetrail.': 'semble',
+  'network.cosmik.': 'semble',
   'id.sifa.': 'sifa',
   'forum.barazo.': 'barazo',
 };
