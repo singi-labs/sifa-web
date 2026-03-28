@@ -39,6 +39,9 @@ test.describe('Login page', () => {
   test('shows provider signup buttons', async ({ page }) => {
     await page.goto('/login');
 
+    // Wait for auth check to complete and login form to render
+    await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+
     // Provider cards are now buttons (prompt=create flow)
     const providerButtons = page.locator('button[type="button"]');
     const count = await providerButtons.count();
