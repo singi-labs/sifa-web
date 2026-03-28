@@ -37,8 +37,9 @@ export function HandshakeQR({ handle, avatar }: HandshakeQRProps) {
   const [status, setStatus] = useState<Status>('loading');
   const [token, setToken] = useState<string | null>(null);
   const [scanResult, setScanResult] = useState<ScanResult | null>(null);
-  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const pollRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const autoRefreshRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const pollIntervalRef = useRef(2000);
   const [pendingNotes, setPendingNotes] = useState<
     Array<{ did: string; name: string; handle?: string; avatar?: string }>
   >([]);
@@ -48,9 +49,10 @@ export function HandshakeQR({ handle, avatar }: HandshakeQRProps) {
 
   const stopPolling = useCallback(() => {
     if (pollRef.current) {
-      clearInterval(pollRef.current);
+      clearTimeout(pollRef.current);
       pollRef.current = null;
     }
+    pollIntervalRef.current = 2000;
   }, []);
 
   const generateToken = useCallback(async () => {
@@ -78,14 +80,28 @@ export function HandshakeQR({ handle, avatar }: HandshakeQRProps) {
       setStatus('ready');
       trackEvent('handshake-qr-generated', { handle });
 
-      // Start polling for scan
+      // Start polling for scan with backoff on rate limits
       const { nonce } = decodeToken(data.token);
-      pollRef.current = setInterval(async () => {
+      pollIntervalRef.current = 2000;
+
+      const poll = async () => {
         try {
           const statusRes = await fetch(`${API_URL}/api/meet/status/${encodeURIComponent(nonce)}`, {
             credentials: 'include',
           });
-          if (!statusRes.ok) return;
+
+          if (statusRes.status === 429) {
+            pollIntervalRef.current = Math.min(pollIntervalRef.current * 2, 30000);
+            pollRef.current = setTimeout(() => void poll(), pollIntervalRef.current);
+            return;
+          }
+          // Reset interval on success
+          pollIntervalRef.current = 2000;
+
+          if (!statusRes.ok) {
+            pollRef.current = setTimeout(() => void poll(), pollIntervalRef.current);
+            return;
+          }
 
           const statusData = (await statusRes.json()) as {
             confirmed: boolean;
@@ -152,11 +168,15 @@ export function HandshakeQR({ handle, avatar }: HandshakeQRProps) {
               toast.error(t('error'));
               setStatus('error');
             }
+            return;
           }
         } catch {
           // Transient polling error -- keep trying
         }
-      }, 2000);
+        pollRef.current = setTimeout(() => void poll(), pollIntervalRef.current);
+      };
+
+      pollRef.current = setTimeout(() => void poll(), pollIntervalRef.current);
     } catch {
       toast.error(t('error'));
       setStatus('error');
