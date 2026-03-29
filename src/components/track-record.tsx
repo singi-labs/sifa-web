@@ -75,6 +75,7 @@ export function TrackRecord({ isAuthenticated, isOwnProfile }: TrackRecordProps)
   return (
     <section className="mt-8" aria-label={t('title')}>
       <h2 className="text-xl font-semibold">{t('title')}</h2>
+      <p className="mt-1 text-sm text-muted-foreground">{t('wip')}</p>
       <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
         {visibleCards.map((card) => {
           const Icon = card.icon;
