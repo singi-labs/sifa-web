@@ -41,9 +41,9 @@ export function SuggestionCard({
   const initial = label.charAt(0).toUpperCase();
 
   return (
-    <div className="flex items-center gap-4 rounded-lg border border-border p-4">
-      {/* Avatar */}
-      <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-muted text-sm font-semibold text-muted-foreground">
+    <div className="grid grid-cols-[auto_1fr_auto] gap-x-3 gap-y-1 rounded-lg border border-border p-4 sm:items-center sm:gap-x-4">
+      {/* Avatar - spans both rows on mobile */}
+      <div className="row-span-2 mt-0.5 flex size-10 shrink-0 items-center justify-center self-start rounded-full bg-muted text-sm font-semibold text-muted-foreground sm:row-span-1 sm:mt-0 sm:self-center">
         {avatarUrl ? (
           <Image
             src={avatarUrl}
@@ -58,7 +58,7 @@ export function SuggestionCard({
       </div>
 
       {/* Info */}
-      <div className="min-w-0 flex-1">
+      <div className="min-w-0">
         <div className="flex items-center gap-2">
           {claimed ? (
             <Link
@@ -85,8 +85,22 @@ export function SuggestionCard({
         {handle && <p className="truncate text-xs text-muted-foreground">{sanitize(handle)}</p>}
       </div>
 
-      {/* Actions */}
-      <div className="flex shrink-0 items-center gap-2">
+      {/* Dismiss - top right on mobile, inline on desktop */}
+      <div className="flex items-start gap-2 sm:items-center">
+        {!dismissed && onDismiss && (
+          <button
+            type="button"
+            onClick={() => onDismiss(did)}
+            className="rounded-md p-1 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+            aria-label="Dismiss suggestion"
+          >
+            <X className="size-4" weight="bold" aria-hidden="true" />
+          </button>
+        )}
+      </div>
+
+      {/* Actions - second row on mobile (col 2), part of first row on desktop */}
+      <div className="col-start-2 sm:col-start-auto sm:row-start-1">
         {onUnfollow ? (
           <Button variant="outline" size="sm" onClick={() => onUnfollow(did)}>
             Unfollow
@@ -100,16 +114,6 @@ export function SuggestionCard({
             Follow
           </Button>
         ) : null}
-        {!dismissed && onDismiss && (
-          <button
-            type="button"
-            onClick={() => onDismiss(did)}
-            className="rounded-md p-1 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-            aria-label="Dismiss suggestion"
-          >
-            <X className="size-4" weight="bold" aria-hidden="true" />
-          </button>
-        )}
       </div>
     </div>
   );
