@@ -808,7 +808,7 @@
     "explainerStep3": "They scan it with their phone camera",
     "explainerStep4": "Both of you confirm and you're connected as a verified IRL meeting",
     "scopeInsufficient": "Permission needed",
-    "scopeInsufficientSubtitle": "Handshake needs permission to write meeting records to your AT Protocol account. Tap below to grant access.",
+    "scopeInsufficientSubtitle": "Handshake needs extra permissions to write verified in-person meeting records to your AT Protocol account. You'll be redirected to your identity provider to approve.",
     "grantPermissions": "Grant permissions"
   },
   "peopleNotes": {
