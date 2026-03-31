@@ -85,6 +85,13 @@ export function EditDialog({
     }
   };
 
+  const normalizeUrl = (raw: string): string => {
+    const trimmed = raw.trim();
+    if (!trimmed) return trimmed;
+    if (/^https?:\/\//i.test(trimmed)) return trimmed;
+    return `https://${trimmed}`;
+  };
+
   const updateValue = (name: string, value: string | boolean) => {
     setValues((prev) => {
       const next = { ...prev, [name]: value };
@@ -269,6 +276,11 @@ export function EditDialog({
                     type={field.type ?? 'text'}
                     value={values[field.name] as string}
                     onChange={(e) => updateValue(field.name, e.target.value)}
+                    onBlur={
+                      field.type === 'url'
+                        ? (e) => updateValue(field.name, normalizeUrl(e.target.value))
+                        : undefined
+                    }
                     required={field.required}
                     placeholder={field.placeholder}
                   />
