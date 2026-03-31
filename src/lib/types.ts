@@ -159,6 +159,7 @@ export interface ExternalAccount {
   verified: boolean;
   verifiedVia?: string | null;
   source?: 'sifa' | 'keytrace';
+  hidden?: boolean;
   keytraceVerified?: boolean;
   keytraceClaim?: {
     rkey: string;

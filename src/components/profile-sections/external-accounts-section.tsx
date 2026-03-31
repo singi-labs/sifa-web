@@ -2,7 +2,7 @@
 
 import { useCallback, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
-import { CheckCircle, Star, Info, EyeSlash } from '@phosphor-icons/react';
+import { CheckCircle, Star, Info, Eye, EyeSlash } from '@phosphor-icons/react';
 import { Popover } from '@base-ui/react/popover';
 import { toast } from 'sonner';
 import {
@@ -10,6 +10,7 @@ import {
   unsetExternalAccountPrimary,
   fetchExternalAccounts,
   hideKeytraceClaim,
+  unhideKeytraceClaim,
 } from '@/lib/profile-api';
 import { useProfileEdit } from '@/components/profile-edit-provider';
 import {
@@ -66,14 +67,18 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
     [accounts, updateItem, tEdit],
   );
 
-  const handleHideKeytrace = useCallback(
-    async (rkey: string) => {
-      const result = await hideKeytraceClaim(rkey);
+  const handleToggleHideKeytrace = useCallback(
+    async (rkey: string, currentlyHidden: boolean) => {
+      const result = currentlyHidden
+        ? await unhideKeytraceClaim(rkey)
+        : await hideKeytraceClaim(rkey);
       if (result.success) {
         updateProfile({
-          externalAccounts: accounts.filter((a) => a.rkey !== rkey),
+          externalAccounts: accounts.map((a) =>
+            a.rkey === rkey ? { ...a, hidden: !currentlyHidden } : a,
+          ),
         });
-        toast.success(t('hideLink'));
+        toast.success(currentlyHidden ? t('unhideLink') : t('hideLink'));
       }
     },
     [accounts, updateProfile, t],
@@ -238,24 +243,28 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
         onPostSave={handlePostSave}
         onFieldChange={handleFieldChange}
         renderEntry={(acc, controls) => {
-          // Keytrace-only entries: read-only, no edit/delete/primary, hide option for owner
+          // Keytrace-only entries: read-only, no edit/delete/primary, hide/unhide toggle for owner
           if (acc.source === 'keytrace') {
-            const hideButton = isOwnProfile ? (
+            const isHidden = acc.hidden ?? false;
+            const VisibilityIcon = isHidden ? Eye : EyeSlash;
+            const visibilityLabel = isHidden ? t('unhideLink') : t('hideLink');
+
+            const visibilityButton = isOwnProfile ? (
               <button
                 type="button"
-                onClick={() => void handleHideKeytrace(acc.rkey)}
+                onClick={() => void handleToggleHideKeytrace(acc.rkey, isHidden)}
                 className="shrink-0 rounded-full p-1 text-muted-foreground transition-colors hover:text-foreground"
-                aria-label={t('hideLink')}
-                title={t('hideLink')}
+                aria-label={visibilityLabel}
+                title={visibilityLabel}
               >
-                <EyeSlash size={16} weight="regular" />
+                <VisibilityIcon size={16} weight="regular" />
               </button>
             ) : undefined;
 
             return (
-              <div className="flex items-start gap-2">
+              <div className={`flex items-start gap-2${isHidden ? ' opacity-40' : ''}`}>
                 <div className="min-w-0 flex-1">{renderAccountRow(acc)}</div>
-                {hideButton}
+                {visibilityButton}
               </div>
             );
           }
