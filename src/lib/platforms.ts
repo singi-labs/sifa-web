@@ -42,9 +42,12 @@ export function isKnownPlatform(platform: string): boolean {
   return platform in PLATFORM_MAP;
 }
 
-/** Platforms available in the "Add Links" dropdown (excludes Bluesky — auto-derived from AT Protocol identity). */
+/** Platforms excluded from the "Add Links" dropdown (auto-derived or not accepted by API). */
+const EXCLUDED_FROM_DROPDOWN = new Set(['bluesky', 'dns', 'tangled']);
+
+/** Platforms available in the "Add Links" dropdown. */
 export const PLATFORM_OPTIONS = Object.entries(PLATFORM_MAP)
-  .filter(([value]) => value !== 'bluesky')
+  .filter(([value]) => !EXCLUDED_FROM_DROPDOWN.has(value))
   .map(([value, info]) => ({
     value,
     label: info.label,
