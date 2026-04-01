@@ -28,6 +28,7 @@ const COLLECTION_TO_APP: Record<string, string> = {
   'community.lexicon.bookmarks.': 'kipclip',
   'com.kipclip.': 'kipclip',
   'blue.flashes.': 'flashes',
+  'social.grain.': 'grain',
   'com.whtwnd.': 'whitewind',
   'fyi.unravel.frontpage.': 'frontpage',
   'social.psky.': 'picosky',

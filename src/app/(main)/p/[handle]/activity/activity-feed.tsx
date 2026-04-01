@@ -20,6 +20,7 @@ const CATEGORIES = [
   { key: 'Links', labelKey: 'categoryLinks' },
   { key: 'Pastes', labelKey: 'categoryPastes' },
   { key: 'Video', labelKey: 'categoryVideo' },
+  { key: 'Other', labelKey: 'categoryOther' },
 ] as const;
 
 interface ActivityFeedProps {

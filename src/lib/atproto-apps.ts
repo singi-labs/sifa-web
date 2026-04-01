@@ -83,6 +83,12 @@ const APP_REGISTRY: Record<string, AppMeta> = {
     className: badgeClass('flashes'),
     tooltipDescription: 'Photo sharing on the AT Protocol.',
   },
+  grain: {
+    name: 'Grain',
+    className: badgeClass('grain'),
+    tooltipDescription: 'Photo galleries on the AT Protocol.',
+    appUrl: 'https://grain.social',
+  },
   kipclip: {
     name: 'AT Protocol bookmarks',
     className: badgeClass('kipclip'),
@@ -142,6 +148,7 @@ const APP_ICONS: Record<string, string> = {
   tangled: 'GitBranch',
   smokesignal: 'CalendarBlank',
   flashes: 'Camera',
+  grain: 'Images',
   whitewind: 'Article',
   frontpage: 'Newspaper',
   picosky: 'ChatsCircle',
@@ -208,6 +215,9 @@ const APP_URL_PATTERNS: Record<string, AppUrlPatterns> = {
   },
   semble: {
     profileUrlPattern: 'https://semble.so/profile/{handle}',
+  },
+  grain: {
+    profileUrlPattern: 'https://grain.social/{handle}',
   },
   // picosky, flashes, standard, aetheros, roomy: no web URLs — cards are not clickable
 };
