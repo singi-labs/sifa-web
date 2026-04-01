@@ -8,6 +8,7 @@ import { KipClipCard } from './kipclip-card';
 import { PopfeedCard } from './popfeed-card';
 import { SembleCard } from './semble-card';
 import { YouAndMeCard } from './youandme-card';
+import { GrainGalleryCard } from './grain-gallery-card';
 
 const CARD_REGISTRY = new Map<string, ComponentType<ActivityCardProps>>();
 
@@ -37,3 +38,4 @@ registerCard('social.popfeed.feed.*', PopfeedCard);
 registerCard('app.sidetrail.*', SembleCard);
 registerCard('network.cosmik.card', SembleCard);
 registerCard('at.youandme.connection', YouAndMeCard);
+registerCard('social.grain.gallery', GrainGalleryCard);
