@@ -96,6 +96,7 @@ interface UnregisteredCollection {
 
 interface UnregisteredCollectionsResponse {
   collections: UnregisteredCollection[];
+  total: number;
 }
 
 type SignupFilter = 'all' | 'no-import';
@@ -127,6 +128,8 @@ export default function AdminPage() {
     null,
   );
   const [unregisteredLoading, setUnregisteredLoading] = useState(true);
+  const [unregisteredPage, setUnregisteredPage] = useState(0);
+  const unregisteredPageSize = 10;
 
   const fetchStats = useCallback(async (daysParam: string) => {
     setLoading(true);
@@ -200,11 +203,17 @@ export default function AdminPage() {
       }
     }
     void fetchPds();
+  }, []);
 
+  useEffect(() => {
     async function fetchUnregistered() {
       setUnregisteredLoading(true);
       try {
-        const res = await fetch(`${API_URL}/api/admin/stats/unregistered-collections`, {
+        const params = new URLSearchParams({
+          limit: String(unregisteredPageSize),
+          offset: String(unregisteredPage * unregisteredPageSize),
+        });
+        const res = await fetch(`${API_URL}/api/admin/stats/unregistered-collections?${params}`, {
           credentials: 'include',
         });
         if (!res.ok) throw new Error(`Failed: ${res.status}`);
@@ -217,7 +226,7 @@ export default function AdminPage() {
       }
     }
     void fetchUnregistered();
-  }, []);
+  }, [unregisteredPage]);
 
   useEffect(() => {
     async function fetchLatest() {
@@ -368,7 +377,13 @@ export default function AdminPage() {
         {unregisteredLoading ? (
           <div className="h-48 animate-pulse rounded-lg bg-muted" />
         ) : unregisteredData ? (
-          <UnregisteredCollectionsTable data={unregisteredData.collections} />
+          <UnregisteredCollectionsTable
+            data={unregisteredData.collections}
+            total={unregisteredData.total}
+            page={unregisteredPage}
+            pageSize={unregisteredPageSize}
+            onPageChange={setUnregisteredPage}
+          />
         ) : (
           <p className="text-muted-foreground">Failed to load unregistered collections.</p>
         )}
