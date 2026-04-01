@@ -9,6 +9,8 @@ import {
   Link as LinkIcon,
   Globe,
   Clipboard,
+  Smiley,
+  GameController,
   type Icon,
 } from '@phosphor-icons/react';
 import { getAppMeta, getAppStripeColor, buildBlobUrl, resolveCardUrl } from '@/lib/atproto-apps';
@@ -45,6 +47,9 @@ const COLLECTION_TO_APP: Record<string, string> = {
   'network.cosmik.': 'semble',
   'id.sifa.': 'sifa',
   'forum.barazo.': 'barazo',
+  'xyz.statusphere.': 'statusphere',
+  'at.youandme.': 'youandme',
+  'net.anisota.': 'anisota',
 };
 
 /** Map app categories to Phosphor icons */
@@ -58,6 +63,8 @@ const CATEGORY_ICONS: Record<string, Icon> = {
   pages: Globe,
   pastes: Clipboard,
   reviews: ChatText,
+  social: Smiley,
+  games: GameController,
 };
 
 /** Collection keyword to category mapping */
@@ -81,6 +88,9 @@ const COLLECTION_CATEGORY: Record<string, string> = {
   paste: 'pastes',
   snippet: 'pastes',
   review: 'reviews',
+  status: 'social',
+  connection: 'social',
+  game: 'games',
 };
 
 function resolveAppId(collection: string): string {
@@ -105,7 +115,7 @@ function resolveCategory(collection: string): string {
 }
 
 function extractContentText(record: Record<string, unknown>): string | null {
-  const fields = ['text', 'title', 'name', 'description', 'content'];
+  const fields = ['text', 'title', 'name', 'description', 'content', 'status'];
   for (const field of fields) {
     const value = record[field];
     if (typeof value === 'string' && value.trim().length > 0) {
@@ -165,7 +175,11 @@ function extractImageBlob(
     }
   }
 
-  // Pattern 4: record.embed.images[0].image
+  // Pattern 4: record.photo (e.g. Grain photo records)
+  const fromPhoto = extractFromBlobRef(record.photo);
+  if (fromPhoto) return fromPhoto;
+
+  // Pattern 5: record.embed.images[0].image
   if (record.embed != null && typeof record.embed === 'object') {
     const embed = record.embed as Record<string, unknown>;
     if (Array.isArray(embed.images) && embed.images.length > 0) {

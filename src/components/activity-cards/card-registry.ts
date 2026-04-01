@@ -7,6 +7,7 @@ import { KeytraceCard } from './keytrace-card';
 import { KipClipCard } from './kipclip-card';
 import { PopfeedCard } from './popfeed-card';
 import { SembleCard } from './semble-card';
+import { YouAndMeCard } from './youandme-card';
 
 const CARD_REGISTRY = new Map<string, ComponentType<ActivityCardProps>>();
 
@@ -35,3 +36,4 @@ registerCard('community.lexicon.bookmarks.bookmark', KipClipCard);
 registerCard('social.popfeed.feed.*', PopfeedCard);
 registerCard('app.sidetrail.*', SembleCard);
 registerCard('network.cosmik.card', SembleCard);
+registerCard('at.youandme.connection', YouAndMeCard);
