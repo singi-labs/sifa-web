@@ -142,6 +142,18 @@ describe('LinkedIn field mapper', () => {
       });
       expect(result.url).toBe('https://github.com/example');
     });
+
+    it('truncates project names exceeding 100 graphemes', () => {
+      const longName = 'A'.repeat(150);
+      const result = mapProjectsCsv({ Title: longName });
+      expect(result.name.length).toBeLessThanOrEqual(100);
+      expect(result.name.endsWith('…')).toBe(true);
+    });
+
+    it('preserves project names within 100 graphemes', () => {
+      const result = mapProjectsCsv({ Title: 'Short Project' });
+      expect(result.name).toBe('Short Project');
+    });
   });
 
   describe('mapPublicationsCsv', () => {
@@ -151,6 +163,23 @@ describe('LinkedIn field mapper', () => {
         Url: 'garbage',
       });
       expect(result.url).toBeUndefined();
+    });
+  });
+
+  describe('truncation', () => {
+    it('truncates skill names exceeding 64 graphemes', () => {
+      const result = mapSkillsCsv({ Name: 'X'.repeat(80) });
+      expect(result.name.length).toBeLessThanOrEqual(64);
+      expect(result.name.endsWith('…')).toBe(true);
+    });
+
+    it('truncates position company names exceeding 100 graphemes', () => {
+      const result = mapPositionsCsv({
+        'Company Name': 'C'.repeat(120),
+        Title: 'Engineer',
+      });
+      expect(result.company.length).toBeLessThanOrEqual(100);
+      expect(result.company.endsWith('…')).toBe(true);
     });
   });
 });
