@@ -99,7 +99,7 @@ interface UnregisteredCollectionsResponse {
   total: number;
 }
 
-type SignupFilter = 'all' | 'no-import';
+type SignupFilter = 'all' | 'no-import' | 'gt50' | 'complete';
 
 const TIME_RANGES = [
   { label: '7d', value: '7' },

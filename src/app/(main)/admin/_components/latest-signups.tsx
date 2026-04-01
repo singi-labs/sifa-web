@@ -21,7 +21,7 @@ export interface SignupUser {
   profileCompletion: ProfileCompletion;
 }
 
-type FilterValue = 'all' | 'no-import';
+type FilterValue = 'all' | 'no-import' | 'gt50' | 'complete';
 
 interface LatestSignupsProps {
   users: SignupUser[];
@@ -94,6 +94,8 @@ function CompletionBar({ completion }: { completion: ProfileCompletion }) {
 const FILTERS: { label: string; value: FilterValue }[] = [
   { label: 'All', value: 'all' },
   { label: 'No import', value: 'no-import' },
+  { label: '>50%', value: 'gt50' },
+  { label: '100%', value: 'complete' },
 ];
 
 export function LatestSignups({
