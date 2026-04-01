@@ -237,6 +237,7 @@ const APP_URL_PATTERNS: Record<string, AppUrlPatterns> = {
     profileUrlPattern: 'https://semble.so/profile/{handle}',
   },
   grain: {
+    urlPattern: 'https://grain.social/profile/{did}/gallery/{rkey}',
     profileUrlPattern: 'https://grain.social/profile/{did}',
   },
   youandme: {
