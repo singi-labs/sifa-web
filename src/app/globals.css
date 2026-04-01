@@ -160,6 +160,18 @@
   --app-grain-badge-bg: oklch(0.93 0.03 85);
   --app-grain-badge-text: oklch(0.35 0.1 85);
 
+  --app-statusphere-stripe: oklch(0.6 0.18 95);
+  --app-statusphere-badge-bg: oklch(0.93 0.04 95);
+  --app-statusphere-badge-text: oklch(0.38 0.12 95);
+
+  --app-youandme-stripe: oklch(0.55 0.18 10);
+  --app-youandme-badge-bg: oklch(0.93 0.04 10);
+  --app-youandme-badge-text: oklch(0.38 0.12 10);
+
+  --app-anisota-stripe: oklch(0.55 0.18 135);
+  --app-anisota-badge-bg: oklch(0.93 0.04 135);
+  --app-anisota-badge-text: oklch(0.38 0.12 135);
+
   --app-fallback-stripe: oklch(0.5 0.01 260);
   --app-fallback-badge-bg: oklch(0.93 0.01 260);
   --app-fallback-badge-text: oklch(0.35 0.02 260);
@@ -282,6 +294,18 @@
   --app-grain-stripe: oklch(0.6 0.14 85);
   --app-grain-badge-bg: oklch(0.25 0.05 85 / 40%);
   --app-grain-badge-text: oklch(0.78 0.1 85);
+
+  --app-statusphere-stripe: oklch(0.65 0.18 95);
+  --app-statusphere-badge-bg: oklch(0.25 0.06 95 / 40%);
+  --app-statusphere-badge-text: oklch(0.78 0.12 95);
+
+  --app-youandme-stripe: oklch(0.6 0.18 10);
+  --app-youandme-badge-bg: oklch(0.25 0.06 10 / 40%);
+  --app-youandme-badge-text: oklch(0.78 0.12 10);
+
+  --app-anisota-stripe: oklch(0.6 0.18 135);
+  --app-anisota-badge-bg: oklch(0.25 0.06 135 / 40%);
+  --app-anisota-badge-text: oklch(0.78 0.12 135);
 
   --app-fallback-stripe: oklch(0.55 0.01 260);
   --app-fallback-badge-bg: oklch(0.25 0.01 260 / 40%);

@@ -138,6 +138,23 @@ const APP_REGISTRY: Record<string, AppMeta> = {
     tooltipDescription: 'Social knowledge trails on the AT Protocol.',
     appUrl: 'https://semble.so',
   },
+  statusphere: {
+    name: 'Statusphere',
+    className: badgeClass('statusphere'),
+    tooltipDescription: 'Emoji status updates on the AT Protocol.',
+  },
+  youandme: {
+    name: 'You & Me',
+    className: badgeClass('youandme'),
+    tooltipDescription: 'Social connections on the AT Protocol.',
+    appUrl: 'https://youandme.at',
+  },
+  anisota: {
+    name: 'Anisota',
+    className: badgeClass('anisota'),
+    tooltipDescription: 'Collectible card game on the AT Protocol.',
+    appUrl: 'https://anisota.net',
+  },
 };
 
 const FALLBACK_CLASS = badgeClass('fallback');
@@ -162,6 +179,9 @@ const APP_ICONS: Record<string, string> = {
   popfeed: 'Star',
   streamplace: 'Broadcast',
   semble: 'Path',
+  statusphere: 'Smiley',
+  youandme: 'Handshake',
+  anisota: 'GameController',
 };
 
 /** Get the Phosphor icon component name for an app */
@@ -217,9 +237,15 @@ const APP_URL_PATTERNS: Record<string, AppUrlPatterns> = {
     profileUrlPattern: 'https://semble.so/profile/{handle}',
   },
   grain: {
-    profileUrlPattern: 'https://grain.social/{handle}',
+    profileUrlPattern: 'https://grain.social/profile/{did}',
   },
-  // picosky, flashes, standard, aetheros, roomy: no web URLs — cards are not clickable
+  youandme: {
+    profileUrlPattern: 'https://youandme.at',
+  },
+  anisota: {
+    profileUrlPattern: 'https://anisota.net',
+  },
+  // picosky, flashes, standard, aetheros, roomy, statusphere: no web URLs — cards are not clickable
 };
 
 export function getAppMeta(appId: string): AppMeta {

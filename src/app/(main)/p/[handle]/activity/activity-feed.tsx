@@ -20,6 +20,9 @@ const CATEGORIES = [
   { key: 'Links', labelKey: 'categoryLinks' },
   { key: 'Pastes', labelKey: 'categoryPastes' },
   { key: 'Video', labelKey: 'categoryVideo' },
+  { key: 'Social', labelKey: 'categorySocial' },
+  { key: 'Games', labelKey: 'categoryGames' },
+  { key: 'Reviews', labelKey: 'categoryReviews' },
   { key: 'Other', labelKey: 'categoryOther' },
 ] as const;
 
