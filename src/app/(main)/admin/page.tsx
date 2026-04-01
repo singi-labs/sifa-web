@@ -9,6 +9,7 @@ import { MauChart } from './_components/mau-chart';
 import { LinkedinImportsChart } from './_components/linkedin-imports-chart';
 import { PdsDistributionChart } from './_components/pds-distribution-chart';
 import { UserLocationMap } from './_components/user-location-map';
+import { UnregisteredCollectionsTable } from './_components/unregistered-collections-table';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3100';
 
@@ -85,6 +86,18 @@ interface SignupUser {
   profileCompletion: ProfileCompletion;
 }
 
+interface UnregisteredCollection {
+  collection: string;
+  namespace: string;
+  userCount: number;
+  totalRecords: number;
+  latestSeenAt: string | null;
+}
+
+interface UnregisteredCollectionsResponse {
+  collections: UnregisteredCollection[];
+}
+
 type SignupFilter = 'all' | 'no-import';
 
 const TIME_RANGES = [
@@ -110,6 +123,10 @@ export default function AdminPage() {
   const [importsLoading, setImportsLoading] = useState(true);
   const [pdsData, setPdsData] = useState<PdsResponse | null>(null);
   const [pdsLoading, setPdsLoading] = useState(true);
+  const [unregisteredData, setUnregisteredData] = useState<UnregisteredCollectionsResponse | null>(
+    null,
+  );
+  const [unregisteredLoading, setUnregisteredLoading] = useState(true);
 
   const fetchStats = useCallback(async (daysParam: string) => {
     setLoading(true);
@@ -183,6 +200,23 @@ export default function AdminPage() {
       }
     }
     void fetchPds();
+
+    async function fetchUnregistered() {
+      setUnregisteredLoading(true);
+      try {
+        const res = await fetch(`${API_URL}/api/admin/stats/unregistered-collections`, {
+          credentials: 'include',
+        });
+        if (!res.ok) throw new Error(`Failed: ${res.status}`);
+        const json: UnregisteredCollectionsResponse = await res.json();
+        setUnregisteredData(json);
+      } catch (err) {
+        console.error('Failed to fetch unregistered collections:', err);
+      } finally {
+        setUnregisteredLoading(false);
+      }
+    }
+    void fetchUnregistered();
   }, []);
 
   useEffect(() => {
@@ -322,6 +356,22 @@ export default function AdminPage() {
       <h2 className="mt-10 text-xl font-semibold">User Locations</h2>
       <div className="mt-4">
         <UserLocationMap apiUrl={API_URL} />
+      </div>
+
+      {/* Unregistered Collections */}
+      <h2 className="mt-10 text-xl font-semibold">Unregistered Lexicons</h2>
+      <p className="mt-1 text-sm text-muted-foreground">
+        AT Protocol collections seen on user PDSes that aren&apos;t in the app registry yet.
+        Priority list for creating custom activity cards.
+      </p>
+      <div className="mt-4">
+        {unregisteredLoading ? (
+          <div className="h-48 animate-pulse rounded-lg bg-muted" />
+        ) : unregisteredData ? (
+          <UnregisteredCollectionsTable data={unregisteredData.collections} />
+        ) : (
+          <p className="text-muted-foreground">Failed to load unregistered collections.</p>
+        )}
       </div>
 
       {/* Latest signups */}
