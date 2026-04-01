@@ -227,7 +227,7 @@ export function getAppMeta(appId: string): AppMeta {
     APP_REGISTRY[appId] ?? {
       name: appId,
       className: FALLBACK_CLASS,
-      tooltipDescription: "Activity from an AT Protocol app that Sifa doesn't recognize yet.",
+      tooltipDescription: "Activity from an AT Protocol app that Sifa hasn't categorized yet.",
     }
   );
 }
