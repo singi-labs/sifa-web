@@ -83,8 +83,8 @@ export function mapPositionsCsv(row: Record<string, string>): SifaPosition {
   const startedAt = parseLinkedInDate(row['Started On']);
 
   return {
-    company: truncate(row['Company Name']?.trim() ?? '', 100),
-    title: truncate(row['Title']?.trim() ?? '', 100),
+    company: truncate(row['Company Name']?.trim() ?? '', 256),
+    title: truncate(row['Title']?.trim() ?? '', 256),
     description: restoreLineBreaks(optional(row['Description'])),
     startedAt,
     endedAt,
@@ -126,8 +126,8 @@ export interface SifaEducation {
 
 export function mapEducationCsv(row: Record<string, string>): SifaEducation {
   return {
-    institution: truncate(row['School Name']?.trim() ?? '', 100),
-    degree: optionalTruncated(row['Degree Name'], 100),
+    institution: truncate(row['School Name']?.trim() ?? '', 256),
+    degree: optionalTruncated(row['Degree Name'], 256),
     description: restoreLineBreaks(optional(row['Notes'])),
     startedAt: parseLinkedInDate(row['Start Date']),
     endedAt: parseLinkedInDate(row['End Date']),
@@ -158,10 +158,10 @@ export interface SifaCertification {
 
 export function mapCertificationsCsv(row: Record<string, string>): SifaCertification {
   return {
-    name: truncate(row['Name']?.trim() ?? '', 100),
-    authority: optionalTruncated(row['Authority'], 100),
+    name: truncate(row['Name']?.trim() ?? '', 256),
+    authority: optionalTruncated(row['Authority'], 256),
     credentialUrl: optionalUrl(row['Url']),
-    credentialId: optionalTruncated(row['License Number'], 100),
+    credentialId: optionalTruncated(row['License Number'], 256),
     issuedAt: parseLinkedInDate(row['Started On']),
   };
 }
@@ -178,7 +178,7 @@ export interface SifaProject {
 
 export function mapProjectsCsv(row: Record<string, string>): SifaProject {
   return {
-    name: truncate(row['Title']?.trim() ?? '', 100),
+    name: truncate(row['Title']?.trim() ?? '', 256),
     description: restoreLineBreaks(optional(row['Description'])),
     url: optionalUrl(row['Url']),
     startDate: parseLinkedInDate(row['Started On']),
@@ -199,9 +199,9 @@ export interface SifaVolunteering {
 
 export function mapVolunteeringCsv(row: Record<string, string>): SifaVolunteering {
   return {
-    organization: truncate(row['Company Name']?.trim() ?? '', 100),
-    role: optionalTruncated(row['Role'], 100),
-    cause: optionalTruncated(row['Cause'], 100),
+    organization: truncate(row['Company Name']?.trim() ?? '', 256),
+    role: optionalTruncated(row['Role'], 256),
+    cause: optionalTruncated(row['Cause'], 256),
     description: restoreLineBreaks(optional(row['Description'])),
     startDate: parseLinkedInDate(row['Started On']),
     endDate: parseLinkedInDate(row['Finished On']),
@@ -241,7 +241,7 @@ function parsePublicationDate(dateStr: string | undefined): string | undefined {
 export function mapPublicationsCsv(row: Record<string, string>): SifaPublication {
   return {
     title: truncate(row['Name']?.trim() ?? '', 200),
-    publisher: optionalTruncated(row['Publisher'], 100),
+    publisher: optionalTruncated(row['Publisher'], 256),
     url: optionalUrl(row['Url']),
     description: restoreLineBreaks(optional(row['Description'])),
     publishedAt: parsePublicationDate(row['Published On']),
