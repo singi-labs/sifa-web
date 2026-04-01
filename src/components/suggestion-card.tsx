@@ -41,8 +41,8 @@ export function SuggestionCard({
   const initial = label.charAt(0).toUpperCase();
 
   return (
-    <div className="grid grid-cols-[auto_1fr_auto] gap-x-3 gap-y-1 rounded-lg border border-border p-4 sm:items-center sm:gap-x-4">
-      {/* Avatar - spans both rows on mobile */}
+    <div className="grid grid-cols-[auto_1fr_auto] gap-x-3 gap-y-1 rounded-lg border border-border p-4 sm:grid-cols-[auto_1fr_auto_auto] sm:items-center sm:gap-x-4">
+      {/* Avatar - spans both rows on mobile, single row on desktop */}
       <div className="row-span-2 mt-0.5 flex size-10 shrink-0 items-center justify-center self-start rounded-full bg-muted text-sm font-semibold text-muted-foreground sm:row-span-1 sm:mt-0 sm:self-center">
         {avatarUrl ? (
           <Image
@@ -99,8 +99,8 @@ export function SuggestionCard({
         )}
       </div>
 
-      {/* Actions - second row on mobile (col 2), part of first row on desktop */}
-      <div className="col-start-2 sm:col-start-auto sm:row-start-1">
+      {/* Actions - second row on mobile (col 2), own column on desktop */}
+      <div className="col-start-2 sm:col-start-3">
         {onUnfollow ? (
           <Button variant="outline" size="sm" onClick={() => onUnfollow(did)}>
             Unfollow
