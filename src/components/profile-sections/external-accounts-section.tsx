@@ -11,6 +11,7 @@ import {
   fetchExternalAccounts,
   hideKeytraceClaim,
   unhideKeytraceClaim,
+  verifyExternalAccount,
 } from '@/lib/profile-api';
 import { useProfileEdit } from '@/components/profile-edit-provider';
 import {
@@ -163,6 +164,26 @@ export function ExternalAccountsSection({ accounts, isOwnProfile }: ExternalAcco
             verifiedVia={acc.verifiedVia}
             keytraceVerified={acc.keytraceVerified}
           />
+        )}
+        {isOwnProfile && acc.platform === 'orcid' && !isVerified && (
+          <button
+            type="button"
+            className="rounded px-1.5 py-0.5 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+            onClick={async (e) => {
+              e.preventDefault();
+              const result = await verifyExternalAccount(acc.rkey);
+              if (result.verified) {
+                toast.success('ORCID verified');
+                window.location.reload();
+              } else {
+                toast.error(
+                  'Verification failed. Make sure your Sifa profile URL is in your ORCID researcher-urls.',
+                );
+              }
+            }}
+          >
+            Check now
+          </button>
         )}
         {acc.primary && !isOwnProfile && (
           <Star
