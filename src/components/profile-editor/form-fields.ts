@@ -136,6 +136,16 @@ export function getExternalAccountFields(
       hintUrl: `https://sifa.id/p/${handle}`,
       visibleWhen: (values) => values.platform === 'rss',
     },
+    {
+      name: 'verifyHintOrcid',
+      label: 'Verification & Publications',
+      type: 'hint',
+      description: tSections('verifyHintOrcid'),
+      hintUrl: `https://sifa.id/p/${handle}`,
+      hintActionUrl: 'https://orcid.org/my-orcid',
+      hintActionLabel: 'Open ORCID profile',
+      visibleWhen: (values) => values.platform === 'orcid',
+    },
   ];
 }
 

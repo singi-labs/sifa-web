@@ -264,6 +264,26 @@ export async function unhideKeytraceClaim(rkey: string): Promise<WriteResult> {
   return apiRequest(`/api/profile/keytrace-claims/${encodeURIComponent(rkey)}/hide`, 'DELETE');
 }
 
+export async function verifyExternalAccount(
+  rkey: string,
+): Promise<WriteResult & { verified?: boolean; verifiedVia?: string }> {
+  return apiCreateRequest(`/api/profile/external-accounts/${encodeURIComponent(rkey)}/verify`, {});
+}
+
+export async function hideOrcidPublication(putCode: number): Promise<WriteResult> {
+  return apiRequest(`/api/profile/orcid-publications/${putCode}/hide`, 'POST');
+}
+
+export async function unhideOrcidPublication(putCode: number): Promise<WriteResult> {
+  return apiRequest(`/api/profile/orcid-publications/${putCode}/hide`, 'DELETE');
+}
+
+export async function refreshOrcidPublications(): Promise<
+  WriteResult & { added?: number; removed?: number }
+> {
+  return apiCreateRequest('/api/profile/orcid-publications/refresh', {});
+}
+
 export async function resetProfile(): Promise<WriteResult> {
   return apiRequest('/api/profile/reset', 'DELETE');
 }

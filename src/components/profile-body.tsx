@@ -136,7 +136,13 @@ function ProfileBodyContent() {
         <CredentialsSection certifications={profile.certifications ?? []} isOwnProfile={isOwn} />
       </div>
       <div id="publications" className="scroll-mt-20">
-        <PublicationsSection publications={profile.publications ?? []} isOwnProfile={isOwn} />
+        <PublicationsSection
+          publications={profile.publications ?? []}
+          isOwnProfile={isOwn}
+          hasVerifiedOrcid={profile.externalAccounts?.some(
+            (a) => a.platform === 'orcid' && a.verified,
+          )}
+        />
       </div>
       <div id="volunteering" className="scroll-mt-20">
         <VolunteeringSection volunteering={profile.volunteering ?? []} isOwnProfile={isOwn} />

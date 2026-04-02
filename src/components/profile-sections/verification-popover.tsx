@@ -14,6 +14,7 @@ const VERIFIED_VIA_KEYS: Record<string, string> = {
   'rel-me': 'verifiedViaRelMe',
   dns: 'verifiedViaDns',
   meta: 'verifiedViaMeta',
+  'orcid-researcher-url': 'verifiedViaOrcid',
 };
 
 export function VerificationPopover({
