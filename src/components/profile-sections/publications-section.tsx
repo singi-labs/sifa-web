@@ -37,18 +37,18 @@ export function PublicationsSection({
   const [refreshing, setRefreshing] = useState(false);
   const [localPubs, setLocalPubs] = useState(publications);
 
+  // Filter publications based on ownership:
+  // - Non-owners don't see hidden items or unverified ORCID items
+  // - Owners see everything (with verification hint for unverified)
+  const visiblePubs = isOwnProfile
+    ? localPubs
+    : localPubs.filter((p) => !p.hidden && !p.pendingVerification);
+
   // Separate Sifa-editable publications from external sources
-  const sifaPubs = localPubs.filter((p) => !p.source || p.source === 'sifa');
-  const externalPubs = localPubs.filter((p) => p.source === 'orcid' || p.source === 'standard');
+  const sifaPubs = visiblePubs.filter((p) => !p.source || p.source === 'sifa');
+  const externalPubs = visiblePubs.filter((p) => p.source === 'orcid' || p.source === 'standard');
 
-  // For the display list, merge and sort all together
-  const allPubs = [...localPubs].sort((a, b) => {
-    const dateA = a.date ? new Date(a.date).getTime() : 0;
-    const dateB = b.date ? new Date(b.date).getTime() : 0;
-    return dateB - dateA;
-  });
-
-  if (!allPubs.length && !isOwnProfile) return null;
+  if (!visiblePubs.length && !isOwnProfile) return null;
 
   async function handleRefresh() {
     setRefreshing(true);
@@ -67,8 +67,8 @@ export function PublicationsSection({
         if (added > 0) parts.push(`${added} publication${added === 1 ? '' : 's'} synced`);
         if (removed > 0) parts.push(`${removed} removed`);
         toast.success(parts.join(', '));
-        // Reload to show updated data
-        window.location.reload();
+        // Reload after a short delay so the toast is visible
+        setTimeout(() => window.location.reload(), 1500);
       }
     } catch {
       toast.error('Failed to connect to ORCID. Please try again.');
@@ -94,9 +94,9 @@ export function PublicationsSection({
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-xl font-semibold">
           {t('publications')}
-          {allPubs.length > 0 && (
+          {visiblePubs.length > 0 && (
             <span className="ml-2 text-sm font-normal text-muted-foreground">
-              {allPubs.filter((p) => !p.hidden).length}
+              {visiblePubs.filter((p) => !p.hidden).length}
             </span>
           )}
         </h2>
