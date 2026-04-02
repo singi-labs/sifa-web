@@ -485,16 +485,6 @@ export function IdentityCard({
       {/* Floating edit/preview buttons -- top-right, own profile only, not in embeds */}
       {isActualOwner && !isEmbed && (
         <div className="absolute right-4 top-4 flex items-center gap-2">
-          <button
-            type="button"
-            onClick={togglePreview}
-            className="inline-flex h-8 items-center justify-center gap-1.5 rounded-md border border-border bg-background px-3 text-sm font-medium transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-            aria-pressed={previewMode}
-            title={tProfile('previewPublic')}
-          >
-            <Eye className="h-4 w-4" weight={previewMode ? 'fill' : 'bold'} aria-hidden="true" />
-            {tProfile('previewPublic')}
-          </button>
           {!previewMode && (
             <button
               type="button"
@@ -505,6 +495,16 @@ export function IdentityCard({
               {t('editProfile')}
             </button>
           )}
+          <button
+            type="button"
+            onClick={togglePreview}
+            className="inline-flex h-8 items-center justify-center gap-1.5 rounded-md border border-border bg-background px-3 text-sm font-medium transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            aria-pressed={previewMode}
+            title={previewMode ? tProfile('viewAsYourself') : tProfile('previewPublic')}
+          >
+            <Eye className="h-4 w-4" weight={previewMode ? 'fill' : 'bold'} aria-hidden="true" />
+            {previewMode ? tProfile('viewAsYourself') : tProfile('previewPublic')}
+          </button>
         </div>
       )}
 
