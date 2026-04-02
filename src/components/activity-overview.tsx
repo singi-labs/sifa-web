@@ -38,7 +38,17 @@ export function ActivityOverview({ handle, activeApps = [] }: ActivityOverviewPr
     };
   }, [handle]);
 
-  const validItems = (items ?? []).filter((item) => item.record != null);
+  const validItems = (items ?? []).filter((item) => {
+    if (item.record == null) return false;
+    // Hide image-only Bluesky posts — they render as empty rows in compact mode
+    if (
+      item.collection === 'app.bsky.feed.post' &&
+      !(item.record as { text?: string }).text?.trim()
+    ) {
+      return false;
+    }
+    return true;
+  });
   const teaserItems = validItems.slice(0, 5);
 
   return (

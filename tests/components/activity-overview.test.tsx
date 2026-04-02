@@ -103,6 +103,43 @@ describe('ActivityOverview', () => {
     expect(screen.queryAllByTestId('activity-card-compact')).toHaveLength(0);
   });
 
+  it('filters out image-only Bluesky posts (no text)', async () => {
+    mockFetch.mockResolvedValue({
+      items: [
+        {
+          uri: 'at://did:plc:abc/app.bsky.feed.post/img',
+          collection: 'app.bsky.feed.post',
+          rkey: 'img',
+          record: { createdAt: '2026-03-15T10:00:00Z', embed: { $type: 'app.bsky.embed.images' } },
+          appId: 'bluesky',
+          appName: 'Bluesky',
+          category: 'posts',
+          indexedAt: '2026-03-15T10:00:00Z',
+        },
+        {
+          uri: 'at://did:plc:abc/app.bsky.feed.post/txt',
+          collection: 'app.bsky.feed.post',
+          rkey: 'txt',
+          record: { text: 'Has text', createdAt: '2026-03-15T09:00:00Z' },
+          appId: 'bluesky',
+          appName: 'Bluesky',
+          category: 'posts',
+          indexedAt: '2026-03-15T09:00:00Z',
+        },
+      ],
+    });
+
+    render(<ActivityOverview handle="alice.bsky.social" />);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('activity-overview')).toBeDefined();
+    });
+
+    const cards = screen.queryAllByTestId('activity-card-compact');
+    expect(cards).toHaveLength(1);
+    expect(screen.getByText('Has text')).toBeDefined();
+  });
+
   it('shows "View full activity" link', async () => {
     mockFetch.mockResolvedValue(MOCK_ITEMS);
 

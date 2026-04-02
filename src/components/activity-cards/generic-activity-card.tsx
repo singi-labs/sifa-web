@@ -242,11 +242,22 @@ export function GenericActivityCard({
   const stripeColor = getAppStripeColor(appId);
   const contentText = extractContentText(record);
   const displayText = contentText ?? `Activity on ${appMeta.name}`;
-  const createdAt = typeof record.createdAt === 'string' ? record.createdAt : null;
-  const timestamp = createdAt ? formatRelativeTime(createdAt) : '';
+  const dateField =
+    typeof record.createdAt === 'string'
+      ? record.createdAt
+      : typeof record.publishedAt === 'string'
+        ? record.publishedAt
+        : null;
+  const timestamp = dateField ? formatRelativeTime(dateField) : '';
   const imageBlob = extractImageBlob(record);
   const did = authorDid || uri.split('/')[2] || '';
-  const cardUrl = resolveCardUrl(appId, { handle: authorHandle, did, rkey });
+  // Standard documents carry siteUrl + path from API enrichment
+  const siteUrl = typeof record.siteUrl === 'string' ? record.siteUrl : null;
+  const path = typeof record.path === 'string' ? record.path : null;
+  const cardUrl =
+    siteUrl && path
+      ? `${siteUrl}${path}`
+      : resolveCardUrl(appId, { handle: authorHandle, did, rkey });
 
   if (compact) {
     return (
