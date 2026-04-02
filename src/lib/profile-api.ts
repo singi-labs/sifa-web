@@ -281,7 +281,28 @@ export async function unhideOrcidPublication(putCode: number): Promise<WriteResu
 export async function refreshOrcidPublications(): Promise<
   WriteResult & { added?: number; removed?: number }
 > {
-  return apiCreateRequest('/api/profile/orcid-publications/refresh', {});
+  try {
+    const res = await fetch(`${API_URL}/api/profile/orcid-publications/refresh`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: '{}',
+    });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      return {
+        success: false,
+        error: (data as { message?: string }).message ?? `Request failed (${res.status})`,
+      };
+    }
+    const data = (await res.json()) as { added?: number; removed?: number; error?: string };
+    if (data.error) {
+      return { success: false, error: data.error };
+    }
+    return { success: true, added: data.added, removed: data.removed };
+  } catch {
+    return { success: false, error: 'Network error' };
+  }
 }
 
 export async function resetProfile(): Promise<WriteResult> {

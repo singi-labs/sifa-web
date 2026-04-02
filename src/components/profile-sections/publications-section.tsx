@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { CheckCircle, Eye, EyeSlash, ArrowsClockwise } from '@phosphor-icons/react';
 import { Popover } from '@base-ui/react/popover';
+import { toast } from 'sonner';
 import { EditableSection, EditableEntry, PUBLICATION_FIELDS } from '@/components/profile-editor';
 import {
   publicationToValues,
@@ -52,9 +53,25 @@ export function PublicationsSection({
   async function handleRefresh() {
     setRefreshing(true);
     try {
-      await refreshOrcidPublications();
-      // Reload page to get fresh data
-      window.location.reload();
+      const result = await refreshOrcidPublications();
+      if (!result.success) {
+        toast.error(result.error ?? 'Failed to refresh ORCID publications');
+        return;
+      }
+      const added = result.added ?? 0;
+      const removed = result.removed ?? 0;
+      if (added === 0 && removed === 0) {
+        toast.info('No changes found on ORCID');
+      } else {
+        const parts: string[] = [];
+        if (added > 0) parts.push(`${added} publication${added === 1 ? '' : 's'} synced`);
+        if (removed > 0) parts.push(`${removed} removed`);
+        toast.success(parts.join(', '));
+        // Reload to show updated data
+        window.location.reload();
+      }
+    } catch {
+      toast.error('Failed to connect to ORCID. Please try again.');
     } finally {
       setRefreshing(false);
     }
