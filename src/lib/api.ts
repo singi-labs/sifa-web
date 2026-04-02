@@ -34,8 +34,11 @@ export async function searchProfiles(query: string): Promise<ProfileSearchResult
   if (!query.trim()) return [];
   const res = await fetch(`${API_URL}/api/search/profiles?q=${encodeURIComponent(query)}`, {
     cache: 'no-store',
+    signal: AbortSignal.timeout(10000),
   });
-  if (!res.ok) return [];
+  if (!res.ok) {
+    throw new Error(`Search failed (${res.status})`);
+  }
   const data = await res.json();
   return data.profiles ?? [];
 }
