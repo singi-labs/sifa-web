@@ -23,12 +23,14 @@ interface PublicationsSectionProps {
   publications: ProfilePublication[];
   isOwnProfile?: boolean;
   hasVerifiedOrcid?: boolean;
+  hasOrcidAccount?: boolean;
 }
 
 export function PublicationsSection({
   publications,
   isOwnProfile,
   hasVerifiedOrcid,
+  hasOrcidAccount,
 }: PublicationsSectionProps) {
   const t = useTranslations('sections');
   const [refreshing, setRefreshing] = useState(false);
@@ -81,7 +83,7 @@ export function PublicationsSection({
             </span>
           )}
         </h2>
-        {isOwnProfile && hasVerifiedOrcid && (
+        {isOwnProfile && hasOrcidAccount && (
           <button
             type="button"
             onClick={handleRefresh}
@@ -129,6 +131,18 @@ export function PublicationsSection({
           </EditableEntry>
         )}
       />
+
+      {/* Verification hint for owner when ORCID items are pending */}
+      {isOwnProfile && externalPubs.some((p) => p.pendingVerification) && (
+        <div className="mt-3 rounded-md border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-200">
+          <p className="font-medium">Your ORCID publications are only visible to you</p>
+          <p className="mt-1 text-amber-700 dark:text-amber-300">
+            Verify your ORCID account to make them visible on your public profile. Go to your ORCID
+            researcher-urls and add your Sifa profile URL, then tap &quot;Check now&quot; on your
+            ORCID link above.
+          </p>
+        </div>
+      )}
 
       {/* ORCID + Standard publications: read-only */}
       {externalPubs.length > 0 && (

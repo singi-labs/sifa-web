@@ -142,6 +142,7 @@ function ProfileBodyContent() {
           hasVerifiedOrcid={profile.externalAccounts?.some(
             (a) => a.platform === 'orcid' && a.verified,
           )}
+          hasOrcidAccount={profile.externalAccounts?.some((a) => a.platform === 'orcid')}
         />
       </div>
       <div id="volunteering" className="scroll-mt-20">
