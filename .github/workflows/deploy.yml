@@ -28,6 +28,8 @@ jobs:
           push: true
           no-cache: true
           tags: ghcr.io/singi-labs/sifa-web:latest,ghcr.io/singi-labs/sifa-web:${{ github.sha }}
+          build-args: |
+            NEXT_PUBLIC_GLITCHTIP_DSN=${{ secrets.NEXT_PUBLIC_GLITCHTIP_DSN }}
 
       - name: Deploy to VPS
         if: env.VPS_HOST != ''
