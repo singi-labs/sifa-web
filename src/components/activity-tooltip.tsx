@@ -45,7 +45,7 @@ export function ActivityTooltip({
         <span
           id={tooltipId}
           role="tooltip"
-          className="absolute bottom-full left-1/2 z-50 mb-2 w-56 -translate-x-1/2 rounded-md border border-border bg-popover px-3 py-2 text-xs text-popover-foreground shadow-md"
+          className="absolute bottom-full left-0 z-50 mb-2 w-56 rounded-md border border-border bg-popover px-3 py-2 text-xs text-popover-foreground shadow-md"
           onMouseEnter={handleEnter}
           onMouseLeave={handleLeave}
         >
