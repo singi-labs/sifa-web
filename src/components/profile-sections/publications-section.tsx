@@ -44,8 +44,9 @@ export function PublicationsSection({
     ? localPubs
     : localPubs.filter((p) => !p.hidden && !p.pendingVerification);
 
-  // Separate Sifa-editable publications from external sources
+  // Only Sifa-native items go through EditableSection (with edit/delete controls)
   const sifaPubs = visiblePubs.filter((p) => !p.source || p.source === 'sifa');
+  // External items rendered separately as read-only
   const externalPubs = visiblePubs.filter((p) => p.source === 'orcid' || p.source === 'standard');
 
   if (!visiblePubs.length && !isOwnProfile) return null;
@@ -117,41 +118,9 @@ export function PublicationsSection({
         )}
       </div>
 
-      {/* Sifa-native publications: editable */}
-      <EditableSection<ProfilePublication>
-        maxVisible={sifaPubs.length + externalPubs.length > 20 ? 5 : undefined}
-        sectionTitle={t('publications')}
-        profileKey="publications"
-        isOwnProfile={isOwnProfile}
-        fields={PUBLICATION_FIELDS}
-        toValues={publicationToValues}
-        fromValues={
-          valuesToPublication as (
-            v: Record<string, string | boolean>,
-          ) => Omit<ProfilePublication, 'rkey'>
-        }
-        collection="id.sifa.profile.publication"
-        sortItems={(items) => sortByDateDesc(items, singleDateExtractor)}
-        renderEntry={(pub, controls) => (
-          <EditableEntry
-            key={pub.rkey ?? `sifa-${pub.title}`}
-            isOwnProfile={isOwnProfile}
-            onEdit={controls?.onEdit ?? (() => {})}
-            onDelete={controls?.onDelete ?? (() => {})}
-            entryLabel={pub.title}
-          >
-            <PublicationCard
-              pub={pub}
-              isOwnProfile={isOwnProfile}
-              onToggleHide={handleToggleHide}
-            />
-          </EditableEntry>
-        )}
-      />
-
       {/* Verification hint for owner when ORCID items are pending */}
       {isOwnProfile && externalPubs.some((p) => p.pendingVerification) && (
-        <div className="mt-3 rounded-md border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-200">
+        <div className="mb-4 rounded-md border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-200">
           <p className="font-medium">Your ORCID publications are only visible to you</p>
           <p className="mt-1 text-amber-700 dark:text-amber-300">
             Verify your ORCID account to make them visible on your public profile. Go to your ORCID
@@ -161,15 +130,57 @@ export function PublicationsSection({
         </div>
       )}
 
+      {/* Sifa-native publications: editable via EditableSection */}
+      {(sifaPubs.length > 0 || isOwnProfile) && (
+        <EditableSection<ProfilePublication>
+          sectionTitle={t('publications')}
+          profileKey="publications"
+          isOwnProfile={isOwnProfile}
+          fields={PUBLICATION_FIELDS}
+          toValues={publicationToValues}
+          fromValues={
+            valuesToPublication as (
+              v: Record<string, string | boolean>,
+            ) => Omit<ProfilePublication, 'rkey'>
+          }
+          collection="id.sifa.profile.publication"
+          sortItems={(items) =>
+            sortByDateDesc(
+              items.filter((p) => !p.source || p.source === 'sifa'),
+              singleDateExtractor,
+            )
+          }
+          renderEntry={(pub, controls) => {
+            // Skip non-sifa items that leak through from the profile store
+            if (pub.source && pub.source !== 'sifa') return null;
+            return (
+              <EditableEntry
+                key={pub.rkey}
+                isOwnProfile={isOwnProfile}
+                onEdit={controls?.onEdit ?? (() => {})}
+                onDelete={controls?.onDelete ?? (() => {})}
+                entryLabel={pub.title}
+              >
+                <PublicationCard
+                  pub={pub}
+                  isOwnProfile={isOwnProfile}
+                  onToggleHide={handleToggleHide}
+                />
+              </EditableEntry>
+            );
+          }}
+        />
+      )}
+
       {/* ORCID + Standard publications: read-only */}
       {externalPubs.length > 0 && (
-        <div className="mt-2 space-y-3">
+        <div className="space-y-3">
           {externalPubs
             .filter((p) => isOwnProfile || !p.hidden)
             .map((pub) => (
               <div
-                key={pub.orcidPutCode ?? `ext-${pub.title}`}
-                className={pub.hidden ? 'opacity-50' : ''}
+                key={pub.rkey}
+                className={`rounded-lg border border-border px-4 py-3${pub.hidden ? ' opacity-50' : ''}`}
               >
                 <PublicationCard
                   pub={pub}
@@ -269,7 +280,7 @@ function PublicationCard({
           <div className="mt-1 flex items-center gap-2">
             {pub.hidden && <span className="text-xs text-muted-foreground">Hidden</span>}
             <a
-              href={`https://orcid.org/my-orcid`}
+              href="https://orcid.org/my-orcid"
               className="text-xs text-muted-foreground underline-offset-4 hover:underline"
               target="_blank"
               rel="noopener noreferrer"
