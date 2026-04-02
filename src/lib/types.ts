@@ -105,6 +105,7 @@ export interface ProfilePublication {
   orcidPutCode?: number;
   hidden?: boolean;
   orcidCorroborated?: boolean;
+  pendingVerification?: boolean;
 }
 
 export interface ProfileVolunteering {
