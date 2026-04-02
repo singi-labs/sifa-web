@@ -13,6 +13,7 @@ import {
 } from '@phosphor-icons/react';
 import type { IconWeight } from '@phosphor-icons/react';
 import { SubstackIcon } from './substack-icon';
+import { OrcidIcon } from './orcid-icon';
 
 interface PlatformInfo {
   label: string;
@@ -32,6 +33,7 @@ const PLATFORM_MAP: Record<string, PlatformInfo> = {
   website: { label: 'Website', icon: Globe },
   rss: { label: 'RSS', icon: RssSimple },
   fediverse: { label: 'Fediverse', icon: MastodonLogo },
+  orcid: { label: 'ORCID', icon: OrcidIcon },
 };
 
 export function getPlatformInfo(platform: string): PlatformInfo {

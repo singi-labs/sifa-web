@@ -90,6 +90,21 @@ export interface ProfilePublication {
   date?: string;
   url?: string;
   description?: string;
+  source?: 'sifa' | 'standard' | 'orcid';
+  doi?: string;
+  type?: string;
+  typeLabel?: string;
+  contributors?: Array<{
+    name: string;
+    orcidId?: string;
+    did?: string;
+    handle?: string;
+  }>;
+  verified?: boolean;
+  verifiedVia?: string;
+  orcidPutCode?: number;
+  hidden?: boolean;
+  orcidCorroborated?: boolean;
 }
 
 export interface ProfileVolunteering {
