@@ -119,6 +119,7 @@ export function mapProfileCsv(row: Record<string, string>): SifaProfile {
 export interface SifaEducation {
   institution: string;
   degree?: string;
+  fieldOfStudy?: string;
   description?: string;
   startedAt?: string;
   endedAt?: string;
@@ -128,6 +129,7 @@ export function mapEducationCsv(row: Record<string, string>): SifaEducation {
   return {
     institution: truncate(row['School Name']?.trim() ?? '', 256),
     degree: optionalTruncated(row['Degree Name'], 256),
+    fieldOfStudy: optionalTruncated(row['Field of Study'], 256),
     description: restoreLineBreaks(optional(row['Notes'])),
     startedAt: parseLinkedInDate(row['Start Date']),
     endedAt: parseLinkedInDate(row['End Date']),
@@ -253,12 +255,14 @@ export function mapPublicationsCsv(row: Record<string, string>): SifaPublication
 export interface SifaCourse {
   name: string;
   number?: string;
+  institution?: string;
 }
 
 export function mapCoursesCsv(row: Record<string, string>): SifaCourse {
   return {
     name: truncate(row['Name']?.trim() ?? '', 200),
     number: optionalTruncated(row['Number'], 50),
+    institution: optionalTruncated(row['Institution'], 256),
   };
 }
 
@@ -266,6 +270,7 @@ export function mapCoursesCsv(row: Record<string, string>): SifaCourse {
 
 export interface SifaHonor {
   title: string;
+  issuer?: string;
   description?: string;
   awardedAt?: string;
 }
@@ -273,6 +278,7 @@ export interface SifaHonor {
 export function mapHonorsCsv(row: Record<string, string>): SifaHonor {
   return {
     title: truncate(row['Title']?.trim() ?? '', 200),
+    issuer: optionalTruncated(row['Issuer'], 256),
     description: restoreLineBreaks(optional(row['Description'])),
     awardedAt: parseLinkedInDate(row['Issued On']),
   };
