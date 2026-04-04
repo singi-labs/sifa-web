@@ -236,7 +236,8 @@ const translations: Record<string, Record<string, string>> = {
     signInLink: 'Sign in with your AT Protocol handle',
     signInSuffix: 'to see who you know at this event.',
     loading: 'Checking your connections...',
-    noConnections: "None of your Bluesky connections have RSVP'd yet. Discover new connections below!",
+    noConnections:
+      "None of your Bluesky connections have RSVP'd yet. Discover new connections below!",
     attendingCount: '{count} people you know',
     attending: 'are attending',
   },
