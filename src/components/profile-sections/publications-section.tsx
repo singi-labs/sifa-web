@@ -16,9 +16,15 @@ import { OrcidIcon } from '@/lib/orcid-icon';
 import {
   hideOrcidPublication,
   unhideOrcidPublication,
+  hideStandardPublication,
+  unhideStandardPublication,
+  hideSifaPublication,
+  unhideSifaPublication,
   refreshOrcidPublications,
 } from '@/lib/profile-api';
 import type { ProfilePublication } from '@/lib/types';
+
+const SHOW_LIMIT = 5;
 
 interface PublicationsSectionProps {
   publications: ProfilePublication[];
@@ -36,6 +42,7 @@ export function PublicationsSection({
   const t = useTranslations('sections');
   const [refreshing, setRefreshing] = useState(false);
   const [localPubs, setLocalPubs] = useState(publications);
+  const [showAll, setShowAll] = useState(false);
 
   // Filter publications based on ownership:
   // - Non-owners don't see hidden items or unverified ORCID items
@@ -48,6 +55,17 @@ export function PublicationsSection({
   const sifaPubs = visiblePubs.filter((p) => !p.source || p.source === 'sifa');
   // External items rendered separately as read-only
   const externalPubs = visiblePubs.filter((p) => p.source === 'orcid' || p.source === 'standard');
+
+  // Combined sorted list for the "Show X more" limit
+  const allSortedPubs = sortByDateDesc(visiblePubs, singleDateExtractor);
+  const displayedPubs = showAll ? allSortedPubs : allSortedPubs.slice(0, SHOW_LIMIT);
+  const displayedRkeys = new Set(displayedPubs.map((p) => p.rkey));
+  const hiddenCount = allSortedPubs.length - displayedPubs.length;
+
+  // External pubs within the display limit
+  const displayedExternalPubs = displayedPubs.filter(
+    (p) => p.source === 'orcid' || p.source === 'standard',
+  );
 
   if (!visiblePubs.length && !isOwnProfile) return null;
 
@@ -78,15 +96,20 @@ export function PublicationsSection({
     }
   }
 
-  async function handleToggleHide(putCode: number, currentlyHidden: boolean) {
-    if (currentlyHidden) {
-      await unhideOrcidPublication(putCode);
+  async function handleToggleHide(pub: ProfilePublication, currentlyHidden: boolean) {
+    if (pub.source === 'orcid' && pub.orcidPutCode !== undefined) {
+      if (currentlyHidden) await unhideOrcidPublication(pub.orcidPutCode);
+      else await hideOrcidPublication(pub.orcidPutCode);
+    } else if (pub.source === 'standard') {
+      if (currentlyHidden) await unhideStandardPublication(pub.rkey);
+      else await hideStandardPublication(pub.rkey);
     } else {
-      await hideOrcidPublication(putCode);
+      // sifa-native
+      if (currentlyHidden) await unhideSifaPublication(pub.rkey);
+      else await hideSifaPublication(pub.rkey);
     }
-    // Update local state
     setLocalPubs((prev) =>
-      prev.map((p) => (p.orcidPutCode === putCode ? { ...p, hidden: !currentlyHidden } : p)),
+      prev.map((p) => (p.rkey === pub.rkey ? { ...p, hidden: !currentlyHidden } : p)),
     );
   }
 
@@ -153,6 +176,8 @@ export function PublicationsSection({
           renderEntry={(pub, controls) => {
             // Skip non-sifa items that leak through from the profile store
             if (pub.source && pub.source !== 'sifa') return null;
+            // Apply show limit
+            if (!showAll && !displayedRkeys.has(pub.rkey)) return null;
             return (
               <EditableEntry
                 key={pub.rkey}
@@ -173,23 +198,29 @@ export function PublicationsSection({
       )}
 
       {/* ORCID + Standard publications: read-only */}
-      {externalPubs.length > 0 && (
+      {displayedExternalPubs.length > 0 && (
         <div className="space-y-3">
-          {externalPubs
-            .filter((p) => isOwnProfile || !p.hidden)
-            .map((pub) => (
-              <div
-                key={pub.rkey}
-                className={`rounded-lg border border-border px-4 py-3${pub.hidden ? ' opacity-50' : ''}`}
-              >
-                <PublicationCard
-                  pub={pub}
-                  isOwnProfile={isOwnProfile}
-                  onToggleHide={handleToggleHide}
-                />
-              </div>
-            ))}
+          {displayedExternalPubs.map((pub) => (
+            <div key={pub.rkey} className={pub.hidden ? 'opacity-50' : undefined}>
+              <PublicationCard
+                pub={pub}
+                isOwnProfile={isOwnProfile}
+                onToggleHide={handleToggleHide}
+              />
+            </div>
+          ))}
         </div>
+      )}
+
+      {/* Show more */}
+      {hiddenCount > 0 && (
+        <button
+          type="button"
+          onClick={() => setShowAll(true)}
+          className="mt-3 text-sm text-muted-foreground underline-offset-4 hover:underline"
+        >
+          Show {hiddenCount} more
+        </button>
       )}
     </section>
   );
@@ -202,7 +233,7 @@ function PublicationCard({
 }: {
   pub: ProfilePublication;
   isOwnProfile?: boolean;
-  onToggleHide: (putCode: number, hidden: boolean) => void;
+  onToggleHide: (pub: ProfilePublication, hidden: boolean) => void;
 }) {
   const isOrcid = pub.source === 'orcid';
 
@@ -275,7 +306,7 @@ function PublicationCard({
           </p>
         )}
 
-        {/* Hidden label + Edit on ORCID link */}
+        {/* Hidden label + Edit on ORCID link (ORCID pubs) */}
         {isOwnProfile && isOrcid && (
           <div className="mt-1 flex items-center gap-2">
             {pub.hidden && <span className="text-xs text-muted-foreground">Hidden</span>}
@@ -289,6 +320,11 @@ function PublicationCard({
             </a>
           </div>
         )}
+
+        {/* Hidden label (standard and sifa-native pubs) */}
+        {isOwnProfile && !isOrcid && pub.hidden && (
+          <p className="mt-1 text-xs text-muted-foreground">Hidden</p>
+        )}
       </div>
 
       {/* Right side: date + hide toggle */}
@@ -296,10 +332,10 @@ function PublicationCard({
         {pub.date && (
           <span className="text-xs text-muted-foreground">{formatTimelineDate(pub.date)}</span>
         )}
-        {isOwnProfile && isOrcid && pub.orcidPutCode !== undefined && (
+        {isOwnProfile && (!isOrcid || pub.orcidPutCode !== undefined) && (
           <button
             type="button"
-            onClick={() => onToggleHide(pub.orcidPutCode ?? 0, !!pub.hidden)}
+            onClick={() => onToggleHide(pub, !!pub.hidden)}
             className="rounded p-0.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             aria-label={pub.hidden ? 'Show publication' : 'Hide publication'}
           >

@@ -278,6 +278,22 @@ export async function unhideOrcidPublication(putCode: number): Promise<WriteResu
   return apiRequest(`/api/profile/orcid-publications/${putCode}/hide`, 'DELETE');
 }
 
+export async function hideStandardPublication(uri: string): Promise<WriteResult> {
+  return apiRequest(`/api/profile/standard-publications/${encodeURIComponent(uri)}/hide`, 'POST');
+}
+
+export async function unhideStandardPublication(uri: string): Promise<WriteResult> {
+  return apiRequest(`/api/profile/standard-publications/${encodeURIComponent(uri)}/hide`, 'DELETE');
+}
+
+export async function hideSifaPublication(rkey: string): Promise<WriteResult> {
+  return apiRequest(`/api/profile/publications/${rkey}/hide`, 'POST');
+}
+
+export async function unhideSifaPublication(rkey: string): Promise<WriteResult> {
+  return apiRequest(`/api/profile/publications/${rkey}/hide`, 'DELETE');
+}
+
 export async function refreshOrcidPublications(): Promise<
   WriteResult & { added?: number; removed?: number }
 > {
