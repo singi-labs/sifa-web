@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import {
   Star,
   FilmStrip,
@@ -83,6 +84,7 @@ export function PopfeedCard({
   authorHandle,
   compact,
 }: ActivityCardProps) {
+  const t = useTranslations('activityIndicators');
   const appMeta = getAppMeta('popfeed');
   const stripeColor = getAppStripeColor('popfeed');
   const collectionType = resolveCollectionType(collection);
@@ -120,7 +122,7 @@ export function PopfeedCard({
         ? `${displayTitle} (${rating}/10)`
         : displayTitle;
     return (
-      <CardLink href={cardUrl} label="View on Popfeed">
+      <CardLink href={cardUrl} label={t('viewOnApp', { app: 'Popfeed' })}>
         <div
           className="flex items-center gap-3 rounded-md border-l-4 px-3 py-2 transition-colors hover:bg-muted/50"
           style={{ borderLeftColor: stripeColor }}
@@ -139,7 +141,7 @@ export function PopfeedCard({
   }
 
   return (
-    <CardLink href={cardUrl} label="View on Popfeed">
+    <CardLink href={cardUrl} label={t('viewOnApp', { app: 'Popfeed' })}>
       <div
         className="flex overflow-hidden rounded-lg border-l-4 bg-card transition-colors hover:bg-muted/50"
         style={{ borderLeftColor: stripeColor }}

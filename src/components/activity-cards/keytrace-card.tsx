@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { ShieldCheck, Key } from '@phosphor-icons/react';
 import { getAppMeta, getAppStripeColor, resolveCardUrl } from '@/lib/atproto-apps';
 import type { ActivityCardProps } from './types';
@@ -37,6 +38,7 @@ function formatRelativeTime(dateString: string): string {
 }
 
 export function KeytraceCard({ record, compact, authorHandle }: ActivityCardProps) {
+  const t = useTranslations('activityIndicators');
   const appMeta = getAppMeta('keytrace');
   const stripeColor = getAppStripeColor('keytrace');
 
@@ -62,7 +64,7 @@ export function KeytraceCard({ record, compact, authorHandle }: ActivityCardProp
 
   if (compact) {
     return (
-      <CardLink href={cardUrl} label="View on keytrace.dev">
+      <CardLink href={cardUrl} label={t('viewOnApp', { app: 'Keytrace' })}>
         <div
           className="flex items-center gap-3 rounded-md border-l-4 px-3 py-2 transition-colors hover:bg-muted/50"
           style={{ borderLeftColor: stripeColor }}
@@ -91,7 +93,7 @@ export function KeytraceCard({ record, compact, authorHandle }: ActivityCardProp
   }
 
   return (
-    <CardLink href={cardUrl} label="View on keytrace.dev">
+    <CardLink href={cardUrl} label={t('viewOnApp', { app: 'Keytrace' })}>
       <div
         className="flex overflow-hidden rounded-lg border-l-4 bg-card transition-colors hover:bg-muted/50"
         style={{ borderLeftColor: stripeColor }}

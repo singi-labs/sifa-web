@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import {
   ChatText,
   Code,
@@ -235,6 +236,7 @@ export function GenericActivityCard({
   authorHandle,
   authorAvatar,
 }: ActivityCardProps) {
+  const t = useTranslations('activityIndicators');
   const appId = resolveAppId(collection);
   const appMeta = getAppMeta(appId);
   const category = resolveCategory(collection);
@@ -261,7 +263,7 @@ export function GenericActivityCard({
 
   if (compact) {
     return (
-      <CardLink href={cardUrl} label={`View on ${appMeta.name}`}>
+      <CardLink href={cardUrl} label={t('viewOnApp', { app: appMeta.name })}>
         <div
           className="flex items-center gap-3 rounded-md border-l-4 px-3 py-2 transition-colors hover:bg-muted/50"
           style={{ borderLeftColor: stripeColor }}
@@ -291,7 +293,7 @@ export function GenericActivityCard({
   }
 
   return (
-    <CardLink href={cardUrl} label={`View on ${appMeta.name}`}>
+    <CardLink href={cardUrl} label={t('viewOnApp', { app: appMeta.name })}>
       <div
         className="flex overflow-hidden rounded-lg border-l-4 bg-card transition-colors hover:bg-muted/50"
         style={{ borderLeftColor: stripeColor }}

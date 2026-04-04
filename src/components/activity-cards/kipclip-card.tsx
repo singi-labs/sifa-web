@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { Bookmark } from '@phosphor-icons/react';
 import { getAppMeta, getAppStripeColor, resolveCardUrl } from '@/lib/atproto-apps';
 import type { ActivityCardProps } from './types';
@@ -34,6 +35,7 @@ function extractDomain(url: string): string {
 }
 
 export function KipClipCard({ record, compact, authorHandle }: ActivityCardProps) {
+  const t = useTranslations('activityIndicators');
   const appMeta = getAppMeta('kipclip');
   const stripeColor = getAppStripeColor('kipclip');
 
@@ -48,7 +50,7 @@ export function KipClipCard({ record, compact, authorHandle }: ActivityCardProps
 
   if (compact) {
     return (
-      <CardLink href={cardUrl} label={subject ? `View bookmark: ${domain}` : 'View on KipClip'}>
+      <CardLink href={cardUrl} label={subject ? `View bookmark: ${domain}` : t('viewOnApp', { app: 'KipClip' })}>
         <div
           className="flex items-center gap-3 rounded-md border-l-4 px-3 py-2 transition-colors hover:bg-muted/50"
           style={{ borderLeftColor: stripeColor }}
@@ -67,7 +69,7 @@ export function KipClipCard({ record, compact, authorHandle }: ActivityCardProps
   }
 
   return (
-    <CardLink href={cardUrl} label={subject ? `View bookmark: ${domain}` : 'View on KipClip'}>
+    <CardLink href={cardUrl} label={subject ? `View bookmark: ${domain}` : t('viewOnApp', { app: 'KipClip' })}>
       <div
         className="flex overflow-hidden rounded-lg border-l-4 bg-card transition-colors hover:bg-muted/50"
         style={{ borderLeftColor: stripeColor }}

@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { Calendar, MapPin, CheckCircle, Star } from '@phosphor-icons/react';
 import { getAppMeta } from '@/lib/atproto-apps';
 import type { ActivityCardProps } from './types';
@@ -137,6 +138,7 @@ function buildSmokesignalUrl(subjectUri: string | undefined): string | null {
 }
 
 export function EventRsvpCard({ record: rawRecord, compact }: ActivityCardProps) {
+  const t = useTranslations('activityIndicators');
   const record = rawRecord as unknown as RsvpRecord;
   const meta = record.eventMeta;
   const eventName = meta?.name ?? 'Event';
@@ -152,7 +154,7 @@ export function EventRsvpCard({ record: rawRecord, compact }: ActivityCardProps)
 
   if (compact) {
     return (
-      <CardLink href={smokesignalUrl} label="View on Smoke Signal">
+      <CardLink href={smokesignalUrl} label={t('viewOnApp', { app: 'Smoke Signal' })}>
         <div
           className="flex items-center gap-3 rounded-md border-l-4 px-3 py-2 transition-colors hover:bg-muted/50"
           style={{ borderLeftColor: STRIPE_COLOR }}
@@ -173,7 +175,7 @@ export function EventRsvpCard({ record: rawRecord, compact }: ActivityCardProps)
   }
 
   return (
-    <CardLink href={smokesignalUrl} label="View on Smoke Signal">
+    <CardLink href={smokesignalUrl} label={t('viewOnApp', { app: 'Smoke Signal' })}>
       <div
         className="flex overflow-hidden rounded-lg border-l-4 bg-card transition-colors hover:bg-muted/50"
         style={{ borderLeftColor: STRIPE_COLOR }}
