@@ -1,5 +1,5 @@
 import { fetchProfile } from '@/lib/api';
-import { notFound } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 import { buildProfilePageJsonLd, buildMetaDescription } from '@/lib/jsonld';
 import { sanitize } from '@/lib/sanitize';
 import { IdentityCard } from '@/components/identity-card';
@@ -60,6 +60,11 @@ export default async function ProfilePage({
   const { deleted, connect } = await searchParams;
   const profile = await fetchProfile(handle);
   if (!profile) notFound();
+
+  // Redirect DID-based URLs to the canonical handle-based URL
+  if (handle.startsWith('did:') && profile.handle && !profile.handle.startsWith('did:')) {
+    permanentRedirect(`/p/${profile.handle}`);
+  }
 
   // Assemble structured location from API's separate fields
   const location: LocationValue | null = profile.locationCountry
