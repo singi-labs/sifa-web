@@ -61,8 +61,7 @@ export default async function Home() {
           {t('importLinkedIn')}
         </Link>
       </div>
-      {/* Two-column layout on desktop when ATmosphereConf is present; collapses to single column when the promo block is removed */}
-      <div className="mt-16 grid w-full max-w-4xl grid-cols-1 gap-8 lg:grid-cols-2">
+      <div className="mt-16 grid w-full max-w-4xl grid-cols-1 gap-8">
         {/* Left column: Profile of the Day + avatar reel */}
         <div className="flex flex-col items-center">
           {featuredProfile && (
@@ -133,48 +132,6 @@ export default async function Home() {
           {stats && stats.avatars.length > 0 && (
             <AvatarReel avatars={stats.avatars} caption={t('avatarReelCaption')} />
           )}
-        </div>
-
-        {/* Right column: ATmosphereConf 2026 promo -- remove entire column after mid-April 2026 */}
-        <div className="flex flex-col items-center lg:items-start lg:pt-8">
-          <div className="w-full max-w-lg rounded-xl border border-border bg-card p-6">
-            <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-start sm:text-left">
-              <Image
-                src="/atmosphereconf-goose.webp"
-                alt="Goodstuff the goose, ATmosphereConf mascot"
-                width={120}
-                height={150}
-                className="h-auto w-24 shrink-0 sm:w-28"
-              />
-              <div className="text-center sm:text-left">
-                <h2 className="text-lg font-bold">
-                  <span style={{ color: '#006AD5' }}>AT</span>mosphereConf 2026
-                </h2>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  March 26&ndash;29 &middot; Vancouver, BC
-                </p>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  Sifa will be at the global AT Protocol community conference. Come say hi!
-                </p>
-                <div className="mt-3 flex flex-wrap justify-center gap-2 sm:justify-start">
-                  <Link
-                    href="/events/atmosphereconf-2026"
-                    className="inline-flex h-8 items-center rounded-md bg-primary px-3 text-xs font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-                  >
-                    See who&apos;s going
-                  </Link>
-                  <a
-                    href="https://atmosphereconf.org/#tickets"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex h-8 items-center rounded-md border border-border px-3 text-xs font-medium transition-colors hover:bg-accent hover:text-foreground"
-                  >
-                    Get tickets
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
