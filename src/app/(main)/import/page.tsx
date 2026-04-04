@@ -4,12 +4,17 @@ import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
-import { processLinkedInExport, type ImportPreview } from '@/lib/import/orchestrator';
+import {
+  extractLinkedInExport,
+  type ExtractionResult,
+  type ImportPreview,
+} from '@/lib/import/orchestrator';
 import { trackEvent } from '@/lib/analytics';
 import { useAuth } from '@/components/auth-provider';
 import { fetchProfile } from '@/lib/api';
 import { revalidateProfileCache } from '@/app/actions';
 import { UploadStep } from './components/upload-step';
+import { LanguageStep } from './components/language-step';
 import { PreviewStep } from './components/preview-step';
 import { ConfirmStep } from './components/confirm-step';
 
@@ -19,7 +24,7 @@ export interface ExistingProfileData {
   skills: Array<{ name: string }>;
 }
 
-type Step = 'upload' | 'preview' | 'confirm';
+type Step = 'upload' | 'language' | 'preview' | 'confirm';
 
 export default function ImportPage() {
   const router = useRouter();
@@ -38,6 +43,7 @@ export default function ImportPage() {
   const [step, setStep] = useState<Step>('upload');
   const [isProcessing, setIsProcessing] = useState(false);
   const [extractionError, setExtractionError] = useState<string | null>(null);
+  const [extraction, setExtraction] = useState<ExtractionResult | null>(null);
   const [preview, setPreview] = useState<ImportPreview | null>(null);
   const [confirmedPreview, setConfirmedPreview] = useState<ImportPreview | null>(null);
   const [existingData, setExistingData] = useState<ExistingProfileData | null>(null);
@@ -60,10 +66,20 @@ export default function ImportPage() {
     setExtractionError(null);
     try {
       trackEvent('import-upload');
-      const result = await processLinkedInExport(file);
-      setPreview(result);
-      trackEvent('import-preview');
-      setStep('preview');
+      const result = await extractLinkedInExport(file);
+      setExtraction(result);
+
+      if (result.languages.length > 0) {
+        // Multi-language export: show language picker
+        trackEvent('import-language-detected', { count: result.languages.length });
+        setStep('language');
+      } else {
+        // Single-language export: go straight to preview
+        const previewData = result.buildPreview();
+        setPreview(previewData);
+        trackEvent('import-preview');
+        setStep('preview');
+      }
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Could not read ZIP file';
       setExtractionError(message);
@@ -71,6 +87,23 @@ export default function ImportPage() {
       setIsProcessing(false);
     }
   }, []);
+
+  const handleLanguageSelected = useCallback(
+    (language: string) => {
+      if (!extraction) return;
+      setIsProcessing(true);
+      try {
+        trackEvent('import-language-selected', { language });
+        const previewData = extraction.buildPreview(language);
+        setPreview(previewData);
+        trackEvent('import-preview');
+        setStep('preview');
+      } finally {
+        setIsProcessing(false);
+      }
+    },
+    [extraction],
+  );
 
   const handleConfirm = useCallback((data: ImportPreview) => {
     setConfirmedPreview(data);
@@ -83,6 +116,12 @@ export default function ImportPage() {
     router.push(session?.handle ? `/p/${session.handle}` : '/');
   }, [router, session]);
 
+  // Determine visible steps for the step indicator
+  const hasLanguageStep = (extraction?.languages.length ?? 0) > 0;
+  const stepLabels = hasLanguageStep
+    ? (['upload', 'language', 'preview', 'confirm'] as const)
+    : (['upload', 'preview', 'confirm'] as const);
+
   return (
     <main className="mx-auto max-w-3xl px-4 py-8">
       <h1 className="mb-2 text-2xl font-bold">{t('title')}</h1>
@@ -90,7 +129,7 @@ export default function ImportPage() {
 
       {/* Step indicator */}
       <div className="mb-8 flex items-center gap-2" aria-label="Import steps">
-        {(['upload', 'preview', 'confirm'] as const).map((s, i) => (
+        {stepLabels.map((s, i) => (
           <div key={s} className="flex items-center gap-2">
             {i > 0 && <div className="h-px w-8 bg-border" />}
             <div
@@ -102,6 +141,7 @@ export default function ImportPage() {
             </div>
             <span className="hidden text-sm sm:inline">
               {s === 'upload' && t('uploadStep')}
+              {s === 'language' && t('languageStep')}
               {s === 'preview' && t('previewStep')}
               {s === 'confirm' && t('confirmStep')}
             </span>
@@ -118,12 +158,21 @@ export default function ImportPage() {
         />
       )}
 
+      {step === 'language' && extraction && (
+        <LanguageStep
+          languages={extraction.languages}
+          onSelect={handleLanguageSelected}
+          onBack={() => setStep('upload')}
+          isProcessing={isProcessing}
+        />
+      )}
+
       {step === 'preview' && preview && (
         <PreviewStep
           preview={preview}
           existingData={existingData}
           onConfirm={handleConfirm}
-          onBack={() => setStep('upload')}
+          onBack={() => setStep(hasLanguageStep ? 'language' : 'upload')}
         />
       )}
 
