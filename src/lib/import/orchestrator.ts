@@ -23,7 +23,9 @@ import {
   type SifaHonor,
   type SifaLanguage,
 } from './field-mapper';
-import { extractLinkedInZip } from './zip-extractor';
+import { extractLinkedInZip, type LanguageOption } from './zip-extractor';
+
+export type { LanguageOption } from './zip-extractor';
 
 export interface ImportPreview {
   profile: SifaProfile | null;
@@ -37,6 +39,18 @@ export interface ImportPreview {
   courses: SifaCourse[];
   honors: SifaHonor[];
   languages: SifaLanguage[];
+}
+
+/**
+ * Result of the initial ZIP extraction phase.
+ * If multiple languages are detected, the caller must present a language picker
+ * before calling `buildPreview()`.
+ */
+export interface ExtractionResult {
+  /** Available languages. Empty array means single-language export. */
+  languages: LanguageOption[];
+  /** Build the import preview, optionally for a specific language. */
+  buildPreview: (language?: string) => ImportPreview;
 }
 
 /**
@@ -140,11 +154,30 @@ export function processLinkedInCsvFiles(csvFiles: Map<string, string>): ImportPr
 }
 
 /**
+ * Extract a LinkedIn ZIP file and detect available languages.
+ * Returns an ExtractionResult that lets callers pick a language before building the preview.
+ */
+export async function extractLinkedInExport(file: File): Promise<ExtractionResult> {
+  const extraction = await extractLinkedInZip(file);
+
+  return {
+    languages: extraction.languages,
+    buildPreview: (language?: string) => {
+      const csvFiles = extraction.extractForLanguage(language);
+      return processLinkedInCsvFiles(csvFiles);
+    },
+  };
+}
+
+/**
  * Full pipeline: extract a LinkedIn ZIP file and produce an import preview.
- * The ZIP is extracted client-side (browser) and never leaves the user's device.
- * The structured profile data is then written to the user's PDS through the Sifa API.
+ * For single-language exports, works exactly as before.
+ * For multi-language exports, uses the first detected language by default.
+ *
+ * @deprecated Use extractLinkedInExport() for multi-language support.
  */
 export async function processLinkedInExport(file: File): Promise<ImportPreview> {
-  const csvFiles = await extractLinkedInZip(file);
-  return processLinkedInCsvFiles(csvFiles);
+  const result = await extractLinkedInExport(file);
+  const language = result.languages.length > 0 ? result.languages[0]!.dirName : undefined;
+  return result.buildPreview(language);
 }

@@ -125,6 +125,7 @@
     "subtitle": "Bring your professional history to Sifa ID. Your LinkedIn ZIP is extracted in your browser and never leaves your device.",
     "uploadStep": "Upload",
     "previewStep": "Review",
+    "languageStep": "Language",
     "confirmStep": "Import",
     "upload": {
       "heading": "Upload your LinkedIn data export",
@@ -142,6 +143,13 @@
       "publicDataNotice": "Everything you import will be publicly visible to anyone, including people without a Sifa account. Unlike LinkedIn (where some data is hidden from logged-out visitors), Sifa profiles are fully public. Review your data before importing.",
       "reimportTitle": "You already have profile data",
       "reimportBody": "Importing again will fully replace your existing positions, education, skills, and other LinkedIn-imported data with the contents of this new export. Items you removed from LinkedIn will also be removed from Sifa. Items you added or edited directly on Sifa will be overwritten. You can review and remove individual items before confirming in the next step."
+    },
+    "language": {
+      "heading": "Choose profile language",
+      "description": "Your LinkedIn export contains your profile in multiple languages. Choose which version to import.",
+      "back": "Back",
+      "continue": "Continue",
+      "processing": "Processing..."
     },
     "preview": {
       "heading": "Review imported data",
