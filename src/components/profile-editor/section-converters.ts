@@ -81,9 +81,9 @@ export function valuesToCertification(
 ): Record<string, string | undefined> {
   return {
     name: values.name as string,
-    issuingOrg: values.issuingOrg as string,
-    issueDate: optStr(values.issueDate),
-    expiryDate: optStr(values.expiryDate),
+    authority: optStr(values.issuingOrg),
+    issuedAt: optStr(values.issueDate),
+    expiresAt: optStr(values.expiryDate),
     credentialUrl: optStr(values.credentialUrl),
   };
 }
