@@ -82,8 +82,8 @@ export function valuesToCertification(
   return {
     name: values.name as string,
     issuingOrg: values.issuingOrg as string,
-    issueDate: optStr(values.issueDate),
-    expiryDate: optStr(values.expiryDate),
+    issuedAt: optStr(values.issueDate),
+    expiresAt: optStr(values.expiryDate),
     credentialUrl: optStr(values.credentialUrl),
   };
 }
@@ -102,13 +102,13 @@ export function projectToValues(item: ProfileProject): Record<string, string | b
 
 export function valuesToProject(
   values: Record<string, string | boolean>,
-): Omit<ProfileProject, 'rkey'> {
+): Record<string, string | undefined> {
   return {
     name: values.name as string,
     description: optStr(values.description),
     url: optStr(values.url),
-    startDate: optStr(values.startDate),
-    endDate: optStr(values.endDate),
+    startedAt: optStr(values.startDate),
+    endedAt: optStr(values.endDate),
   };
 }
 
@@ -151,13 +151,13 @@ export function volunteeringToValues(item: ProfileVolunteering): Record<string, 
 
 export function valuesToVolunteering(
   values: Record<string, string | boolean>,
-): Omit<ProfileVolunteering, 'rkey'> {
+): Record<string, string | undefined> {
   return {
     organization: values.organization as string,
     role: optStr(values.role),
     cause: optStr(values.cause),
-    startDate: optStr(values.startDate),
-    endDate: optStr(values.endDate),
+    startedAt: optStr(values.startDate),
+    endedAt: optStr(values.endDate),
     description: optStr(values.description),
   };
 }
@@ -175,11 +175,11 @@ export function honorToValues(item: ProfileHonor): Record<string, string | boole
 
 export function valuesToHonor(
   values: Record<string, string | boolean>,
-): Omit<ProfileHonor, 'rkey'> {
+): Record<string, string | undefined> {
   return {
     title: values.title as string,
     issuer: optStr(values.issuer),
-    date: optStr(values.date),
+    awardedAt: optStr(values.date),
     description: optStr(values.description),
   };
 }
