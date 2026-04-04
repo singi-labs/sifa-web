@@ -56,6 +56,7 @@ export function AboutSection({ about, isOwnProfile }: AboutSectionProps) {
             headline={profile.headline}
             about={profile.about}
             location={profile.location}
+            locations={profile.locations}
             openTo={profile.openTo}
             preferredWorkplace={profile.preferredWorkplace}
             hasDisplayNameOverride={profile.hasDisplayNameOverride}

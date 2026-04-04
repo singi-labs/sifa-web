@@ -202,6 +202,31 @@ export async function deleteSkill(rkey: string): Promise<WriteResult> {
   return apiRequest(`/api/profile/skill/${encodeURIComponent(rkey)}`, 'DELETE');
 }
 
+export async function createProfileLocation(data: {
+  address: { country: string; countryCode?: string; region?: string; city?: string } | string;
+  type: string;
+  label?: string;
+  isPrimary?: boolean;
+}): Promise<CreateResult> {
+  return apiCreateRequest('/api/profile/location', data);
+}
+
+export async function updateProfileLocation(
+  rkey: string,
+  data: {
+    address: { country: string; countryCode?: string; region?: string; city?: string } | string;
+    type: string;
+    label?: string;
+    isPrimary?: boolean;
+  },
+): Promise<WriteResult> {
+  return apiRequest(`/api/profile/location/${encodeURIComponent(rkey)}`, 'PUT', data);
+}
+
+export async function deleteProfileLocation(rkey: string): Promise<WriteResult> {
+  return apiRequest(`/api/profile/location/${encodeURIComponent(rkey)}`, 'DELETE');
+}
+
 export async function createExternalAccount(data: {
   platform: string;
   url: string;
