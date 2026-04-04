@@ -101,8 +101,10 @@ export function PublicationsSection({
       if (currentlyHidden) await unhideOrcidPublication(pub.orcidPutCode);
       else await hideOrcidPublication(pub.orcidPutCode);
     } else if (pub.source === 'standard') {
-      if (currentlyHidden) await unhideStandardPublication(pub.rkey);
-      else await hideStandardPublication(pub.rkey);
+      // pub.rkey is "std-{uri}" from the merger; strip the prefix for the API
+      const uri = pub.rkey.replace(/^std-/, '');
+      if (currentlyHidden) await unhideStandardPublication(uri);
+      else await hideStandardPublication(uri);
     } else {
       // sifa-native
       if (currentlyHidden) await unhideSifaPublication(pub.rkey);
