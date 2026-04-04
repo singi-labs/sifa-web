@@ -99,6 +99,8 @@ interface IdentityCardProps {
   badge?: string;
   connectionType?: 'mutual' | 'following' | 'followedBy';
   hideFooter?: boolean;
+  /** When set, the display name becomes a Link to this path (useful on touch devices where the outer card isn't clickable). */
+  profileHref?: string;
   className?: string;
   hasDisplayNameOverride?: boolean;
   hasAvatarUrlOverride?: boolean;
@@ -135,6 +137,7 @@ export function IdentityCard({
   badge,
   connectionType,
   hideFooter,
+  profileHref,
   className,
   hasDisplayNameOverride,
   hasAvatarUrlOverride,
@@ -168,24 +171,43 @@ export function IdentityCard({
         <>
           {/* Embed layout: compact two-column with avatar left */}
           <div className="flex items-start gap-4">
-            <div className="flex h-[72px] w-[72px] shrink-0 items-center justify-center overflow-hidden rounded-full bg-muted text-xl font-semibold text-muted-foreground">
-              {avatar ? (
-                <Image
-                  src={avatar}
-                  alt=""
-                  width={72}
-                  height={72}
-                  className="h-[72px] w-[72px] rounded-full object-cover"
-                />
+            {(() => {
+              const avatarContent = (
+                <div className="flex h-[72px] w-[72px] shrink-0 items-center justify-center overflow-hidden rounded-full bg-muted text-xl font-semibold text-muted-foreground">
+                  {avatar ? (
+                    <Image
+                      src={avatar}
+                      alt=""
+                      width={72}
+                      height={72}
+                      className="h-[72px] w-[72px] rounded-full object-cover"
+                    />
+                  ) : (
+                    <span aria-hidden="true">{label.charAt(0).toUpperCase()}</span>
+                  )}
+                </div>
+              );
+              return profileHref ? (
+                <Link href={profileHref} aria-hidden="true" tabIndex={-1}>
+                  {avatarContent}
+                </Link>
               ) : (
-                <span aria-hidden="true">{label.charAt(0).toUpperCase()}</span>
-              )}
-            </div>
+                avatarContent
+              );
+            })()}
             <div className="min-w-0 flex-1">
               {/* Name + pronouns + verified */}
               <div className="flex items-center gap-1.5">
                 {/* h1 is correct here: embed renders in an isolated iframe document */}
-                <h1 className="truncate text-base font-semibold">{label}</h1>
+                <h1 className="truncate text-base font-semibold">
+                  {profileHref ? (
+                    <Link href={profileHref} className="hover:underline">
+                      {label}
+                    </Link>
+                  ) : (
+                    label
+                  )}
+                </h1>
                 {pronouns && (
                   <span className="text-xs font-normal text-muted-foreground">({pronouns})</span>
                 )}
