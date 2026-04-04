@@ -174,8 +174,8 @@ export interface SifaProject {
   name: string;
   description?: string;
   url?: string;
-  startDate?: string;
-  endDate?: string;
+  startedAt?: string;
+  endedAt?: string;
 }
 
 export function mapProjectsCsv(row: Record<string, string>): SifaProject {
@@ -183,8 +183,8 @@ export function mapProjectsCsv(row: Record<string, string>): SifaProject {
     name: truncate(row['Title']?.trim() ?? '', 256),
     description: restoreLineBreaks(optional(row['Description'])),
     url: optionalUrl(row['Url']),
-    startDate: parseLinkedInDate(row['Started On']),
-    endDate: parseLinkedInDate(row['Finished On']),
+    startedAt: parseLinkedInDate(row['Started On']),
+    endedAt: parseLinkedInDate(row['Finished On']),
   };
 }
 
@@ -195,8 +195,8 @@ export interface SifaVolunteering {
   role?: string;
   cause?: string;
   description?: string;
-  startDate?: string;
-  endDate?: string;
+  startedAt?: string;
+  endedAt?: string;
 }
 
 export function mapVolunteeringCsv(row: Record<string, string>): SifaVolunteering {
@@ -205,8 +205,8 @@ export function mapVolunteeringCsv(row: Record<string, string>): SifaVolunteerin
     role: optionalTruncated(row['Role'], 256),
     cause: optionalTruncated(row['Cause'], 256),
     description: restoreLineBreaks(optional(row['Description'])),
-    startDate: parseLinkedInDate(row['Started On']),
-    endDate: parseLinkedInDate(row['Finished On']),
+    startedAt: parseLinkedInDate(row['Started On']),
+    endedAt: parseLinkedInDate(row['Finished On']),
   };
 }
 

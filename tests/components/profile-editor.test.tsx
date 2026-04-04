@@ -306,8 +306,8 @@ describe('Section converters', () => {
       const result = valuesToCertification(values);
       expect(result.name).toBe('AWS Solutions Architect');
       expect(result.issuingOrg).toBe('Amazon');
-      expect(result.issueDate).toBe('2023-01');
-      expect(result.expiryDate).toBe('2026-01');
+      expect(result.issuedAt).toBe('2023-01');
+      expect(result.expiresAt).toBe('2026-01');
       expect(result.credentialUrl).toBe('https://aws.amazon.com/cert/123');
     });
 
@@ -319,8 +319,8 @@ describe('Section converters', () => {
         expiryDate: '',
         credentialUrl: '',
       });
-      expect(result.issueDate).toBeUndefined();
-      expect(result.expiryDate).toBeUndefined();
+      expect(result.issuedAt).toBeUndefined();
+      expect(result.expiresAt).toBeUndefined();
       expect(result.credentialUrl).toBeUndefined();
     });
   });
@@ -337,7 +337,7 @@ describe('Section converters', () => {
       expect(result.name).toBe('Sifa');
       expect(result.description).toBe('Professional network');
       expect(result.url).toBe('https://sifa.id');
-      expect(result.startDate).toBeUndefined();
+      expect(result.startedAt).toBeUndefined();
     });
   });
 
