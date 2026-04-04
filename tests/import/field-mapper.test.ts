@@ -7,6 +7,8 @@ import {
   mapCertificationsCsv,
   mapProjectsCsv,
   mapPublicationsCsv,
+  mapCoursesCsv,
+  mapHonorsCsv,
 } from '@/lib/import/field-mapper';
 
 describe('LinkedIn field mapper', () => {
@@ -83,6 +85,44 @@ describe('LinkedIn field mapper', () => {
       expect(result.institution).toBe('MIT');
       expect(result.degree).toBe('BSc');
       expect(result.description).toBe('Computer Science');
+    });
+
+    it('maps Field of Study to fieldOfStudy', () => {
+      const result = mapEducationCsv({
+        'School Name': 'MIT',
+        'Field of Study': 'Computer Science',
+      });
+      expect(result.fieldOfStudy).toBe('Computer Science');
+    });
+
+    it('trims whitespace from fieldOfStudy', () => {
+      const result = mapEducationCsv({
+        'School Name': 'MIT',
+        'Field of Study': '  Computer Science  ',
+      });
+      expect(result.fieldOfStudy).toBe('Computer Science');
+    });
+
+    it('returns undefined for empty fieldOfStudy', () => {
+      const result = mapEducationCsv({
+        'School Name': 'MIT',
+        'Field of Study': '  ',
+      });
+      expect(result.fieldOfStudy).toBeUndefined();
+    });
+
+    it('returns undefined when Field of Study column is absent', () => {
+      const result = mapEducationCsv({ 'School Name': 'MIT' });
+      expect(result.fieldOfStudy).toBeUndefined();
+    });
+
+    it('truncates fieldOfStudy exceeding 256 graphemes', () => {
+      const result = mapEducationCsv({
+        'School Name': 'MIT',
+        'Field of Study': 'X'.repeat(300),
+      });
+      expect(result.fieldOfStudy!.length).toBeLessThanOrEqual(256);
+      expect(result.fieldOfStudy!.endsWith('…')).toBe(true);
     });
   });
 
@@ -163,6 +203,74 @@ describe('LinkedIn field mapper', () => {
         Url: 'garbage',
       });
       expect(result.url).toBeUndefined();
+    });
+  });
+
+  describe('mapCoursesCsv', () => {
+    it('maps existing columns', () => {
+      const result = mapCoursesCsv({ Name: 'Intro to ML', Number: 'CS101' });
+      expect(result.name).toBe('Intro to ML');
+      expect(result.number).toBe('CS101');
+    });
+
+    it('maps Institution column to institution', () => {
+      const result = mapCoursesCsv({ Name: 'Intro to ML', Institution: 'Coursera' });
+      expect(result.institution).toBe('Coursera');
+    });
+
+    it('trims whitespace from institution', () => {
+      const result = mapCoursesCsv({ Name: 'Intro to ML', Institution: '  Coursera  ' });
+      expect(result.institution).toBe('Coursera');
+    });
+
+    it('returns undefined for empty institution', () => {
+      const result = mapCoursesCsv({ Name: 'Intro to ML', Institution: '' });
+      expect(result.institution).toBeUndefined();
+    });
+
+    it('returns undefined when Institution column is absent', () => {
+      const result = mapCoursesCsv({ Name: 'Intro to ML' });
+      expect(result.institution).toBeUndefined();
+    });
+
+    it('truncates institution exceeding 256 graphemes', () => {
+      const result = mapCoursesCsv({ Name: 'Course', Institution: 'U'.repeat(300) });
+      expect(result.institution!.length).toBeLessThanOrEqual(256);
+      expect(result.institution!.endsWith('…')).toBe(true);
+    });
+  });
+
+  describe('mapHonorsCsv', () => {
+    it('maps existing columns', () => {
+      const result = mapHonorsCsv({ Title: 'Best Paper Award', 'Issued On': 'Jan 2022' });
+      expect(result.title).toBe('Best Paper Award');
+      expect(result.awardedAt).toBe('2022-01');
+    });
+
+    it('maps Issuer column to issuer', () => {
+      const result = mapHonorsCsv({ Title: 'Award', Issuer: 'IEEE' });
+      expect(result.issuer).toBe('IEEE');
+    });
+
+    it('trims whitespace from issuer', () => {
+      const result = mapHonorsCsv({ Title: 'Award', Issuer: '  IEEE  ' });
+      expect(result.issuer).toBe('IEEE');
+    });
+
+    it('returns undefined for empty issuer', () => {
+      const result = mapHonorsCsv({ Title: 'Award', Issuer: '' });
+      expect(result.issuer).toBeUndefined();
+    });
+
+    it('returns undefined when Issuer column is absent', () => {
+      const result = mapHonorsCsv({ Title: 'Award' });
+      expect(result.issuer).toBeUndefined();
+    });
+
+    it('truncates issuer exceeding 256 graphemes', () => {
+      const result = mapHonorsCsv({ Title: 'Award', Issuer: 'I'.repeat(300) });
+      expect(result.issuer!.length).toBeLessThanOrEqual(256);
+      expect(result.issuer!.endsWith('…')).toBe(true);
     });
   });
 
