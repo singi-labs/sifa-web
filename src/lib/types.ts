@@ -65,6 +65,18 @@ export interface EndorsementData {
   relationshipContext?: string;
 }
 
+export interface ProfileLocation {
+  rkey: string;
+  type: string;
+  label?: string | null;
+  isPrimary: boolean;
+  locationCountry?: string | null;
+  locationRegion?: string | null;
+  locationCity?: string | null;
+  countryCode?: string | null;
+  location?: string | null;
+}
+
 export interface ProfileCertification {
   rkey: string;
   name: string;
@@ -216,6 +228,7 @@ export interface Profile {
     avatarUrl?: string;
   };
   location?: LocationValue | null;
+  locations?: ProfileLocation[];
   website?: string;
   openTo?: string[];
   preferredWorkplace?: string[];

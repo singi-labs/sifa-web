@@ -17,8 +17,8 @@ import {
   updateProfileOverride,
 } from '@/lib/profile-api';
 import { revalidateProfileCache } from '@/app/actions';
-import { LocationSearch } from '@/components/location-search';
-import type { LocationValue } from '@/lib/types';
+import { LocationManager } from '@/components/profile-editor/location-manager';
+import type { LocationValue, ProfileLocation } from '@/lib/types';
 import { trackEvent } from '@/lib/analytics';
 
 const PlateMarkdownEditor = lazy(() =>
@@ -51,6 +51,7 @@ interface ProfileEditDialogProps {
   headline?: string;
   about?: string;
   location?: LocationValue | null;
+  locations?: ProfileLocation[];
   openTo?: string[];
   preferredWorkplace?: string[];
   hasDisplayNameOverride?: boolean;
@@ -67,7 +68,8 @@ export function ProfileEditDialog({
   avatar,
   headline: initialHeadline,
   about: initialAbout,
-  location: initialLocation,
+  location: _initialLocation,
+  locations: initialLocations,
   openTo: initialOpenTo,
   preferredWorkplace: initialPreferredWorkplace,
   hasDisplayNameOverride: initialHasDisplayNameOverride,
@@ -83,7 +85,9 @@ export function ProfileEditDialog({
 
   const [headline, setHeadline] = useState(initialHeadline ?? '');
   const [about, setAbout] = useState(initialAbout ?? '');
-  const [locationValue, setLocationValue] = useState<LocationValue | null>(initialLocation ?? null);
+  const [profileLocations, setProfileLocations] = useState<ProfileLocation[]>(
+    initialLocations ?? [],
+  );
   const [openTo, setOpenTo] = useState<Set<string>>(new Set(initialOpenTo ?? []));
   const [preferredWorkplace, setPreferredWorkplace] = useState<Set<string>>(
     new Set(initialPreferredWorkplace ?? []),
@@ -175,18 +179,22 @@ export function ProfileEditDialog({
     setSaving(true);
     setError(null);
 
+    // Derive primary location from multi-location list for backward-compat sync to profile.self
+    const primaryLoc = profileLocations.find((l) => l.isPrimary) ?? profileLocations[0];
+    const locationPayload = primaryLoc?.locationCountry
+      ? {
+          country: primaryLoc.locationCountry,
+          countryCode: primaryLoc.countryCode ?? undefined,
+          region: primaryLoc.locationRegion ?? undefined,
+          city: primaryLoc.locationCity ?? undefined,
+        }
+      : undefined;
+
     // Save profile self fields (headline, about, location, etc.)
     const result = await updateProfileSelf({
       headline: headline || undefined,
       about: about || undefined,
-      location: locationValue
-        ? {
-            country: locationValue.country,
-            countryCode: locationValue.countryCode,
-            region: locationValue.region,
-            city: locationValue.city,
-          }
-        : undefined,
+      location: locationPayload,
       openTo: [...openTo],
       preferredWorkplace: [...preferredWorkplace],
     });
@@ -217,7 +225,8 @@ export function ProfileEditDialog({
       displayName: editDisplayName || undefined,
       headline: headline || undefined,
       about: about || undefined,
-      location: locationValue ?? undefined,
+      location: locationPayload ?? undefined,
+      locations: profileLocations,
       openTo: [...openTo],
       preferredWorkplace: [...preferredWorkplace],
       hasDisplayNameOverride: hasDisplayNameOvr,
@@ -390,11 +399,8 @@ export function ProfileEditDialog({
             </Suspense>
           </div>
 
-          {/* Location */}
-          <div>
-            <span className="mb-1 block text-sm font-medium">{t('location')}</span>
-            <LocationSearch id="edit-location" value={locationValue} onChange={setLocationValue} />
-          </div>
+          {/* Locations */}
+          <LocationManager locations={profileLocations} onChange={setProfileLocations} />
 
           {/* Open To */}
           <fieldset>

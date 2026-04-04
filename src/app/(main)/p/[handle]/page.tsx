@@ -142,6 +142,7 @@ export default async function ProfilePage({
             currentRole={currentPosition?.title}
             currentCompany={currentPosition?.company}
             location={location}
+            locations={profile.locations}
             website={profile.website}
             openTo={profile.openTo}
             preferredWorkplace={profile.preferredWorkplace}

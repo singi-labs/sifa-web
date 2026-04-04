@@ -31,6 +31,7 @@ import type {
   ActiveApp,
   LocationValue,
   PdsProviderInfo,
+  ProfileLocation,
   TrustStat,
   VerifiedAccount,
 } from '@/lib/types';
@@ -81,6 +82,7 @@ interface IdentityCardProps {
   currentRole?: string;
   currentCompany?: string;
   location?: LocationValue | null;
+  locations?: ProfileLocation[];
   website?: string;
   openTo?: string[];
   preferredWorkplace?: string[];
@@ -119,6 +121,7 @@ export function IdentityCard({
   currentRole,
   currentCompany,
   location,
+  locations,
   website,
   openTo,
   preferredWorkplace,
@@ -641,6 +644,7 @@ export function IdentityCard({
           headline={headline}
           about={about}
           location={location}
+          locations={locations}
           openTo={openTo}
           preferredWorkplace={preferredWorkplace}
           hasDisplayNameOverride={hasDisplayNameOverride}
