@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { Butterfly } from '@phosphor-icons/react';
 import { getAppMeta, getAppStripeColor } from '@/lib/atproto-apps';
 import type { ActivityCardProps } from './types';
@@ -170,6 +171,8 @@ export function BlueskyPostCard({
   authorHandle,
   compact,
 }: ActivityCardProps) {
+  const tIndicators = useTranslations('activityIndicators');
+  const tActivity = useTranslations('activity');
   const record = rawRecord as unknown as BlueskyRecord;
   const text = record.text ?? '';
   const createdAt = record.createdAt ?? null;
@@ -183,7 +186,7 @@ export function BlueskyPostCard({
   if (compact) {
     const truncated = text.length > 100 ? `${text.slice(0, 100)}...` : text;
     return (
-      <CardLink href={postUrl} label="View on Bluesky">
+      <CardLink href={postUrl} label={tIndicators('viewOnApp', { app: 'Bluesky' })}>
         <div
           className="flex items-center gap-3 rounded-md border-l-4 px-3 py-2 transition-colors hover:bg-muted/50"
           style={{ borderLeftColor: STRIPE_COLOR }}
@@ -202,7 +205,7 @@ export function BlueskyPostCard({
   }
 
   return (
-    <CardLink href={postUrl} label="View on Bluesky">
+    <CardLink href={postUrl} label={tIndicators('viewOnApp', { app: 'Bluesky' })}>
       <div
         className="flex overflow-hidden rounded-lg border-l-4 bg-card transition-colors hover:bg-muted/50"
         style={{ borderLeftColor: STRIPE_COLOR }}
@@ -221,7 +224,7 @@ export function BlueskyPostCard({
                   className="mb-1 inline-block rounded bg-sky-100 px-1.5 py-0.5 text-xs font-medium text-sky-700 dark:bg-sky-900/40 dark:text-sky-300"
                   data-testid="bluesky-reply-label"
                 >
-                  Reply
+                  {tActivity('reply')}
                 </span>
               )}
               <p className="text-sm leading-relaxed">

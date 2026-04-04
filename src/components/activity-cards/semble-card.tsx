@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { Path, CheckCircle, Footprints, BookmarkSimple, Note } from '@phosphor-icons/react';
 import { getAppMeta, getAppStripeColor, resolveCardUrl } from '@/lib/atproto-apps';
 import type { ActivityCardProps } from './types';
@@ -46,6 +47,7 @@ function detectRecordType(collection: string, record: Record<string, unknown>): 
 }
 
 export function SembleCard({ record, collection, authorHandle, compact }: ActivityCardProps) {
+  const t = useTranslations('activityIndicators');
   const appMeta = getAppMeta('semble');
   const stripeColor = getAppStripeColor('semble');
   const recordType = detectRecordType(collection, record);
@@ -105,7 +107,8 @@ export function SembleCard({ record, collection, authorHandle, compact }: Activi
             ? 'Explored a trail'
             : (title ?? 'Created a trail');
 
-  const linkLabel = recordType === 'card-url' && domain ? `View on ${domain}` : 'View on Semble';
+  const linkLabel =
+    recordType === 'card-url' && domain ? `View on ${domain}` : t('viewOnApp', { app: 'Semble' });
 
   if (compact) {
     return (

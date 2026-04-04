@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { GitBranch, Code } from '@phosphor-icons/react';
 import { getAppStripeColor, resolveCardUrl } from '@/lib/atproto-apps';
 import type { ActivityCardProps } from './types';
@@ -89,6 +90,7 @@ function formatRelativeTime(dateString: string): string {
 }
 
 export function TangledCard({ record, collection, compact, authorHandle }: ActivityCardProps) {
+  const t = useTranslations('activityIndicators');
   const { title, subtitle } = extractText(record);
   const typeLabel = deriveTypeLabel(collection);
   const language =
@@ -107,7 +109,7 @@ export function TangledCard({ record, collection, compact, authorHandle }: Activ
 
   if (compact) {
     return (
-      <CardLink href={cardUrl} label="View on Tangled">
+      <CardLink href={cardUrl} label={t('viewOnApp', { app: 'Tangled' })}>
         <div
           className="flex items-center gap-3 rounded-md border-l-4 px-3 py-2 transition-colors hover:bg-muted/50"
           style={{ borderLeftColor: TANGLED_STRIPE }}
@@ -134,7 +136,7 @@ export function TangledCard({ record, collection, compact, authorHandle }: Activ
   }
 
   return (
-    <CardLink href={cardUrl} label="View on Tangled">
+    <CardLink href={cardUrl} label={t('viewOnApp', { app: 'Tangled' })}>
       <div
         className="flex overflow-hidden rounded-lg border-l-4 bg-card transition-colors hover:bg-muted/50"
         style={{ borderLeftColor: TANGLED_STRIPE }}
