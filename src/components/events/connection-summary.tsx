@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { Binoculars, SignIn, SpinnerGap } from '@phosphor-icons/react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -30,15 +31,17 @@ export function ConnectionSummary({
   connections,
   loginUrl = '/login',
 }: ConnectionSummaryProps): React.ReactNode {
+  const t = useTranslations('connectionSummary');
+
   if (!isLoggedIn) {
     return (
       <div className={containerClass}>
         <SignIn size={20} className={iconClass} aria-hidden="true" />
         <p className={textClass}>
           <Link href={loginUrl} className="underline underline-offset-2 hover:text-foreground">
-            Sign in with your AT Protocol handle
+            {t('signInLink')}
           </Link>{' '}
-          to see who you know at this event.
+          {t('signInSuffix')}
         </p>
       </div>
     );
@@ -48,7 +51,7 @@ export function ConnectionSummary({
     return (
       <div className={containerClass}>
         <SpinnerGap size={20} className={`${iconClass} animate-spin`} aria-hidden="true" />
-        <p className={textClass}>Checking your connections...</p>
+        <p className={textClass}>{t('loading')}</p>
       </div>
     );
   }
@@ -57,9 +60,7 @@ export function ConnectionSummary({
     return (
       <div className={containerClass}>
         <Binoculars size={20} className={iconClass} aria-hidden="true" />
-        <p className={textClass}>
-          {"None of your Bluesky connections have RSVP'd yet. Discover new connections below!"}
-        </p>
+        <p className={textClass}>{t('noConnections')}</p>
       </div>
     );
   }
@@ -97,7 +98,8 @@ export function ConnectionSummary({
         )}
       </div>
       <p className={textClass}>
-        <strong>{connections.length} people you know</strong> are attending
+        <strong>{t('attendingCount', { count: String(connections.length) })}</strong>{' '}
+        {t('attending')}
       </p>
     </div>
   );

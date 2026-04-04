@@ -95,7 +95,8 @@
   },
   "activity": {
     "title": "Activity for {handle}",
-    "breadcrumb": "Activity breadcrumb",
+    "breadcrumb": "Activity",
+    "reply": "Reply",
     "backToProfile": "Back to profile",
     "categoryTabsLabel": "Activity categories",
     "categoryAll": "All",
@@ -389,6 +390,11 @@
     "providerReadMore": "Read more",
     "providerRecommendation": "Not sure which to pick? Choose Bluesky, it's the most popular. You can always switch later.",
     "signupLoading": "Redirecting...",
+    "customPdsToggle": "Have your own PDS or use a different provider?",
+    "customPdsLabel": "PDS hostname",
+    "customPdsPlaceholder": "pds.example.com",
+    "customPdsHint": "Enter the hostname of any AT Protocol PDS (e.g. npmx.social, pds.example.com).",
+    "customPdsSubmit": "Sign up via this PDS",
     "whyExternalHeading": "Why do I need to create an account somewhere else?",
     "whyExternalExplanation": "Sifa is built on the AT Protocol, an open standard that keeps your identity separate from any single app. Your account works across Sifa, Bluesky, and dozens of other apps. You own your data, and no platform can lock you out of it.",
     "returningUserHeading": "Already have an account?",
@@ -428,7 +434,7 @@
   },
   "privacy": {
     "title": "Privacy Policy",
-    "lastUpdated": "Last updated: March 20, 2026",
+    "lastUpdated": "Last updated: March 2026",
     "introPrefix": "Sifa ID is operated by",
     "introFoundedBy": ", founded by",
     "introSuffix": "and based in the Netherlands. We built Sifa on the AT Protocol because professional identity data shouldn't be controlled by a single platform. This policy explains what data we handle and how.",
@@ -467,7 +473,7 @@
   },
   "embedBuilder": {
     "pageTitle": "Embed a Sifa ID Profile Card",
-    "pageDescription": "Add a live professional profile card to any website with a single line of code.",
+    "pageDescription": "Embed a live Sifa ID professional profile card on any website. Auto-updates when the profile changes. Free, no account required.",
     "pageSubtitle": "Add a live professional profile card to any website with a single line of code.",
     "identifierLabel": "Handle or DID",
     "codeLabel": "Embed code",
@@ -601,8 +607,22 @@
     "updateSuccess": "Visibility updated.",
     "updateError": "Failed to update visibility. Please try again.",
     "noApps": "No active apps found on your profile yet.",
-    "hiddenAppsNote": "Only apps you are currently active on are shown here. If you hide an app, it will no longer appear on your profile or in this list. To make a hidden app visible again, use the API endpoint PUT /api/profile/activity-visibility.",
+    "hiddenAppsNote": "Only apps you are currently active on are shown here. If you hide an app, it will no longer appear on your profile or in this list. To make a hidden app visible again, contact us at hello@sifa.id.",
     "notOwnProfile": "You can only manage activity visibility for your own profile."
+  },
+  "trustStatsHints": {
+    "heading": "Grow your track record",
+    "connections": "Follow other professionals on Sifa to grow your network.",
+    "endorsements": "Ask colleagues to endorse your skills on your profile.",
+    "reactions": "Share professional insights to earn reactions from others."
+  },
+  "connectionSummary": {
+    "signInLink": "Sign in with your AT Protocol handle",
+    "signInSuffix": "to see who you know at this event.",
+    "loading": "Checking your connections...",
+    "noConnections": "None of your Bluesky connections have RSVP'd yet. Discover new connections below!",
+    "attendingCount": "{count} people you know",
+    "attending": "are attending"
   },
   "welcome": {
     "pageTitle": "Welcome | Sifa ID",

@@ -54,6 +54,8 @@ function LoginContent() {
   const [handle, setHandle] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [signupLoading, setSignupLoading] = useState<string | null>(null);
+  const [customPdsHost, setCustomPdsHost] = useState('');
+  const [showCustomPds, setShowCustomPds] = useState(false);
   const upstreamError = searchParams.get('error') === 'upstream' ? t('errorUpstream') : null;
   const [error, setError] = useState<string | null>(upstreamError);
   const [isReturningFromProvider] = useState(() => {
@@ -114,6 +116,43 @@ function LoginContent() {
       // Network error: fall back to external link
       handleProviderClick();
       window.open(provider.signupUrl, '_blank', 'noopener,noreferrer');
+    } finally {
+      setSignupLoading(null);
+    }
+  };
+
+  const handleCustomPdsSignup = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const host = customPdsHost
+      .trim()
+      .toLowerCase()
+      .replace(/^https?:\/\//, '')
+      .replace(/\/+$/, '');
+    if (!host || !host.includes('.')) return;
+
+    setSignupLoading('custom');
+    setError(null);
+
+    try {
+      const res = await fetch(getOAuthSignupUrl(), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ host }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        if (data.redirectUrl) {
+          window.location.href = data.redirectUrl;
+          return;
+        }
+      }
+
+      const data = await res.json().catch(() => null);
+      setError(data?.message ?? t('errorGeneric'));
+    } catch {
+      setError(t('errorNetwork'));
     } finally {
       setSignupLoading(null);
     }
@@ -259,6 +298,45 @@ function LoginContent() {
       {providerCards}
 
       <p className="mt-3 text-xs text-muted-foreground">{t('providerRecommendation')}</p>
+
+      {/* Custom PDS option */}
+      <div className="mt-4">
+        {!showCustomPds ? (
+          <button
+            type="button"
+            onClick={() => setShowCustomPds(true)}
+            className="text-sm text-primary underline hover:text-primary/80"
+          >
+            {t('customPdsToggle')}
+          </button>
+        ) : (
+          <form
+            onSubmit={(e) => void handleCustomPdsSignup(e)}
+            className="rounded-lg border border-border bg-background p-4 space-y-3"
+          >
+            <label htmlFor="custom-pds-host" className="block text-sm font-medium">
+              {t('customPdsLabel')}
+            </label>
+            <input
+              id="custom-pds-host"
+              type="text"
+              value={customPdsHost}
+              onChange={(e) => setCustomPdsHost(e.target.value)}
+              placeholder={t('customPdsPlaceholder')}
+              disabled={signupLoading !== null}
+              className="block w-full rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            />
+            <p className="text-xs text-muted-foreground">{t('customPdsHint')}</p>
+            <button
+              type="submit"
+              disabled={signupLoading !== null || !customPdsHost.trim().includes('.')}
+              className="inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
+            >
+              {signupLoading === 'custom' ? t('signupLoading') : t('customPdsSubmit')}
+            </button>
+          </form>
+        )}
+      </div>
 
       {/* Why external account */}
       <details className="mt-4 group text-sm">

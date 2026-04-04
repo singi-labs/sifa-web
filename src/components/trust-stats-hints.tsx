@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Info, X } from '@phosphor-icons/react';
 import type { TrustStat } from '@/lib/types';
 
@@ -11,11 +12,8 @@ interface TrustStatsHintsProps {
   createdAt?: string;
 }
 
-const STAT_HINTS: Record<string, string> = {
-  connections: 'Follow other professionals on Sifa to grow your network.',
-  endorsements: 'Ask colleagues to endorse your skills on your profile.',
-  reactions: 'Share professional insights to earn reactions from others.',
-};
+const HINT_KEYS = ['connections', 'endorsements', 'reactions'] as const;
+type HintKey = (typeof HINT_KEYS)[number];
 
 const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
 
@@ -53,6 +51,7 @@ export function TrustStatsHints({
   did,
   createdAt,
 }: TrustStatsHintsProps) {
+  const t = useTranslations('trustStatsHints');
   const [dismissed, setDismissed] = useState(() => isPersistedDismissed(did));
 
   if (!isOwnProfile || dismissed) return null;
@@ -63,7 +62,7 @@ export function TrustStatsHints({
   const allAboveZero = trustStats.length > 0 && trustStats.every((s) => s.value > 0);
   if (allAboveZero) return null;
 
-  const hintsToShow = Object.entries(STAT_HINTS).filter(([key]) => {
+  const hintsToShow = HINT_KEYS.filter((key) => {
     const stat = trustStats.find((s) => s.key === key);
     return !stat || stat.value === 0;
   });
@@ -80,7 +79,7 @@ export function TrustStatsHints({
       <div className="mb-2 flex items-center justify-between">
         <div className="flex items-center gap-1.5">
           <Info className="h-4 w-4 text-primary" weight="fill" aria-hidden="true" />
-          <span className="text-sm font-medium text-primary">Grow your track record</span>
+          <span className="text-sm font-medium text-primary">{t('heading')}</span>
         </div>
         <button
           type="button"
@@ -92,9 +91,9 @@ export function TrustStatsHints({
         </button>
       </div>
       <ul className="space-y-1">
-        {hintsToShow.map(([key, hint]) => (
+        {hintsToShow.map((key: HintKey) => (
           <li key={key} className="text-sm text-muted-foreground">
-            {hint}
+            {t(key)}
           </li>
         ))}
       </ul>
