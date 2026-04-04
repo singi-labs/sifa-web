@@ -89,42 +89,35 @@ export default async function Home() {
                   )[0] ??
                   null;
                 return (
-                  <>
-                    <TouchSafeCard
-                      href={`/p/${featuredProfile.handle}`}
-                      className="block rounded-xl text-left transition-transform pointer-fine:hover:scale-[1.01] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                    >
-                      <IdentityCard
-                        did={featuredProfile.did}
-                        handle={featuredProfile.handle}
-                        displayName={featuredProfile.displayName}
-                        avatar={featuredProfile.avatar}
-                        pronouns={featuredProfile.pronouns}
-                        headline={featuredProfile.headline}
-                        about={featuredProfile.about}
-                        currentRole={currentPosition?.title}
-                        currentCompany={currentPosition?.company}
-                        location={location}
-                        website={featuredProfile.website}
-                        openTo={featuredProfile.openTo}
-                        followersCount={featuredProfile.followersCount}
-                        atprotoFollowersCount={featuredProfile.atprotoFollowersCount}
-                        trustStats={featuredProfile.trustStats}
-                        verifiedAccounts={featuredProfile.verifiedAccounts}
-                        activeApps={featuredProfile.activeApps}
-                        pdsProviderInfo={featuredProfile.pdsProvider}
-                        claimed={featuredProfile.claimed}
-                        variant="embed"
-                        hideFooter
-                      />
-                    </TouchSafeCard>
-                    <Link
-                      href={`/p/${featuredProfile.handle}`}
-                      className="mt-2 inline-flex h-9 items-center justify-center rounded-md border border-border px-4 text-sm font-medium transition-colors hover:bg-accent hover:text-foreground pointer-fine:hidden"
-                    >
-                      {t('viewProfile')}
-                    </Link>
-                  </>
+                  <TouchSafeCard
+                    href={`/p/${featuredProfile.handle}`}
+                    className="block rounded-xl text-left transition-transform pointer-fine:hover:scale-[1.01] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  >
+                    <IdentityCard
+                      did={featuredProfile.did}
+                      handle={featuredProfile.handle}
+                      displayName={featuredProfile.displayName}
+                      avatar={featuredProfile.avatar}
+                      pronouns={featuredProfile.pronouns}
+                      headline={featuredProfile.headline}
+                      about={featuredProfile.about}
+                      currentRole={currentPosition?.title}
+                      currentCompany={currentPosition?.company}
+                      location={location}
+                      website={featuredProfile.website}
+                      openTo={featuredProfile.openTo}
+                      followersCount={featuredProfile.followersCount}
+                      atprotoFollowersCount={featuredProfile.atprotoFollowersCount}
+                      trustStats={featuredProfile.trustStats}
+                      verifiedAccounts={featuredProfile.verifiedAccounts}
+                      activeApps={featuredProfile.activeApps}
+                      pdsProviderInfo={featuredProfile.pdsProvider}
+                      claimed={featuredProfile.claimed}
+                      variant="embed"
+                      hideFooter
+                      profileHref={`/p/${featuredProfile.handle}`}
+                    />
+                  </TouchSafeCard>
                 );
               })()}
             </div>
