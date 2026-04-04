@@ -58,12 +58,31 @@ export default function FaqOrcidPage() {
               <strong className="text-foreground">public</strong> visibility.
             </li>
             <li>
-              On Sifa, go to the <strong className="text-foreground">Links</strong> section on your
-              profile and add your ORCID URL (e.g.{' '}
-              <code className="rounded bg-muted px-1 py-0.5 text-xs">
-                https://orcid.org/0000-0000-0000-0000
-              </code>
-              ).
+              Link your ORCID to Sifa in one of two ways:
+              <ul className="mt-1 ml-6 list-disc space-y-1">
+                <li>
+                  <strong className="text-foreground">Via Keytrace:</strong> If you verify your
+                  ORCID through{' '}
+                  <a
+                    href="https://keytrace.dev"
+                    className="font-medium text-foreground underline-offset-4 hover:underline"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Keytrace
+                  </a>
+                  , it automatically appears on your Sifa profile.
+                </li>
+                <li>
+                  <strong className="text-foreground">Manually:</strong> Go to the{' '}
+                  <strong className="text-foreground">Links</strong> section on your Sifa profile
+                  and add your ORCID URL (e.g.{' '}
+                  <code className="rounded bg-muted px-1 py-0.5 text-xs">
+                    https://orcid.org/0000-0000-0000-0000
+                  </code>
+                  ).
+                </li>
+              </ul>
             </li>
             <li>
               Your ORCID publications will automatically appear in your{' '}
@@ -76,9 +95,27 @@ export default function FaqOrcidPage() {
           <h2 className="text-xl font-semibold">Verifying your ORCID account</h2>
           <p className="mt-2 text-muted-foreground">
             Verification proves you own the linked ORCID account. It adds a checkmark to your ORCID
-            link and to each publication sourced from it.
+            link and to each publication sourced from it. There are two ways to verify:
           </p>
-          <ol className="mt-3 list-inside list-decimal space-y-2 text-muted-foreground">
+
+          <h3 className="mt-4 text-lg font-medium">Option 1: Via Keytrace</h3>
+          <p className="mt-2 text-muted-foreground">
+            If you use{' '}
+            <a
+              href="https://keytrace.dev"
+              className="font-medium text-foreground underline-offset-4 hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Keytrace
+            </a>{' '}
+            to verify your ORCID account, Sifa automatically detects the verification. Your ORCID
+            link will appear on your profile with a shield checkmark, and your publications will be
+            visible without any additional steps.
+          </p>
+
+          <h3 className="mt-4 text-lg font-medium">Option 2: Via ORCID researcher URL</h3>
+          <ol className="mt-2 list-inside list-decimal space-y-2 text-muted-foreground">
             <li>
               Go to your{' '}
               <a
@@ -104,6 +141,10 @@ export default function FaqOrcidPage() {
               next to your ORCID link.
             </li>
           </ol>
+          <p className="mt-2 text-muted-foreground">
+            You only need one verification method. If your ORCID is already verified through
+            Keytrace, there is no need to add a researcher URL.
+          </p>
         </section>
 
         <section>
@@ -130,7 +171,8 @@ export default function FaqOrcidPage() {
             Sifa syncs with ORCID daily. New publications added to your ORCID profile will appear on
             Sifa within 24 hours. You can also tap the{' '}
             <strong className="text-foreground">Refresh from ORCID</strong> button in your
-            Publications section to sync immediately (requires a verified ORCID account).
+            Publications section to sync immediately (requires a verified ORCID account, via either
+            Keytrace or ORCID researcher URL).
           </p>
         </section>
 

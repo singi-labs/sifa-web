@@ -140,7 +140,7 @@ function ProfileBodyContent() {
           publications={profile.publications ?? []}
           isOwnProfile={isOwn}
           hasVerifiedOrcid={profile.externalAccounts?.some(
-            (a) => a.platform === 'orcid' && a.verified,
+            (a) => a.platform === 'orcid' && (a.verified || a.keytraceVerified),
           )}
           hasOrcidAccount={profile.externalAccounts?.some((a) => a.platform === 'orcid')}
         />

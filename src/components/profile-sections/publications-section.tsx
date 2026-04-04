@@ -353,7 +353,11 @@ function VerificationCheckmark({ verifiedVia }: { verifiedVia?: string }) {
   const t = useTranslations('sections');
 
   const methodKey =
-    verifiedVia === 'orcid-researcher-url' ? 'verifiedViaOrcid' : 'verifiedViaRelMe';
+    verifiedVia === 'orcid-researcher-url'
+      ? 'verifiedViaOrcid'
+      : verifiedVia === 'keytrace'
+        ? 'verifiedViaKeytrace'
+        : 'verifiedViaRelMe';
 
   return (
     <Popover.Root>
