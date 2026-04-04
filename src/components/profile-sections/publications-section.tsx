@@ -139,7 +139,7 @@ export function PublicationsSection({
           fields={PUBLICATION_FIELDS}
           toValues={publicationToValues}
           fromValues={
-            valuesToPublication as (
+            valuesToPublication as unknown as (
               v: Record<string, string | boolean>,
             ) => Omit<ProfilePublication, 'rkey'>
           }
