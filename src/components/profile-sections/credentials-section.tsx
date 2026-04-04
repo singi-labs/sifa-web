@@ -38,7 +38,7 @@ export function CredentialsSection({ certifications, isOwnProfile }: Credentials
         fields={CERTIFICATION_FIELDS}
         toValues={certificationToValues}
         fromValues={
-          valuesToCertification as (
+          valuesToCertification as unknown as (
             v: Record<string, string | boolean>,
           ) => Omit<ProfileCertification, 'rkey'>
         }

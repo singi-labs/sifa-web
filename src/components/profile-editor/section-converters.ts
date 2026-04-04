@@ -78,7 +78,7 @@ export function certificationToValues(
 
 export function valuesToCertification(
   values: Record<string, string | boolean>,
-): Omit<ProfileCertification, 'rkey'> {
+): Record<string, string | undefined> {
   return {
     name: values.name as string,
     issuingOrg: values.issuingOrg as string,
@@ -126,11 +126,11 @@ export function publicationToValues(item: ProfilePublication): Record<string, st
 
 export function valuesToPublication(
   values: Record<string, string | boolean>,
-): Omit<ProfilePublication, 'rkey'> {
+): Record<string, string | undefined> {
   return {
     title: values.title as string,
     publisher: optStr(values.publisher),
-    date: optStr(values.date),
+    publishedAt: optStr(values.date),
     url: optStr(values.url),
     description: optStr(values.description),
   };
